@@ -1,0 +1,74 @@
+Name: liblnk
+Version: @VERSION@
+Release: 1
+Summary: Library to support the Windows Shortcut (LNK) file format
+Group: System Environment/Libraries
+License: LGPLWindows Shortcut (LNK) file format
+Source: %{name}-%{version}.tar.gz
+URL: http://liblnk.sourceforge.net
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+@liblnk_spec_requires@ @libppf_spec_requires_libbfio@ @libppf_spec_requires_libuna@
+@liblnk_spec_build_requires@ @libppf_spec_build_requires_libbfio@ @libppf_spec_build_requires_libuna@
+
+%description
+liblnk is a library to support the 
+
+%package devel
+Summary: Header files and libraries for developing applications for liblnk
+Group: Development/Libraries
+Requires: liblnk = %{version}-%{release}
+
+%description devel
+Header files and libraries for developing applications for liblnk.
+
+%package tools
+Summary: Several tools for accessing Windows Shortcut (LNK) files
+Group: Applications/System
+Requires: liblnk = %{version}-%{release}
+
+%description tools
+Several tools for accessing Windows Shortcut (LNK) files
+
+%prep
+%setup -q
+
+%build
+%configure --prefix=/usr --libdir=%{_libdir} --mandir=%{_mandir}
+make %{?_smp_mflags}
+
+%install
+rm -rf ${RPM_BUILD_ROOT}
+make DESTDIR=${RPM_BUILD_ROOT} install
+
+%clean
+rm -rf ${RPM_BUILD_ROOT}
+
+%post -p /sbin/ldconfig
+
+%postun -p /sbin/ldconfig
+
+%files
+%defattr(644,root,root,755)
+%doc AUTHORS COPYING NEWS README
+%attr(755,root,root) %{_libdir}/*.so.*
+
+%files devel
+%defattr(644,root,root,755)
+%doc AUTHORS COPYING NEWS README ChangeLog
+%{_libdir}/*.a
+%{_libdir}/*.la
+%{_libdir}/*.so
+%{_libdir}/pkgconfig/liblnk.pc
+%{_includedir}/*
+%{_mandir}/man3/*
+
+%files tools
+%defattr(644,root,root,755)
+%doc AUTHORS COPYING NEWS README
+%attr(755,root,root) %{_bindir}/lnkinfo
+%{_mandir}/man1/*
+
+%changelog
+* Sat Sep  5 2009 Joachim Metz <forensics@hoffmannbv.nl> 20090905-1
+- Initial version based on libnk2 spec file
+

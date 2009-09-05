@@ -1,0 +1,231 @@
+/*
+ * Library to support the Windows Shortcut (LNK) file format
+ *
+ * Copyright (c) 2009, Joachim Metz <forensics@hoffmannbv.nl>,
+ * Hoffmann Investigations. All rights reserved.
+ *
+ * Refer to AUTHORS for acknowledgements.
+ *
+ * This software is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this software.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#if !defined( _LIBLNK_H )
+#define _LIBLNK_H
+
+#include <liblnk/codepage.h>
+#include <liblnk/definitions.h>
+#include <liblnk/error.h>
+#include <liblnk/extern.h>
+#include <liblnk/features.h>
+#include <liblnk/types.h>
+
+#include <stdio.h>
+
+#if defined( LIBLNK_HAVE_BFIO )
+#include <libbfio.h>
+#endif
+
+#if defined( __cplusplus )
+extern "C" {
+#endif
+
+/* -------------------------------------------------------------------------
+ * Support functions
+ * ------------------------------------------------------------------------- */
+
+/* Returns the library version
+ */
+LIBLNK_EXTERN const char *liblnk_get_version(
+                           void );
+
+/* Determines if a file is a LNK file (check for the LNK file signature)
+ * Returns 1 if true, 0 if not or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_check_file_signature(
+                   const char *filename,
+                   liblnk_error_t **error );
+
+#if defined( LIBLNK_HAVE_WIDE_CHARACTER_TYPE )
+/* Determines if a file is a LNK file (check for the LNK file signature)
+ * Returns 1 if true, 0 if not or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_check_file_signature_wide(
+                   const wchar_t *filename,
+                   liblnk_error_t **error );
+#endif
+
+#if defined( LIBLNK_HAVE_BFIO )
+/* Determines if a file is a LNK file (check for the LNK file signature) using a Basic File IO (bfio) handle
+ * Returns 1 if true, 0 if not or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_check_file_signature_file_io_handle(
+                   libbfio_handle_t *bfio_handle,
+                   liblnk_error_t **error );
+#endif
+
+/* -------------------------------------------------------------------------
+ * Notify functions
+ * ------------------------------------------------------------------------- */
+
+/* Set the verbose notification
+ */
+LIBLNK_EXTERN void liblnk_notify_set_verbose(
+                    int verbose );
+
+/* Set the notification stream
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_notify_set_stream(
+                   FILE *stream,
+                   liblnk_error_t **error );
+
+/* Opens the notification stream using a filename
+ * The stream is opened in append mode
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_notify_stream_open(
+                   const char *filename,
+                   liblnk_error_t **error );
+
+/* Closes the notification stream if opened using a filename
+ * Returns 0 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_notify_stream_close(
+                   liblnk_error_t **error );
+
+/* -------------------------------------------------------------------------
+ * Error functions
+ * ------------------------------------------------------------------------- */
+
+/* Frees the error including elements
+ */
+LIBLNK_EXTERN void liblnk_error_free(
+                    liblnk_error_t **error );
+
+/* Prints a descriptive string of the error to the stream
+ * Returns the amount of printed characters if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_error_fprint(
+                   liblnk_error_t *error,
+                   FILE *stream );
+
+/* Prints a descriptive string of the error to the string
+ * Returns the amount of printed characters if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_error_sprint(
+                   liblnk_error_t *error,
+                   char *string,
+                   size_t size );
+
+/* Prints a backtrace of the error to the stream
+ * Returns the amount of printed characters if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_error_backtrace_fprint(
+                   liblnk_error_t *error,
+                   FILE *stream );
+
+/* Prints a backtrace of the error to the string
+ * Returns the amount of printed characters if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_error_backtrace_sprint(
+                   liblnk_error_t *error,
+                   char *string,
+                   size_t size );
+
+/* -------------------------------------------------------------------------
+ * File functions
+ * ------------------------------------------------------------------------- */
+
+/* Initializes the Windows Shortcut File
+ * Make sure the value file is pointing to is set to NULL
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_initialize(
+                   liblnk_file_t **file,
+                   liblnk_error_t **error );
+
+/* Frees an exisisting Windows Shortcut File
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_free(
+                   liblnk_file_t **file,
+                   liblnk_error_t **error );
+
+/* Signals the liblnk file to abort its current activity
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_signal_abort(
+                   liblnk_file_t *file,
+                   liblnk_error_t **error );
+
+/* Opens a Windows Shortcut File
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_open(
+                   liblnk_file_t *file,
+                   const char *filename,
+                   int flags,
+                   liblnk_error_t **error );
+
+#if defined( LIBLNK_HAVE_WIDE_CHARACTER_TYPE )
+/* Opens a Windows Shortcut File
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_open_wide(
+                   liblnk_file_t *file,
+                   const wchar_t *filename,
+                   int flags,
+                   liblnk_error_t **error );
+#endif
+
+#if defined( LIBLNK_HAVE_BFIO )
+/* Opens a Windows Shortcut File using a Basic File IO (bfio) handle
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_open_file_io_handle(
+                   liblnk_file_t *file,
+                   libbfio_handle_t *file_io_handle,
+                   int flags,
+                   liblnk_error_t **error );
+#endif
+
+/* Closes a Windows Shortcut File
+ * Returns 0 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_close(
+                   liblnk_file_t *file,
+                   liblnk_error_t **error );
+
+/* Retrieves the file ASCII codepage
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_get_ascii_codepage(
+                   liblnk_file_t *file,
+                   int *ascii_codepage,
+                   liblnk_error_t **error );
+
+/* Sets the file ASCII codepage
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_set_ascii_codepage(
+                   liblnk_file_t *file,
+                   int ascii_codepage,
+                   liblnk_error_t **error );
+
+#if defined( __cplusplus )
+}
+#endif
+
+#endif
+
