@@ -58,8 +58,6 @@ File functions
 .Fn liblnk_file_get_ascii_codepage "liblnk_file_t *file, int *ascii_codepage, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_set_ascii_codepage "liblnk_file_t *file, int ascii_codepage, liblnk_error_t **error"
-.Ft int
-.Fn liblnk_file_get_data_flags "liblnk_file_t *file, uint32_t *data_flags, liblnk_error_t **error"
 .Pp
 Available when compiled with wide character string support:
 .Ft int
@@ -68,6 +66,20 @@ Available when compiled with wide character string support:
 Available when compiled with libbfio support:
 .Ft int
 .Fn liblnk_file_open_file_io_handle "liblnk_file_t *file, libbfio_handle_t *file_io_handle, int flags, liblnk_error_t **error"
+.Pp
+Link information functions
+.Ft int
+.Fn liblnk_file_get_data_flags "liblnk_file_t *file, uint32_t *data_flags, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_file_attribute_flags "liblnk_file_t *file, uint32_t *file_attribute_flags, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_creation_time "liblnk_file_t *file, uint64_t *creation_time, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_modification_time "liblnk_file_t *file, uint64_t *modification_time, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_access_time "liblnk_file_t *file, uint64_t *access_time, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_file_size "liblnk_file_t *file, uint32_t *file_size, liblnk_error_t **error"
 .Sh DESCRIPTION
 The
 .Fn liblnk_get_version

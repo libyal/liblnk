@@ -1,4 +1,7 @@
 TODO
+* change file header filetime conversion
+* implement libfdatetime
+* create API functions to access link information values
 
 Deployment:
 * update manuals

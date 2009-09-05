@@ -223,12 +223,62 @@ LIBLNK_EXTERN int liblnk_file_set_ascii_codepage(
                    int ascii_codepage,
                    liblnk_error_t **error );
 
+/* -------------------------------------------------------------------------
+ * Link information functions
+ * ------------------------------------------------------------------------- */
+
 /* Retrieves the data flags
+ * The data flags contain information about the available link information
  * Returns 1 if successful or -1 on error
  */
 LIBLNK_EXTERN int liblnk_file_get_data_flags(
                    liblnk_file_t *file,
                    uint32_t *data_flags,
+                   liblnk_error_t **error );
+
+/* Retrieves the file attribute flags
+ * The file attribute flags are only set when the link refers to a file
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_get_file_attribute_flags(
+                   liblnk_file_t *file,
+                   uint32_t *file_attribute_flags,
+                   liblnk_error_t **error );
+
+/* Retrieves the 64-bit filetime value containing the creation date and time
+ * The creation time is only set when the link refers to a file
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_get_creation_time(
+                   liblnk_file_t *file,
+                   uint64_t *creation_time,
+                   liblnk_error_t **error );
+
+/* Retrieves the 64-bit filetime value containing the last modification date and time
+ * The modification time is only set when the link refers to a file
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_get_modification_time(
+                   liblnk_file_t *file,
+                   uint64_t *modification_time,
+                   liblnk_error_t **error );
+
+/* Retrieves the 64-bit filetime value containing the last access date and time
+ * The access time is only set when the link refers to a file
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_get_access_time(
+                   liblnk_file_t *file,
+                   uint64_t *access_time,
+                   liblnk_error_t **error );
+
+/* Retrieves the file size
+ * The file size are only set if the link refers to a file
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_get_file_size(
+                   liblnk_file_t *file,
+                   uint32_t *file_size,
                    liblnk_error_t **error );
 
 #if defined( __cplusplus )

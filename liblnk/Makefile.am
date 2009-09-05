@@ -16,6 +16,7 @@ liblnk_la_SOURCES = \
 	liblnk_io_handle.c liblnk_io_handle.h \
 	liblnk_libbfio.h \
 	liblnk_libuna.h \
+	liblnk_link_information.c liblnk_link_information.h \
 	liblnk_location_information.c liblnk_location_information.h \
 	liblnk_notify.c liblnk_notify.h \
 	liblnk_string.h \

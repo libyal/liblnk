@@ -371,6 +371,16 @@ int liblnk_io_handle_read_file_header(
 	 file_information->attribute_flags,
 	 file_header.file_attribute_flags );
 
+	endian_little_convert_64bit(
+	 file_information->creation_time,
+	 file_header.creation_time );
+	endian_little_convert_64bit(
+	 file_information->modification_time,
+	 file_header.modification_time );
+	endian_little_convert_64bit(
+	 file_information->access_time,
+	 file_header.access_time );
+
 	if( liblnk_filetime_from_byte_stream(
 	     &( file_information->creation_time ),
 	     file_header.creation_time,

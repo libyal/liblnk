@@ -142,11 +142,6 @@ LIBLNK_EXTERN int liblnk_file_set_ascii_codepage(
                    int ascii_codepage,
                    liberror_error_t **error );
 
-LIBLNK_EXTERN int liblnk_file_get_data_flags(
-                   liblnk_file_t *file,
-                   uint32_t *data_flags,
-                   liberror_error_t **error );
-
 #if defined( __cplusplus )
 }
 #endif

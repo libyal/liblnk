@@ -47,16 +47,19 @@ struct liblnk_file_information
 	uint32_t attribute_flags;
 
 	/* The creation date and time
+	 * Contains a 64-bit filetime value
 	 */
-	liblnk_filetime_t creation_time;
+	uint64_t creation_time;
 
 	/* The last modificatoin date and time
+	 * Contains a 64-bit filetime value
 	 */
-	liblnk_filetime_t modification_time;
+	uint64_t modification_time;
 
 	/* The last access date and time
+	 * Contains a 64-bit filetime value
 	 */
-	liblnk_filetime_t access_time;
+	uint64_t access_time;
 };
 
 int liblnk_file_information_initialize(
