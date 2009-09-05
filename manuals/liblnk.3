@@ -58,14 +58,16 @@ File functions
 .Fn liblnk_file_get_ascii_codepage "liblnk_file_t *file, int *ascii_codepage, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_set_ascii_codepage "liblnk_file_t *file, int ascii_codepage, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_data_flags "liblnk_file_t *file, uint32_t *data_flags, liblnk_error_t **error"
 .Pp
 Available when compiled with wide character string support:
 .Ft int
 .Fn liblnk_file_open_wide "liblnk_file_t *file, const wchar_t *filename, int flags, liblnk_error_t **error"
-.PP
-Item functions
+.Pp
+Available when compiled with libbfio support:
 .Ft int
-.Fn liblnk_item_free "liblnk_item_t **item, liblnk_error_t **error"
+.Fn liblnk_file_open_file_io_handle "liblnk_file_t *file, libbfio_handle_t *file_io_handle, int flags, liblnk_error_t **error"
 .Sh DESCRIPTION
 The
 .Fn liblnk_get_version

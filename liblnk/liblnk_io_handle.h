@@ -28,6 +28,7 @@
 
 #include <liberror.h>
 
+#include "liblnk_file_information.h"
 #include "liblnk_libbfio.h"
 
 #if defined( __cplusplus )
@@ -69,6 +70,8 @@ int liblnk_io_handle_close(
 
 int liblnk_io_handle_read_file_header(
      liblnk_io_handle_t *io_handle,
+     uint32_t *data_flags,
+     liblnk_file_information_t *file_information,
      liberror_error_t **error );
 
 #if defined( __cplusplus )

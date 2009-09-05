@@ -1,5 +1,5 @@
 /*
- * The file header definition of a Nickfile
+ * The file header definition of a Windows Shortcut file
  *
  * Copyright (c) 2009, Joachim Metz <forensics@hoffmannbv.nl>,
  * Hoffmann Investigations. All rights reserved.
@@ -46,10 +46,10 @@ struct lnk_file_header
 	 */
 	uint8_t class_identifier[ 16 ];
 
-	/* Flags
+	/* Data flags
 	 * Consists of 4 bytes
 	 */
-	uint8_t flags[ 4 ];
+	uint8_t data_flags[ 4 ];
 
 	/* File attribute flags
 	 * Consists of 4 bytes
@@ -60,19 +60,19 @@ struct lnk_file_header
 	 * Consists of 8 bytes
 	 * Contains a filetime
 	 */
-	uint8_t creation_time[ 4 ];
+	uint8_t creation_time[ 8 ];
 
 	/* Last modification date and time
 	 * Consists of 8 bytes
 	 * Contains a filetime
 	 */
-	uint8_t modification_time[ 4 ];
+	uint8_t modification_time[ 8 ];
 
 	/* Last access date and time
 	 * Consists of 8 bytes
 	 * Contains a filetime
 	 */
-	uint8_t access_time[ 4 ];
+	uint8_t access_time[ 8 ];
 
 	/* The size of the file
 	 * Consists of 4 bytes

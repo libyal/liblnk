@@ -28,8 +28,12 @@
 
 #include <liberror.h>
 
+#include "liblnk_data_string.h"
 #include "liblnk_extern.h"
 #include "liblnk_io_handle.h"
+#include "liblnk_file_information.h"
+#include "liblnk_location_information.h"
+#include "liblnk_shell_item_identifiers.h"
 
 #if defined( __cplusplus )
 extern "C" {
@@ -39,6 +43,42 @@ typedef struct liblnk_internal_file liblnk_internal_file_t;
 
 struct liblnk_internal_file
 {
+	/* The data flags
+	 */
+	uint32_t data_flags;
+
+	/* The file information
+	 */
+	liblnk_file_information_t *file_information;
+
+	/* The shell items
+	 */
+	liblnk_shell_item_identifiers_t *shell_item_identifiers;
+
+	/* The location information
+	 */
+	liblnk_location_information_t *location_information;
+
+	/* The description
+	 */
+	liblnk_data_string_t *description;
+
+	/* The relative path
+	 */
+	liblnk_data_string_t *relative_path;
+
+	/* The working directory
+	 */
+	liblnk_data_string_t *working_directory;
+
+	/* The command line arguments
+	 */
+	liblnk_data_string_t *command_line_arguments;
+
+	/* The custom icon filename
+	 */
+	liblnk_data_string_t *custom_icon_filename;
+
 	/* The io handle
 	 */
 	liblnk_io_handle_t *io_handle;
@@ -70,7 +110,7 @@ LIBLNK_EXTERN int liblnk_file_open(
                    int flags,
                    liberror_error_t **error );
 
-#if defined( LIBLNK_WIDE_CHARACTER_TYPE )
+#if defined( HAVE_WIDE_CHARACTER_TYPE )
 LIBLNK_EXTERN int liblnk_file_open_wide(
                    liblnk_file_t *file,
                    const wchar_t *filename,
@@ -100,6 +140,11 @@ LIBLNK_EXTERN int liblnk_file_get_ascii_codepage(
 LIBLNK_EXTERN int liblnk_file_set_ascii_codepage(
                    liblnk_file_t *file,
                    int ascii_codepage,
+                   liberror_error_t **error );
+
+LIBLNK_EXTERN int liblnk_file_get_data_flags(
+                   liblnk_file_t *file,
+                   uint32_t *data_flags,
                    liberror_error_t **error );
 
 #if defined( __cplusplus )

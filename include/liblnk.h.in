@@ -147,7 +147,7 @@ LIBLNK_EXTERN int liblnk_error_backtrace_sprint(
  * File functions
  * ------------------------------------------------------------------------- */
 
-/* Initializes the Windows Shortcut File
+/* Initializes the Windows Shortcut file
  * Make sure the value file is pointing to is set to NULL
  * Returns 1 if successful or -1 on error
  */
@@ -155,7 +155,7 @@ LIBLNK_EXTERN int liblnk_file_initialize(
                    liblnk_file_t **file,
                    liblnk_error_t **error );
 
-/* Frees an exisisting Windows Shortcut File
+/* Frees an exisisting Windows Shortcut file
  * Returns 1 if successful or -1 on error
  */
 LIBLNK_EXTERN int liblnk_file_free(
@@ -169,7 +169,7 @@ LIBLNK_EXTERN int liblnk_file_signal_abort(
                    liblnk_file_t *file,
                    liblnk_error_t **error );
 
-/* Opens a Windows Shortcut File
+/* Opens a Windows Shortcut file
  * Returns 1 if successful or -1 on error
  */
 LIBLNK_EXTERN int liblnk_file_open(
@@ -179,7 +179,7 @@ LIBLNK_EXTERN int liblnk_file_open(
                    liblnk_error_t **error );
 
 #if defined( LIBLNK_HAVE_WIDE_CHARACTER_TYPE )
-/* Opens a Windows Shortcut File
+/* Opens a Windows Shortcut file
  * Returns 1 if successful or -1 on error
  */
 LIBLNK_EXTERN int liblnk_file_open_wide(
@@ -190,7 +190,7 @@ LIBLNK_EXTERN int liblnk_file_open_wide(
 #endif
 
 #if defined( LIBLNK_HAVE_BFIO )
-/* Opens a Windows Shortcut File using a Basic File IO (bfio) handle
+/* Opens a Windows Shortcut file using a Basic File IO (bfio) handle
  * Returns 1 if successful or -1 on error
  */
 LIBLNK_EXTERN int liblnk_file_open_file_io_handle(
@@ -200,7 +200,7 @@ LIBLNK_EXTERN int liblnk_file_open_file_io_handle(
                    liblnk_error_t **error );
 #endif
 
-/* Closes a Windows Shortcut File
+/* Closes a Windows Shortcut file
  * Returns 0 if successful or -1 on error
  */
 LIBLNK_EXTERN int liblnk_file_close(
@@ -221,6 +221,14 @@ LIBLNK_EXTERN int liblnk_file_get_ascii_codepage(
 LIBLNK_EXTERN int liblnk_file_set_ascii_codepage(
                    liblnk_file_t *file,
                    int ascii_codepage,
+                   liblnk_error_t **error );
+
+/* Retrieves the data flags
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN int liblnk_file_get_data_flags(
+                   liblnk_file_t *file,
+                   uint32_t *data_flags,
                    liblnk_error_t **error );
 
 #if defined( __cplusplus )

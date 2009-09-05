@@ -31,6 +31,7 @@
 #include "liblnk_debug.h"
 #include "liblnk_definitions.h"
 #include "liblnk_filetime.h"
+#include "liblnk_file_information.h"
 #include "liblnk_guid.h"
 #include "liblnk_io_handle.h"
 #include "liblnk_libbfio.h"
@@ -263,6 +264,8 @@ int liblnk_io_handle_close(
  */
 int liblnk_io_handle_read_file_header(
      liblnk_io_handle_t *io_handle,
+     uint32_t *data_flags,
+     liblnk_file_information_t *file_information,
      liberror_error_t **error )
 {
 	lnk_file_header_t file_header;
@@ -275,8 +278,6 @@ int liblnk_io_handle_read_file_header(
 	liblnk_character_t guid_string[ LIBLNK_GUID_STRING_SIZE ];
 
 	uint32_t test         = 0;
-
-	liblnk_filetime_t filetime;
 #endif
 
 	if( io_handle == NULL )
@@ -297,6 +298,28 @@ int liblnk_io_handle_read_file_header(
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid io handle - missing file io handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_flags == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data flags.",
+		 function );
+
+		return( -1 );
+	}
+	if( file_information == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file information.",
 		 function );
 
 		return( -1 );
@@ -341,6 +364,65 @@ int liblnk_io_handle_read_file_header(
 
 		return( -1 );
 	}
+	endian_little_convert_32bit(
+	 *data_flags,
+	 file_header.data_flags );
+	endian_little_convert_32bit(
+	 file_information->attribute_flags,
+	 file_header.file_attribute_flags );
+
+	if( liblnk_filetime_from_byte_stream(
+	     &( file_information->creation_time ),
+	     file_header.creation_time,
+	     8,
+	     LIBLNK_ENDIAN_LITTLE,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_CONVERSION,
+		 LIBERROR_CONVERSION_ERROR_GENERIC,
+		 "%s: unable to create creation time.",
+		 function );
+
+		return( -1 );
+	}
+	if( liblnk_filetime_from_byte_stream(
+	     &( file_information->modification_time ),
+	     file_header.modification_time,
+	     8,
+	     LIBLNK_ENDIAN_LITTLE,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_CONVERSION,
+		 LIBERROR_CONVERSION_ERROR_GENERIC,
+		 "%s: unable to create modification time.",
+		 function );
+
+		return( -1 );
+	}
+	if( liblnk_filetime_from_byte_stream(
+	     &( file_information->access_time ),
+	     file_header.access_time,
+	     8,
+	     LIBLNK_ENDIAN_LITTLE,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_CONVERSION,
+		 LIBERROR_CONVERSION_ERROR_GENERIC,
+		 "%s: unable to create access time.",
+		 function );
+
+		return( -1 );
+	}
+	endian_little_convert_32bit(
+	 file_information->size,
+	 file_header.file_size );
+
 #if defined( HAVE_VERBOSE_OUTPUT )
 	endian_little_convert_32bit(
 	 test,
@@ -367,43 +449,21 @@ int liblnk_io_handle_read_file_header(
 		return( -1 );
 	}
 	libnotify_verbose_printf(
-	 "%s: class identifier\t\t\t: %s\n",
+	 "%s: class identifier\t: %s\n",
 	 function,
 	 guid_string );
 
-	endian_little_convert_32bit(
-	 test,
-	 file_header.flags );
 	libnotify_verbose_printf(
-	 "%s: flags\t\t\t: 0x%08" PRIx32 "\n",
+	 "%s: data flags\t\t: 0x%08" PRIx32 "\n",
 	 function,
-	 test );
-	endian_little_convert_32bit(
-	 test,
-	 file_header.file_attribute_flags );
+	 *data_flags );
 	libnotify_verbose_printf(
 	 "%s: file attribute flags\t: 0x%08" PRIx32 "\n",
 	 function,
-	 test );
+	 file_information->attribute_flags );
 
-	if( liblnk_filetime_from_byte_stream(
-	     &filetime,
-	     file_header.creation_time,
-	     8,
-	     LIBLNK_ENDIAN_LITTLE,
-	     error ) != 1 )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_CONVERSION,
-		 LIBERROR_CONVERSION_ERROR_GENERIC,
-		 "%s: unable to create creation time.",
-		 function );
-
-		return( -1 );
-	}
 	if( liblnk_filetime_to_string(
-	     &filetime,
+	     &( file_information->creation_time ),
 	     filetime_string,
 	     LIBLNK_FILETIME_STRING_SIZE,
 	     error ) != 1 )
@@ -418,28 +478,12 @@ int liblnk_io_handle_read_file_header(
 		return( -1 );
 	}
 	libnotify_verbose_printf(
-	 "%s: creation time\t\t\t: %s\n",
+	 "%s: creation time\t: %s\n",
 	 function,
 	 filetime_string );
 
-	if( liblnk_filetime_from_byte_stream(
-	     &filetime,
-	     file_header.modification_time,
-	     8,
-	     LIBLNK_ENDIAN_LITTLE,
-	     error ) != 1 )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_CONVERSION,
-		 LIBERROR_CONVERSION_ERROR_GENERIC,
-		 "%s: unable to create modification time.",
-		 function );
-
-		return( -1 );
-	}
 	if( liblnk_filetime_to_string(
-	     &filetime,
+	     &( file_information->modification_time ),
 	     filetime_string,
 	     LIBLNK_FILETIME_STRING_SIZE,
 	     error ) != 1 )
@@ -454,28 +498,12 @@ int liblnk_io_handle_read_file_header(
 		return( -1 );
 	}
 	libnotify_verbose_printf(
-	 "%s: modification time\t\t: %s\n",
+	 "%s: modification time\t: %s\n",
 	 function,
 	 filetime_string );
 
-	if( liblnk_filetime_from_byte_stream(
-	     &filetime,
-	     file_header.access_time,
-	     8,
-	     LIBLNK_ENDIAN_LITTLE,
-	     error ) != 1 )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_CONVERSION,
-		 LIBERROR_CONVERSION_ERROR_GENERIC,
-		 "%s: unable to create access time.",
-		 function );
-
-		return( -1 );
-	}
 	if( liblnk_filetime_to_string(
-	     &filetime,
+	     &( file_information->access_time ),
 	     filetime_string,
 	     LIBLNK_FILETIME_STRING_SIZE,
 	     error ) != 1 )
@@ -490,37 +518,34 @@ int liblnk_io_handle_read_file_header(
 		return( -1 );
 	}
 	libnotify_verbose_printf(
-	 "%s: access time\t\t\t: %s\n",
+	 "%s: access time\t\t: %s\n",
 	 function,
 	 filetime_string );
 
-	endian_little_convert_32bit(
-	 test,
-	 file_header.file_size );
 	libnotify_verbose_printf(
-	 "%s: file size\t\t\t: 0x%08" PRIx32 "\n",
+	 "%s: file size\t\t: %" PRIu32 " bytes\n",
 	 function,
-	 test );
+	 file_information->size );
 
 	endian_little_convert_32bit(
 	 test,
 	 file_header.icon_index );
 	libnotify_verbose_printf(
-	 "%s: icon index\t\t\t: 0x%08" PRIx32 "\n",
+	 "%s: icon index\t\t: 0x%08" PRIx32 "\n",
 	 function,
 	 test );
 	endian_little_convert_32bit(
 	 test,
 	 file_header.show_window_value );
 	libnotify_verbose_printf(
-	 "%s: show window value\t\t: 0x%08" PRIx32 "\n",
+	 "%s: show window value\t: 0x%08" PRIx32 "\n",
 	 function,
 	 test );
 	endian_little_convert_32bit(
 	 test,
 	 file_header.hot_key_value );
 	libnotify_verbose_printf(
-	 "%s: hot key value\t\t: 0x%08" PRIx32 "\n",
+	 "%s: hot key value\t: 0x%08" PRIx32 "\n",
 	 function,
 	 test );
 	libnotify_verbose_printf(

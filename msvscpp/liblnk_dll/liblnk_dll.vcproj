@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="libnk2_dll"
+	Name="liblnk_dll"
 	ProjectGUID="{B5225323-AC67-411D-8FBA-199E9467FAB5}"
-	RootNamespace="libnk2"
+	RootNamespace="liblnk"
 	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
@@ -38,8 +38,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\liberror;..\..\libuna;..\..\libnk2"
-				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBUNA;LIBPFF_DLL_EXPORT"
+				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\liberror;..\..\libuna;..\..\liblnk"
+				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBUNA;LIBLNK_DLL_EXPORT"
 				RuntimeLibrary="2"
 				WarningLevel="4"
 				CompileAs="1"
@@ -55,11 +55,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\libnk2.dll"
+				OutputFile="$(OutDir)\liblnk.dll"
 				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(OutDir)\libnk2.lib"
+				ImportLibrary="$(OutDir)\liblnk.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -93,43 +93,43 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\libnk2\libnk2.c"
+				RelativePath="..\..\liblnk\liblnk.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_array_type.c"
+				RelativePath="..\..\liblnk\liblnk_array_type.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_error.h"
+				RelativePath="..\..\liblnk\liblnk_error.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_file.c"
+				RelativePath="..\..\liblnk\liblnk_file.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_io_handle.c"
+				RelativePath="..\..\liblnk\liblnk_io_handle.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_item.c"
+				RelativePath="..\..\liblnk\liblnk_item.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_item_values.c"
+				RelativePath="..\..\liblnk\liblnk_item_values.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_list_type.c"
+				RelativePath="..\..\liblnk\liblnk_list_type.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_notify.c"
+				RelativePath="..\..\liblnk\liblnk_notify.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_support.c"
+				RelativePath="..\..\liblnk\liblnk_support.c"
 				>
 			</File>
 		</Filter>
@@ -139,63 +139,63 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\libnk2\libnk2_array_type.h"
+				RelativePath="..\..\liblnk\liblnk_array_type.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_definitions.h"
+				RelativePath="..\..\liblnk\liblnk_definitions.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_error.h"
+				RelativePath="..\..\liblnk\liblnk_error.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_extern.h"
+				RelativePath="..\..\liblnk\liblnk_extern.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_file.h"
+				RelativePath="..\..\liblnk\liblnk_file.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_io_handle.h"
+				RelativePath="..\..\liblnk\liblnk_io_handle.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_item.h"
+				RelativePath="..\..\liblnk\liblnk_item.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_item_values.h"
+				RelativePath="..\..\liblnk\liblnk_item_values.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_libuna.h"
+				RelativePath="..\..\liblnk\liblnk_libuna.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_list_type.h"
+				RelativePath="..\..\liblnk\liblnk_list_type.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_notify.h"
+				RelativePath="..\..\liblnk\liblnk_notify.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_string.h"
+				RelativePath="..\..\liblnk\liblnk_string.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\libnk2_support.h"
+				RelativePath="..\..\liblnk\liblnk_support.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\nk2_file_header.h"
+				RelativePath="..\..\liblnk\lnk_file_header.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libnk2\nk2_item.h"
+				RelativePath="..\..\liblnk\lnk_item.h"
 				>
 			</File>
 		</Filter>

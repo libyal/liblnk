@@ -4,20 +4,25 @@ lib_LTLIBRARIES = liblnk.la
 
 liblnk_la_SOURCES = \
 	liblnk.c \
+	liblnk_data_string.c liblnk_data_string.h \
 	liblnk_debug.c liblnk_debug.h \
 	liblnk_definitions.h \
 	liblnk_error.c liblnk_error.h \
 	liblnk_extern.h \
 	liblnk_file.c liblnk_file.h \
 	liblnk_filetime.c liblnk_filetime.h \
+	liblnk_file_information.c liblnk_file_information.h \
 	liblnk_guid.c liblnk_guid.h \
 	liblnk_io_handle.c liblnk_io_handle.h \
 	liblnk_libbfio.h \
 	liblnk_libuna.h \
+	liblnk_location_information.c liblnk_location_information.h \
 	liblnk_notify.c liblnk_notify.h \
 	liblnk_string.h \
+	liblnk_shell_item_identifiers.c liblnk_shell_item_identifiers.h \
 	liblnk_support.c liblnk_support.h \
-	lnk_file_header.h
+	lnk_file_header.h \
+	lnk_location_information.h
 
 liblnk_la_LIBADD  = ../liberror/liberror.la ../libnotify/libnotify.la @LIBUNA_LIBADD@ @LIBBFIO_LIBADD@
 liblnk_la_LDFLAGS = -no-undefined -version-info 1:0:0

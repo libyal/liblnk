@@ -31,10 +31,16 @@
 
 #include <liblnk/codepage.h>
 
+#include "liblnk_data_string.h"
 #include "liblnk_definitions.h"
 #include "liblnk_io_handle.h"
 #include "liblnk_file.h"
+#include "liblnk_file_information.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_location_information.h"
+#include "liblnk_shell_item_identifiers.h"
+
+#include "lnk_file_header.h"
 
 /* Initialize a file
  * Make sure the value file is pointing to is set to NULL
@@ -91,6 +97,22 @@ int liblnk_file_initialize(
 
 			return( -1 );
 		}
+		if( liblnk_file_information_initialize(
+		     &( internal_file->file_information ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 "%s: unable to initialize file information.",
+			 function );
+
+			memory_free(
+			 internal_file );
+
+			return( -1 );
+		}
 		if( liblnk_io_handle_initialize(
 		     &( internal_file->io_handle ),
 		     error ) != 1 )
@@ -102,6 +124,9 @@ int liblnk_file_initialize(
 			 "%s: unable to initialize io handle.",
 			 function );
 
+			liblnk_file_information_free(
+			 &( internal_file->file_information ),
+			 NULL );
 			memory_free(
 			 internal_file );
 
@@ -123,6 +148,7 @@ int liblnk_file_free(
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_free";
+	int result                            = 1;
 
 	if( file == NULL )
 	{
@@ -139,6 +165,118 @@ int liblnk_file_free(
 	{
 		internal_file = (liblnk_internal_file_t *) *file;
 
+		if( ( internal_file->file_information != NULL )
+		 && ( liblnk_file_information_free(
+		       &( internal_file->file_information ),
+		       error ) != 1 ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free file information.",
+			 function );
+
+			result = -1;
+		}
+		if( ( internal_file->shell_item_identifiers != NULL )
+		 && ( liblnk_shell_item_identifiers_free(
+		       &( internal_file->shell_item_identifiers ),
+		       error ) != 1 ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free shell item identifiers.",
+			 function );
+
+			result = -1;
+		}
+		if( ( internal_file->location_information != NULL )
+		 && ( liblnk_location_information_free(
+		       &( internal_file->location_information ),
+		       error ) != 1 ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free location information.",
+			 function );
+
+			result = -1;
+		}
+		if( ( internal_file->description != NULL )
+		 && ( liblnk_data_string_free(
+		       &( internal_file->description ),
+		       error ) != 1 ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free description.",
+			 function );
+
+			result = -1;
+		}
+		if( ( internal_file->relative_path != NULL )
+		 && ( liblnk_data_string_free(
+		       &( internal_file->relative_path ),
+		       error ) != 1 ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free relative path.",
+			 function );
+
+			result = -1;
+		}
+		if( ( internal_file->working_directory != NULL )
+		 && ( liblnk_data_string_free(
+		       &( internal_file->working_directory ),
+		       error ) != 1 ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free working directory.",
+			 function );
+
+			result = -1;
+		}
+		if( ( internal_file->command_line_arguments != NULL )
+		 && ( liblnk_data_string_free(
+		       &( internal_file->command_line_arguments ),
+		       error ) != 1 ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free command line arguments.",
+			 function );
+
+			result = -1;
+		}
+		if( ( internal_file->custom_icon_filename != NULL )
+		 && ( liblnk_data_string_free(
+		       &( internal_file->custom_icon_filename ),
+		       error ) != 1 ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free custom icon filename.",
+			 function );
+
+			result = -1;
+		}
 		if( ( internal_file->io_handle != NULL )
 		 && ( liblnk_io_handle_free(
 		       &( internal_file->io_handle ),
@@ -150,13 +288,15 @@ int liblnk_file_free(
 			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free io handle.",
 			 function );
+
+			result = -1;
 		}
 		memory_free(
 		 internal_file );
 
 		*file = NULL;
 	}
-	return( 1 );
+	return( result );
 }
 
 /* Signals the liblnk file to abort its current activity
@@ -184,7 +324,7 @@ int liblnk_file_signal_abort(
 	return( 1 );
 }
 
-/* Opens a Nickfile
+/* Opens a Windows Shortcut file
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_open(
@@ -237,7 +377,7 @@ int liblnk_file_open(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: write access to Nickfiles currently not supported.",
+		 "%s: write access to Windows Shortcut files currently not supported.",
 		 function );
 
 		return( -1 );
@@ -310,9 +450,9 @@ int liblnk_file_open(
 	return( 1 );
 }
 
-#if defined( LIBLNK_WIDE_CHARACTER_TYPE )
+#if defined( HAVE_WIDE_CHARACTER_TYPE )
 
-/* Opens a Nickfile
+/* Opens a Windows Shortcut file
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_open_wide(
@@ -365,7 +505,7 @@ int liblnk_file_open_wide(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: write access to Nickfiles files currently not supported.",
+		 "%s: write access to Windows Shortcut files currently not supported.",
 		 function );
 
 		return( -1 );
@@ -440,7 +580,7 @@ int liblnk_file_open_wide(
 
 #endif
 
-/* Opens a Windows Shortcut File using a Basic File IO (bfio) handle
+/* Opens a Windows Shortcut file using a Basic File IO (bfio) handle
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_open_file_io_handle(
@@ -535,7 +675,7 @@ int liblnk_file_open_file_io_handle(
 	return( 1 );
 }
 
-/* Closes a Nickfile
+/* Closes a Windows Shortcut file
  * Returns 0 if successful or -1 on error
  */
 int liblnk_file_close(
@@ -586,7 +726,7 @@ int liblnk_file_close(
 	return( result );
 }
 
-/* Opens a Nickfile for reading
+/* Opens a Windows Shortcut file for reading
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_open_read(
@@ -594,6 +734,8 @@ int liblnk_file_open_read(
      liberror_error_t **error )
 {
 	static char *function = "liblnk_file_open_read";
+	off64_t file_offset   = 0;
+	ssize_t read_count    = 0;
 
 	if( internal_file == NULL )
 	{
@@ -623,6 +765,8 @@ int liblnk_file_open_read(
 #endif
 	if( liblnk_io_handle_read_file_header(
 	     internal_file->io_handle,
+	     &( internal_file->data_flags ),
+	     internal_file->file_information,
 	     error ) != 1 )
 	{
 		liberror_error_set(
@@ -634,7 +778,337 @@ int liblnk_file_open_read(
 
 		return( -1 );
 	}
+	file_offset = sizeof( lnk_file_header_t );
+
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_SHELL_ITEMS ) == LIBLNK_DATA_FLAG_CONTAINS_SHELL_ITEMS )
+	{
+		if( liblnk_shell_item_identifiers_initialize(
+		     &( internal_file->shell_item_identifiers ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 "%s: unable to initialize shell item identifiers.",
+			 function );
+
+			return( -1 );
+		}
+#if defined( HAVE_VERBOSE_OUTPUT )
+		libnotify_verbose_printf(
+		 "Reading shell items:\n" );
+#endif
+		read_count = liblnk_shell_item_identifiers_read(
+		              internal_file->shell_item_identifiers,
+		              internal_file->io_handle->file_io_handle,
+		              file_offset,
+		              error );
+
+		if( read_count <= -1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_READ_FAILED,
+			 "%s: unable to read shell item identifiers.",
+			 function );
+
+			return( -1 );
+		}
+		file_offset += read_count;
+	}
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_LOCATION_INFORMATION ) == LIBLNK_DATA_FLAG_CONTAINS_LOCATION_INFORMATION )
+	{
+		if( liblnk_location_information_initialize(
+		     &( internal_file->location_information ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 "%s: unable to initialize location information.",
+			 function );
+
+			return( -1 );
+		}
+#if defined( HAVE_VERBOSE_OUTPUT )
+		libnotify_verbose_printf(
+		 "Reading location information:\n" );
+#endif
+		read_count = liblnk_location_information_read(
+		              internal_file->location_information,
+		              internal_file->io_handle->file_io_handle,
+		              file_offset,
+		              error );
+
+		if( read_count <= -1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_READ_FAILED,
+			 "%s: unable to read location information.",
+			 function );
+
+			return( -1 );
+		}
+		file_offset += read_count;
+	}
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_DESCRIPTION_DATA_STRING ) == LIBLNK_DATA_FLAG_CONTAINS_DESCRIPTION_DATA_STRING )
+	{
+		if( liblnk_data_string_initialize(
+		     &( internal_file->description ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 "%s: unable to initialize description.",
+			 function );
+
+			return( -1 );
+		}
+#if defined( HAVE_VERBOSE_OUTPUT )
+		libnotify_verbose_printf(
+		 "Reading description data string:\n" );
+#endif
+		read_count = liblnk_data_string_read(
+		              internal_file->description,
+		              internal_file->io_handle->file_io_handle,
+		              file_offset,
+		              error );
+
+		if( read_count <= -1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_READ_FAILED,
+			 "%s: unable to read description.",
+			 function );
+
+			return( -1 );
+		}
+		file_offset += read_count;
+	}
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_RELATIVE_PATH_DATA_STRING ) == LIBLNK_DATA_FLAG_CONTAINS_RELATIVE_PATH_DATA_STRING )
+	{
+		if( liblnk_data_string_initialize(
+		     &( internal_file->relative_path ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 "%s: unable to initialize relative path.",
+			 function );
+
+			return( -1 );
+		}
+#if defined( HAVE_VERBOSE_OUTPUT )
+		libnotify_verbose_printf(
+		 "Reading relative path data string:\n" );
+#endif
+		read_count = liblnk_data_string_read(
+		              internal_file->relative_path,
+		              internal_file->io_handle->file_io_handle,
+		              file_offset,
+		              error );
+
+		if( read_count <= -1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_READ_FAILED,
+			 "%s: unable to read relative path.",
+			 function );
+
+			return( -1 );
+		}
+		file_offset += read_count;
+	}
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_WORKING_DIRECTORY_DATA_STRING ) == LIBLNK_DATA_FLAG_CONTAINS_WORKING_DIRECTORY_DATA_STRING )
+	{
+		if( liblnk_data_string_initialize(
+		     &( internal_file->working_directory ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 "%s: unable to initialize working directory.",
+			 function );
+
+			return( -1 );
+		}
+#if defined( HAVE_VERBOSE_OUTPUT )
+		libnotify_verbose_printf(
+		 "Reading working directory data string:\n" );
+#endif
+		read_count = liblnk_data_string_read(
+		              internal_file->working_directory,
+		              internal_file->io_handle->file_io_handle,
+		              file_offset,
+		              error );
+
+		if( read_count <= -1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_READ_FAILED,
+			 "%s: unable to read working directory.",
+			 function );
+
+			return( -1 );
+		}
+		file_offset += read_count;
+	}
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_COMMAND_LINE_ARGUMENTS_DATA_STRING ) == LIBLNK_DATA_FLAG_CONTAINS_COMMAND_LINE_ARGUMENTS_DATA_STRING )
+	{
+		if( liblnk_data_string_initialize(
+		     &( internal_file->command_line_arguments ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 "%s: unable to initialize command line arguments.",
+			 function );
+
+			return( -1 );
+		}
+#if defined( HAVE_VERBOSE_OUTPUT )
+		libnotify_verbose_printf(
+		 "Reading command line arguments data string:\n" );
+#endif
+		read_count = liblnk_data_string_read(
+		              internal_file->command_line_arguments,
+		              internal_file->io_handle->file_io_handle,
+		              file_offset,
+		              error );
+
+		if( read_count <= -1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_READ_FAILED,
+			 "%s: unable to read command line arguments.",
+			 function );
+
+			return( -1 );
+		}
+		file_offset += read_count;
+	}
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_CUSTOM_ICON_FILENAME_DATA_STRING ) == LIBLNK_DATA_FLAG_CONTAINS_CUSTOM_ICON_FILENAME_DATA_STRING )
+	{
+		if( liblnk_data_string_initialize(
+		     &( internal_file->custom_icon_filename ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 "%s: unable to initialize custom icon filename.",
+			 function );
+
+			return( -1 );
+		}
+#if defined( HAVE_VERBOSE_OUTPUT )
+		libnotify_verbose_printf(
+		 "Reading custom icon filename data string:\n" );
+#endif
+		read_count = liblnk_data_string_read(
+		              internal_file->custom_icon_filename,
+		              internal_file->io_handle->file_io_handle,
+		              file_offset,
+		              error );
+
+		if( read_count <= -1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_READ_FAILED,
+			 "%s: unable to read custom icon filename.",
+			 function );
+
+			return( -1 );
+		}
+		file_offset += read_count;
+	}
 	/* TODO read other parts */
+#if defined( HAVE_DEBUG_OUTPUT )
+	uint8_t *trailing_data    = NULL;
+	size64_t file_size        = 0;
+	size_t trailing_data_size = 0;
+
+	if( libbfio_handle_get_size(
+	     internal_file->io_handle->file_io_handle,
+	     &file_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve file size.",
+		 function );
+
+		return( -1 );
+	}
+	if( file_offset < (off64_t) file_size )
+	{
+		trailing_data_size = file_size - file_offset;
+
+		trailing_data = (uint8_t *) memory_allocate(
+		                             sizeof( uint8_t ) * trailing_data_size );
+
+		if( trailing_data == NULL )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_MEMORY,
+			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 "%s: unable to create trailing data.",
+			 function );
+
+			return( -1 );
+		}
+		read_count = libbfio_handle_read(
+			      internal_file->io_handle->file_io_handle,
+			      trailing_data,
+			      trailing_data_size,
+			      error );
+
+		if( read_count != (ssize_t) trailing_data_size )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_READ_FAILED,
+			 "%s: unable to read trailing data.",
+			 function );
+
+			return( -1 );
+		}
+		libnotify_verbose_printf(
+		 "%s: trailing data:\n",
+		 function );
+		libnotify_verbose_print_data(
+		 trailing_data,
+		 trailing_data_size );
+	}
+#endif
 
 	return( 1 );
 }
@@ -723,6 +1197,46 @@ int liblnk_file_set_ascii_codepage(
 		return( -1 );
 	}
 	internal_file->ascii_codepage = ascii_codepage;
+
+	return( 1 );
+}
+
+/* Retrieves the data flags
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_file_get_data_flags(
+     liblnk_file_t *file,
+     uint32_t *data_flags,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_data_flags";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( data_flags == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data flags.",
+		 function );
+
+		return( -1 );
+	}
+	*data_flags = internal_file->data_flags;
 
 	return( 1 );
 }
