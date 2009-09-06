@@ -7,8 +7,8 @@ License: LGPLWindows Shortcut (LNK) file format
 Source: %{name}-%{version}.tar.gz
 URL: http://liblnk.sourceforge.net
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-@liblnk_spec_requires@ @libppf_spec_requires_libbfio@ @libppf_spec_requires_libuna@
-@liblnk_spec_build_requires@ @libppf_spec_build_requires_libbfio@ @libppf_spec_build_requires_libuna@
+@liblnk_spec_requires@ @libppf_spec_requires_libbfio@ @libppf_spec_requires_libfdatetime@ @libppf_spec_requires_libuna@
+@liblnk_spec_build_requires@ @libppf_spec_build_requires_libbfio@ @libppf_spec_build_requires_libfdatetime@ @libppf_spec_build_requires_libuna@
 
 %description
 liblnk is a library to support the 
@@ -69,6 +69,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_mandir}/man1/*
 
 %changelog
+* Sun Sep  6 2009 Joachim Metz <forensics@hoffmannbv.nl> 20090906-1
+- Added support for libfdatetime
+
 * Sat Sep  5 2009 Joachim Metz <forensics@hoffmannbv.nl> 20090905-1
 - Initial version based on libnk2 spec file
 

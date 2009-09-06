@@ -3,12 +3,17 @@ TODO
 * implement libfdatetime
 * create API functions to access link information values
 
+* add class id check to check signature ?
+
 Deployment:
 * update manuals
 * create debian package files
 * update macosx package files
 * update msvcpp files
 * update codegeare files
+
+20090906
+* worked on libfdatetime integration
 
 20090905
 * initial version based on libnk2

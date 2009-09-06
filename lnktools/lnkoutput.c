@@ -36,6 +36,12 @@
 #include <libbfio.h>
 #endif
 
+#if defined( HAVE_LOCAL_LIBFDATETIME )
+#include <libfdatetime_definitions.h>
+#elif defined( HAVE_LIBFDATETIME_H )
+#include <libfdatetime.h>
+#endif
+
 /* If libtool DLL support is enabled set LIBLNK_DLL_IMPORT
  * before including liblnk.h
  */
@@ -96,6 +102,11 @@ void lnkoutput_version_fprint(
 	 stream,
 	 ", libbfio %s",
 	 LIBBFIO_VERSION_STRING );
+
+	fprintf(
+	 stream,
+	 ", libfdatetime %s",
+	 LIBFDATETIME_VERSION_STRING );
 
         fprintf(
 	 stream,

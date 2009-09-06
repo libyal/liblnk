@@ -1,4 +1,4 @@
-.Dd September 5, 2009
+.Dd September 6, 2009
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -71,13 +71,15 @@ Link information functions
 .Ft int
 .Fn liblnk_file_get_data_flags "liblnk_file_t *file, uint32_t *data_flags, liblnk_error_t **error"
 .Ft int
+.Fn liblnk_file_link_refers_to_file "liblnk_file_t *file, liblnk_error_t **error"
+.Ft int
 .Fn liblnk_file_get_file_attribute_flags "liblnk_file_t *file, uint32_t *file_attribute_flags, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_creation_time "liblnk_file_t *file, uint64_t *creation_time, liblnk_error_t **error"
+.Fn liblnk_file_get_file_creation_time "liblnk_file_t *file, uint64_t *creation_time, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_modification_time "liblnk_file_t *file, uint64_t *modification_time, liblnk_error_t **error"
+.Fn liblnk_file_get_file_modification_time "liblnk_file_t *file, uint64_t *modification_time, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_access_time "liblnk_file_t *file, uint64_t *access_time, liblnk_error_t **error"
+.Fn liblnk_file_get_file_access_time "liblnk_file_t *file, uint64_t *access_time, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_get_file_size "liblnk_file_t *file, uint32_t *file_size, liblnk_error_t **error"
 .Sh DESCRIPTION

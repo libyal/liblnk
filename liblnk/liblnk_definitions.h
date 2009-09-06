@@ -38,11 +38,11 @@
  * for local use of liblnk
  */
 #else
-#define LIBLNK_VERSION			20090905
+#define LIBLNK_VERSION			20090906
 
 /* The liblnk version string
  */
-#define LIBLNK_VERSION_STRING		"20090905"
+#define LIBLNK_VERSION_STRING		"20090906"
 
 /* The liblnk file access
  * bit 1        set to 1 for read access

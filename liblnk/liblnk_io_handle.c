@@ -30,11 +30,11 @@
 
 #include "liblnk_debug.h"
 #include "liblnk_definitions.h"
-#include "liblnk_filetime.h"
 #include "liblnk_file_information.h"
 #include "liblnk_guid.h"
 #include "liblnk_io_handle.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_libfdatetime.h"
 #include "liblnk_string.h"
 
 #include "lnk_file_header.h"
@@ -265,19 +265,22 @@ int liblnk_io_handle_close(
 int liblnk_io_handle_read_file_header(
      liblnk_io_handle_t *io_handle,
      uint32_t *data_flags,
+     uint8_t *class_identifier,
+     size_t class_identifier_size,
      liblnk_file_information_t *file_information,
      liberror_error_t **error )
 {
 	lnk_file_header_t file_header;
 
-	static char *function = "liblnk_io_handle_read_file_header";
-	ssize_t read_count    = 0;
+	static char *function             = "liblnk_io_handle_read_file_header";
+	ssize_t read_count                = 0;
 
 #if defined( HAVE_VERBOSE_OUTPUT )
-	liblnk_character_t filetime_string[ LIBLNK_FILETIME_STRING_SIZE ];
+	liblnk_character_t date_time_string[ 22 ];
 	liblnk_character_t guid_string[ LIBLNK_GUID_STRING_SIZE ];
 
-	uint32_t test         = 0;
+	libfdatetime_filetime_t *filetime = NULL;
+	uint32_t test                     = 0;
 #endif
 
 	if( io_handle == NULL )
@@ -309,6 +312,39 @@ int liblnk_io_handle_read_file_header(
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid data flags.",
+		 function );
+
+		return( -1 );
+	}
+	if( class_identifier == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid class identifier.",
+		 function );
+
+		return( -1 );
+	}
+	if( class_identifier_size < 16 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 "%s: class identifier too small.",
+		 function );
+
+		return( -1 );
+	}
+	if( class_identifier_size > (size_t) SSIZE_MAX )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: class identifier size value exceeds maximum.",
 		 function );
 
 		return( -1 );
@@ -364,6 +400,20 @@ int liblnk_io_handle_read_file_header(
 
 		return( -1 );
 	}
+	if( memory_copy(
+	     class_identifier,
+	     (liblnk_guid_t *) file_header.class_identifier,
+	     16 ) == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_MEMORY,
+		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 "%s: unable to copy class identifier.",
+		 function );
+
+		return( -1 );
+	}
 	endian_little_convert_32bit(
 	 *data_flags,
 	 file_header.data_flags );
@@ -381,54 +431,6 @@ int liblnk_io_handle_read_file_header(
 	 file_information->access_time,
 	 file_header.access_time );
 
-	if( liblnk_filetime_from_byte_stream(
-	     &( file_information->creation_time ),
-	     file_header.creation_time,
-	     8,
-	     LIBLNK_ENDIAN_LITTLE,
-	     error ) != 1 )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_CONVERSION,
-		 LIBERROR_CONVERSION_ERROR_GENERIC,
-		 "%s: unable to create creation time.",
-		 function );
-
-		return( -1 );
-	}
-	if( liblnk_filetime_from_byte_stream(
-	     &( file_information->modification_time ),
-	     file_header.modification_time,
-	     8,
-	     LIBLNK_ENDIAN_LITTLE,
-	     error ) != 1 )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_CONVERSION,
-		 LIBERROR_CONVERSION_ERROR_GENERIC,
-		 "%s: unable to create modification time.",
-		 function );
-
-		return( -1 );
-	}
-	if( liblnk_filetime_from_byte_stream(
-	     &( file_information->access_time ),
-	     file_header.access_time,
-	     8,
-	     LIBLNK_ENDIAN_LITTLE,
-	     error ) != 1 )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_CONVERSION,
-		 LIBERROR_CONVERSION_ERROR_GENERIC,
-		 "%s: unable to create access time.",
-		 function );
-
-		return( -1 );
-	}
 	endian_little_convert_32bit(
 	 file_information->size,
 	 file_header.file_size );
@@ -472,10 +474,45 @@ int liblnk_io_handle_read_file_header(
 	 function,
 	 file_information->attribute_flags );
 
-	if( liblnk_filetime_to_string(
-	     &( file_information->creation_time ),
-	     filetime_string,
-	     LIBLNK_FILETIME_STRING_SIZE,
+	if( libfdatetime_filetime_initialize(
+	     &filetime,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 "%s: unable to create filetime.",
+		 function );
+
+		return( -1 );
+	}
+	if( libfdatetime_filetime_copy_from_byte_stream(
+	     filetime,
+	     file_header.creation_time,
+	     8,
+	     LIBLNK_ENDIAN_LITTLE,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_CONVERSION,
+		 LIBERROR_CONVERSION_ERROR_GENERIC,
+		 "%s: unable to create creation time.",
+		 function );
+
+		libfdatetime_filetime_free(
+		 &filetime,
+		 NULL );
+
+		return( -1 );
+	}
+	if( libfdatetime_filetime_copy_to_string(
+	     filetime,
+	     date_time_string,
+	     22,
+	     LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
+	     LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
 	     error ) != 1 )
 	{
 		liberror_error_set(
@@ -484,18 +521,44 @@ int liblnk_io_handle_read_file_header(
 		 LIBERROR_CONVERSION_ERROR_GENERIC,
 		 "%s: unable to create filetime string.",
 		 function );
+
+		libfdatetime_filetime_free(
+		 &filetime,
+		 NULL );
 
 		return( -1 );
 	}
 	libnotify_verbose_printf(
 	 "%s: creation time\t: %s\n",
 	 function,
-	 filetime_string );
+	 (char *) date_time_string );
 
-	if( liblnk_filetime_to_string(
-	     &( file_information->modification_time ),
-	     filetime_string,
-	     LIBLNK_FILETIME_STRING_SIZE,
+	if( libfdatetime_filetime_copy_from_byte_stream(
+	     filetime,
+	     file_header.modification_time,
+	     8,
+	     LIBLNK_ENDIAN_LITTLE,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_CONVERSION,
+		 LIBERROR_CONVERSION_ERROR_GENERIC,
+		 "%s: unable to create modification time.",
+		 function );
+
+		libfdatetime_filetime_free(
+		 &filetime,
+		 NULL );
+
+		return( -1 );
+	}
+	if( libfdatetime_filetime_copy_to_string(
+	     filetime,
+	     date_time_string,
+	     22,
+	     LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
+	     LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
 	     error ) != 1 )
 	{
 		liberror_error_set(
@@ -505,17 +568,43 @@ int liblnk_io_handle_read_file_header(
 		 "%s: unable to create filetime string.",
 		 function );
 
+		libfdatetime_filetime_free(
+		 &filetime,
+		 NULL );
+
 		return( -1 );
 	}
 	libnotify_verbose_printf(
 	 "%s: modification time\t: %s\n",
 	 function,
-	 filetime_string );
+	 (char *) date_time_string );
 
-	if( liblnk_filetime_to_string(
-	     &( file_information->access_time ),
-	     filetime_string,
-	     LIBLNK_FILETIME_STRING_SIZE,
+	if( libfdatetime_filetime_copy_from_byte_stream(
+	     filetime,
+	     file_header.access_time,
+	     8,
+	     LIBLNK_ENDIAN_LITTLE,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_CONVERSION,
+		 LIBERROR_CONVERSION_ERROR_GENERIC,
+		 "%s: unable to create access time.",
+		 function );
+
+		libfdatetime_filetime_free(
+		 &filetime,
+		 NULL );
+
+		return( -1 );
+	}
+	if( libfdatetime_filetime_copy_to_string(
+	     filetime,
+	     date_time_string,
+	     22,
+	     LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
+	     LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
 	     error ) != 1 )
 	{
 		liberror_error_set(
@@ -523,6 +612,23 @@ int liblnk_io_handle_read_file_header(
 		 LIBERROR_ERROR_DOMAIN_CONVERSION,
 		 LIBERROR_CONVERSION_ERROR_GENERIC,
 		 "%s: unable to create filetime string.",
+		 function );
+
+		libfdatetime_filetime_free(
+		 &filetime,
+		 NULL );
+
+		return( -1 );
+	}
+	if( libfdatetime_filetime_free(
+	     &filetime,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+		 "%s: unable to free filetime.",
 		 function );
 
 		return( -1 );
@@ -530,7 +636,7 @@ int liblnk_io_handle_read_file_header(
 	libnotify_verbose_printf(
 	 "%s: access time\t\t: %s\n",
 	 function,
-	 filetime_string );
+	 (char *) date_time_string );
 
 	libnotify_verbose_printf(
 	 "%s: file size\t\t: %" PRIu32 " bytes\n",

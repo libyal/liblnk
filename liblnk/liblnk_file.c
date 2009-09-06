@@ -766,6 +766,8 @@ int liblnk_file_open_read(
 	if( liblnk_io_handle_read_file_header(
 	     internal_file->io_handle,
 	     &( internal_file->data_flags ),
+	     internal_file->class_identifier,
+	     16,
 	     internal_file->file_information,
 	     error ) != 1 )
 	{

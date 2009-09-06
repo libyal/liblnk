@@ -71,6 +71,8 @@ int liblnk_io_handle_close(
 int liblnk_io_handle_read_file_header(
      liblnk_io_handle_t *io_handle,
      uint32_t *data_flags,
+     uint8_t *class_identifier,
+     size_t class_identifier_size,
      liblnk_file_information_t *file_information,
      liberror_error_t **error );
 

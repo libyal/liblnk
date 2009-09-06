@@ -7,6 +7,6 @@ Name: liblnk
 Description: Library to support the Windows Shortcut (LNK) file format
 Version: @VERSION@
 Libs: -L${libdir} -llnk
-Libs.private: @liblnk_pc_libs_private_libbfio@ @liblnk_pc_libs_private_libuna@
+Libs.private: @liblnk_pc_libs_private_libbfio@ @liblnk_pc_libs_private_libfdatetime@ @liblnk_pc_libs_private_libuna@
 Cflags: -I${includedir}
 

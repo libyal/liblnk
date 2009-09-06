@@ -28,8 +28,6 @@
 
 #include <liberror.h>
 
-#include "liblnk_filetime.h"
-
 #if defined( __cplusplus )
 extern "C" {
 #endif

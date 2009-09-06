@@ -47,6 +47,10 @@ struct liblnk_internal_file
 	 */
 	uint32_t data_flags;
 
+	/* The class identifier
+	 */
+	uint8_t class_identifier[ 16 ];
+
 	/* The file information
 	 */
 	liblnk_file_information_t *file_information;

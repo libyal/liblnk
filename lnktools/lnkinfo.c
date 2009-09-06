@@ -1,5 +1,5 @@
 /*
- * Shows information obtained from a Windows Shortcut (LNK) File
+ * Shows information obtained from a Windows Shortcut (LNK) file
  *
  * Copyright (c) 2008-2009, Joachim Metz <forensics@hoffmannbv.nl>,
  * Hoffmann Investigations. All rights reserved.
@@ -47,6 +47,7 @@
 
 #include <libsystem.h>
 
+#include "filetime.h"
 #include "lnkoutput.h"
 
 /* Prints the executable usage information
@@ -58,7 +59,7 @@ void usage_fprint(
 	{
 		return;
 	}
-	fprintf( stream, "Use lnkinfo to determine information about a Windows Shortcut (LNK) File.\n\n" );
+	fprintf( stream, "Use lnkinfo to determine information about a Windows Shortcut (LNK) file.\n\n" );
 
 	fprintf( stream, "Usage: lnkinfo [ -hvV ] source\n\n" );
 
@@ -77,22 +78,47 @@ int lnkinfo_file_info_fprint(
      liblnk_file_t *file,
      liblnk_error_t **error )
 {
-	static char *function = "lnkinfo_file_info_fprint";
+	libsystem_character_t date_time_string[ 26 ];
+
+	filetime_t filetime           = FILETIME_ZERO;
+	static char *function         = "lnkinfo_file_info_fprint";
+	uint64_t value_64bit          = 0;
+	uint32_t data_flags           = 0;
+	uint32_t file_attribute_flags = 0;
+	int result                    = 0;
 
 	if( stream == NULL )
 	{
-		fprintf(
-		 stderr,
-		 "%s: invalid stream.\n",
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid stream.",
 		 function );
 
 		return( -1 );
 	}
 	if( file == NULL )
 	{
-		fprintf(
-		 stderr,
-		 "%s: invalid file.\n",
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	if( liblnk_file_get_data_flags(
+	     file,
+	     &data_flags,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve data flags.",
 		 function );
 
 		return( -1 );
@@ -101,6 +127,202 @@ int lnkinfo_file_info_fprint(
 	 stream,
 	 "Windows Shortcut information:\n" );
 
+	if( ( data_flags & LIBLNK_DATA_FLAG_CONTAINS_SHELL_ITEMS ) == LIBLNK_DATA_FLAG_CONTAINS_SHELL_ITEMS )
+	{
+		fprintf(
+		 stream,
+		 "\tContains a shell item identifier list\n" );
+	}
+	fprintf(
+	 stream,
+	 "\n" );
+
+	result = liblnk_file_link_refers_to_file(
+	          file,
+	          error );
+
+	if( result == -1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to determine if the shortcut refers to a file.",
+		 function );
+
+		return( -1 );
+	}
+	else if( result != 0 )
+	{
+		fprintf(
+		 stream,
+		 "Linked file information:\n" );
+
+		if( liblnk_file_get_file_attribute_flags(
+		     file,
+		     &file_attribute_flags,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve file attribute flags.",
+			 function );
+
+			return( -1 );
+		}
+		/* Creation time
+		 */
+		if( liblnk_file_get_file_creation_time(
+		     file,
+		     &value_64bit,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve file creation time.",
+			 function );
+
+			return( -1 );
+		}
+		if( filetime_copy_from_uint64(
+		     &filetime,
+		     value_64bit,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy filetime from 64-bit value.",
+			 function );
+
+			return( -1 );
+		}
+		if( filetime_copy_to_string(
+		     &filetime,
+		     date_time_string,
+		     26,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy filetime to string.",
+			 function );
+
+			return( -1 );
+		}
+		fprintf(
+		 stream,
+		 "\tCreation time\t\t: %" PRIs_LIBSYSTEM "\n",
+		 date_time_string );
+
+		/* Modification time
+		 */
+		if( liblnk_file_get_file_modification_time(
+		     file,
+		     &value_64bit,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve file modification time.",
+			 function );
+
+			return( -1 );
+		}
+		if( filetime_copy_from_uint64(
+		     &filetime,
+		     value_64bit,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy filetime from 64-bit value.",
+			 function );
+
+			return( -1 );
+		}
+		if( filetime_copy_to_string(
+		     &filetime,
+		     date_time_string,
+		     26,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy filetime to string.",
+			 function );
+
+			return( -1 );
+		}
+		fprintf(
+		 stream,
+		 "\tModification time\t: %" PRIs_LIBSYSTEM "\n",
+		 date_time_string );
+
+		/* Access time
+		 */
+		if( liblnk_file_get_file_access_time(
+		     file,
+		     &value_64bit,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve file access time.",
+			 function );
+
+			return( -1 );
+		}
+		if( filetime_copy_from_uint64(
+		     &filetime,
+		     value_64bit,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy filetime from 64-bit value.",
+			 function );
+
+			return( -1 );
+		}
+		if( filetime_copy_to_string(
+		     &filetime,
+		     date_time_string,
+		     26,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy filetime to string.",
+			 function );
+
+			return( -1 );
+		}
+		fprintf(
+		 stream,
+		 "\tAccess time\t\t: %" PRIs_LIBSYSTEM "\n",
+		 date_time_string );
+
+	}
 	fprintf(
 	 stream,
 	 "\n" );

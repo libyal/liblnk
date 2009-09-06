@@ -76,7 +76,37 @@ int liblnk_file_get_data_flags(
 	return( 1 );
 }
 
-/* Retrieves the file attribute flags
+/* Determines if the link refers to a file
+ * Returns 1 if the link refers to a file, 0 if not or -1 on error
+ */
+int liblnk_file_link_refers_to_file(
+     liblnk_file_t *file,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_link_refers_to_file";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_LOCATION_INFORMATION ) == LIBLNK_DATA_FLAG_CONTAINS_LOCATION_INFORMATION )
+	{
+		return( 1 );
+	}
+	return( 0 );
+}
+
+/* Retrieves the linked file's attribute flags
  * The file attribute flags are only set if the link refers to a file
  * Returns 1 if successful or -1 on error
  */
@@ -123,22 +153,22 @@ int liblnk_file_get_file_attribute_flags(
 
 		return( -1 );
 	}
-	*file_attribute_flags = internal_file->file_information->file_attribute_flags;
+	*file_attribute_flags = internal_file->file_information->attribute_flags;
 
 	return( 1 );
 }
 
-/* Retrieves the 64-bit filetime value containing the creation date and time
+/* Retrieves the 64-bit filetime value containing the linked file's creation date and time
  * The creation time is only set when the link refers to a file
  * Returns 1 if successful or -1 on error
  */
-int liblnk_file_get_creation_time(
+int liblnk_file_get_file_creation_time(
      liblnk_file_t *file,
      uint64_t *creation_time,
      liberror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
-	static char *function                 = "liblnk_file_get_creation_time";
+	static char *function                 = "liblnk_file_get_file_creation_time";
 
 	if( file == NULL )
 	{
@@ -180,17 +210,17 @@ int liblnk_file_get_creation_time(
 	return( 1 );
 }
 
-/* Retrieves the 64-bit filetime value containing the last modification date and time
+/* Retrieves the 64-bit filetime value containing the linked file's last modification date and time
  * The modification time is only set when the link refers to a file
  * Returns 1 if successful or -1 on error
  */
-int liblnk_file_get_modification_time(
+int liblnk_file_get_file_modification_time(
      liblnk_file_t *file,
      uint64_t *modification_time,
      liberror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
-	static char *function                 = "liblnk_file_get_modification_time";
+	static char *function                 = "liblnk_file_get_file_modification_time";
 
 	if( file == NULL )
 	{
@@ -232,17 +262,17 @@ int liblnk_file_get_modification_time(
 	return( 1 );
 }
 
-/* Retrieves the 64-bit filetime value containing the last access date and time
+/* Retrieves the 64-bit filetime value containing the linked file's last access date and time
  * The access time is only set when the link refers to a file
  * Returns 1 if successful or -1 on error
  */
-int liblnk_file_get_access_time(
+int liblnk_file_get_file_access_time(
      liblnk_file_t *file,
      uint64_t *access_time,
      liberror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
-	static char *function                 = "liblnk_file_get_access_time";
+	static char *function                 = "liblnk_file_get_file_access_time";
 
 	if( file == NULL )
 	{
@@ -284,7 +314,7 @@ int liblnk_file_get_access_time(
 	return( 1 );
 }
 
-/* Retrieves the file size
+/* Retrieves the linked file's size
  * The file size are only set if the link refers to a file
  * Returns 1 if successful or -1 on error
  */
@@ -331,7 +361,7 @@ int liblnk_file_get_file_size(
 
 		return( -1 );
 	}
-	*file_size = internal_file->file_information->file_size;
+	*file_size = internal_file->file_information->size;
 
 	return( 1 );
 }

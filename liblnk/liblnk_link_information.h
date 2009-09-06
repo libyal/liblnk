@@ -39,22 +39,26 @@ LIBLNK_EXTERN int liblnk_file_get_data_flags(
                    uint32_t *data_flags,
                    liberror_error_t **error );
 
+LIBLNK_EXTERN int liblnk_file_link_is_file(
+                   liblnk_file_t *file,
+                   liberror_error_t **error );
+
 LIBLNK_EXTERN int liblnk_file_get_file_attribute_flags(
                    liblnk_file_t *file,
                    uint32_t *file_attribute_flags,
                    liberror_error_t **error );
 
-LIBLNK_EXTERN int liblnk_file_get_creation_time(
+LIBLNK_EXTERN int liblnk_file_get_file_creation_time(
                    liblnk_file_t *file,
                    uint64_t *creation_time,
                    liberror_error_t **error );
 
-LIBLNK_EXTERN int liblnk_file_get_modification_time(
+LIBLNK_EXTERN int liblnk_file_get_file_modification_time(
                    liblnk_file_t *file,
                    uint64_t *modification_time,
                    liberror_error_t **error );
 
-LIBLNK_EXTERN int liblnk_file_get_access_time(
+LIBLNK_EXTERN int liblnk_file_get_file_access_time(
                    liblnk_file_t *file,
                    uint64_t *access_time,
                    liberror_error_t **error );

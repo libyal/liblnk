@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
-  [20090905],
+  [20090906],
   [forensics@hoffmannbv.nl])
 
 AC_CONFIG_SRCDIR(
@@ -10,7 +10,7 @@ AC_CONFIG_SRCDIR(
 
 AM_INIT_AUTOMAKE(
  [liblnk],
- [20090905])
+ [20090906])
 
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -897,6 +897,69 @@ AM_CONDITIONAL(
  [HAVE_LOCAL_LIBBFIO],
  [test "x$ac_liblnk_have_libbfio" = xlocal])
 
+dnl Check for enabling libfdatetime for file date and time support
+AC_CHECK_HEADERS(
+ [libfdatetime.h],
+ [],
+ [ac_liblnk_have_libfdatetime=no])
+
+AS_IF(
+	[test "x$ac_liblnk_have_libfdatetime" != xno],
+	[ac_liblnk_have_libfdatetime=yes
+	AC_CHECK_LIB(
+	 fdatetime,
+	 libfdatetime_get_version,
+	 [],
+	 [ac_liblnk_have_libfdatetime=no])
+
+	])
+
+AS_IF(
+	[test "x$ac_liblnk_have_libfdatetime" = xyes],
+	[AC_SUBST(
+	 [liblnk_pc_libs_private_libfdatetime],
+	 [-lfdatetime])
+	AC_SUBST(
+	 [liblnk_spec_requires_libfdatetime],
+	 [libfdatetime])
+	AC_SUBST(
+	 [liblnk_spec_build_requires_libfdatetime],
+	 [libfdatetime-devel])
+	AC_SUBST(
+	 [LIBFDATETIME_CPPFLAGS],
+	 [])
+	AC_SUBST(
+	 [LIBFDATETIME_LIBADD],
+	 []) ],
+	[dnl If libfdatetime is not available use the (local) version that came with liblnk
+	AC_DEFINE(
+	 [HAVE_LOCAL_LIBFDATETIME],
+	 [1],
+	 [Define to 1 if the local version of libfdatetime is used.])
+	AC_SUBST(
+	 [HAVE_LOCAL_LIBFDATETIME],
+	 [1])
+	AC_SUBST(
+	 [liblnk_pc_libs_private_libfdatetime],
+	 [])
+	AC_SUBST(
+	 [liblnk_spec_requires_libfdatetime],
+	 [])
+	AC_SUBST(
+	 [liblnk_spec_build_requires_libfdatetime],
+	 [])
+	AC_SUBST(
+	 [LIBFDATETIME_CPPFLAGS],
+	 [-I../libfdatetime])
+	AC_SUBST(
+	 [LIBFDATETIME_LIBADD],
+	 [../libfdatetime/libfdatetime.la])
+	ac_liblnk_have_libfdatetime=local])
+
+AM_CONDITIONAL(
+ [HAVE_LOCAL_LIBFDATETIME],
+ [test "x$ac_liblnk_have_libfdatetime" = xlocal])
+
 dnl Check if liblnk should be build with wide character type support
 AS_IF(
 	[test "x$ac_cv_liblnk_enable_wide_character_type" != xno ],
@@ -1074,7 +1137,7 @@ AS_IF(
 
 dnl Check if requires and build requires should be set in spec file
 AS_IF(
-	[test "x$ac_liblnk_have_libuna" = xyes || test "x$ac_liblnk_have_libbfio" = xyes],
+	[test "x$ac_liblnk_have_libuna" = xyes || test "x$ac_liblnk_have_libbfio" = xyes || test "x$ac_liblnk_have_libfdatetime" = xyes],
 	[AC_SUBST(
 	 [liblnk_spec_requires],
 	 [Requires:])
@@ -1128,6 +1191,7 @@ AC_CONFIG_FILES([liberror/Makefile])
 AC_CONFIG_FILES([libnotify/Makefile])
 AC_CONFIG_FILES([libuna/Makefile])
 AC_CONFIG_FILES([libbfio/Makefile])
+AC_CONFIG_FILES([libfdatetime/Makefile])
 AC_CONFIG_FILES([liblnk/Makefile])
 AC_CONFIG_FILES([libsystem/Makefile])
 AC_CONFIG_FILES([lnktools/Makefile])
@@ -1155,6 +1219,7 @@ AC_MSG_NOTICE([
 Building:
    libuna support:                           $ac_liblnk_have_libuna
    libbfio support:                          $ac_liblnk_have_libbfio
+   libfdatetime support:                     $ac_liblnk_have_libfdatetime
 
 Features:
    Wide character type support:              $ac_cv_liblnk_enable_wide_character_type

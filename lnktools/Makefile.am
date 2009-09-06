@@ -1,4 +1,4 @@
-AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/common -I$(top_srcdir)/liberror -I$(top_srcdir)/libsystem @LIBUNA_CPPFLAGS@ @LIBBFIO_CPPFLAGS@ @MEMWATCH_CPPFLAGS@ @LIBLNK_DLL_IMPORT@
+AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/common -I$(top_srcdir)/liberror -I$(top_srcdir)/libsystem @LIBUNA_CPPFLAGS@ @LIBBFIO_CPPFLAGS@ @LIBFDATETIME_CPPFLAGS@ @MEMWATCH_CPPFLAGS@ @LIBLNK_DLL_IMPORT@
 AM_LDFLAGS  = @STATIC_LDFLAGS@
 
 bin_PROGRAMS = lnkinfo
