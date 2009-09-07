@@ -666,7 +666,7 @@ int liblnk_io_handle_read_file_header(
 	 "%s: show window value\t: 0x%08" PRIx32 "\n",
 	 function,
 	 test );
-	endian_little_convert_32bit(
+	endian_little_convert_16bit(
 	 test,
 	 file_header.hot_key_value );
 	libnotify_verbose_printf(
@@ -674,11 +674,11 @@ int liblnk_io_handle_read_file_header(
 	 function,
 	 test );
 	libnotify_verbose_printf(
-	 "%s: unknown1:\n",
+	 "%s: reserved:\n",
 	 function );
 	libnotify_verbose_print_data(
-	 (uint8_t *) file_header.unknown1,
-	 8 );
+	 (uint8_t *) file_header.reserved,
+	 10 );
 
 	libnotify_verbose_printf(
 	 "\n" );

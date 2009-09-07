@@ -33,7 +33,7 @@
 #include "liblnk_file.h"
 #include "liblnk_file_information.h"
 #include "liblnk_location_information.h"
-#include "liblnk_shell_item_identifiers.h"
+#include "liblnk_shell_item_identifiers_list.h"
 #include "liblnk_string.h"
 
 /* Retrieves the data flags
@@ -100,7 +100,7 @@ int liblnk_file_link_refers_to_file(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_LOCATION_INFORMATION ) == LIBLNK_DATA_FLAG_CONTAINS_LOCATION_INFORMATION )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) == LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION )
 	{
 		return( 1 );
 	}
@@ -413,7 +413,7 @@ int liblnk_file_get_local_path_size(
 		return( 0 );
 	}
 	*local_path_size = internal_file->location_information->local_path_size
-	                 + internal_file->location_information->path_remainder_size
+	                 + internal_file->location_information->common_path_size
 	                 - 1;
 
 	return( 1 );
@@ -480,7 +480,7 @@ int liblnk_file_get_local_path(
 		return( 0 );
 	}
 	calculated_local_path_size = internal_file->location_information->local_path_size
-	                           + internal_file->location_information->path_remainder_size
+	                           + internal_file->location_information->common_path_size
 	                           - 1;
 
 	if( local_path_size < calculated_local_path_size )
@@ -499,7 +499,7 @@ int liblnk_file_get_local_path(
 	               local_path_size,
 	               "%" PRIs_LIBLNK "%" PRIs_LIBLNK,
 	               internal_file->location_information->local_path,
-	               internal_file->location_information->path_remainder );
+	               internal_file->location_information->common_path );
 
 	if( ( print_count < 0 )
 	 || ( print_count > (ssize_t) calculated_local_path_size ) )
@@ -562,7 +562,7 @@ int liblnk_file_get_network_path_size(
 		return( 0 );
 	}
 	*network_path_size = internal_file->location_information->network_share_size
-	                   + internal_file->location_information->path_remainder_size
+	                   + internal_file->location_information->common_path_size
 	                   - 1;
 
 	return( 1 );
@@ -629,7 +629,7 @@ int liblnk_file_get_network_path(
 		return( 0 );
 	}
 	calculated_network_path_size = internal_file->location_information->network_share_size
-	                             + internal_file->location_information->path_remainder_size
+	                             + internal_file->location_information->common_path_size
 	                             - 1;
 
 	if( network_path_size < calculated_network_path_size )
@@ -648,7 +648,7 @@ int liblnk_file_get_network_path(
 	               network_path_size,
 	               "%" PRIs_LIBLNK "%" PRIs_LIBLNK,
 	               internal_file->location_information->network_share,
-	               internal_file->location_information->path_remainder );
+	               internal_file->location_information->common_path );
 
 	if( ( print_count < 0 )
 	 || ( print_count > (ssize_t) calculated_network_path_size ) )

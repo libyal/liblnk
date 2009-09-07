@@ -1,5 +1,5 @@
 /*
- * Shell item identifier functions
+ * Shell item identifiers list functions
  *
  * Copyright (c) 2009, Joachim Metz <forensics@hoffmannbv.nl>,
  * Hoffmann Investigations. All rights reserved.
@@ -20,8 +20,8 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_SHELL_ITEMS_H )
-#define _LIBLNK_SHELL_ITEMS_H
+#if !defined( _LIBLNK_SHELL_ITEM_IDENTIFIERS_LIST_H )
+#define _LIBLNK_SHELL_ITEM_IDENTIFIERS_LIST_H
 
 #include <common.h>
 #include <types.h>
@@ -34,27 +34,27 @@
 extern "C" {
 #endif
 
-typedef struct liblnk_shell_item_identifiers liblnk_shell_item_identifiers_t;
+typedef struct liblnk_shell_item_identifiers_list liblnk_shell_item_identifiers_list_t;
 
-struct liblnk_shell_item_identifiers
+struct liblnk_shell_item_identifiers_list
 {
 	/* Dummy value
 	 */
 	int dummy;
 };
 
-int liblnk_shell_item_identifiers_initialize(
-     liblnk_shell_item_identifiers_t **shell_items,
+int liblnk_shell_item_identifiers_list_initialize(
+     liblnk_shell_item_identifiers_list_t **shell_item_identifiers_list,
      liberror_error_t **error );
 
-int liblnk_shell_item_identifiers_free(
-     liblnk_shell_item_identifiers_t **shell_items,
+int liblnk_shell_item_identifiers_list_free(
+     liblnk_shell_item_identifiers_list_t **shell_item_identifiers_list,
      liberror_error_t **error );
 
-ssize_t liblnk_shell_item_identifiers_read(
-         liblnk_shell_item_identifiers_t *shell_items,
+ssize_t liblnk_shell_item_identifiers_list_read(
+         liblnk_shell_item_identifiers_list_t *shell_item_identifiers_list,
          libbfio_handle_t *file_io_handle,
-         off64_t shell_items_offset,
+         off64_t shell_item_identifiers_list_offset,
          liberror_error_t **error );
 
 #if defined( __cplusplus )

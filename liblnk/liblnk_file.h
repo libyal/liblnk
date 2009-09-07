@@ -33,7 +33,7 @@
 #include "liblnk_io_handle.h"
 #include "liblnk_file_information.h"
 #include "liblnk_location_information.h"
-#include "liblnk_shell_item_identifiers.h"
+#include "liblnk_shell_item_identifiers_list.h"
 
 #if defined( _MSC_VER ) || defined( __BORLANDC__ )
 
@@ -63,9 +63,10 @@ struct liblnk_internal_file
 	 */
 	liblnk_file_information_t *file_information;
 
-	/* The shell items
+	/* The link target identifier
+	 * Consists of a shell item identifiers list
 	 */
-	liblnk_shell_item_identifiers_t *shell_item_identifiers;
+	liblnk_shell_item_identifiers_list_t *link_target_identifier;
 
 	/* The location information
 	 */
@@ -87,9 +88,9 @@ struct liblnk_internal_file
 	 */
 	liblnk_data_string_t *command_line_arguments;
 
-	/* The custom icon filename
+	/* The icon location
 	 */
-	liblnk_data_string_t *custom_icon_filename;
+	liblnk_data_string_t *icon_location;
 
 	/* The io handle
 	 */

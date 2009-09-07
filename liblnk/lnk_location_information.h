@@ -34,10 +34,10 @@ typedef struct lnk_location_information lnk_location_information_t;
 
 struct lnk_location_information
 {
-	/* The offset of the data
+	/* The size of the location information header
 	 * Consists of 4 bytes
 	 */
-	uint8_t data_offset[ 4 ];
+	uint8_t header_size[ 4 ];
 
 	/* The location flags
 	 * Consists of 4 bytes
@@ -59,10 +59,23 @@ struct lnk_location_information
 	 */
 	uint8_t network_share_information_offset[ 4 ];
 
-	/* The offset of the path remainder
+	/* The offset of the common path
 	 * Consists of 4 bytes
 	 */
-	uint8_t path_remainder_offset[ 4 ];
+	uint8_t common_path_offset[ 4 ];
+
+	/* The following values are only available if the header size > 28
+	 */
+
+	/* The offset of the unicode local path
+	 * Consists of 4 bytes
+	 */
+	uint8_t unicode_local_path_offset[ 4 ];
+
+	/* The offset of the unicode common path
+	 * Consists of 4 bytes
+	 */
+	uint8_t unicode_common_path_offset[ 4 ];
 };
 
 typedef struct lnk_volume_information lnk_volume_information_t;
@@ -74,15 +87,15 @@ struct lnk_volume_information
 	 */
 	uint8_t size[ 4 ];
 
-	/* The volume type
+	/* The drive type
 	 * Consists of 4 bytes
 	 */
-	uint8_t volume_type[ 4 ];
+	uint8_t drive_type[ 4 ];
 
-	/* The volume serial number
+	/* The drive serial number
 	 * Consists of 4 bytes
 	 */
-	uint8_t volume_serial_number[ 4 ];
+	uint8_t drive_serial_number[ 4 ];
 
 	/* The offset of the volume label
 	 * Consists of 4 bytes

@@ -127,11 +127,11 @@ int lnkinfo_file_info_fprint(
 	 stream,
 	 "Windows Shortcut information:\n" );
 
-	if( ( data_flags & LIBLNK_DATA_FLAG_CONTAINS_SHELL_ITEMS ) == LIBLNK_DATA_FLAG_CONTAINS_SHELL_ITEMS )
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) == LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER )
 	{
 		fprintf(
 		 stream,
-		 "\tContains a shell item identifier list\n" );
+		 "\tContains a link target identifier\n" );
 	}
 	fprintf(
 	 stream,

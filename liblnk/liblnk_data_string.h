@@ -38,6 +38,10 @@ typedef struct liblnk_data_string liblnk_data_string_t;
 
 struct liblnk_data_string
 {
+	/* Value to indicate if the string data is in Unicode
+	 */
+	uint8_t is_unicode;
+
 	/* The data
 	 */
 	uint8_t *data;
@@ -59,6 +63,7 @@ ssize_t liblnk_data_string_read(
          liblnk_data_string_t *data_string,
          libbfio_handle_t *file_io_handle,
          off64_t data_string_offset,
+         uint8_t is_unicode,
          liberror_error_t **error );
 
 #if defined( __cplusplus )

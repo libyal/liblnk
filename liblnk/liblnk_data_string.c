@@ -133,6 +133,7 @@ ssize_t liblnk_data_string_read(
          liblnk_data_string_t *data_string,
          libbfio_handle_t *file_io_handle,
          off64_t data_string_offset,
+         uint8_t is_unicode,
          liberror_error_t **error )
 {
 	uint8_t data_string_size_data[ 2 ];
@@ -162,6 +163,10 @@ ssize_t liblnk_data_string_read(
 
 		return( -1 );
 	}
+	/* Store is unicode value for internal use
+	 */
+	data_string->is_unicode = is_unicode;
+
 #if defined( HAVE_DEBUG_OUTPUT )
 	libnotify_verbose_printf(
 	 "%s: reading data string at offset: %" PRIu64 " (0x%08" PRIx64 ")\n",
@@ -214,9 +219,13 @@ ssize_t liblnk_data_string_read(
 	 data_string->size );
 #endif
 
-	/* TODO for now assume that string is UTF-16 */
-	data_string->size *= 2;
-
+	/* The size contains the amount of characters
+	 * a Unicode (UTF-16) string requires 2 bytes per character
+	 */
+	if( data_string->is_unicode != 0 )
+	{
+		data_string->size *= 2;
+	}
 	if( data_string->size > (size_t) SSIZE_MAX )
 	{
 		liberror_error_set(

@@ -126,10 +126,10 @@ int liblnk_location_information_free(
 			memory_free(
 			 ( *location_information )->network_share );
 		}
-		if( ( *location_information )->path_remainder != NULL )
+		if( ( *location_information )->common_path != NULL )
 		{
 			memory_free(
-			 ( *location_information )->path_remainder );
+			 ( *location_information )->common_path );
 		}
 		memory_free(
 		 *location_information );
@@ -156,10 +156,13 @@ ssize_t liblnk_location_information_read(
 	static char *function                     = "liblnk_location_information_read";
 	size_t location_information_size          = 0;
 	ssize_t read_count                        = 0;
+	uint32_t common_path_offset               = 0;
+	uint32_t location_information_header_size = 0;
 	uint32_t local_path_offset                = 0;
-	uint32_t path_remainder_offset            = 0;
 	uint32_t network_share_information_offset = 0;
 	uint32_t network_share_name_offset        = 0;
+	uint32_t unicode_common_path_offset       = 0;
+	uint32_t unicode_local_path_offset        = 0;
 	uint32_t volume_information_offset        = 0;
 	uint32_t volume_label_offset              = 0;
 	uint32_t value_size                       = 0;
@@ -309,11 +312,9 @@ ssize_t liblnk_location_information_read(
 	 location_information_size );
 #endif
 
-#if defined( HAVE_VERBOSE_OUTPUT )
 	endian_little_convert_32bit(
-	 value_size,
-	 ( (lnk_location_information_t *) location_information_data )->data_offset );
-#endif
+	 location_information_header_size,
+	 ( (lnk_location_information_t *) location_information_data )->header_size );
 	endian_little_convert_32bit(
 	 location_information->flags,
 	 ( (lnk_location_information_t *) location_information_data )->location_flags );
@@ -327,14 +328,14 @@ ssize_t liblnk_location_information_read(
 	 network_share_information_offset,
 	 ( (lnk_location_information_t *) location_information_data )->network_share_information_offset );
 	endian_little_convert_32bit(
-	 path_remainder_offset,
-	 ( (lnk_location_information_t *) location_information_data )->path_remainder_offset );
+	 common_path_offset,
+	 ( (lnk_location_information_t *) location_information_data )->common_path_offset );
 
 #if defined( HAVE_VERBOSE_OUTPUT )
 	libnotify_verbose_printf(
-	 "%s: location information data offset\t\t\t: %" PRIu32 "\n",
+	 "%s: location information header size\t\t\t: %" PRIu32 "\n",
 	 function,
-	 value_size );
+	 location_information_header_size );
 	libnotify_verbose_printf(
 	 "%s: location information flags\t\t\t\t: 0x%08" PRIx32 "\n",
 	 function,
@@ -352,22 +353,66 @@ ssize_t liblnk_location_information_read(
 	 function,
 	 network_share_information_offset );
 	libnotify_verbose_printf(
-	 "%s: location information path remainder offset\t\t: %" PRIu32 "\n",
+	 "%s: location information common path offset\t\t\t: %" PRIu32 "\n",
 	 function,
-	 path_remainder_offset );
+	 common_path_offset );
+#endif
+	if( ( location_information_header_size != 28 )
+	 && ( location_information_header_size != 32 )
+	 && ( location_information_header_size != 36 ) )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
+		 "%s: unsupported location information header size: %" PRIu32 ".",
+		 function,
+		 location_information_header_size );
+
+		memory_free(
+		 location_information_data );
+
+		return( -1 );
+	}
+	if( location_information_header_size > 28 )
+	{
+		endian_little_convert_32bit(
+		 unicode_local_path_offset,
+		 ( (lnk_location_information_t *) location_information_data )->unicode_local_path_offset );
+
+#if defined( HAVE_VERBOSE_OUTPUT )
+		libnotify_verbose_printf(
+		 "%s: location information unicode local path offset\t\t: %" PRIu32 "\n",
+		 function,
+		 unicode_local_path_offset );
+#endif
+	}
+	if( location_information_header_size > 32 )
+	{
+		endian_little_convert_32bit(
+		 unicode_common_path_offset,
+		 ( (lnk_location_information_t *) location_information_data )->unicode_common_path_offset );
+
+#if defined( HAVE_VERBOSE_OUTPUT )
+		libnotify_verbose_printf(
+		 "%s: location information unicode common path offset\t\t: %" PRIu32 "\n",
+		 function,
+		 unicode_common_path_offset );
+#endif
+	}
+#if defined( HAVE_VERBOSE_OUTPUT )
 	libnotify_verbose_printf(
 	 "\n" );
 #endif
-
 	if( volume_information_offset > 0 )
 	{
-		if( volume_information_offset <= 4 )
+		if( volume_information_offset < location_information_header_size )
 		{
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
-			 "%s: volume information offset exceeds location information data.",
+			 "%s: volume information offset smaller than location information header size.",
 			 function );
 
 			memory_free(
@@ -410,6 +455,12 @@ ssize_t liblnk_location_information_read(
 		 volume_label_offset,
 		 ( (lnk_volume_information_t *) location_information_value_data )->volume_label_offset );
 
+		/* TODO check for offset to unicode volume label */
+
+		if( volume_label_offset > 16 )
+		{
+		}
+
 #if defined( HAVE_VERBOSE_OUTPUT )
 		libnotify_verbose_printf(
 		 "%s: volume information size\t\t\t\t: %" PRIu32 "\n",
@@ -418,19 +469,19 @@ ssize_t liblnk_location_information_read(
 
 		endian_little_convert_32bit(
 		 test,
-		 ( (lnk_volume_information_t *) location_information_value_data )->volume_type );
+		 ( (lnk_volume_information_t *) location_information_value_data )->drive_type );
 
 		libnotify_verbose_printf(
-		 "%s: volume information volume type\t\t\t: 0x%08" PRIx32 "\n",
+		 "%s: volume information drive type\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 test );
 
 		endian_little_convert_32bit(
 		 test,
-		 ( (lnk_volume_information_t *) location_information_value_data )->volume_serial_number );
+		 ( (lnk_volume_information_t *) location_information_value_data )->drive_serial_number );
 
 		libnotify_verbose_printf(
-		 "%s: volume information serial number\t\t\t: 0x%08" PRIx32 "\n",
+		 "%s: volume information drive serial number\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 test );
 
@@ -475,16 +526,20 @@ ssize_t liblnk_location_information_read(
 		 location_information_value_data,
 		 value_size );
 #endif
+		/* TODO check for offset to unicode volume label data */
+
+		/* TODO add unicode version if available other wise use ASCII version */
+
 	}
 	if( local_path_offset > 0 )
 	{
-		if( local_path_offset <= 4 )
+		if( local_path_offset < location_information_header_size )
 		{
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
-			 "%s: local path information offset exceeds location information data.",
+			 "%s: local path information offset smaller than location information header size",
 			 function );
 
 			memory_free(
@@ -596,13 +651,13 @@ ssize_t liblnk_location_information_read(
 	}
 	if( network_share_information_offset > 0 )
 	{
-		if( network_share_information_offset <= 4 )
+		if( network_share_information_offset < location_information_header_size )
 		{
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
-			 "%s: network share information offset exceeds location information data.",
+			 "%s: network share information offset smaller than location information header size.",
 			 function );
 
 			memory_free(
@@ -644,6 +699,14 @@ ssize_t liblnk_location_information_read(
 		endian_little_convert_32bit(
 		 network_share_name_offset,
 		 ( (lnk_network_share_information_t *) location_information_value_data )->network_share_name_offset );
+
+		/* TODO add device name and network provider type */
+
+		/* TODO check for offset to unicode volume label */
+
+		if( network_share_name_offset > 20 )
+		{
+		}
 
 #if defined( HAVE_VERBOSE_OUTPUT )
 		libnotify_verbose_printf(
@@ -719,7 +782,7 @@ ssize_t liblnk_location_information_read(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to determine size of path remainder.",
+			 "%s: unable to determine size of network share.",
 			 function );
 
 			memory_free(
@@ -736,7 +799,7 @@ ssize_t liblnk_location_information_read(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_MEMORY,
 			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create path remainder.",
+			 "%s: unable to create network share.",
 			 function );
 
 			memory_free(
@@ -756,7 +819,7 @@ ssize_t liblnk_location_information_read(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_CONVERSION,
 			 LIBERROR_CONVERSION_ERROR_GENERIC,
-			 "%s: unable to set path remainder.",
+			 "%s: unable to set network share.",
 			 function );
 
 			memory_free(
@@ -770,16 +833,23 @@ ssize_t liblnk_location_information_read(
 		 function,
 		 location_information->network_share );
 #endif
+		/* TODO check for offset to unicode network share name data */
+
+		/* TODO add unicode version if available other wise use ASCII version */
+
+		/* TODO check for offset to device name data */
+
+		/* TODO check for offset to unicode device name data */
 	}
-	if( path_remainder_offset > 0 )
+	if( common_path_offset > 0 )
 	{
-		if( path_remainder_offset <= 4 )
+		if( common_path_offset < location_information_header_size )
 		{
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
-			 "%s: path remainder information offset exceeds location information data.",
+			 "%s: common path offset smaller than location information header size.",
 			 function );
 
 			memory_free(
@@ -787,15 +857,15 @@ ssize_t liblnk_location_information_read(
 
 			return( -1 );
 		}
-		path_remainder_offset -= 4;
+		common_path_offset -= 4;
 
-		if( path_remainder_offset > location_information_size )
+		if( common_path_offset > location_information_size )
 		{
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
-			 "%s: path remainder offset exceeds location information data.",
+			 "%s: common path offset exceeds location information data.",
 			 function );
 
 			memory_free(
@@ -803,7 +873,7 @@ ssize_t liblnk_location_information_read(
 
 			return( -1 );
 		}
-		location_information_value_data = &( location_information_data[ path_remainder_offset ] );
+		location_information_value_data = &( location_information_data[ common_path_offset ] );
 
 		value_size = 0;
 
@@ -815,11 +885,11 @@ ssize_t liblnk_location_information_read(
 
 #if defined( HAVE_DEBUG_OUTPUT )
 		libnotify_verbose_printf(
-		 "%s: path remainder data size\t: %" PRIu32 "\n",
+		 "%s: common path data size\t: %" PRIu32 "\n",
 		 function,
 		 value_size );
 		libnotify_verbose_printf(
-		 "%s: path remainder data:\n",
+		 "%s: common path data:\n",
 		 function );
 		libnotify_verbose_print_data(
 		 location_information_value_data,
@@ -830,14 +900,14 @@ ssize_t liblnk_location_information_read(
 		     location_information_value_data,
 		     value_size,
 		     ascii_codepage,
-		     &( location_information->path_remainder_size ),
+		     &( location_information->common_path_size ),
 		     error ) != 1 )
 		{
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to determine size of path remainder.",
+			 "%s: unable to determine size of common path.",
 			 function );
 
 			memory_free(
@@ -845,16 +915,16 @@ ssize_t liblnk_location_information_read(
 
 			return( -1 );
 		}
-		location_information->path_remainder = (liblnk_character_t *) memory_allocate(
-		                                                               sizeof( liblnk_character_t ) * location_information->path_remainder_size );
+		location_information->common_path = (liblnk_character_t *) memory_allocate(
+		                                                            sizeof( liblnk_character_t ) * location_information->common_path_size );
 
-		if( location_information->path_remainder == NULL )
+		if( location_information->common_path == NULL )
 		{
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_MEMORY,
 			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create path remainder.",
+			 "%s: unable to create common path.",
 			 function );
 
 			memory_free(
@@ -863,8 +933,8 @@ ssize_t liblnk_location_information_read(
 			return( -1 );
 		}
 		if( liblnk_string_copy_from_byte_stream(
-		     location_information->path_remainder,
-		     location_information->path_remainder_size,
+		     location_information->common_path,
+		     location_information->common_path_size,
 		     location_information_value_data,
 		     value_size,
 		     ascii_codepage,
@@ -874,7 +944,7 @@ ssize_t liblnk_location_information_read(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_CONVERSION,
 			 LIBERROR_CONVERSION_ERROR_GENERIC,
-			 "%s: unable to set path remainder.",
+			 "%s: unable to set common path.",
 			 function );
 
 			memory_free(
@@ -884,11 +954,12 @@ ssize_t liblnk_location_information_read(
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
 		libnotify_verbose_printf(
-		 "%s: path remainder\t\t: %" PRIs_LIBLNK "\n",
+		 "%s: common path\t\t: %" PRIs_LIBLNK "\n",
 		 function,
-		 location_information->path_remainder );
+		 location_information->common_path );
 #endif
 	}
+	/* TODO implement unicode local path and unicode common path */
 
 	memory_free(
 	 location_information_data );

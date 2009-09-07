@@ -2,6 +2,7 @@ TODO
 * change file header filetime conversion
 * implement libfdatetime
 * create API functions to access link information values
+* work on todo's
 
 * add class id check to check signature ?
 

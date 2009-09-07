@@ -137,7 +137,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\liblnk\liblnk_shell_item_identifiers.c"
+				RelativePath="..\..\liblnk\liblnk_shell_item_identifiers_list.c"
 				>
 			</File>
 			<File
@@ -207,7 +207,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\liblnk\liblnk_shell_item_identifiers.h"
+				RelativePath="..\..\liblnk\liblnk_shell_item_identifiers_list.h"
 				>
 			</File>
 			<File

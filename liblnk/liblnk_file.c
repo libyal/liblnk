@@ -38,7 +38,7 @@
 #include "liblnk_file_information.h"
 #include "liblnk_libbfio.h"
 #include "liblnk_location_information.h"
-#include "liblnk_shell_item_identifiers.h"
+#include "liblnk_shell_item_identifiers_list.h"
 
 #include "lnk_file_header.h"
 
@@ -179,16 +179,16 @@ int liblnk_file_free(
 
 			result = -1;
 		}
-		if( ( internal_file->shell_item_identifiers != NULL )
-		 && ( liblnk_shell_item_identifiers_free(
-		       &( internal_file->shell_item_identifiers ),
+		if( ( internal_file->link_target_identifier != NULL )
+		 && ( liblnk_shell_item_identifiers_list_free(
+		       &( internal_file->link_target_identifier ),
 		       error ) != 1 ) )
 		{
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free shell item identifiers.",
+			 "%s: unable to free link target identifier.",
 			 function );
 
 			result = -1;
@@ -263,16 +263,16 @@ int liblnk_file_free(
 
 			result = -1;
 		}
-		if( ( internal_file->custom_icon_filename != NULL )
+		if( ( internal_file->icon_location != NULL )
 		 && ( liblnk_data_string_free(
-		       &( internal_file->custom_icon_filename ),
+		       &( internal_file->icon_location ),
 		       error ) != 1 ) )
 		{
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free custom icon filename.",
+			 "%s: unable to free icon location.",
 			 function );
 
 			result = -1;
@@ -736,6 +736,7 @@ int liblnk_file_open_read(
 	static char *function     = "liblnk_file_open_read";
 	off64_t file_offset       = 0;
 	ssize_t read_count        = 0;
+	uint8_t is_unicode        = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
 	uint8_t *trailing_data    = NULL;
@@ -788,17 +789,21 @@ int liblnk_file_open_read(
 	}
 	file_offset = sizeof( lnk_file_header_t );
 
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_SHELL_ITEMS ) == LIBLNK_DATA_FLAG_CONTAINS_SHELL_ITEMS )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_IS_UNICODE ) == LIBLNK_DATA_FLAG_IS_UNICODE )
 	{
-		if( liblnk_shell_item_identifiers_initialize(
-		     &( internal_file->shell_item_identifiers ),
+		is_unicode = 1;
+	}
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) == LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER )
+	{
+		if( liblnk_shell_item_identifiers_list_initialize(
+		     &( internal_file->link_target_identifier ),
 		     error ) != 1 )
 		{
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to initialize shell item identifiers.",
+			 "%s: unable to initialize link target identifier.",
 			 function );
 
 			return( -1 );
@@ -807,8 +812,8 @@ int liblnk_file_open_read(
 		libnotify_verbose_printf(
 		 "Reading shell items:\n" );
 #endif
-		read_count = liblnk_shell_item_identifiers_read(
-		              internal_file->shell_item_identifiers,
+		read_count = liblnk_shell_item_identifiers_list_read(
+		              internal_file->link_target_identifier,
 		              internal_file->io_handle->file_io_handle,
 		              file_offset,
 		              error );
@@ -819,14 +824,14 @@ int liblnk_file_open_read(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_IO,
 			 LIBERROR_IO_ERROR_READ_FAILED,
-			 "%s: unable to read shell item identifiers.",
+			 "%s: unable to read link target identifier.",
 			 function );
 
 			return( -1 );
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_LOCATION_INFORMATION ) == LIBLNK_DATA_FLAG_CONTAINS_LOCATION_INFORMATION )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) == LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION )
 	{
 		if( liblnk_location_information_initialize(
 		     &( internal_file->location_information ),
@@ -865,7 +870,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_DESCRIPTION_DATA_STRING ) == LIBLNK_DATA_FLAG_CONTAINS_DESCRIPTION_DATA_STRING )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) == LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING )
 	{
 		if( liblnk_data_string_initialize(
 		     &( internal_file->description ),
@@ -888,6 +893,7 @@ int liblnk_file_open_read(
 		              internal_file->description,
 		              internal_file->io_handle->file_io_handle,
 		              file_offset,
+		              is_unicode,
 		              error );
 
 		if( read_count <= -1 )
@@ -903,7 +909,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_RELATIVE_PATH_DATA_STRING ) == LIBLNK_DATA_FLAG_CONTAINS_RELATIVE_PATH_DATA_STRING )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) == LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING )
 	{
 		if( liblnk_data_string_initialize(
 		     &( internal_file->relative_path ),
@@ -926,6 +932,7 @@ int liblnk_file_open_read(
 		              internal_file->relative_path,
 		              internal_file->io_handle->file_io_handle,
 		              file_offset,
+		              is_unicode,
 		              error );
 
 		if( read_count <= -1 )
@@ -941,7 +948,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_WORKING_DIRECTORY_DATA_STRING ) == LIBLNK_DATA_FLAG_CONTAINS_WORKING_DIRECTORY_DATA_STRING )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) == LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING )
 	{
 		if( liblnk_data_string_initialize(
 		     &( internal_file->working_directory ),
@@ -964,6 +971,7 @@ int liblnk_file_open_read(
 		              internal_file->working_directory,
 		              internal_file->io_handle->file_io_handle,
 		              file_offset,
+		              is_unicode,
 		              error );
 
 		if( read_count <= -1 )
@@ -979,7 +987,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_COMMAND_LINE_ARGUMENTS_DATA_STRING ) == LIBLNK_DATA_FLAG_CONTAINS_COMMAND_LINE_ARGUMENTS_DATA_STRING )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) == LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING )
 	{
 		if( liblnk_data_string_initialize(
 		     &( internal_file->command_line_arguments ),
@@ -1002,6 +1010,7 @@ int liblnk_file_open_read(
 		              internal_file->command_line_arguments,
 		              internal_file->io_handle->file_io_handle,
 		              file_offset,
+		              is_unicode,
 		              error );
 
 		if( read_count <= -1 )
@@ -1017,29 +1026,30 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_CONTAINS_CUSTOM_ICON_FILENAME_DATA_STRING ) == LIBLNK_DATA_FLAG_CONTAINS_CUSTOM_ICON_FILENAME_DATA_STRING )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) == LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING )
 	{
 		if( liblnk_data_string_initialize(
-		     &( internal_file->custom_icon_filename ),
+		     &( internal_file->icon_location ),
 		     error ) != 1 )
 		{
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to initialize custom icon filename.",
+			 "%s: unable to initialize icon location.",
 			 function );
 
 			return( -1 );
 		}
 #if defined( HAVE_VERBOSE_OUTPUT )
 		libnotify_verbose_printf(
-		 "Reading custom icon filename data string:\n" );
+		 "Reading icon location data string:\n" );
 #endif
 		read_count = liblnk_data_string_read(
-		              internal_file->custom_icon_filename,
+		              internal_file->icon_location,
 		              internal_file->io_handle->file_io_handle,
 		              file_offset,
+		              is_unicode,
 		              error );
 
 		if( read_count <= -1 )
@@ -1048,7 +1058,7 @@ int liblnk_file_open_read(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_IO,
 			 LIBERROR_IO_ERROR_READ_FAILED,
-			 "%s: unable to read custom icon filename.",
+			 "%s: unable to read icon location.",
 			 function );
 
 			return( -1 );

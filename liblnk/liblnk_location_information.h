@@ -59,13 +59,13 @@ struct liblnk_location_information
 	 */
 	size_t network_share_size;
 
-	/* The path remainder string
+	/* The common path string
 	 */
-	liblnk_character_t *path_remainder;
+	liblnk_character_t *common_path;
 
-	/* The size of the path remainder string
+	/* The size of the common path string
 	 */
-	size_t path_remainder_size;
+	size_t common_path_size;
 };
 
 int liblnk_location_information_initialize(

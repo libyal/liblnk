@@ -90,14 +90,17 @@ struct lnk_file_header
 	uint8_t show_window_value[ 4 ];
 
 	/* The hot key value
-	 * Consists of 4 bytes
+	 * Consists of 2 bytes
 	 */
-	uint8_t hot_key_value[ 4 ];
+	uint8_t hot_key_value[ 2 ];
 
-	/* Unknown
-	 * Consists of 8 bytes
+	/* Reserved
+	 * Consists of 10 bytes
+	 * a 2 byte value
+	 * a 4 byte value
+	 * a 4 byte value
 	 */
-	uint8_t unknown1[ 8 ];
+	uint8_t reserved[ 10 ];
 };
 
 #if defined( __cplusplus )
