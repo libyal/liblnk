@@ -1,4 +1,4 @@
-.Dd September 6, 2009
+.Dd September 7, 2009
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -82,6 +82,14 @@ Link information functions
 .Fn liblnk_file_get_file_access_time "liblnk_file_t *file, uint64_t *access_time, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_get_file_size "liblnk_file_t *file, uint32_t *file_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_local_path_size "liblnk_file_t *file, size_t *local_path_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_local_path "liblnk_file_t *file, uint8_t *local_path, size_t local_path_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_network_path_size "liblnk_file_t *file, size_t *network_path_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_network_path "liblnk_file_t *file, uint8_t *network_path, size_t network_path_size, liblnk_error_t **error"
 .Sh DESCRIPTION
 The
 .Fn liblnk_get_version

@@ -34,6 +34,100 @@
 
 #if defined( HAVE_DEBUG_OUTPUT )
 
+/* Prints the file attribute flags
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_debug_print_file_attribute_flags(
+     uint32_t file_attribute_flags,
+     liberror_error_t **error )
+{
+	static char *function = "liblnk_debug_print_file_attribute_flags";
+
+	libnotify_verbose_printf(
+	 "%s: file attribute flags\t: 0x%08" PRIx32 "\n",
+	 function,
+	 file_attribute_flags );
+
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_READ_ONLY ) == LIBLNK_FILE_ATTRIBUTE_FLAG_READ_ONLY )
+	{
+		libnotify_verbose_printf(
+		 "\tIs read-only (FILE_ATTRIBUTE_READ_ONLY)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_HIDDEN ) == LIBLNK_FILE_ATTRIBUTE_FLAG_HIDDEN )
+	{
+		libnotify_verbose_printf(
+		 "\tIs hidden (FILE_ATTRIBUTE_HIDDEN)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_SYSTEM ) == LIBLNK_FILE_ATTRIBUTE_FLAG_SYSTEM )
+	{
+		libnotify_verbose_printf(
+		 "\tIs system (FILE_ATTRIBUTE_SYSTEM)\n" );
+	}
+
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_DIRECTORY ) == LIBLNK_FILE_ATTRIBUTE_FLAG_DIRECTORY )
+	{
+		libnotify_verbose_printf(
+		 "\tIs directory (FILE_ATTRIBUTE_DIRECTORY)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_ARCHIVE ) == LIBLNK_FILE_ATTRIBUTE_FLAG_ARCHIVE )
+	{
+		libnotify_verbose_printf(
+		 "\tShould be archived (FILE_ATTRIBUTE_ARCHIVE)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_DEVICE ) == LIBLNK_FILE_ATTRIBUTE_FLAG_DEVICE )
+	{
+		libnotify_verbose_printf(
+		 "\tIs device (FILE_ATTRIBUTE_DEVICE)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_NORMAL ) == LIBLNK_FILE_ATTRIBUTE_FLAG_NORMAL )
+	{
+		libnotify_verbose_printf(
+		 "\tIs normal (FILE_ATTRIBUTE_NORMAL)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_TEMPORARY ) == LIBLNK_FILE_ATTRIBUTE_FLAG_TEMPORARY )
+	{
+		libnotify_verbose_printf(
+		 "\tIs temporary (FILE_ATTRIBUTE_TEMPORARY)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_SPARSE_FILE ) == LIBLNK_FILE_ATTRIBUTE_FLAG_SPARSE_FILE )
+	{
+		libnotify_verbose_printf(
+		 "\tIs a sparse file (FILE_ATTRIBUTE_SPARSE_FILE)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_REPARSE_POINT ) == LIBLNK_FILE_ATTRIBUTE_FLAG_REPARSE_POINT )
+	{
+		libnotify_verbose_printf(
+		 "\tIs a reparse point or symbolic link (FILE_ATTRIBUTE_FLAG_REPARSE_POINT)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_COMPRESSED ) == LIBLNK_FILE_ATTRIBUTE_FLAG_COMPRESSED )
+	{
+		libnotify_verbose_printf(
+		 "\tIs compressed (FILE_ATTRIBUTE_COMPRESSED)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_OFFLINE ) == LIBLNK_FILE_ATTRIBUTE_FLAG_OFFLINE )
+	{
+		libnotify_verbose_printf(
+		 "\tIs offline (FILE_ATTRIBUTE_OFFLINE)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_NOT_CONTENT_INDEXED ) == LIBLNK_FILE_ATTRIBUTE_FLAG_NOT_CONTENT_INDEXED )
+	{
+		libnotify_verbose_printf(
+		 "\tContent should not be indexed (FILE_ATTRIBUTE_NOT_CONTENT_INDEXED)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_ENCRYPTED ) == LIBLNK_FILE_ATTRIBUTE_FLAG_ENCRYPTED )
+	{
+		libnotify_verbose_printf(
+		 "\tIs encrypted (FILE_ATTRIBUTE_ENCRYPTED)\n" );
+	}
+
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_VIRTUAL ) == LIBLNK_FILE_ATTRIBUTE_FLAG_VIRTUAL )
+	{
+		libnotify_verbose_printf(
+		 "\tIs virtual (FILE_ATTRIBUTE_VIRTUAL)\n" );
+	}
+	return( 1 );
+}
+
 /* Prints the read offsets
  * Returns 1 if successful or -1 on error
  */

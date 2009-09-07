@@ -62,17 +62,17 @@ struct lnk_file_header
 	 */
 	uint8_t creation_time[ 8 ];
 
-	/* Last modification date and time
-	 * Consists of 8 bytes
-	 * Contains a filetime
-	 */
-	uint8_t modification_time[ 8 ];
-
 	/* Last access date and time
 	 * Consists of 8 bytes
 	 * Contains a filetime
 	 */
 	uint8_t access_time[ 8 ];
+
+	/* Last modification date and time
+	 * Consists of 8 bytes
+	 * Contains a filetime
+	 */
+	uint8_t modification_time[ 8 ];
 
 	/* The size of the file
 	 * Consists of 4 bytes

@@ -29,6 +29,7 @@
 #include <liberror.h>
 
 #include "liblnk_libbfio.h"
+#include "liblnk_string.h"
 
 #if defined( __cplusplus )
 extern "C" {
@@ -41,6 +42,30 @@ struct liblnk_location_information
 	/* The location flags
 	 */
 	uint32_t flags;
+
+	/* The local path string
+	 */
+	liblnk_character_t *local_path;
+
+	/* The size of the local path string
+	 */
+	size_t local_path_size;
+
+	/* The network share string
+	 */
+	liblnk_character_t *network_share;
+
+	/* The size of the network share string
+	 */
+	size_t network_share_size;
+
+	/* The path remainder string
+	 */
+	liblnk_character_t *path_remainder;
+
+	/* The size of the path remainder string
+	 */
+	size_t path_remainder_size;
 };
 
 int liblnk_location_information_initialize(
@@ -55,6 +80,7 @@ ssize_t liblnk_location_information_read(
          liblnk_location_information_t *location_information,
          libbfio_handle_t *file_io_handle,
          off64_t location_information_offset,
+         int ascii_codepage,
          liberror_error_t **error );
 
 #if defined( __cplusplus )

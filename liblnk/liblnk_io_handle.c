@@ -425,11 +425,11 @@ int liblnk_io_handle_read_file_header(
 	 file_information->creation_time,
 	 file_header.creation_time );
 	endian_little_convert_64bit(
-	 file_information->modification_time,
-	 file_header.modification_time );
-	endian_little_convert_64bit(
 	 file_information->access_time,
 	 file_header.access_time );
+	endian_little_convert_64bit(
+	 file_information->modification_time,
+	 file_header.modification_time );
 
 	endian_little_convert_32bit(
 	 file_information->size,
@@ -469,11 +469,20 @@ int liblnk_io_handle_read_file_header(
 	 "%s: data flags\t\t: 0x%08" PRIx32 "\n",
 	 function,
 	 *data_flags );
-	libnotify_verbose_printf(
-	 "%s: file attribute flags\t: 0x%08" PRIx32 "\n",
-	 function,
-	 file_information->attribute_flags );
 
+        if( liblnk_debug_print_file_attribute_flags(
+	     file_information->attribute_flags,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 "%s: unable to print file attribute flags.",
+		 function );
+
+		return( -1 );
+	}
 	if( libfdatetime_filetime_initialize(
 	     &filetime,
 	     error ) != 1 )
@@ -535,6 +544,52 @@ int liblnk_io_handle_read_file_header(
 
 	if( libfdatetime_filetime_copy_from_byte_stream(
 	     filetime,
+	     file_header.access_time,
+	     8,
+	     LIBLNK_ENDIAN_LITTLE,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_CONVERSION,
+		 LIBERROR_CONVERSION_ERROR_GENERIC,
+		 "%s: unable to create access time.",
+		 function );
+
+		libfdatetime_filetime_free(
+		 &filetime,
+		 NULL );
+
+		return( -1 );
+	}
+	if( libfdatetime_filetime_copy_to_string(
+	     filetime,
+	     date_time_string,
+	     22,
+	     LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
+	     LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_CONVERSION,
+		 LIBERROR_CONVERSION_ERROR_GENERIC,
+		 "%s: unable to create filetime string.",
+		 function );
+
+		libfdatetime_filetime_free(
+		 &filetime,
+		 NULL );
+
+		return( -1 );
+	}
+	libnotify_verbose_printf(
+	 "%s: access time\t\t: %s\n",
+	 function,
+	 (char *) date_time_string );
+
+	if( libfdatetime_filetime_copy_from_byte_stream(
+	     filetime,
 	     file_header.modification_time,
 	     8,
 	     LIBLNK_ENDIAN_LITTLE,
@@ -579,47 +634,6 @@ int liblnk_io_handle_read_file_header(
 	 function,
 	 (char *) date_time_string );
 
-	if( libfdatetime_filetime_copy_from_byte_stream(
-	     filetime,
-	     file_header.access_time,
-	     8,
-	     LIBLNK_ENDIAN_LITTLE,
-	     error ) != 1 )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_CONVERSION,
-		 LIBERROR_CONVERSION_ERROR_GENERIC,
-		 "%s: unable to create access time.",
-		 function );
-
-		libfdatetime_filetime_free(
-		 &filetime,
-		 NULL );
-
-		return( -1 );
-	}
-	if( libfdatetime_filetime_copy_to_string(
-	     filetime,
-	     date_time_string,
-	     22,
-	     LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
-	     LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
-	     error ) != 1 )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_CONVERSION,
-		 LIBERROR_CONVERSION_ERROR_GENERIC,
-		 "%s: unable to create filetime string.",
-		 function );
-
-		libfdatetime_filetime_free(
-		 &filetime,
-		 NULL );
-
-		return( -1 );
-	}
 	if( libfdatetime_filetime_free(
 	     &filetime,
 	     error ) != 1 )
@@ -633,11 +647,6 @@ int liblnk_io_handle_read_file_header(
 
 		return( -1 );
 	}
-	libnotify_verbose_printf(
-	 "%s: access time\t\t: %s\n",
-	 function,
-	 (char *) date_time_string );
-
 	libnotify_verbose_printf(
 	 "%s: file size\t\t: %" PRIu32 " bytes\n",
 	 function,

@@ -849,6 +849,7 @@ int liblnk_file_open_read(
 		              internal_file->location_information,
 		              internal_file->io_handle->file_io_handle,
 		              file_offset,
+		              internal_file->ascii_codepage,
 		              error );
 
 		if( read_count <= -1 )

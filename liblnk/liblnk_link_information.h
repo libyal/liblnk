@@ -68,6 +68,28 @@ LIBLNK_EXTERN int liblnk_file_get_file_size(
                    uint32_t *file_size,
                    liberror_error_t **error );
 
+LIBLNK_EXTERN int liblnk_file_get_local_path_size(
+                   liblnk_file_t *file,
+                   size_t *local_path_size,
+                   liberror_error_t **error );
+
+LIBLNK_EXTERN int liblnk_file_get_local_path(
+                   liblnk_file_t *file,
+                   uint8_t *local_path,
+                   size_t local_path_size,
+                   liberror_error_t **error );
+
+LIBLNK_EXTERN int liblnk_file_get_network_path_size(
+                   liblnk_file_t *file,
+                   size_t *network_path_size,
+                   liberror_error_t **error );
+
+LIBLNK_EXTERN int liblnk_file_get_network_path(
+                   liblnk_file_t *file,
+                   uint8_t *network_path,
+                   size_t network_path_size,
+                   liberror_error_t **error );
+
 #if defined( __cplusplus )
 }
 #endif

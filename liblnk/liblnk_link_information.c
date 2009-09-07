@@ -34,6 +34,7 @@
 #include "liblnk_file_information.h"
 #include "liblnk_location_information.h"
 #include "liblnk_shell_item_identifiers.h"
+#include "liblnk_string.h"
 
 /* Retrieves the data flags
  * The data flags contain information about the available link information
@@ -315,7 +316,7 @@ int liblnk_file_get_file_access_time(
 }
 
 /* Retrieves the linked file's size
- * The file size are only set if the link refers to a file
+ * The file size is only set if the link refers to a file
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_get_file_size(
@@ -363,6 +364,304 @@ int liblnk_file_get_file_size(
 	}
 	*file_size = internal_file->file_information->size;
 
+	return( 1 );
+}
+
+/* Retrieves the size of the linked file's local path
+ * The size includes the end of string character
+ * The local path is only set if the link refers to a file on a local volume
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_local_path_size(
+     liblnk_file_t *file,
+     size_t *local_path_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_local_path_size";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( local_path_size == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid local path size.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->location_information == NULL )
+	{
+		return( 0 );
+	}
+	if( ( internal_file->location_information->flags & LIBLNK_LOCATION_FLAG_HAS_VOLUME_INFORMATION ) == 0 )
+	{
+		return( 0 );
+	}
+	*local_path_size = internal_file->location_information->local_path_size
+	                 + internal_file->location_information->path_remainder_size
+	                 - 1;
+
+	return( 1 );
+}
+
+/* Retrieves the linked file's local path
+ * The string is formatted in UTF-8
+ * The size should include the end of string character
+ * The local path is only set if the link refers to a file on a local volume
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_local_path(
+     liblnk_file_t *file,
+     uint8_t *local_path,
+     size_t local_path_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_local_path";
+	size_t calculated_local_path_size     = 0;
+	int print_count                       = 0;
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( local_path == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid local path.",
+		 function );
+
+		return( -1 );
+	}
+	if( local_path_size > (size_t) SSIZE_MAX )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid local path size value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->location_information == NULL )
+	{
+		return( 0 );
+	}
+	if( ( internal_file->location_information->flags & LIBLNK_LOCATION_FLAG_HAS_VOLUME_INFORMATION ) == 0 )
+	{
+		return( 0 );
+	}
+	calculated_local_path_size = internal_file->location_information->local_path_size
+	                           + internal_file->location_information->path_remainder_size
+	                           - 1;
+
+	if( local_path_size < calculated_local_path_size )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 "%s: local path value too small.",
+		 function );
+
+		return( -1 );
+	}
+	print_count = liblnk_string_snprintf(
+	               local_path,
+	               local_path_size,
+	               "%" PRIs_LIBLNK "%" PRIs_LIBLNK,
+	               internal_file->location_information->local_path,
+	               internal_file->location_information->path_remainder );
+
+	if( ( print_count < 0 )
+	 || ( print_count > (ssize_t) calculated_local_path_size ) )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set local path.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the linked file's network path
+ * The size includes the end of string character
+ * The network path is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_network_path_size(
+     liblnk_file_t *file,
+     size_t *network_path_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_network_path_size";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( network_path_size == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid network path size.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->location_information == NULL )
+	{
+		return( 0 );
+	}
+	if( ( internal_file->location_information->flags & LIBLNK_LOCATION_FLAG_HAS_NETWORK_SHARE_INFORMATION ) == 0 )
+	{
+		return( 0 );
+	}
+	*network_path_size = internal_file->location_information->network_share_size
+	                   + internal_file->location_information->path_remainder_size
+	                   - 1;
+
+	return( 1 );
+}
+
+/* Retrieves the linked file's network path
+ * The string is formatted in UTF-8
+ * The size should include the end of string character
+ * The network path is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_network_path(
+     liblnk_file_t *file,
+     uint8_t *network_path,
+     size_t network_path_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_network_path";
+	size_t calculated_network_path_size   = 0;
+	int print_count                       = 0;
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( network_path == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid network path.",
+		 function );
+
+		return( -1 );
+	}
+	if( network_path_size > (size_t) SSIZE_MAX )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid network path size value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->location_information == NULL )
+	{
+		return( 0 );
+	}
+	if( ( internal_file->location_information->flags & LIBLNK_LOCATION_FLAG_HAS_NETWORK_SHARE_INFORMATION ) == 0 )
+	{
+		return( 0 );
+	}
+	calculated_network_path_size = internal_file->location_information->network_share_size
+	                             + internal_file->location_information->path_remainder_size
+	                             - 1;
+
+	if( network_path_size < calculated_network_path_size )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 "%s: network path value too small.",
+		 function );
+
+		return( -1 );
+	}
+	print_count = liblnk_string_snprintf(
+	               network_path,
+	               network_path_size,
+	               "%" PRIs_LIBLNK "%" PRIs_LIBLNK,
+	               internal_file->location_information->network_share,
+	               internal_file->location_information->path_remainder );
+
+	if( ( print_count < 0 )
+	 || ( print_count > (ssize_t) calculated_network_path_size ) )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set network path.",
+		 function );
+
+		return( -1 );
+	}
 	return( 1 );
 }
 

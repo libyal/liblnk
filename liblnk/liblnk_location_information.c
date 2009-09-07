@@ -31,6 +31,7 @@
 #include "liblnk_definitions.h"
 #include "liblnk_libbfio.h"
 #include "liblnk_location_information.h"
+#include "liblnk_string.h"
 
 #include "lnk_location_information.h"
 
@@ -115,6 +116,21 @@ int liblnk_location_information_free(
 	}
 	if( *location_information != NULL )
 	{
+		if( ( *location_information )->local_path != NULL )
+		{
+			memory_free(
+			 ( *location_information )->local_path );
+		}
+		if( ( *location_information )->network_share != NULL )
+		{
+			memory_free(
+			 ( *location_information )->network_share );
+		}
+		if( ( *location_information )->path_remainder != NULL )
+		{
+			memory_free(
+			 ( *location_information )->path_remainder );
+		}
 		memory_free(
 		 *location_information );
 
@@ -130,6 +146,7 @@ ssize_t liblnk_location_information_read(
          liblnk_location_information_t *location_information,
          libbfio_handle_t *file_io_handle,
          off64_t location_information_offset,
+         int ascii_codepage,
          liberror_error_t **error )
 {
 	uint8_t location_information_size_data[ 4 ];
@@ -503,7 +520,7 @@ ssize_t liblnk_location_information_read(
 
 #if defined( HAVE_DEBUG_OUTPUT )
 		libnotify_verbose_printf(
-		 "%s: local path size\t: %" PRIu32 "\n",
+		 "%s: local path data size\t: %" PRIu32 "\n",
 		 function,
 		 value_size );
 		libnotify_verbose_printf(
@@ -512,6 +529,69 @@ ssize_t liblnk_location_information_read(
 		libnotify_verbose_print_data(
 		 location_information_value_data,
 		 value_size );
+#endif
+
+		if( liblnk_string_size_from_byte_stream(
+		     location_information_value_data,
+		     value_size,
+		     ascii_codepage,
+		     &( location_information->local_path_size ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to determine size of local path.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+		location_information->local_path = (liblnk_character_t *) memory_allocate(
+		                                                           sizeof( liblnk_character_t ) * location_information->local_path_size );
+
+		if( location_information->local_path == NULL )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_MEMORY,
+			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 "%s: unable to create local path.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+		if( liblnk_string_copy_from_byte_stream(
+		     location_information->local_path,
+		     location_information->local_path_size,
+		     location_information_value_data,
+		     value_size,
+		     ascii_codepage,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_CONVERSION,
+			 LIBERROR_CONVERSION_ERROR_GENERIC,
+			 "%s: unable to set local path.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+#if defined( HAVE_DEBUG_OUTPUT )
+		libnotify_verbose_printf(
+		 "%s: local path\t\t: %" PRIs_LIBLNK "\n",
+		 function,
+		 location_information->local_path );
 #endif
 	}
 	if( network_share_information_offset > 0 )
@@ -628,6 +708,68 @@ ssize_t liblnk_location_information_read(
 		 location_information_value_data,
 		 value_size );
 #endif
+		if( liblnk_string_size_from_byte_stream(
+		     location_information_value_data,
+		     value_size,
+		     ascii_codepage,
+		     &( location_information->network_share_size ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to determine size of path remainder.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+		location_information->network_share = (liblnk_character_t *) memory_allocate(
+		                                                              sizeof( liblnk_character_t ) * location_information->network_share_size );
+
+		if( location_information->network_share == NULL )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_MEMORY,
+			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 "%s: unable to create path remainder.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+		if( liblnk_string_copy_from_byte_stream(
+		     location_information->network_share,
+		     location_information->network_share_size,
+		     location_information_value_data,
+		     value_size,
+		     ascii_codepage,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_CONVERSION,
+			 LIBERROR_CONVERSION_ERROR_GENERIC,
+			 "%s: unable to set path remainder.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+#if defined( HAVE_DEBUG_OUTPUT )
+		libnotify_verbose_printf(
+		 "%s: network share\t\t: %" PRIs_LIBLNK "\n",
+		 function,
+		 location_information->network_share );
+#endif
 	}
 	if( path_remainder_offset > 0 )
 	{
@@ -673,7 +815,7 @@ ssize_t liblnk_location_information_read(
 
 #if defined( HAVE_DEBUG_OUTPUT )
 		libnotify_verbose_printf(
-		 "%s: path remainder size\t: %" PRIu32 "\n",
+		 "%s: path remainder data size\t: %" PRIu32 "\n",
 		 function,
 		 value_size );
 		libnotify_verbose_printf(
@@ -682,6 +824,69 @@ ssize_t liblnk_location_information_read(
 		libnotify_verbose_print_data(
 		 location_information_value_data,
 		 value_size );
+#endif
+
+		if( liblnk_string_size_from_byte_stream(
+		     location_information_value_data,
+		     value_size,
+		     ascii_codepage,
+		     &( location_information->path_remainder_size ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to determine size of path remainder.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+		location_information->path_remainder = (liblnk_character_t *) memory_allocate(
+		                                                               sizeof( liblnk_character_t ) * location_information->path_remainder_size );
+
+		if( location_information->path_remainder == NULL )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_MEMORY,
+			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 "%s: unable to create path remainder.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+		if( liblnk_string_copy_from_byte_stream(
+		     location_information->path_remainder,
+		     location_information->path_remainder_size,
+		     location_information_value_data,
+		     value_size,
+		     ascii_codepage,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_CONVERSION,
+			 LIBERROR_CONVERSION_ERROR_GENERIC,
+			 "%s: unable to set path remainder.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+#if defined( HAVE_DEBUG_OUTPUT )
+		libnotify_verbose_printf(
+		 "%s: path remainder\t\t: %" PRIs_LIBLNK "\n",
+		 function,
+		 location_information->path_remainder );
 #endif
 	}
 
