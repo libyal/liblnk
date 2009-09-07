@@ -544,7 +544,7 @@ int liblnk_file_open_wide(
 	if( libbfio_file_set_name_wide(
 	     file_io_handle,
 	     filename,
-	     narrow_string_length(
+	     wide_string_length(
 	      filename ) + 1,
 	     error ) != 1 )
 	{
@@ -733,9 +733,15 @@ int liblnk_file_open_read(
      liblnk_internal_file_t *internal_file,
      liberror_error_t **error )
 {
-	static char *function = "liblnk_file_open_read";
-	off64_t file_offset   = 0;
-	ssize_t read_count    = 0;
+	static char *function     = "liblnk_file_open_read";
+	off64_t file_offset       = 0;
+	ssize_t read_count        = 0;
+
+#if defined( HAVE_DEBUG_OUTPUT )
+	uint8_t *trailing_data    = NULL;
+	size64_t file_size        = 0;
+	size_t trailing_data_size = 0;
+#endif
 
 	if( internal_file == NULL )
 	{
@@ -1049,11 +1055,8 @@ int liblnk_file_open_read(
 		file_offset += read_count;
 	}
 	/* TODO read other parts */
-#if defined( HAVE_DEBUG_OUTPUT )
-	uint8_t *trailing_data    = NULL;
-	size64_t file_size        = 0;
-	size_t trailing_data_size = 0;
 
+#if defined( HAVE_DEBUG_OUTPUT )
 	if( libbfio_handle_get_size(
 	     internal_file->io_handle->file_io_handle,
 	     &file_size,
@@ -1070,7 +1073,7 @@ int liblnk_file_open_read(
 	}
 	if( file_offset < (off64_t) file_size )
 	{
-		trailing_data_size = file_size - file_offset;
+		trailing_data_size = (size_t) ( file_size - file_offset );
 
 		trailing_data = (uint8_t *) memory_allocate(
 		                             sizeof( uint8_t ) * trailing_data_size );

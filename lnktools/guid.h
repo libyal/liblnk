@@ -37,20 +37,6 @@ extern "C" {
 #define GUID_SIZE		16
 #define GUID_STRING_SIZE	37
 
-enum GUID_TYPES
-{
-	GUID_TYPE_RANDOM	= (uint8_t) 'r',
-	GUID_TYPE_TIME		= (uint8_t) 't'
-};
-
-#if defined( HAVE_GUID_SUPPORT ) || defined( WINAPI )
-int guid_generate(
-     uint8_t *guid,
-     size_t guid_size,
-     uint8_t guid_type,
-     liberror_error_t **error );
-#endif
-
 int guid_to_string(
      uint8_t *guid,
      size_t guid_size,

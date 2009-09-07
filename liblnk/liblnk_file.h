@@ -35,6 +35,14 @@
 #include "liblnk_location_information.h"
 #include "liblnk_shell_item_identifiers.h"
 
+#if defined( _MSC_VER ) || defined( __BORLANDC__ )
+
+/* This inclusion is needed otherwise some linkers
+ * mess up exporting all functions
+ */
+#include "liblnk_link_information.h"
+#endif
+
 #if defined( __cplusplus )
 extern "C" {
 #endif

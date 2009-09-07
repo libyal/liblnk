@@ -1,5 +1,5 @@
 /*
- * Shows information obtained from a Windows Shortcut (LNK) file
+ * Shows information obtained from a Windows Shortcut File (LNK)
  *
  * Copyright (c) 2008-2009, Joachim Metz <forensics@hoffmannbv.nl>,
  * Hoffmann Investigations. All rights reserved.
@@ -59,7 +59,7 @@ void usage_fprint(
 	{
 		return;
 	}
-	fprintf( stream, "Use lnkinfo to determine information about a Windows Shortcut (LNK) file.\n\n" );
+	fprintf( stream, "Use lnkinfo to determine information about a Windows Shortcut File (LNK).\n\n" );
 
 	fprintf( stream, "Usage: lnkinfo [ -hvV ] source\n\n" );
 
@@ -332,7 +332,7 @@ int lnkinfo_file_info_fprint(
 
 /* The main program
  */
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER_T )
+#if defined( LIBSYSTEM_HAVE_WIDE_CHARACTER )
 int wmain( int argc, wchar_t * const argv[] )
 #else
 int main( int argc, char * const argv[] )
@@ -442,11 +442,19 @@ int main( int argc, char * const argv[] )
 
 		return( EXIT_FAILURE );
 	}
+#if defined( LIBSYSTEM_HAVE_WIDE_CHARACTER )
+	if( liblnk_file_open_wide(
+	     lnk_file,
+	     source,
+	     LIBLNK_OPEN_READ,
+	     &error ) != 1 )
+#else
 	if( liblnk_file_open(
 	     lnk_file,
 	     source,
 	     LIBLNK_OPEN_READ,
 	     &error ) != 1 )
+#endif
 	{
 		fprintf(
 		 stderr,

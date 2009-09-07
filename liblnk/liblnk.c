@@ -1,5 +1,5 @@
 /*
- * Library to support the Windows Shortcut (LNK) file
+ * Library to support the Windows Shortcut File (LNK) format
  *
  * Copyright (c) 2008-2009, Joachim Metz <forensics@hoffmannbv.nl>,
  * Hoffmann Investigations. All rights reserved.

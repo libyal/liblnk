@@ -39,7 +39,7 @@ LIBLNK_EXTERN int liblnk_file_get_data_flags(
                    uint32_t *data_flags,
                    liberror_error_t **error );
 
-LIBLNK_EXTERN int liblnk_file_link_is_file(
+LIBLNK_EXTERN int liblnk_file_link_refers_to_file(
                    liblnk_file_t *file,
                    liberror_error_t **error );
 

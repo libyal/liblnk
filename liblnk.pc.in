@@ -4,7 +4,7 @@ libdir=@libdir@
 includedir=@includedir@
 
 Name: liblnk
-Description: Library to support the Windows Shortcut (LNK) file format
+Description: Library to support the Windows Shortcut File (LNK) format
 Version: @VERSION@
 Libs: -L${libdir} -llnk
 Libs.private: @liblnk_pc_libs_private_libbfio@ @liblnk_pc_libs_private_libfdatetime@ @liblnk_pc_libs_private_libuna@

@@ -10,7 +10,13 @@ Deployment:
 * create debian package files
 * update macosx package files
 * update msvcpp files
-* update codegeare files
+* update codegear files
+
+20090907
+* textual changes
+* worked on msvscpp compilation
+* cleaned msc and borlandc config files
+* removed GUID generation code
 
 20090906
 * worked on libfdatetime integration
