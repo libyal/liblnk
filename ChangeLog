@@ -4,7 +4,8 @@ TODO
 * create API functions to access link information values
 * work on todo's
 
-* add class id check to check signature ?
+* change file header, signature is the header size
+  use the class identifier to check the file signature
 
 Refactor
 * volume information read into separate subfunction
