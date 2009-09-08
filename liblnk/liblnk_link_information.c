@@ -561,7 +561,7 @@ int liblnk_file_get_network_path_size(
 	{
 		return( 0 );
 	}
-	*network_path_size = internal_file->location_information->network_share_size
+	*network_path_size = internal_file->location_information->network_share_name_size
 	                   + internal_file->location_information->common_path_size
 	                   - 1;
 
@@ -628,7 +628,7 @@ int liblnk_file_get_network_path(
 	{
 		return( 0 );
 	}
-	calculated_network_path_size = internal_file->location_information->network_share_size
+	calculated_network_path_size = internal_file->location_information->network_share_name_size
 	                             + internal_file->location_information->common_path_size
 	                             - 1;
 
@@ -647,7 +647,7 @@ int liblnk_file_get_network_path(
 	               network_path,
 	               network_path_size,
 	               "%" PRIs_LIBLNK "%" PRIs_LIBLNK,
-	               internal_file->location_information->network_share,
+	               internal_file->location_information->network_share_name,
 	               internal_file->location_information->common_path );
 
 	if( ( print_count < 0 )

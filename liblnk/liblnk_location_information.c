@@ -116,15 +116,25 @@ int liblnk_location_information_free(
 	}
 	if( *location_information != NULL )
 	{
+		if( ( *location_information )->volume_label != NULL )
+		{
+			memory_free(
+			 ( *location_information )->volume_label );
+		}
 		if( ( *location_information )->local_path != NULL )
 		{
 			memory_free(
 			 ( *location_information )->local_path );
 		}
-		if( ( *location_information )->network_share != NULL )
+		if( ( *location_information )->network_share_name != NULL )
 		{
 			memory_free(
-			 ( *location_information )->network_share );
+			 ( *location_information )->network_share_name );
+		}
+		if( ( *location_information )->device_name != NULL )
+		{
+			memory_free(
+			 ( *location_information )->device_name );
 		}
 		if( ( *location_information )->common_path != NULL )
 		{
@@ -151,24 +161,31 @@ ssize_t liblnk_location_information_read(
 {
 	uint8_t location_information_size_data[ 4 ];
 
-	uint8_t *location_information_data        = NULL;
-	uint8_t *location_information_value_data  = NULL;
-	static char *function                     = "liblnk_location_information_read";
-	size_t location_information_size          = 0;
-	ssize_t read_count                        = 0;
-	uint32_t common_path_offset               = 0;
-	uint32_t location_information_header_size = 0;
-	uint32_t local_path_offset                = 0;
-	uint32_t network_share_information_offset = 0;
-	uint32_t network_share_name_offset        = 0;
-	uint32_t unicode_common_path_offset       = 0;
-	uint32_t unicode_local_path_offset        = 0;
-	uint32_t volume_information_offset        = 0;
-	uint32_t volume_label_offset              = 0;
-	uint32_t value_size                       = 0;
+	uint8_t *location_information_data               = NULL;
+	uint8_t *location_information_unicode_value_data = NULL;
+	uint8_t *location_information_value_data         = NULL;
+	static char *function                            = "liblnk_location_information_read";
+	size_t location_information_size                 = 0;
+	ssize_t read_count                               = 0;
+	uint32_t device_name_offset                      = 0;
+	uint32_t common_path_offset                      = 0;
+	uint32_t location_information_header_size        = 0;
+	uint32_t location_information_value_size         = 0;
+	uint32_t local_path_offset                       = 0;
+	uint32_t network_share_information_offset        = 0;
+	uint32_t network_share_name_offset               = 0;
+	uint32_t unicode_device_name_offset              = 0;
+	uint32_t unicode_common_path_offset              = 0;
+	uint32_t unicode_local_path_offset               = 0;
+	uint32_t unicode_network_share_name_offset       = 0;
+	uint32_t unicode_value_size                      = 0;
+	uint32_t unicode_volume_label_offset             = 0;
+	uint32_t volume_information_offset               = 0;
+	uint32_t volume_label_offset                     = 0;
+	uint32_t value_size                              = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	uint32_t test                             = 0;
+	uint32_t test                                    = 0;
 #endif
 
 	if( location_information == NULL )
@@ -357,6 +374,7 @@ ssize_t liblnk_location_information_read(
 	 function,
 	 common_path_offset );
 #endif
+
 	if( ( location_information_header_size != 28 )
 	 && ( location_information_header_size != 32 )
 	 && ( location_information_header_size != 36 ) )
@@ -404,6 +422,9 @@ ssize_t liblnk_location_information_read(
 	libnotify_verbose_printf(
 	 "\n" );
 #endif
+
+	/* Volume information path
+	 */
 	if( volume_information_offset > 0 )
 	{
 		if( volume_information_offset < location_information_header_size )
@@ -439,7 +460,7 @@ ssize_t liblnk_location_information_read(
 		location_information_value_data = &( location_information_data[ volume_information_offset ] );
 
 		endian_little_convert_32bit(
-		 value_size,
+		 location_information_value_size,
 		 ( (lnk_volume_information_t *) location_information_value_data )->size );
 
 #if defined( HAVE_DEBUG_OUTPUT )
@@ -448,24 +469,18 @@ ssize_t liblnk_location_information_read(
 		 function );
 		libnotify_verbose_print_data(
 		 location_information_value_data,
-		 value_size );
+		 location_information_value_size );
 #endif
 
 		endian_little_convert_32bit(
 		 volume_label_offset,
 		 ( (lnk_volume_information_t *) location_information_value_data )->volume_label_offset );
 
-		/* TODO check for offset to unicode volume label */
-
-		if( volume_label_offset > 16 )
-		{
-		}
-
 #if defined( HAVE_VERBOSE_OUTPUT )
 		libnotify_verbose_printf(
 		 "%s: volume information size\t\t\t\t: %" PRIu32 "\n",
 		 function,
-		 value_size );
+		 location_information_value_size );
 
 		endian_little_convert_32bit(
 		 test,
@@ -490,47 +505,221 @@ ssize_t liblnk_location_information_read(
 		 function,
 		 volume_label_offset );
 #endif
-		if( volume_label_offset > value_size )
+
+		if( volume_label_offset > 16 )
 		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
-			 "%s: volume label offset exceeds volume information data.",
-			 function );
+			endian_little_convert_32bit(
+			 unicode_volume_label_offset,
+			 ( (lnk_volume_information_t *) location_information_value_data )->unicode_volume_label_offset );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+#if defined( HAVE_VERBOSE_OUTPUT )
+			libnotify_verbose_printf(
+			 "%s: unicode volume information volume label offset\t: %" PRIu32 "\n",
+			 function,
+			 unicode_volume_label_offset );
+#endif
 		}
-		location_information_value_data = &( location_information_value_data[ volume_label_offset ] );
-
-		value_size = 0;
-
-		while( location_information_value_data[ value_size ] != 0 )
+		if( volume_label_offset > 0 )
 		{
-			value_size++;
-		}
-		value_size++;
+			if( volume_label_offset > location_information_value_size )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+				 "%s: volume label offset exceeds volume information data.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			value_size = 0;
+
+			while( location_information_value_data[ value_size ] != 0 )
+			{
+				value_size += 1;
+			}
+			value_size += 1;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: volume information volume label size\t\t\t: %" PRIu32 "\n",
-		 function,
-		 value_size );
-		libnotify_verbose_printf(
-		 "%s: volume information volume label data:\n",
-		 function );
-		libnotify_verbose_print_data(
-		 location_information_value_data,
-		 value_size );
+			libnotify_verbose_printf(
+			 "%s: volume information volume label size\t\t\t: %" PRIu32 "\n",
+			 function,
+			 value_size );
+			libnotify_verbose_printf(
+			 "%s: volume information volume label data:\n",
+			 function );
+			libnotify_verbose_print_data(
+			 location_information_value_data,
+			 value_size );
 #endif
-		/* TODO check for offset to unicode volume label data */
+		}
+		if( unicode_volume_label_offset > 0 )
+		{
+			if( unicode_volume_label_offset > location_information_value_size )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+				 "%s: unicode volume label offset exceeds volume information data.",
+				 function );
 
-		/* TODO add unicode version if available other wise use ASCII version */
+				memory_free(
+				 location_information_data );
 
+				return( -1 );
+			}
+			location_information_unicode_value_data = &( location_information_value_data[ unicode_volume_label_offset ] );
+
+			unicode_value_size = 0;
+
+			while( ( location_information_unicode_value_data[ unicode_value_size ] != 0 )
+			    || ( location_information_unicode_value_data[ unicode_value_size + 1 ] != 0 ) )
+			{
+				unicode_value_size += 2;
+			}
+			unicode_value_size += 2;
+
+#if defined( HAVE_DEBUG_OUTPUT )
+			libnotify_verbose_printf(
+			 "%s: unicode volume information volume label size\t\t: %" PRIu32 "\n",
+			 function,
+			 unicode_value_size );
+			libnotify_verbose_printf(
+			 "%s: unicode volume information volume label data:\n",
+			 function );
+			libnotify_verbose_print_data(
+			 location_information_unicode_value_data,
+			 unicode_value_size );
+#endif
+			if( liblnk_string_size_from_utf16_stream(
+			     location_information_unicode_value_data,
+			     unicode_value_size,
+			     LIBUNA_ENDIAN_LITTLE,
+			     &( location_information->volume_label_size ),
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to determine size of volume label.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			location_information->volume_label = (liblnk_character_t *) memory_allocate(
+			                                                             sizeof( liblnk_character_t ) * location_information->volume_label_size );
+
+			if( location_information->volume_label == NULL )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_MEMORY,
+				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 "%s: unable to create volume label.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			if( liblnk_string_copy_from_utf16_stream(
+			     location_information->volume_label,
+			     location_information->volume_label_size,
+			     location_information_unicode_value_data,
+			     unicode_value_size,
+			     LIBUNA_ENDIAN_LITTLE,
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_CONVERSION,
+				 LIBERROR_CONVERSION_ERROR_GENERIC,
+				 "%s: unable to set volume label.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+		}
+		else
+		{
+			if( liblnk_string_size_from_byte_stream(
+			     location_information_value_data,
+			     value_size,
+			     ascii_codepage,
+			     &( location_information->volume_label_size ),
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to determine size of volume label.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			location_information->volume_label = (liblnk_character_t *) memory_allocate(
+			                                                             sizeof( liblnk_character_t ) * location_information->volume_label_size );
+
+			if( location_information->volume_label == NULL )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_MEMORY,
+				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 "%s: unable to create volume label.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			if( liblnk_string_copy_from_byte_stream(
+			     location_information->volume_label,
+			     location_information->volume_label_size,
+			     location_information_value_data,
+			     value_size,
+			     ascii_codepage,
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_CONVERSION,
+				 LIBERROR_CONVERSION_ERROR_GENERIC,
+				 "%s: unable to set volume label.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+		}
+#if defined( HAVE_DEBUG_OUTPUT )
+		libnotify_verbose_printf(
+		 "%s: volume information volume label\t\t: %" PRIs_LIBLNK "\n",
+		 function,
+		 location_information->volume_label );
+#endif
 	}
+	/* Local path
+	 */
 	if( local_path_offset > 0 )
 	{
 		if( local_path_offset < location_information_header_size )
@@ -585,7 +774,121 @@ ssize_t liblnk_location_information_read(
 		 location_information_value_data,
 		 value_size );
 #endif
+	}
+	if( unicode_local_path_offset > 0 )
+	{
+		if( unicode_local_path_offset < location_information_header_size )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 "%s: unicode local path information offset smaller than location information header size",
+			 function );
 
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+		unicode_local_path_offset -= 4;
+
+		if( unicode_local_path_offset > location_information_size )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 "%s: unicode local path offset exceeds location information data.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+		location_information_unicode_value_data = &( location_information_data[ unicode_local_path_offset ] );
+
+		unicode_value_size = 0;
+
+		while( location_information_unicode_value_data[ unicode_value_size ] != 0 )
+		{
+			unicode_value_size += 2;
+		}
+		unicode_value_size += 2;
+
+#if defined( HAVE_DEBUG_OUTPUT )
+		libnotify_verbose_printf(
+		 "%s: unicode local path data size\t: %" PRIu32 "\n",
+		 function,
+		 value_size );
+		libnotify_verbose_printf(
+		 "%s: unicode local path data:\n",
+		 function );
+		libnotify_verbose_print_data(
+		 location_information_unicode_value_data,
+		 unicode_value_size );
+#endif
+
+		if( liblnk_string_size_from_utf16_stream(
+		     location_information_unicode_value_data,
+		     unicode_value_size,
+		     LIBUNA_ENDIAN_LITTLE,
+		     &( location_information->local_path_size ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to determine size of local path.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+		location_information->local_path = (liblnk_character_t *) memory_allocate(
+		                                                           sizeof( liblnk_character_t ) * location_information->local_path_size );
+
+		if( location_information->local_path == NULL )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_MEMORY,
+			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 "%s: unable to create local path.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+		if( liblnk_string_copy_from_utf16_stream(
+		     location_information->local_path,
+		     location_information->local_path_size,
+		     location_information_unicode_value_data,
+		     unicode_value_size,
+		     LIBUNA_ENDIAN_LITTLE,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_CONVERSION,
+			 LIBERROR_CONVERSION_ERROR_GENERIC,
+			 "%s: unable to set local path.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+	}
+	else if( local_path_offset > 0 )
+	{
 		if( liblnk_string_size_from_byte_stream(
 		     location_information_value_data,
 		     value_size,
@@ -642,6 +945,10 @@ ssize_t liblnk_location_information_read(
 
 			return( -1 );
 		}
+	}
+	if( ( local_path_offset > 0 )
+	 || ( unicode_local_path_offset > 0 ) )
+	{
 #if defined( HAVE_DEBUG_OUTPUT )
 		libnotify_verbose_printf(
 		 "%s: local path\t\t: %" PRIs_LIBLNK "\n",
@@ -649,6 +956,8 @@ ssize_t liblnk_location_information_read(
 		 location_information->local_path );
 #endif
 	}
+	/* Network share information
+	 */
 	if( network_share_information_offset > 0 )
 	{
 		if( network_share_information_offset < location_information_header_size )
@@ -699,14 +1008,13 @@ ssize_t liblnk_location_information_read(
 		endian_little_convert_32bit(
 		 network_share_name_offset,
 		 ( (lnk_network_share_information_t *) location_information_value_data )->network_share_name_offset );
+		endian_little_convert_32bit(
+		 device_name_offset,
+		 ( (lnk_network_share_information_t *) location_information_value_data )->device_name_offset );
 
-		/* TODO add device name and network provider type */
-
-		/* TODO check for offset to unicode volume label */
-
-		if( network_share_name_offset > 20 )
-		{
-		}
+		endian_little_convert_32bit(
+		 location_information->network_provider_type,
+		 ( (lnk_network_share_information_t *) location_information_value_data )->network_provider_type );
 
 #if defined( HAVE_VERBOSE_OUTPUT )
 		libnotify_verbose_printf(
@@ -727,120 +1035,442 @@ ssize_t liblnk_location_information_read(
 		 "%s: network share information network share name offset\t: %" PRIu32 "\n",
 		 function,
 		 network_share_name_offset );
+		libnotify_verbose_printf(
+		 "%s: network share information device name offset\t\t: %" PRIu32 "\n",
+		 function,
+		 device_name_offset );
 
 		libnotify_verbose_printf(
-		 "%s: network share information network share unknown:\n",
-		 function );
-		libnotify_verbose_print_data(
-		 ( (lnk_network_share_information_t *) location_information_value_data )->unknown,
-		 8 );
+		 "%s: network share information network provider type\t: 0x%08" PRIx32 "\n",
+		 function,
+		 location_information->network_provider_type );
 #endif
-		if( network_share_name_offset > value_size )
+
+		if( network_share_name_offset > 20 )
 		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
-			 "%s: network share name offset exceeds network share information data.",
-			 function );
+			endian_little_convert_32bit(
+			 unicode_network_share_name_offset,
+			 ( (lnk_network_share_information_t *) location_information_value_data )->unicode_network_share_name_offset );
+			endian_little_convert_32bit(
+			 unicode_device_name_offset,
+			 ( (lnk_network_share_information_t *) location_information_value_data )->unicode_device_name_offset );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+#if defined( HAVE_VERBOSE_OUTPUT )
+			libnotify_verbose_printf(
+			 "%s: network share information unicode network share name offset\t: %" PRIu32 "\n",
+			 function,
+			 unicode_network_share_name_offset );
+			libnotify_verbose_printf(
+			 "%s: network share information unicode device name offset\t: %" PRIu32 "\n",
+			 function,
+			 unicode_device_name_offset );
+#endif
 		}
-		location_information_value_data = &( location_information_value_data[ network_share_name_offset ] );
-
-		value_size = 0;
-
-		while( location_information_value_data[ value_size ] != 0 )
+		if( network_share_name_offset > 0 )
 		{
+			if( network_share_name_offset > value_size )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+				 "%s: network share name offset exceeds network share information data.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			location_information_value_data = &( location_information_value_data[ network_share_name_offset ] );
+
+			value_size = 0;
+
+			while( location_information_value_data[ value_size ] != 0 )
+			{
+				value_size++;
+			}
 			value_size++;
-		}
-		value_size++;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: network share information network share name size\t: %" PRIu32 "\n",
-		 function,
-		 value_size );
-		libnotify_verbose_printf(
-		 "%s: network share information network share name data:\n",
-		 function );
-		libnotify_verbose_print_data(
-		 location_information_value_data,
-		 value_size );
+			libnotify_verbose_printf(
+			 "%s: network share information network share name size\t: %" PRIu32 "\n",
+			 function,
+			 value_size );
+			libnotify_verbose_printf(
+			 "%s: network share information network share name data:\n",
+			 function );
+			libnotify_verbose_print_data(
+			 location_information_value_data,
+			 value_size );
 #endif
-		if( liblnk_string_size_from_byte_stream(
-		     location_information_value_data,
-		     value_size,
-		     ascii_codepage,
-		     &( location_information->network_share_size ),
-		     error ) != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to determine size of network share.",
-			 function );
-
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
 		}
-		location_information->network_share = (liblnk_character_t *) memory_allocate(
-		                                                              sizeof( liblnk_character_t ) * location_information->network_share_size );
-
-		if( location_information->network_share == NULL )
+		if( unicode_network_share_name_offset > 0 )
 		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create network share.",
+			if( unicode_network_share_name_offset > location_information_value_size )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+				 "%s: unicode network share name offset exceeds volume information data.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			location_information_unicode_value_data = &( location_information_value_data[ unicode_network_share_name_offset ] );
+
+			unicode_value_size = 0;
+
+			while( ( location_information_unicode_value_data[ unicode_value_size ] != 0 )
+			    || ( location_information_unicode_value_data[ unicode_value_size + 1 ] != 0 ) )
+			{
+				unicode_value_size += 2;
+			}
+			unicode_value_size += 2;
+
+#if defined( HAVE_DEBUG_OUTPUT )
+			libnotify_verbose_printf(
+			 "%s: unicode volume information network share name size\t\t: %" PRIu32 "\n",
+			 function,
+			 unicode_value_size );
+			libnotify_verbose_printf(
+			 "%s: unicode volume information network share name data:\n",
 			 function );
+			libnotify_verbose_print_data(
+			 location_information_unicode_value_data,
+			 unicode_value_size );
+#endif
 
-			memory_free(
-			 location_information_data );
+			if( liblnk_string_size_from_utf16_stream(
+			     location_information_unicode_value_data,
+			     unicode_value_size,
+			     LIBUNA_ENDIAN_LITTLE,
+			     &( location_information->network_share_name_size ),
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to determine size of network share name.",
+				 function );
 
-			return( -1 );
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			location_information->network_share_name = (liblnk_character_t *) memory_allocate(
+			                                                                   sizeof( liblnk_character_t ) * location_information->network_share_name_size );
+
+			if( location_information->network_share_name == NULL )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_MEMORY,
+				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 "%s: unable to create network share name.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			if( liblnk_string_copy_from_utf16_stream(
+			     location_information->network_share_name,
+			     location_information->network_share_name_size,
+			     location_information_unicode_value_data,
+			     unicode_value_size,
+			     LIBUNA_ENDIAN_LITTLE,
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_CONVERSION,
+				 LIBERROR_CONVERSION_ERROR_GENERIC,
+				 "%s: unable to set network share name.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
 		}
-		if( liblnk_string_copy_from_byte_stream(
-		     location_information->network_share,
-		     location_information->network_share_size,
-		     location_information_value_data,
-		     value_size,
-		     ascii_codepage,
-		     error ) != 1 )
+		else
 		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_CONVERSION,
-			 LIBERROR_CONVERSION_ERROR_GENERIC,
-			 "%s: unable to set network share.",
-			 function );
+			if( liblnk_string_size_from_byte_stream(
+			     location_information_value_data,
+			     value_size,
+			     ascii_codepage,
+			     &( location_information->network_share_name_size ),
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to determine size of network share name.",
+				 function );
 
-			memory_free(
-			 location_information_data );
+				memory_free(
+				 location_information_data );
 
-			return( -1 );
+				return( -1 );
+			}
+			location_information->network_share_name = (liblnk_character_t *) memory_allocate(
+			                                                                   sizeof( liblnk_character_t ) * location_information->network_share_name_size );
+
+			if( location_information->network_share_name == NULL )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_MEMORY,
+				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 "%s: unable to create network share name.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			if( liblnk_string_copy_from_byte_stream(
+			     location_information->network_share_name,
+			     location_information->network_share_name_size,
+			     location_information_value_data,
+			     value_size,
+			     ascii_codepage,
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_CONVERSION,
+				 LIBERROR_CONVERSION_ERROR_GENERIC,
+				 "%s: unable to set network share name.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
 		libnotify_verbose_printf(
-		 "%s: network share\t\t: %" PRIs_LIBLNK "\n",
+		 "%s: volume information network share name\t: %" PRIs_LIBLNK "\n",
 		 function,
-		 location_information->network_share );
+		 location_information->network_share_name );
 #endif
-		/* TODO check for offset to unicode network share name data */
 
-		/* TODO add unicode version if available other wise use ASCII version */
+		if( device_name_offset > 0 )
+		{
+			if( device_name_offset > value_size )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+				 "%s: device name offset exceeds network share information data.",
+				 function );
 
-		/* TODO check for offset to device name data */
+				memory_free(
+				 location_information_data );
 
-		/* TODO check for offset to unicode device name data */
+				return( -1 );
+			}
+			location_information_value_data = &( location_information_value_data[ device_name_offset ] );
+
+			value_size = 0;
+
+			while( location_information_value_data[ value_size ] != 0 )
+			{
+				value_size++;
+			}
+			value_size++;
+
+#if defined( HAVE_DEBUG_OUTPUT )
+			libnotify_verbose_printf(
+			 "%s: network share information device name size\t: %" PRIu32 "\n",
+			 function,
+			 value_size );
+			libnotify_verbose_printf(
+			 "%s: network share information device name data:\n",
+			 function );
+			libnotify_verbose_print_data(
+			 location_information_value_data,
+			 value_size );
+#endif
+		}
+		if( unicode_device_name_offset > 0 )
+		{
+			if( unicode_device_name_offset > location_information_value_size )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+				 "%s: unicode device name offset exceeds volume information data.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			location_information_unicode_value_data = &( location_information_value_data[ unicode_device_name_offset ] );
+
+			unicode_value_size = 0;
+
+			while( ( location_information_unicode_value_data[ unicode_value_size ] != 0 )
+			    || ( location_information_unicode_value_data[ unicode_value_size + 1 ] != 0 ) )
+			{
+				unicode_value_size += 2;
+			}
+			unicode_value_size += 2;
+
+#if defined( HAVE_DEBUG_OUTPUT )
+			libnotify_verbose_printf(
+			 "%s: unicode volume information device name size\t\t: %" PRIu32 "\n",
+			 function,
+			 unicode_value_size );
+			libnotify_verbose_printf(
+			 "%s: unicode volume information device name data:\n",
+			 function );
+			libnotify_verbose_print_data(
+			 location_information_unicode_value_data,
+			 unicode_value_size );
+#endif
+			if( liblnk_string_size_from_utf16_stream(
+			     location_information_unicode_value_data,
+			     unicode_value_size,
+			     LIBUNA_ENDIAN_LITTLE,
+			     &( location_information->device_name_size ),
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to determine size of device name.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			location_information->device_name = (liblnk_character_t *) memory_allocate(
+			                                                            sizeof( liblnk_character_t ) * location_information->device_name_size );
+
+			if( location_information->device_name == NULL )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_MEMORY,
+				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 "%s: unable to create device name.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			if( liblnk_string_copy_from_utf16_stream(
+			     location_information->device_name,
+			     location_information->device_name_size,
+			     location_information_unicode_value_data,
+			     unicode_value_size,
+			     LIBUNA_ENDIAN_LITTLE,
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_CONVERSION,
+				 LIBERROR_CONVERSION_ERROR_GENERIC,
+				 "%s: unable to set device name.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+		}
+		else
+		{
+			if( liblnk_string_size_from_byte_stream(
+			     location_information_value_data,
+			     value_size,
+			     ascii_codepage,
+			     &( location_information->device_name_size ),
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to determine size of device name.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			location_information->device_name = (liblnk_character_t *) memory_allocate(
+			                                                            sizeof( liblnk_character_t ) * location_information->device_name_size );
+
+			if( location_information->device_name == NULL )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_MEMORY,
+				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 "%s: unable to create device name.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+			if( liblnk_string_copy_from_byte_stream(
+			     location_information->device_name,
+			     location_information->device_name_size,
+			     location_information_value_data,
+			     value_size,
+			     ascii_codepage,
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_CONVERSION,
+				 LIBERROR_CONVERSION_ERROR_GENERIC,
+				 "%s: unable to set device name.",
+				 function );
+
+				memory_free(
+				 location_information_data );
+
+				return( -1 );
+			}
+		}
+#if defined( HAVE_DEBUG_OUTPUT )
+		libnotify_verbose_printf(
+		 "%s: volume information device name\t: %" PRIs_LIBLNK "\n",
+		 function,
+		 location_information->device_name );
+#endif
 	}
+	/* Common path
+	 */
 	if( common_path_offset > 0 )
 	{
 		if( common_path_offset < location_information_header_size )
@@ -895,7 +1525,121 @@ ssize_t liblnk_location_information_read(
 		 location_information_value_data,
 		 value_size );
 #endif
+	}
+	if( unicode_common_path_offset > 0 )
+	{
+		if( unicode_common_path_offset < location_information_header_size )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 "%s: unicode common path information offset smaller than location information header size",
+			 function );
 
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+		unicode_common_path_offset -= 4;
+
+		if( unicode_common_path_offset > location_information_size )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 "%s: unicode common path offset exceeds location information data.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+		location_information_unicode_value_data = &( location_information_data[ unicode_common_path_offset ] );
+
+		unicode_value_size = 0;
+
+		while( location_information_unicode_value_data[ unicode_value_size ] != 0 )
+		{
+			unicode_value_size += 2;
+		}
+		unicode_value_size += 2;
+
+#if defined( HAVE_DEBUG_OUTPUT )
+		libnotify_verbose_printf(
+		 "%s: unicode common path data size\t: %" PRIu32 "\n",
+		 function,
+		 value_size );
+		libnotify_verbose_printf(
+		 "%s: unicode common path data:\n",
+		 function );
+		libnotify_verbose_print_data(
+		 location_information_unicode_value_data,
+		 unicode_value_size );
+#endif
+
+		if( liblnk_string_size_from_utf16_stream(
+		     location_information_unicode_value_data,
+		     unicode_value_size,
+		     LIBUNA_ENDIAN_LITTLE,
+		     &( location_information->common_path_size ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to determine size of common path.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+		location_information->common_path = (liblnk_character_t *) memory_allocate(
+		                                                            sizeof( liblnk_character_t ) * location_information->common_path_size );
+
+		if( location_information->common_path == NULL )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_MEMORY,
+			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 "%s: unable to create common path.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+		if( liblnk_string_copy_from_utf16_stream(
+		     location_information->common_path,
+		     location_information->common_path_size,
+		     location_information_unicode_value_data,
+		     unicode_value_size,
+		     LIBUNA_ENDIAN_LITTLE,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_CONVERSION,
+			 LIBERROR_CONVERSION_ERROR_GENERIC,
+			 "%s: unable to set common path.",
+			 function );
+
+			memory_free(
+			 location_information_data );
+
+			return( -1 );
+		}
+	}
+	else if( common_path_offset > 0 )
+	{
 		if( liblnk_string_size_from_byte_stream(
 		     location_information_value_data,
 		     value_size,
@@ -952,6 +1696,10 @@ ssize_t liblnk_location_information_read(
 
 			return( -1 );
 		}
+	}
+	if( ( common_path_offset > 0 )
+	 || ( unicode_common_path_offset > 0 ) )
+	{
 #if defined( HAVE_DEBUG_OUTPUT )
 		libnotify_verbose_printf(
 		 "%s: common path\t\t: %" PRIs_LIBLNK "\n",
@@ -959,7 +1707,6 @@ ssize_t liblnk_location_information_read(
 		 location_information->common_path );
 #endif
 	}
-	/* TODO implement unicode local path and unicode common path */
 
 	memory_free(
 	 location_information_data );

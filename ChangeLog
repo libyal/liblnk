@@ -6,12 +6,19 @@ TODO
 
 * add class id check to check signature ?
 
+Refactor
+* volume information read into separate subfunction
+* network share information read into separate subfunction
+
 Deployment:
 * update manuals
 * create debian package files
 * update macosx package files
 * update codegear files
 * check msvcpp files
+
+20090908
+* worked on implementic API functions
 
 20090907
 * textual changes

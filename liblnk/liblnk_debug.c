@@ -128,6 +128,230 @@ int liblnk_debug_print_file_attribute_flags(
 	return( 1 );
 }
 
+/* Prints the nework provider type
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_debug_print_network_provider_type(
+     uint32_t network_provider_type,
+     liberror_error_t **error )
+{
+	static char *function = "liblnk_debug_print_network_provider_type";
+
+	libnotify_verbose_printf(
+	 "%s: network provider type\t: 0x%08" PRIx32 "\n",
+	 function,
+	 network_provider_type );
+
+	switch( network_provider_type )
+	{
+		case 0x001a0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_AVID" );
+			break;
+
+		case 0x001b0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_DOCUSPACE" );
+			break;
+
+		case 0x001c0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_MANGOSOFT" );
+			break;
+
+		case 0x001d0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_SERNET" );
+			break;
+
+		case 0x001e0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_RIVERFRONT1" );
+			break;
+
+		case 0x001f0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_RIVERFRONT2" );
+			break;
+
+		case 0x00200000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_DECORB" );
+			break;
+
+		case 0x00210000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_PROTSTOR" );
+			break;
+
+		case 0x00220000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_FJ_REDIR" );
+			break;
+
+		case 0x00230000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_DISTINCT" );
+			break;
+
+		case 0x00240000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_TWINS" );
+			break;
+
+		case 0x00250000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_RDR2SAMPLE" );
+			break;
+
+		case 0x00260000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_CSC" );
+			break;
+
+		case 0x00270000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_3IN1" );
+			break;
+
+		case 0x00290000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_EXTENDNET" );
+			break;
+
+		case 0x002a0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_STAC" );
+			break;
+
+		case 0x002b0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_FOXBAT" );
+			break;
+
+		case 0x002c0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_YAHOO" );
+			break;
+
+		case 0x002d0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_EXIFS" );
+			break;
+
+		case 0x002e0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_DAV" );
+			break;
+
+		case 0x002f0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_KNOWARE" );
+			break;
+
+		case 0x00300000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_OBJECT_DIRE" );
+			break;
+
+		case 0x00310000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_MASFAX" );
+			break;
+
+		case 0x00320000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_HOB_NFS" );
+			break;
+
+		case 0x00330000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_SHIVA" );
+			break;
+
+		case 0x00340000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_IBMAL" );
+			break;
+
+		case 0x00350000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_LOCK" );
+			break;
+
+		case 0x00360000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_TERMSRV" );
+			break;
+
+		case 0x00370000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_SRT" );
+			break;
+
+		case 0x00380000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_QUINCY" );
+			break;
+
+		case 0x00390000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_OPENAFS" );
+			break;
+
+		case 0x003a0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_AVID1" );
+			break;
+
+		case 0x003b0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_DFS" );
+			break;
+
+		case 0x003c0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_KWNP" );
+			break;
+
+		case 0x003d0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_ZENWORKS" );
+			break;
+
+		case 0x003e0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_DRIVEONWEB" );
+			break;
+
+		case 0x003f0000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_VMWARE" );
+			break;
+
+		case 0x00400000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_RSFX" );
+			break;
+
+		case 0x00410000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_MFILES" );
+			break;
+
+		case 0x00420000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_MS_NFS" );
+			break;
+
+		case 0x00430000:
+			libnotify_verbose_printf(
+			 "WNNC_NET_GOOGLE" );
+			break;
+	}
+	return( 1 );
+}
+
 /* Prints the read offsets
  * Returns 1 if successful or -1 on error
  */

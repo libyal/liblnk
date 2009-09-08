@@ -43,6 +43,14 @@ struct liblnk_location_information
 	 */
 	uint32_t flags;
 
+	/* The volume label string
+	 */
+	liblnk_character_t *volume_label;
+
+	/* The size of the volume label string
+	 */
+	size_t volume_label_size;
+
 	/* The local path string
 	 */
 	liblnk_character_t *local_path;
@@ -51,13 +59,25 @@ struct liblnk_location_information
 	 */
 	size_t local_path_size;
 
-	/* The network share string
+	/* The network share name string
 	 */
-	liblnk_character_t *network_share;
+	liblnk_character_t *network_share_name;
 
-	/* The size of the network share string
+	/* The size of the network share name string
 	 */
-	size_t network_share_size;
+	size_t network_share_name_size;
+
+	/* The device name string
+	 */
+	liblnk_character_t *device_name;
+
+	/* The size of the device name string
+	 */
+	size_t device_name_size;
+
+	/* The network provider type
+	 */
+	uint32_t network_provider_type;
 
 	/* The common path string
 	 */

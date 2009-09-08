@@ -72,6 +72,9 @@ struct lnk_location_information
 	 */
 	uint8_t unicode_local_path_offset[ 4 ];
 
+	/* The following values are only available if the header size > 32
+	 */
+
 	/* The offset of the unicode common path
 	 * Consists of 4 bytes
 	 */
@@ -101,6 +104,14 @@ struct lnk_volume_information
 	 * Consists of 4 bytes
 	 */
 	uint8_t volume_label_offset[ 4 ];
+
+	/* The following values are only available if the volume label offset > 16
+	 */
+
+	/* The offset of the unicode volume label
+	 * Consists of 4 bytes
+	 */
+	uint8_t unicode_volume_label_offset[ 4 ];
 };
 
 typedef struct lnk_network_share_information lnk_network_share_information_t;
@@ -122,10 +133,28 @@ struct lnk_network_share_information
 	 */
 	uint8_t network_share_name_offset[ 4 ];
 
-	/* Unknown
-	 * Consists of 8 bytes
+	/* The offset of the device name
+	 * Consists of 4 bytes
 	 */
-	uint8_t unknown[ 8 ];
+	uint8_t device_name_offset[ 4 ];
+
+	/* The network provide type
+	 * Consists of 4 bytes
+	 */
+	uint8_t network_provider_type[ 4 ];
+
+	/* The following values are only available if the network share name offset > 20
+	 */
+
+	/* The offset of the unicode network share name
+	 * Consists of 4 bytes
+	 */
+	uint8_t unicode_network_share_name_offset[ 4 ];
+
+	/* The offset of the unicode device name
+	 * Consists of 4 bytes
+	 */
+	uint8_t unicode_device_name_offset[ 4 ];
 };
 
 #if defined( __cplusplus )
