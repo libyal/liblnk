@@ -36,6 +36,10 @@ extern "C" {
 
 #if defined( HAVE_DEBUG_OUTPUT )
 
+int liblnk_debug_print_data_flags(
+     uint32_t data_flags,
+     liberror_error_t **error );
+
 int liblnk_debug_print_file_attribute_flags(
      uint32_t file_attribute_flags,
      liberror_error_t **error );

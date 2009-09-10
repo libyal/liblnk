@@ -80,8 +80,10 @@ int lnkinfo_file_info_fprint(
 {
 	libsystem_character_t date_time_string[ 26 ];
 
+	uint8_t *value_string         = NULL;
 	filetime_t filetime           = FILETIME_ZERO;
 	static char *function         = "lnkinfo_file_info_fprint";
+	size_t value_string_size      = 0;
 	uint64_t value_64bit          = 0;
 	uint32_t data_flags           = 0;
 	uint32_t file_attribute_flags = 0;
@@ -322,6 +324,122 @@ int lnkinfo_file_info_fprint(
 		 "\tAccess time\t\t: %" PRIs_LIBSYSTEM "\n",
 		 date_time_string );
 
+		result = liblnk_file_get_local_path_size(
+		          file,
+		          &value_string_size,
+		          error );
+
+		if( result == -1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve local path size.",
+			 function );
+
+			return( -1 );
+		}
+		else if( result != 0 )
+		{
+			value_string = (uint8_t *) memory_allocate(
+			                            sizeof( uint8_t ) * value_string_size );
+
+			if( value_string == NULL )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_MEMORY,
+				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 "%s: unable to create local path value string.",
+				 function );
+
+				return( -1 );
+			}
+			if( liblnk_file_get_local_path(
+			     file,
+			     value_string,
+			     value_string_size,
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to retrieve local path.",
+				 function );
+
+				memory_free(
+				 value_string );
+
+				return( -1 );
+			}
+			fprintf(
+			 stream,
+			 "\tLocal path\t\t: %s\n",
+			 value_string );
+
+			memory_free(
+			 value_string );
+		}
+		result = liblnk_file_get_network_path_size(
+		          file,
+		          &value_string_size,
+		          error );
+
+		if( result == -1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve local path size.",
+			 function );
+
+			return( -1 );
+		}
+		else if( result != 0 )
+		{
+			value_string = (uint8_t *) memory_allocate(
+			                            sizeof( uint8_t ) * value_string_size );
+
+			if( value_string == NULL )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_MEMORY,
+				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 "%s: unable to create local path value string.",
+				 function );
+
+				return( -1 );
+			}
+			if( liblnk_file_get_network_path(
+			     file,
+			     value_string,
+			     value_string_size,
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to retrieve local path.",
+				 function );
+
+				memory_free(
+				 value_string );
+
+				return( -1 );
+			}
+			fprintf(
+			 stream,
+			 "\tNetwork path\t\t: %s\n",
+			 value_string );
+
+			memory_free(
+			 value_string );
+		}
 	}
 	fprintf(
 	 stream,

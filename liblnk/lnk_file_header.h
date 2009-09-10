@@ -34,11 +34,10 @@ typedef struct lnk_file_header lnk_file_header_t;
 
 struct lnk_file_header
 {
-	/* Signature
+	/* The header size
 	 * Consists of 4 bytes
-	 * Contains the value: 0x4c 0x00 0x00 0x00
 	 */
-	uint8_t signature[ 4 ];
+	uint8_t header_size[ 4 ];
 
 	/* Class identifier
 	 * Consists of 16 bytes

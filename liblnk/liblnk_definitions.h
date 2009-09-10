@@ -38,11 +38,11 @@
  * for local use of liblnk
  */
 #else
-#define LIBLNK_VERSION			20090908
+#define LIBLNK_VERSION			20090910
 
 /* The liblnk version string
  */
-#define LIBLNK_VERSION_STRING		"20090908"
+#define LIBLNK_VERSION_STRING		"20090910"
 
 /* The liblnk file access
  * bit 1        set to 1 for read access
@@ -84,7 +84,7 @@ enum LIBLNK_DATA_FLAGS
 
 	LIBLNK_DATA_FLAG_RUN_WITH_SHIM_LAYER				= 0x00020000,
 	LIBLNK_DATA_FLAG_NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK	= 0x00040000,
-	LIBLNK_DATA_FLAG_HAS_TARGET_METADATA				= 0x00080000,
+	LIBLNK_DATA_FLAG_HAS_METADATA_PROPERTY_STORE_DATA_BLOCK		= 0x00080000,
 };
 
 /* The file attribute flags

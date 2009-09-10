@@ -4,9 +4,6 @@ TODO
 * create API functions to access link information values
 * work on todo's
 
-* change file header, signature is the header size
-  use the class identifier to check the file signature
-
 Refactor
 * volume information read into separate subfunction
 * network share information read into separate subfunction
@@ -17,6 +14,9 @@ Deployment:
 * update macosx package files
 * update codegear files
 * check msvcpp files
+
+20090910
+* changed file sigature detection
 
 20090908
 * worked on implementic API functions

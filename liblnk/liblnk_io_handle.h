@@ -35,7 +35,7 @@
 extern "C" {
 #endif
 
-extern const uint8_t lnk_file_signature[ 4 ];
+extern const uint8_t lnk_file_class_identifier[ 16 ];
 
 typedef struct liblnk_io_handle liblnk_io_handle_t;
 

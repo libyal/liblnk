@@ -39,7 +39,8 @@
 
 #include "lnk_file_header.h"
 
-const uint8_t lnk_file_signature[ 4 ] = { 0x4c, 0x00, 0x00, 0x00 };
+const uint8_t lnk_file_class_identifier[ 16 ] = \
+	{ 0x01, 0x14, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46 };
 
 /* Initialize an io handle
  * Make sure the value io_handle is pointing to is set to NULL
@@ -274,6 +275,7 @@ int liblnk_io_handle_read_file_header(
 
 	static char *function             = "liblnk_io_handle_read_file_header";
 	ssize_t read_count                = 0;
+	uint32_t header_size              = 0;
 
 #if defined( HAVE_VERBOSE_OUTPUT )
 	liblnk_character_t date_time_string[ 22 ];
@@ -386,16 +388,32 @@ int liblnk_io_handle_read_file_header(
 	 sizeof( lnk_file_header_t ) );
 #endif
 
-	if( memory_compare(
-	     file_header.signature,
-	     lnk_file_signature,
-	     4 ) != 0 )
+	endian_little_convert_32bit(
+	 header_size,
+	 file_header.header_size );
+
+	if( header_size != 0x4c )
 	{
 		liberror_error_set(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
-		 "%s: invalid file signature.",
+		 "%s: unsupported header size: %" PRIu32 ".",
+		 function,
+		 header_size );
+
+		return( -1 );
+	}
+	if( memory_compare(
+	     file_header.class_identifier,
+	     lnk_file_class_identifier,
+	     16 ) != 0 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
+		 "%s: unsupported file class identifier.",
 		 function );
 
 		return( -1 );
@@ -436,13 +454,10 @@ int liblnk_io_handle_read_file_header(
 	 file_header.file_size );
 
 #if defined( HAVE_VERBOSE_OUTPUT )
-	endian_little_convert_32bit(
-	 test,
-	 file_header.signature );
 	libnotify_verbose_printf(
-	 "%s: signature\t\t: 0x%08" PRIx32 "\n",
+	 "%s: header size\t\t: %" PRIu32 "\n",
 	 function,
-	 test );
+	 header_size );
 
 	if( liblnk_guid_to_string(
 	     (liblnk_guid_t *) file_header.class_identifier,
@@ -465,11 +480,19 @@ int liblnk_io_handle_read_file_header(
 	 function,
 	 guid_string );
 
-	libnotify_verbose_printf(
-	 "%s: data flags\t\t: 0x%08" PRIx32 "\n",
-	 function,
-	 *data_flags );
+	if( liblnk_debug_print_data_flags(
+	     *data_flags,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 "%s: unable to print data flags.",
+		 function );
 
+		return( -1 );
+	}
         if( liblnk_debug_print_file_attribute_flags(
 	     file_information->attribute_flags,
 	     error ) != 1 )

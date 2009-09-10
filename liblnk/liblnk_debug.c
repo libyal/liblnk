@@ -34,6 +34,150 @@
 
 #if defined( HAVE_DEBUG_OUTPUT )
 
+/* Prints the data flags
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_debug_print_data_flags(
+     uint32_t data_flags,
+     liberror_error_t **error )
+{
+	static char *function = "liblnk_debug_print_data_flags";
+
+	libnotify_verbose_printf(
+	 "%s: data flags: 0x%08" PRIx32 "\n",
+	 function,
+	 data_flags );
+
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) == LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER )
+	{
+		libnotify_verbose_printf(
+		 "\tContains link target identifier (HasTargetIDList)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) == LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION )
+	{
+		libnotify_verbose_printf(
+		 "\tContains location information (HasLinkInfo)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) == LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING )
+	{
+		libnotify_verbose_printf(
+		 "\tContains description string (HasName)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) == LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING )
+	{
+		libnotify_verbose_printf(
+		 "\tContains relative path string (HasRelativePath)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) == LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING )
+	{
+		libnotify_verbose_printf(
+		 "\tContains working directory string (HasWorkingDir)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) == LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING )
+	{
+		libnotify_verbose_printf(
+		 "\tContains command line arguments string (HasArguments)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) == LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING )
+	{
+		libnotify_verbose_printf(
+		 "\tContains icon location string (HasIconLocation)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_IS_UNICODE ) == LIBLNK_DATA_FLAG_IS_UNICODE )
+	{
+		libnotify_verbose_printf(
+		 "\tString are in Unicode (IsUnicode)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_FORCE_NO_LOCATION_INFORMATION ) == LIBLNK_DATA_FLAG_FORCE_NO_LOCATION_INFORMATION )
+	{
+		libnotify_verbose_printf(
+		 "\tIgnore the location information (ForceNoLinkInfo)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_ENVIRONMENT_VARIABLES_LOCATION_BLOCK ) == LIBLNK_DATA_FLAG_HAS_ENVIRONMENT_VARIABLES_LOCATION_BLOCK )
+	{
+		libnotify_verbose_printf(
+		 "\tContains environment variables location block (HasExpString)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_RUN_IN_SEPARATE_PROCESS ) == LIBLNK_DATA_FLAG_RUN_IN_SEPARATE_PROCESS )
+	{
+		libnotify_verbose_printf(
+		 "\tRun in separate process (RunInSeparateProcess)\n" );
+	}
+
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_DARWIN_IDENTIFIER ) == LIBLNK_DATA_FLAG_HAS_DARWIN_IDENTIFIER )
+	{
+		libnotify_verbose_printf(
+		 "\tContains Darwin properites location block (HasDarwinID)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_RUN_AS_USER ) == LIBLNK_DATA_FLAG_RUN_AS_USER )
+	{
+		libnotify_verbose_printf(
+		 "\tRun as user (RunAsUser)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_BLOCK ) == LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_BLOCK )
+	{
+		libnotify_verbose_printf(
+		 "\tContains icon location block (HasExpIcon)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_NO_PIDL_ALIAS ) == LIBLNK_DATA_FLAG_NO_PIDL_ALIAS )
+	{
+		libnotify_verbose_printf(
+		 "\t(NoPidlAlias)\n" );
+	}
+
+	if( ( data_flags & LIBLNK_DATA_FLAG_RUN_WITH_SHIM_LAYER ) == LIBLNK_DATA_FLAG_RUN_WITH_SHIM_LAYER )
+	{
+		libnotify_verbose_printf(
+		 "\tContains shim layer properties block (RunWithShimLayer)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK ) == LIBLNK_DATA_FLAG_NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK )
+	{
+		libnotify_verbose_printf(
+		 "\tDoes not contain distributed link tracking data block (ForceNoLinkTrack)\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_METADATA_PROPERTY_STORE_DATA_BLOCK ) == LIBLNK_DATA_FLAG_HAS_METADATA_PROPERTY_STORE_DATA_BLOCK )
+	{
+		libnotify_verbose_printf(
+		 "\tContains metadata property store block (HasTargetMetadata)\n" );
+	}
+
+	if( ( data_flags & 0x00100000 ) == 0x00100000 )
+	{
+		libnotify_verbose_printf(
+		 "\t(DisableLinkPathTracking)\n" );
+	}
+	if( ( data_flags & 0x00200000 ) == 0x00200000 )
+	{
+		libnotify_verbose_printf(
+		 "\t(DisableKnownFolderTracking)\n" );
+	}
+	if( ( data_flags & 0x00400000 ) == 0x00400000 )
+	{
+		libnotify_verbose_printf(
+		 "\t(AllowLinkToLink)\n" );
+	}
+	if( ( data_flags & 0x00800000 ) == 0x00800000 )
+	{
+		libnotify_verbose_printf(
+		 "\t(UnaliasOnSave)\n" );
+	}
+	if( ( data_flags & 0x01000000 ) == 0x01000000 )
+	{
+		libnotify_verbose_printf(
+		 "\t(PreferEnvironmentPath)\n" );
+	}
+	if( ( data_flags & 0x02000000 ) == 0x02000000 )
+	{
+		libnotify_verbose_printf(
+		 "\t(KeepLocalIDListForUNCTarget)\n" );
+	}
+
+	libnotify_verbose_printf(
+	 "\n" );
+
+	return( 1 );
+}
+
 /* Prints the file attribute flags
  * Returns 1 if successful or -1 on error
  */
@@ -44,7 +188,7 @@ int liblnk_debug_print_file_attribute_flags(
 	static char *function = "liblnk_debug_print_file_attribute_flags";
 
 	libnotify_verbose_printf(
-	 "%s: file attribute flags\t: 0x%08" PRIx32 "\n",
+	 "%s: file attribute flags: 0x%08" PRIx32 "\n",
 	 function,
 	 file_attribute_flags );
 
@@ -125,6 +269,9 @@ int liblnk_debug_print_file_attribute_flags(
 		libnotify_verbose_printf(
 		 "\tIs virtual (FILE_ATTRIBUTE_VIRTUAL)\n" );
 	}
+	libnotify_verbose_printf(
+	 "\n" );
+
 	return( 1 );
 }
 
@@ -138,7 +285,7 @@ int liblnk_debug_print_network_provider_type(
 	static char *function = "liblnk_debug_print_network_provider_type";
 
 	libnotify_verbose_printf(
-	 "%s: network provider type\t: 0x%08" PRIx32 "\n",
+	 "%s: network provider type: 0x%08" PRIx32 " (",
 	 function,
 	 network_provider_type );
 
@@ -349,6 +496,9 @@ int liblnk_debug_print_network_provider_type(
 			 "WNNC_NET_GOOGLE" );
 			break;
 	}
+	libnotify_verbose_printf(
+	 ")\n" );
+
 	return( 1 );
 }
 

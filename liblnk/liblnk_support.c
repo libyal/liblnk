@@ -260,7 +260,7 @@ int liblnk_check_file_signature_file_io_handle(
      libbfio_handle_t *bfio_handle,
      liberror_error_t **error )
 {
-	uint8_t signature[ 4 ];
+	uint8_t signature[ 20 ];
 
 	static char *function = "liblnk_check_file_signature_file_io_handle";
 	ssize_t read_count    = 0;
@@ -293,10 +293,10 @@ int liblnk_check_file_signature_file_io_handle(
 	read_count = libbfio_handle_read(
 	              bfio_handle,
 	              signature,
-	              4,
+	              20,
 	              error );
 
-	if( read_count != 4 )
+	if( read_count != 20 )
 	{
 		liberror_error_set(
 		 error,
@@ -325,9 +325,9 @@ int liblnk_check_file_signature_file_io_handle(
 		return( -1 );
 	}
 	if( memory_compare(
-	     lnk_file_signature,
-	     signature,
-	     4 ) == 0 )
+	     lnk_file_class_identifier,
+	     &( signature[ 4 ] ),
+	     16 ) == 0 )
 	{
 		return( 1 );
 	}
