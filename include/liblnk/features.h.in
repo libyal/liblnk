@@ -30,7 +30,7 @@
 
 #endif
 
-#if defined( HAVE_LIBBFIO ) || @HAVE_LIBBFIO@
+#if defined( HAVE_LIBBFIO ) || ( !defined( WINAPI ) && @HAVE_LIBBFIO@ )
 #define LIBLNK_HAVE_BFIO			1
 #endif
 
