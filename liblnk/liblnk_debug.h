@@ -44,6 +44,10 @@ int liblnk_debug_print_file_attribute_flags(
      uint32_t file_attribute_flags,
      liberror_error_t **error );
 
+int liblnk_debug_print_network_provider_type(
+     uint32_t network_provider_type,
+     liberror_error_t **error );
+
 int liblnk_debug_print_read_offsets(
      libbfio_handle_t *file_io_handle,
      liberror_error_t **error );
