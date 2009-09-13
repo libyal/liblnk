@@ -15,6 +15,9 @@ Deployment:
 * update codegear files
 * check msvcpp files
 
+20090913
+* added seek offset 0 when reading file header
+
 20090911
 * updated libsystem
 

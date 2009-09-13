@@ -543,7 +543,9 @@ int liblnk_debug_print_read_offsets(
 	libnotify_verbose_printf(
 	 "Offsets read:\n" );
 
-	for( offset_iterator = 0; offset_iterator < amount_of_offsets; offset_iterator++ )
+	for( offset_iterator = 0;
+	     offset_iterator < amount_of_offsets;
+	     offset_iterator++ )
 	{
 		if( libbfio_handle_get_offset_read(
 		     file_io_handle,
@@ -558,7 +560,7 @@ int liblnk_debug_print_read_offsets(
 			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve offset: %d.",
 			 function,
-			 ( offset_iterator + 1 ) );
+			 offset_iterator );
 
 			return( -1 );
 		}
@@ -566,8 +568,8 @@ int liblnk_debug_print_read_offsets(
 		 "%08" PRIu64 " ( 0x%08" PRIx64 " ) - %08" PRIu64 " ( 0x%08" PRIx64 " ) size: %" PRIu64 "\n",
 		 offset,
 		 offset,
-		 ( offset + size ),
-		 ( offset + size ),
+		 offset + size,
+		 offset + size,
 		 size );
 	}
 	libnotify_verbose_printf(
