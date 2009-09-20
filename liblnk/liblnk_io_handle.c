@@ -485,7 +485,7 @@ int liblnk_io_handle_read_file_header(
 
 	if( liblnk_guid_to_string(
 	     (liblnk_guid_t *) file_header.class_identifier,
-	     LIBLNK_ENDIAN_LITTLE,
+	     LIBFDATETIME_ENDIAN_LITTLE,
 	     guid_string,
 	     LIBLNK_GUID_STRING_SIZE,
 	     error ) != 1 )
@@ -547,7 +547,7 @@ int liblnk_io_handle_read_file_header(
 	     filetime,
 	     file_header.creation_time,
 	     8,
-	     LIBLNK_ENDIAN_LITTLE,
+	     LIBFDATETIME_ENDIAN_LITTLE,
 	     error ) != 1 )
 	{
 		liberror_error_set(
@@ -593,7 +593,7 @@ int liblnk_io_handle_read_file_header(
 	     filetime,
 	     file_header.access_time,
 	     8,
-	     LIBLNK_ENDIAN_LITTLE,
+	     LIBFDATETIME_ENDIAN_LITTLE,
 	     error ) != 1 )
 	{
 		liberror_error_set(
@@ -639,7 +639,7 @@ int liblnk_io_handle_read_file_header(
 	     filetime,
 	     file_header.modification_time,
 	     8,
-	     LIBLNK_ENDIAN_LITTLE,
+	     LIBFDATETIME_ENDIAN_LITTLE,
 	     error ) != 1 )
 	{
 		liberror_error_set(
