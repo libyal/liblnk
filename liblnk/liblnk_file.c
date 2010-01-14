@@ -1,8 +1,8 @@
 /*
  * liblnk file
  *
- * Copyright (c) 2008-2009, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations. All rights reserved.
+ * Copyright (c) 2008-2010, Joachim Metz <forensics@hoffmannbv.nl>,
+ * Hoffmann Investigations.
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -29,8 +29,7 @@
 #include <liberror.h>
 #include <libnotify.h>
 
-#include <liblnk/codepage.h>
-
+#include "liblnk_codepage.h"
 #include "liblnk_data_string.h"
 #include "liblnk_definitions.h"
 #include "liblnk_io_handle.h"
@@ -105,7 +104,7 @@ int liblnk_file_initialize(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to initialize file information.",
+			 "%s: unable to create file information.",
 			 function );
 
 			memory_free(
@@ -121,7 +120,7 @@ int liblnk_file_initialize(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to initialize io handle.",
+			 "%s: unable to create io handle.",
 			 function );
 
 			liblnk_file_information_free(
@@ -132,7 +131,7 @@ int liblnk_file_initialize(
 
 			return( -1 );
 		}
-		internal_file->ascii_codepage = LIBLNK_CODEPAGE_WINDOWS_1250;
+		internal_file->ascii_codepage = LIBLNK_CODEPAGE_WINDOWS_1252;
 
 		*file = (liblnk_file_t *) internal_file;
 	}
@@ -392,7 +391,7 @@ int liblnk_file_open(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-		 "%s: unable to initialize file io handle.",
+		 "%s: unable to create file io handle.",
 		 function );
 
 		return( -1 );
@@ -409,6 +408,10 @@ int liblnk_file_open(
                  LIBERROR_RUNTIME_ERROR_SET_FAILED,
                  "%s: unable to set track offsets read in file io handle.",
                  function );
+
+		libbfio_handle_free(
+		 &file_io_handle,
+		 NULL );
 
                 return( -1 );
 	}
@@ -427,6 +430,10 @@ int liblnk_file_open(
                  "%s: unable to set filename in file io handle.",
                  function );
 
+		libbfio_handle_free(
+		 &file_io_handle,
+		 NULL );
+
                 return( -1 );
 	}
 	if( liblnk_file_open_file_io_handle(
@@ -442,6 +449,10 @@ int liblnk_file_open(
 		 "%s: unable to open file: %s.",
 		 function,
 		 filename );
+
+		libbfio_handle_free(
+		 &file_io_handle,
+		 NULL );
 
 		return( -1 );
 	}
@@ -520,7 +531,7 @@ int liblnk_file_open_wide(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-		 "%s: unable to initialize file io handle.",
+		 "%s: unable to create file io handle.",
 		 function );
 
 		return( -1 );
@@ -537,6 +548,10 @@ int liblnk_file_open_wide(
                  LIBERROR_RUNTIME_ERROR_SET_FAILED,
                  "%s: unable to set track offsets read in file io handle.",
                  function );
+
+		libbfio_handle_free(
+		 &file_io_handle,
+		 NULL );
 
                 return( -1 );
 	}
@@ -555,6 +570,10 @@ int liblnk_file_open_wide(
                  "%s: unable to set filename in file io handle.",
                  function );
 
+		libbfio_handle_free(
+		 &file_io_handle,
+		 NULL );
+
                 return( -1 );
 	}
 	if( liblnk_file_open_file_io_handle(
@@ -570,6 +589,10 @@ int liblnk_file_open_wide(
 		 "%s: unable to open file: %ls.",
 		 function,
 		 filename );
+
+		libbfio_handle_free(
+		 &file_io_handle,
+		 NULL );
 
 		return( -1 );
 	}
@@ -767,8 +790,11 @@ int liblnk_file_open_read(
 		return( -1 );
 	}
 #if defined( HAVE_VERBOSE_OUTPUT )
-	libnotify_verbose_printf(
-	 "Reading file header:\n" );
+	if( libnotify_verbose != 0 )
+	{
+		libnotify_printf(
+		 "Reading file header:\n" );
+	}
 #endif
 	if( liblnk_io_handle_read_file_header(
 	     internal_file->io_handle,
@@ -803,14 +829,17 @@ int liblnk_file_open_read(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to initialize link target identifier.",
+			 "%s: unable to create link target identifier.",
 			 function );
 
 			return( -1 );
 		}
 #if defined( HAVE_VERBOSE_OUTPUT )
-		libnotify_verbose_printf(
-		 "Reading shell items:\n" );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "Reading shell items:\n" );
+		}
 #endif
 		read_count = liblnk_shell_item_identifiers_list_read(
 		              internal_file->link_target_identifier,
@@ -841,14 +870,17 @@ int liblnk_file_open_read(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to initialize location information.",
+			 "%s: unable to create location information.",
 			 function );
 
 			return( -1 );
 		}
 #if defined( HAVE_VERBOSE_OUTPUT )
-		libnotify_verbose_printf(
-		 "Reading location information:\n" );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "Reading location information:\n" );
+		}
 #endif
 		read_count = liblnk_location_information_read(
 		              internal_file->location_information,
@@ -880,14 +912,17 @@ int liblnk_file_open_read(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to initialize description.",
+			 "%s: unable to create description.",
 			 function );
 
 			return( -1 );
 		}
 #if defined( HAVE_VERBOSE_OUTPUT )
-		libnotify_verbose_printf(
-		 "Reading description data string:\n" );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "Reading description data string:\n" );
+		}
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->description,
@@ -919,14 +954,17 @@ int liblnk_file_open_read(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to initialize relative path.",
+			 "%s: unable to create relative path.",
 			 function );
 
 			return( -1 );
 		}
 #if defined( HAVE_VERBOSE_OUTPUT )
-		libnotify_verbose_printf(
-		 "Reading relative path data string:\n" );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "Reading relative path data string:\n" );
+		}
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->relative_path,
@@ -958,14 +996,17 @@ int liblnk_file_open_read(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to initialize working directory.",
+			 "%s: unable to create working directory.",
 			 function );
 
 			return( -1 );
 		}
 #if defined( HAVE_VERBOSE_OUTPUT )
-		libnotify_verbose_printf(
-		 "Reading working directory data string:\n" );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "Reading working directory data string:\n" );
+		}
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->working_directory,
@@ -997,14 +1038,17 @@ int liblnk_file_open_read(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to initialize command line arguments.",
+			 "%s: unable to create command line arguments.",
 			 function );
 
 			return( -1 );
 		}
 #if defined( HAVE_VERBOSE_OUTPUT )
-		libnotify_verbose_printf(
-		 "Reading command line arguments data string:\n" );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "Reading command line arguments data string:\n" );
+		}
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->command_line_arguments,
@@ -1036,14 +1080,17 @@ int liblnk_file_open_read(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to initialize icon location.",
+			 "%s: unable to create icon location.",
 			 function );
 
 			return( -1 );
 		}
 #if defined( HAVE_VERBOSE_OUTPUT )
-		libnotify_verbose_printf(
-		 "Reading icon location data string:\n" );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "Reading icon location data string:\n" );
+		}
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->icon_location,
@@ -1068,61 +1115,64 @@ int liblnk_file_open_read(
 	/* TODO read other parts */
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libbfio_handle_get_size(
-	     internal_file->io_handle->file_io_handle,
-	     &file_size,
-	     error ) != 1 )
+	if( libnotify_verbose != 0 )
 	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve file size.",
-		 function );
-
-		return( -1 );
-	}
-	if( file_offset < (off64_t) file_size )
-	{
-		trailing_data_size = (size_t) ( file_size - file_offset );
-
-		trailing_data = (uint8_t *) memory_allocate(
-		                             sizeof( uint8_t ) * trailing_data_size );
-
-		if( trailing_data == NULL )
+		if( libbfio_handle_get_size(
+		     internal_file->io_handle->file_io_handle,
+		     &file_size,
+		     error ) != 1 )
 		{
 			liberror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create trailing data.",
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve file size.",
 			 function );
 
 			return( -1 );
 		}
-		read_count = libbfio_handle_read(
-			      internal_file->io_handle->file_io_handle,
-			      trailing_data,
-			      trailing_data_size,
-			      error );
-
-		if( read_count != (ssize_t) trailing_data_size )
+		if( file_offset < (off64_t) file_size )
 		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_READ_FAILED,
-			 "%s: unable to read trailing data.",
-			 function );
+			trailing_data_size = (size_t) ( file_size - file_offset );
 
-			return( -1 );
+			trailing_data = (uint8_t *) memory_allocate(
+						     sizeof( uint8_t ) * trailing_data_size );
+
+			if( trailing_data == NULL )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_MEMORY,
+				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 "%s: unable to create trailing data.",
+				 function );
+
+				return( -1 );
+			}
+			read_count = libbfio_handle_read(
+				      internal_file->io_handle->file_io_handle,
+				      trailing_data,
+				      trailing_data_size,
+				      error );
+
+			if( read_count != (ssize_t) trailing_data_size )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_IO,
+				 LIBERROR_IO_ERROR_READ_FAILED,
+				 "%s: unable to read trailing data.",
+				 function );
+
+				return( -1 );
+			}
+			libnotify_printf(
+			 "%s: trailing data:\n",
+			 function );
+			libnotify_print_data(
+			 trailing_data,
+			 trailing_data_size );
 		}
-		libnotify_verbose_printf(
-		 "%s: trailing data:\n",
-		 function );
-		libnotify_verbose_print_data(
-		 trailing_data,
-		 trailing_data_size );
 	}
 #endif
 

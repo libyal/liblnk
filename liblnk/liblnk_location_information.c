@@ -1,8 +1,8 @@
 /*
  * Location information functions
  *
- * Copyright (c) 2009, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations. All rights reserved.
+ * Copyright (c) 2009-2010, Joachim Metz <forensics@hoffmannbv.nl>,
+ * Hoffmann Investigations.
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -21,7 +21,7 @@
  */
 
 #include <common.h>
-#include <endian.h>
+#include <byte_stream.h>
 #include <memory.h>
 #include <types.h>
 
@@ -185,7 +185,7 @@ ssize_t liblnk_location_information_read(
 	uint32_t value_size                              = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	uint32_t test                                    = 0;
+	uint32_t value_32bit                             = 0;
 #endif
 
 	if( location_information == NULL )
@@ -211,11 +211,14 @@ ssize_t liblnk_location_information_read(
 		return( -1 );
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	libnotify_verbose_printf(
-	 "%s: reading location information at offset: %" PRIu64 " (0x%08" PRIx64 ")\n",
-	 function,
-	 location_information_offset,
-	 location_information_offset );
+	if( libnotify_verbose != 0 )
+	{
+		libnotify_printf(
+		 "%s: reading location information at offset: %" PRIu64 " (0x%08" PRIx64 ")\n",
+		 function,
+		 location_information_offset,
+		 location_information_offset );
+	}
 #endif
 
 	if( libbfio_handle_seek_offset(
@@ -251,23 +254,29 @@ ssize_t liblnk_location_information_read(
 
 		return( -1 );
 	}
-	endian_little_convert_32bit(
-	 location_information_size,
-	 location_information_size_data );
+	byte_stream_copy_to_uint32_little_endian(
+	 location_information_size_data,
+	 location_information_size );
 	
 #if defined( HAVE_DEBUG_OUTPUT )
-	libnotify_verbose_printf(
-	 "%s: location information size\t: %" PRIzd "\n",
-	 function,
-	 location_information_size );
+	if( libnotify_verbose != 0 )
+	{
+		libnotify_printf(
+		 "%s: location information size\t: %" PRIzd "\n",
+		 function,
+		 location_information_size );
+	}
 #endif
 
 	if( location_information_size <= 4 )
 	{
 #if defined( HAVE_VERBOSE_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: empty location information.\n",
-		 function );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: empty location information.\n",
+			 function );
+		}
 #endif
 
 		return( read_count );
@@ -321,58 +330,64 @@ ssize_t liblnk_location_information_read(
 		return( -1 );
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	libnotify_verbose_printf(
-	 "%s: location information data:\n",
-	 function );
-	libnotify_verbose_print_data(
-	 location_information_data,
-	 location_information_size );
+	if( libnotify_verbose != 0 )
+	{
+		libnotify_printf(
+		 "%s: location information data:\n",
+		 function );
+		libnotify_print_data(
+		 location_information_data,
+		 location_information_size );
+	}
 #endif
 
-	endian_little_convert_32bit(
-	 location_information_header_size,
-	 ( (lnk_location_information_t *) location_information_data )->header_size );
-	endian_little_convert_32bit(
-	 location_information->flags,
-	 ( (lnk_location_information_t *) location_information_data )->location_flags );
-	endian_little_convert_32bit(
-	 volume_information_offset,
-	 ( (lnk_location_information_t *) location_information_data )->volume_information_offset );
-	endian_little_convert_32bit(
-	 local_path_offset,
-	 ( (lnk_location_information_t *) location_information_data )->local_path_offset );
-	endian_little_convert_32bit(
-	 network_share_information_offset,
-	 ( (lnk_location_information_t *) location_information_data )->network_share_information_offset );
-	endian_little_convert_32bit(
-	 common_path_offset,
-	 ( (lnk_location_information_t *) location_information_data )->common_path_offset );
+	byte_stream_copy_to_uint32_little_endian(
+	 ( (lnk_location_information_t *) location_information_data )->header_size,
+	 location_information_header_size );
+	byte_stream_copy_to_uint32_little_endian(
+	 ( (lnk_location_information_t *) location_information_data )->location_flags,
+	 location_information->flags );
+	byte_stream_copy_to_uint32_little_endian(
+	 ( (lnk_location_information_t *) location_information_data )->volume_information_offset,
+	 volume_information_offset );
+	byte_stream_copy_to_uint32_little_endian(
+	 ( (lnk_location_information_t *) location_information_data )->local_path_offset,
+	 local_path_offset );
+	byte_stream_copy_to_uint32_little_endian(
+	 ( (lnk_location_information_t *) location_information_data )->network_share_information_offset,
+	 network_share_information_offset );
+	byte_stream_copy_to_uint32_little_endian(
+	 ( (lnk_location_information_t *) location_information_data )->common_path_offset,
+	 common_path_offset );
 
 #if defined( HAVE_VERBOSE_OUTPUT )
-	libnotify_verbose_printf(
-	 "%s: location information header size\t\t\t: %" PRIu32 "\n",
-	 function,
-	 location_information_header_size );
-	libnotify_verbose_printf(
-	 "%s: location information flags\t\t\t\t: 0x%08" PRIx32 "\n",
-	 function,
-	 location_information->flags );
-	libnotify_verbose_printf(
-	 "%s: location information volume information offset\t: %" PRIu32 "\n",
-	 function,
-	 volume_information_offset );
-	libnotify_verbose_printf(
-	 "%s: location information local path offset\t\t: %" PRIu32 "\n",
-	 function,
-	 local_path_offset );
-	libnotify_verbose_printf(
-	 "%s: location information network share information offset\t: %" PRIu32 "\n",
-	 function,
-	 network_share_information_offset );
-	libnotify_verbose_printf(
-	 "%s: location information common path offset\t\t\t: %" PRIu32 "\n",
-	 function,
-	 common_path_offset );
+	if( libnotify_verbose != 0 )
+	{
+		libnotify_printf(
+		 "%s: location information header size\t\t\t: %" PRIu32 "\n",
+		 function,
+		 location_information_header_size );
+		libnotify_printf(
+		 "%s: location information flags\t\t\t\t: 0x%08" PRIx32 "\n",
+		 function,
+		 location_information->flags );
+		libnotify_printf(
+		 "%s: location information volume information offset\t: %" PRIu32 "\n",
+		 function,
+		 volume_information_offset );
+		libnotify_printf(
+		 "%s: location information local path offset\t\t: %" PRIu32 "\n",
+		 function,
+		 local_path_offset );
+		libnotify_printf(
+		 "%s: location information network share information offset\t: %" PRIu32 "\n",
+		 function,
+		 network_share_information_offset );
+		libnotify_printf(
+		 "%s: location information common path offset\t\t\t: %" PRIu32 "\n",
+		 function,
+		 common_path_offset );
+	}
 #endif
 
 	if( ( location_information_header_size != 28 )
@@ -394,33 +409,42 @@ ssize_t liblnk_location_information_read(
 	}
 	if( location_information_header_size > 28 )
 	{
-		endian_little_convert_32bit(
-		 unicode_local_path_offset,
-		 ( (lnk_location_information_t *) location_information_data )->unicode_local_path_offset );
+		byte_stream_copy_to_uint32_little_endian(
+		 ( (lnk_location_information_t *) location_information_data )->unicode_local_path_offset,
+		 unicode_local_path_offset );
 
 #if defined( HAVE_VERBOSE_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: location information unicode local path offset\t\t: %" PRIu32 "\n",
-		 function,
-		 unicode_local_path_offset );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: location information unicode local path offset\t\t: %" PRIu32 "\n",
+			 function,
+			 unicode_local_path_offset );
+		}
 #endif
 	}
 	if( location_information_header_size > 32 )
 	{
-		endian_little_convert_32bit(
-		 unicode_common_path_offset,
-		 ( (lnk_location_information_t *) location_information_data )->unicode_common_path_offset );
+		byte_stream_copy_to_uint32_little_endian(
+		 ( (lnk_location_information_t *) location_information_data )->unicode_common_path_offset,
+		 unicode_common_path_offset );
 
 #if defined( HAVE_VERBOSE_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: location information unicode common path offset\t\t: %" PRIu32 "\n",
-		 function,
-		 unicode_common_path_offset );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: location information unicode common path offset\t\t: %" PRIu32 "\n",
+			 function,
+			 unicode_common_path_offset );
+		}
 #endif
 	}
 #if defined( HAVE_VERBOSE_OUTPUT )
-	libnotify_verbose_printf(
-	 "\n" );
+	if( libnotify_verbose != 0 )
+	{
+		libnotify_printf(
+		 "\n" );
+	}
 #endif
 
 	/* Volume information path
@@ -459,64 +483,73 @@ ssize_t liblnk_location_information_read(
 		}
 		location_information_value_data = &( location_information_data[ volume_information_offset ] );
 
-		endian_little_convert_32bit(
-		 location_information_value_size,
-		 ( (lnk_volume_information_t *) location_information_value_data )->size );
+		byte_stream_copy_to_uint32_little_endian(
+		 ( (lnk_volume_information_t *) location_information_value_data )->size,
+		 location_information_value_size );
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: volume information data:\n",
-		 function );
-		libnotify_verbose_print_data(
-		 location_information_value_data,
-		 location_information_value_size );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: volume information data:\n",
+			 function );
+			libnotify_print_data(
+			 location_information_value_data,
+			 location_information_value_size );
+		}
 #endif
 
-		endian_little_convert_32bit(
-		 volume_label_offset,
-		 ( (lnk_volume_information_t *) location_information_value_data )->volume_label_offset );
+		byte_stream_copy_to_uint32_little_endian(
+		 ( (lnk_volume_information_t *) location_information_value_data )->volume_label_offset,
+		 volume_label_offset );
 
 #if defined( HAVE_VERBOSE_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: volume information size\t\t\t\t: %" PRIu32 "\n",
-		 function,
-		 location_information_value_size );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: volume information size\t\t\t\t: %" PRIu32 "\n",
+			 function,
+			 location_information_value_size );
 
-		endian_little_convert_32bit(
-		 test,
-		 ( (lnk_volume_information_t *) location_information_value_data )->drive_type );
+			byte_stream_copy_to_uint32_little_endian(
+			 ( (lnk_volume_information_t *) location_information_value_data )->drive_type,
+			 value_32bit );
 
-		libnotify_verbose_printf(
-		 "%s: volume information drive type\t\t\t: 0x%08" PRIx32 "\n",
-		 function,
-		 test );
+			libnotify_printf(
+			 "%s: volume information drive type\t\t\t: 0x%08" PRIx32 "\n",
+			 function,
+			 value_32bit );
 
-		endian_little_convert_32bit(
-		 test,
-		 ( (lnk_volume_information_t *) location_information_value_data )->drive_serial_number );
+			byte_stream_copy_to_uint32_little_endian(
+			 ( (lnk_volume_information_t *) location_information_value_data )->drive_serial_number,
+			 value_32bit );
 
-		libnotify_verbose_printf(
-		 "%s: volume information drive serial number\t\t: 0x%08" PRIx32 "\n",
-		 function,
-		 test );
+			libnotify_printf(
+			 "%s: volume information drive serial number\t\t: 0x%08" PRIx32 "\n",
+			 function,
+			 value_32bit );
 
-		libnotify_verbose_printf(
-		 "%s: volume information volume label offset\t\t: %" PRIu32 "\n",
-		 function,
-		 volume_label_offset );
+			libnotify_printf(
+			 "%s: volume information volume label offset\t\t: %" PRIu32 "\n",
+			 function,
+			 volume_label_offset );
+		}
 #endif
 
 		if( volume_label_offset > 16 )
 		{
-			endian_little_convert_32bit(
-			 unicode_volume_label_offset,
-			 ( (lnk_volume_information_t *) location_information_value_data )->unicode_volume_label_offset );
+			byte_stream_copy_to_uint32_little_endian(
+			 ( (lnk_volume_information_t *) location_information_value_data )->unicode_volume_label_offset,
+			 unicode_volume_label_offset );
 
 #if defined( HAVE_VERBOSE_OUTPUT )
-			libnotify_verbose_printf(
-			 "%s: unicode volume information volume label offset\t: %" PRIu32 "\n",
-			 function,
-			 unicode_volume_label_offset );
+			if( libnotify_verbose != 0 )
+			{
+				libnotify_printf(
+				 "%s: unicode volume information volume label offset\t: %" PRIu32 "\n",
+				 function,
+				 unicode_volume_label_offset );
+			}
 #endif
 		}
 		if( volume_label_offset > 0 )
@@ -544,16 +577,19 @@ ssize_t liblnk_location_information_read(
 			value_size += 1;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			libnotify_verbose_printf(
-			 "%s: volume information volume label size\t\t\t: %" PRIu32 "\n",
-			 function,
-			 value_size );
-			libnotify_verbose_printf(
-			 "%s: volume information volume label data:\n",
-			 function );
-			libnotify_verbose_print_data(
-			 location_information_value_data,
-			 value_size );
+			if( libnotify_verbose != 0 )
+			{
+				libnotify_printf(
+				 "%s: volume information volume label size\t\t\t: %" PRIu32 "\n",
+				 function,
+				 value_size );
+				libnotify_printf(
+				 "%s: volume information volume label data:\n",
+				 function );
+				libnotify_print_data(
+				 location_information_value_data,
+				 value_size );
+			}
 #endif
 		}
 		if( unicode_volume_label_offset > 0 )
@@ -584,16 +620,19 @@ ssize_t liblnk_location_information_read(
 			unicode_value_size += 2;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			libnotify_verbose_printf(
-			 "%s: unicode volume information volume label size\t\t: %" PRIu32 "\n",
-			 function,
-			 unicode_value_size );
-			libnotify_verbose_printf(
-			 "%s: unicode volume information volume label data:\n",
-			 function );
-			libnotify_verbose_print_data(
-			 location_information_unicode_value_data,
-			 unicode_value_size );
+			if( libnotify_verbose != 0 )
+			{
+				libnotify_printf(
+				 "%s: unicode volume information volume label size\t\t: %" PRIu32 "\n",
+				 function,
+				 unicode_value_size );
+				libnotify_printf(
+				 "%s: unicode volume information volume label data:\n",
+				 function );
+				libnotify_print_data(
+				 location_information_unicode_value_data,
+				 unicode_value_size );
+			}
 #endif
 			if( liblnk_string_size_from_utf16_stream(
 			     location_information_unicode_value_data,
@@ -712,10 +751,13 @@ ssize_t liblnk_location_information_read(
 			}
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: volume information volume label\t\t: %" PRIs_LIBLNK "\n",
-		 function,
-		 location_information->volume_label );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: volume information volume label\t\t: %" PRIs_LIBLNK "\n",
+			 function,
+			 location_information->volume_label );
+		}
 #endif
 	}
 	/* Local path
@@ -763,16 +805,19 @@ ssize_t liblnk_location_information_read(
 		value_size++;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: local path data size\t: %" PRIu32 "\n",
-		 function,
-		 value_size );
-		libnotify_verbose_printf(
-		 "%s: local path data:\n",
-		 function );
-		libnotify_verbose_print_data(
-		 location_information_value_data,
-		 value_size );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: local path data size\t: %" PRIu32 "\n",
+			 function,
+			 value_size );
+			libnotify_printf(
+			 "%s: local path data:\n",
+			 function );
+			libnotify_print_data(
+			 location_information_value_data,
+			 value_size );
+		}
 #endif
 	}
 	if( unicode_local_path_offset > 0 )
@@ -818,16 +863,19 @@ ssize_t liblnk_location_information_read(
 		unicode_value_size += 2;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: unicode local path data size\t: %" PRIu32 "\n",
-		 function,
-		 value_size );
-		libnotify_verbose_printf(
-		 "%s: unicode local path data:\n",
-		 function );
-		libnotify_verbose_print_data(
-		 location_information_unicode_value_data,
-		 unicode_value_size );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: unicode local path data size\t: %" PRIu32 "\n",
+			 function,
+			 value_size );
+			libnotify_printf(
+			 "%s: unicode local path data:\n",
+			 function );
+			libnotify_print_data(
+			 location_information_unicode_value_data,
+			 unicode_value_size );
+		}
 #endif
 
 		if( liblnk_string_size_from_utf16_stream(
@@ -950,10 +998,13 @@ ssize_t liblnk_location_information_read(
 	 || ( unicode_local_path_offset > 0 ) )
 	{
 #if defined( HAVE_DEBUG_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: local path\t\t: %" PRIs_LIBLNK "\n",
-		 function,
-		 location_information->local_path );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: local path\t\t: %" PRIs_LIBLNK "\n",
+			 function,
+			 location_information->local_path );
+		}
 #endif
 	}
 	/* Network share information
@@ -992,78 +1043,86 @@ ssize_t liblnk_location_information_read(
 		}
 		location_information_value_data = &( location_information_data[ network_share_information_offset ] );
 
-		endian_little_convert_32bit(
-		 value_size,
-		 ( (lnk_network_share_information_t *) location_information_value_data )->size );
+		byte_stream_copy_to_uint32_little_endian(
+		 ( (lnk_network_share_information_t *) location_information_value_data )->size,
+		 value_size );
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: network share information data:\n",
-		 function );
-		libnotify_verbose_print_data(
-		 location_information_value_data,
-		 value_size );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: network share information data:\n",
+			 function );
+			libnotify_print_data(
+			 location_information_value_data,
+			 value_size );
+		}
 #endif
 
-		endian_little_convert_32bit(
-		 network_share_name_offset,
-		 ( (lnk_network_share_information_t *) location_information_value_data )->network_share_name_offset );
-		endian_little_convert_32bit(
-		 device_name_offset,
-		 ( (lnk_network_share_information_t *) location_information_value_data )->device_name_offset );
-
-		endian_little_convert_32bit(
-		 location_information->network_provider_type,
-		 ( (lnk_network_share_information_t *) location_information_value_data )->network_provider_type );
-
-#if defined( HAVE_VERBOSE_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: network share information size\t\t\t: %" PRIu32 "\n",
-		 function,
-		 value_size );
-
-		endian_little_convert_32bit(
-		 test,
-		 ( (lnk_network_share_information_t *) location_information_value_data )->network_share_type );
-
-		libnotify_verbose_printf(
-		 "%s: network share information network share type\t\t: 0x%08" PRIx32 "\n",
-		 function,
-		 test );
-
-		libnotify_verbose_printf(
-		 "%s: network share information network share name offset\t: %" PRIu32 "\n",
-		 function,
+		byte_stream_copy_to_uint32_little_endian(
+		 ( (lnk_network_share_information_t *) location_information_value_data )->network_share_name_offset,
 		 network_share_name_offset );
-		libnotify_verbose_printf(
-		 "%s: network share information device name offset\t\t: %" PRIu32 "\n",
-		 function,
+		byte_stream_copy_to_uint32_little_endian(
+		 ( (lnk_network_share_information_t *) location_information_value_data )->device_name_offset,
 		 device_name_offset );
 
-		libnotify_verbose_printf(
-		 "%s: network share information network provider type\t: 0x%08" PRIx32 "\n",
-		 function,
+		byte_stream_copy_to_uint32_little_endian(
+		 ( (lnk_network_share_information_t *) location_information_value_data )->network_provider_type,
 		 location_information->network_provider_type );
+
+#if defined( HAVE_VERBOSE_OUTPUT )
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: network share information size\t\t\t: %" PRIu32 "\n",
+			 function,
+			 value_size );
+
+			byte_stream_copy_to_uint32_little_endian(
+			 ( (lnk_network_share_information_t *) location_information_value_data )->network_share_type,
+			 value_32bit );
+			libnotify_printf(
+			 "%s: network share information network share type\t\t: 0x%08" PRIx32 "\n",
+			 function,
+			 value_32bit );
+
+			libnotify_printf(
+			 "%s: network share information network share name offset\t: %" PRIu32 "\n",
+			 function,
+			 network_share_name_offset );
+			libnotify_printf(
+			 "%s: network share information device name offset\t\t: %" PRIu32 "\n",
+			 function,
+			 device_name_offset );
+
+			libnotify_printf(
+			 "%s: network share information network provider type\t: 0x%08" PRIx32 "\n",
+			 function,
+			 location_information->network_provider_type );
+		}
 #endif
 
 		if( network_share_name_offset > 20 )
 		{
-			endian_little_convert_32bit(
-			 unicode_network_share_name_offset,
-			 ( (lnk_network_share_information_t *) location_information_value_data )->unicode_network_share_name_offset );
-			endian_little_convert_32bit(
-			 unicode_device_name_offset,
-			 ( (lnk_network_share_information_t *) location_information_value_data )->unicode_device_name_offset );
+			byte_stream_copy_to_uint32_little_endian(
+			 ( (lnk_network_share_information_t *) location_information_value_data )->unicode_network_share_name_offset,
+			 unicode_network_share_name_offset );
+			byte_stream_copy_to_uint32_little_endian(
+			 ( (lnk_network_share_information_t *) location_information_value_data )->unicode_device_name_offset,
+			 unicode_device_name_offset );
 
 #if defined( HAVE_VERBOSE_OUTPUT )
-			libnotify_verbose_printf(
-			 "%s: network share information unicode network share name offset\t: %" PRIu32 "\n",
-			 function,
-			 unicode_network_share_name_offset );
-			libnotify_verbose_printf(
-			 "%s: network share information unicode device name offset\t: %" PRIu32 "\n",
-			 function,
-			 unicode_device_name_offset );
+			if( libnotify_verbose != 0 )
+			{
+				libnotify_printf(
+				 "%s: network share information unicode network share name offset\t: %" PRIu32 "\n",
+				 function,
+				 unicode_network_share_name_offset );
+				libnotify_printf(
+				 "%s: network share information unicode device name offset\t: %" PRIu32 "\n",
+				 function,
+				 unicode_device_name_offset );
+			}
 #endif
 		}
 		if( network_share_name_offset > 0 )
@@ -1093,16 +1152,19 @@ ssize_t liblnk_location_information_read(
 			value_size++;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			libnotify_verbose_printf(
-			 "%s: network share information network share name size\t: %" PRIu32 "\n",
-			 function,
-			 value_size );
-			libnotify_verbose_printf(
-			 "%s: network share information network share name data:\n",
-			 function );
-			libnotify_verbose_print_data(
-			 location_information_value_data,
-			 value_size );
+			if( libnotify_verbose != 0 )
+			{
+				libnotify_printf(
+				 "%s: network share information network share name size\t: %" PRIu32 "\n",
+				 function,
+				 value_size );
+				libnotify_printf(
+				 "%s: network share information network share name data:\n",
+				 function );
+				libnotify_print_data(
+				 location_information_value_data,
+				 value_size );
+			}
 #endif
 		}
 		if( unicode_network_share_name_offset > 0 )
@@ -1133,16 +1195,19 @@ ssize_t liblnk_location_information_read(
 			unicode_value_size += 2;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			libnotify_verbose_printf(
-			 "%s: unicode volume information network share name size\t\t: %" PRIu32 "\n",
-			 function,
-			 unicode_value_size );
-			libnotify_verbose_printf(
-			 "%s: unicode volume information network share name data:\n",
-			 function );
-			libnotify_verbose_print_data(
-			 location_information_unicode_value_data,
-			 unicode_value_size );
+			if( libnotify_verbose != 0 )
+			{
+				libnotify_printf(
+				 "%s: unicode volume information network share name size\t\t: %" PRIu32 "\n",
+				 function,
+				 unicode_value_size );
+				libnotify_printf(
+				 "%s: unicode volume information network share name data:\n",
+				 function );
+				libnotify_print_data(
+				 location_information_unicode_value_data,
+				 unicode_value_size );
+			}
 #endif
 
 			if( liblnk_string_size_from_utf16_stream(
@@ -1262,10 +1327,13 @@ ssize_t liblnk_location_information_read(
 			}
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: volume information network share name\t: %" PRIs_LIBLNK "\n",
-		 function,
-		 location_information->network_share_name );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: volume information network share name\t: %" PRIs_LIBLNK "\n",
+			 function,
+			 location_information->network_share_name );
+		}
 #endif
 
 		if( device_name_offset > 0 )
@@ -1295,16 +1363,19 @@ ssize_t liblnk_location_information_read(
 			value_size++;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			libnotify_verbose_printf(
-			 "%s: network share information device name size\t: %" PRIu32 "\n",
-			 function,
-			 value_size );
-			libnotify_verbose_printf(
-			 "%s: network share information device name data:\n",
-			 function );
-			libnotify_verbose_print_data(
-			 location_information_value_data,
-			 value_size );
+			if( libnotify_verbose != 0 )
+			{
+				libnotify_printf(
+				 "%s: network share information device name size\t: %" PRIu32 "\n",
+				 function,
+				 value_size );
+				libnotify_printf(
+				 "%s: network share information device name data:\n",
+				 function );
+				libnotify_print_data(
+				 location_information_value_data,
+				 value_size );
+			}
 #endif
 		}
 		if( unicode_device_name_offset > 0 )
@@ -1335,16 +1406,19 @@ ssize_t liblnk_location_information_read(
 			unicode_value_size += 2;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			libnotify_verbose_printf(
-			 "%s: unicode volume information device name size\t\t: %" PRIu32 "\n",
-			 function,
-			 unicode_value_size );
-			libnotify_verbose_printf(
-			 "%s: unicode volume information device name data:\n",
-			 function );
-			libnotify_verbose_print_data(
-			 location_information_unicode_value_data,
-			 unicode_value_size );
+			if( libnotify_verbose != 0 )
+			{
+				libnotify_printf(
+				 "%s: unicode volume information device name size\t\t: %" PRIu32 "\n",
+				 function,
+				 unicode_value_size );
+				libnotify_printf(
+				 "%s: unicode volume information device name data:\n",
+				 function );
+				libnotify_print_data(
+				 location_information_unicode_value_data,
+				 unicode_value_size );
+			}
 #endif
 			if( liblnk_string_size_from_utf16_stream(
 			     location_information_unicode_value_data,
@@ -1463,10 +1537,13 @@ ssize_t liblnk_location_information_read(
 			}
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: volume information device name\t: %" PRIs_LIBLNK "\n",
-		 function,
-		 location_information->device_name );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: volume information device name\t: %" PRIs_LIBLNK "\n",
+			 function,
+			 location_information->device_name );
+		}
 #endif
 	}
 	/* Common path
@@ -1514,16 +1591,19 @@ ssize_t liblnk_location_information_read(
 		value_size++;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: common path data size\t: %" PRIu32 "\n",
-		 function,
-		 value_size );
-		libnotify_verbose_printf(
-		 "%s: common path data:\n",
-		 function );
-		libnotify_verbose_print_data(
-		 location_information_value_data,
-		 value_size );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: common path data size\t: %" PRIu32 "\n",
+			 function,
+			 value_size );
+			libnotify_printf(
+			 "%s: common path data:\n",
+			 function );
+			libnotify_print_data(
+			 location_information_value_data,
+			 value_size );
+		}
 #endif
 	}
 	if( unicode_common_path_offset > 0 )
@@ -1569,16 +1649,19 @@ ssize_t liblnk_location_information_read(
 		unicode_value_size += 2;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: unicode common path data size\t: %" PRIu32 "\n",
-		 function,
-		 value_size );
-		libnotify_verbose_printf(
-		 "%s: unicode common path data:\n",
-		 function );
-		libnotify_verbose_print_data(
-		 location_information_unicode_value_data,
-		 unicode_value_size );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: unicode common path data size\t: %" PRIu32 "\n",
+			 function,
+			 value_size );
+			libnotify_printf(
+			 "%s: unicode common path data:\n",
+			 function );
+			libnotify_print_data(
+			 location_information_unicode_value_data,
+			 unicode_value_size );
+		}
 #endif
 
 		if( liblnk_string_size_from_utf16_stream(
@@ -1701,10 +1784,13 @@ ssize_t liblnk_location_information_read(
 	 || ( unicode_common_path_offset > 0 ) )
 	{
 #if defined( HAVE_DEBUG_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: common path\t\t: %" PRIs_LIBLNK "\n",
-		 function,
-		 location_information->common_path );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: common path\t\t: %" PRIs_LIBLNK "\n",
+			 function,
+			 location_information->common_path );
+		}
 #endif
 	}
 
@@ -1712,8 +1798,11 @@ ssize_t liblnk_location_information_read(
 	 location_information_data );
 
 #if defined( HAVE_VERBOSE_OUTPUT )
-	libnotify_verbose_printf(
-	 "\n" );
+	if( libnotify_verbose != 0 )
+	{
+		libnotify_printf(
+		 "\n" );
+	}
 #endif
 
 	return( read_count + 4 );

@@ -1,8 +1,8 @@
 /*
  * Data string functions
  *
- * Copyright (c) 2009, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations. All rights reserved.
+ * Copyright (c) 2009-2010, Joachim Metz <forensics@hoffmannbv.nl>,
+ * Hoffmann Investigations.
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -21,7 +21,7 @@
  */
 
 #include <common.h>
-#include <endian.h>
+#include <byte_stream.h>
 #include <memory.h>
 #include <types.h>
 
@@ -168,11 +168,14 @@ ssize_t liblnk_data_string_read(
 	data_string->is_unicode = is_unicode;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	libnotify_verbose_printf(
-	 "%s: reading data string at offset: %" PRIu64 " (0x%08" PRIx64 ")\n",
-	 function,
-	 data_string_offset,
-	 data_string_offset );
+	if( libnotify_verbose != 0 )
+	{
+		libnotify_printf(
+		 "%s: reading data string at offset: %" PRIu64 " (0x%08" PRIx64 ")\n",
+		 function,
+		 data_string_offset,
+		 data_string_offset );
+	}
 #endif
 
 	if( libbfio_handle_seek_offset(
@@ -208,15 +211,18 @@ ssize_t liblnk_data_string_read(
 
 		return( -1 );
 	}
-	endian_little_convert_16bit(
-	 data_string->size,
-	 data_string_size_data );
+	byte_stream_copy_to_uint16_little_endian(
+	 data_string_size_data,
+	 data_string->size );
 	
 #if defined( HAVE_DEBUG_OUTPUT )
-	libnotify_verbose_printf(
-	 "%s: data string size\t: %" PRIzd "\n",
-	 function,
-	 data_string->size );
+	if( libnotify_verbose != 0 )
+	{
+		libnotify_printf(
+		 "%s: data string size\t: %" PRIzd "\n",
+		 function,
+		 data_string->size );
+	}
 #endif
 
 	/* The size contains the amount of characters
@@ -270,12 +276,15 @@ ssize_t liblnk_data_string_read(
 		return( -1 );
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	libnotify_verbose_printf(
-	 "%s: data string data:\n",
-	 function );
-	libnotify_verbose_print_data(
-	 data_string->data,
-	 data_string->size );
+	if( libnotify_verbose != 0 )
+	{
+		libnotify_printf(
+		 "%s: data string data:\n",
+		 function );
+		libnotify_print_data(
+		 data_string->data,
+		 data_string->size );
+	}
 #endif
 
 	return( read_count + 2 );

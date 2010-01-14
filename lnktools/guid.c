@@ -1,8 +1,8 @@
 /*
  * GUID functions
  *
- * Copyright (c) 2008-2009, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations. All rights reserved.
+ * Copyright (c) 2008-2010, Joachim Metz <forensics@hoffmannbv.nl>,
+ * Hoffmann Investigations.
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -21,7 +21,7 @@
  */
 
 #include <common.h>
-#include <endian.h>
+#include <byte_stream.h>
 #include <types.h>
 
 #include <liberror.h>
@@ -34,8 +34,7 @@
  * Returns 1 if successful or -1 on error
  */
 int guid_to_string(
-     uint8_t *guid,
-     size_t guid_size,
+     guid_t *guid,
      int byte_order,
      libsystem_character_t *string,
      size_t string_size,
@@ -55,30 +54,8 @@ int guid_to_string(
 
 		return( -1 );
 	}
-	if( guid_size < GUID_SIZE )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-		 "%s: GUID too small.",
-		 function );
-
-		return( -1 );
-	}
-	if( guid_size > (size_t) SSIZE_MAX )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
-		 "%s: invalid GUID size value exceeds maximum.",
-		 function );
-
-		return( -1 );
-	}
-	if( ( byte_order != _ENDIAN_BIG )
-	 && ( byte_order != _ENDIAN_LITTLE ) )
+	if( ( byte_order != _BYTE_STREAM_ENDIAN_BIG )
+	 && ( byte_order != _BYTE_STREAM_ENDIAN_LITTLE ) )
 	{
 		liberror_error_set(
 		 error,
@@ -125,7 +102,7 @@ int guid_to_string(
 	/* Create the GUID string
 	 * It is stored as uint32 - uint16 - uint16 - 8 byte array
 	 */
-	if( byte_order == _ENDIAN_BIG )
+	if( byte_order == _BYTE_STREAM_ENDIAN_BIG )
 	{
 		print_count = libsystem_string_snprintf(
 			       string,
@@ -152,7 +129,7 @@ int guid_to_string(
 			       guid[ 8 ], guid[ 9 ],
 			       guid[ 10 ], guid[ 11 ], guid[ 12 ], guid[ 13 ], guid[ 14 ], guid[ 15 ] );
 	}
-	else if( byte_order == _ENDIAN_LITTLE )
+	else if( byte_order == _BYTE_STREAM_ENDIAN_LITTLE )
 	{
 		print_count = libsystem_string_snprintf(
 			       string,

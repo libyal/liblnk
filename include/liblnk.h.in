@@ -1,8 +1,8 @@
 /*
  * Library to support the Windows Shortcut File (LNK) format
  *
- * Copyright (c) 2009, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations. All rights reserved.
+ * Copyright (c) 2009-2010, Joachim Metz <forensics@hoffmannbv.nl>,
+ * Hoffmann Investigations.
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -70,7 +70,7 @@ LIBLNK_EXTERN int liblnk_check_file_signature_wide(
  * Returns 1 if true, 0 if not or -1 on error
  */
 LIBLNK_EXTERN int liblnk_check_file_signature_file_io_handle(
-                   libbfio_handle_t *bfio_handle,
+                   libbfio_handle_t *file_io_handle,
                    liblnk_error_t **error );
 #endif
 

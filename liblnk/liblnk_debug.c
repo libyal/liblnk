@@ -1,8 +1,8 @@
 /*
  * Debug functions
  *
- * Copyright (c) 2008-2009, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations. All rights reserved.
+ * Copyright (c) 2008-2010, Joachim Metz <forensics@hoffmannbv.nl>,
+ * Hoffmann Investigations.
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -43,136 +43,136 @@ int liblnk_debug_print_data_flags(
 {
 	static char *function = "liblnk_debug_print_data_flags";
 
-	libnotify_verbose_printf(
+	libnotify_printf(
 	 "%s: data flags: 0x%08" PRIx32 "\n",
 	 function,
 	 data_flags );
 
-	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) == LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER )
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tContains link target identifier (HasTargetIDList)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) == LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION )
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tContains location information (HasLinkInfo)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) == LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING )
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tContains description string (HasName)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) == LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING )
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tContains relative path string (HasRelativePath)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) == LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING )
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tContains working directory string (HasWorkingDir)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) == LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING )
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tContains command line arguments string (HasArguments)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) == LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING )
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tContains icon location string (HasIconLocation)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_IS_UNICODE ) == LIBLNK_DATA_FLAG_IS_UNICODE )
+	if( ( data_flags & LIBLNK_DATA_FLAG_IS_UNICODE ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tString are in Unicode (IsUnicode)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_FORCE_NO_LOCATION_INFORMATION ) == LIBLNK_DATA_FLAG_FORCE_NO_LOCATION_INFORMATION )
+	if( ( data_flags & LIBLNK_DATA_FLAG_FORCE_NO_LOCATION_INFORMATION ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tIgnore the location information (ForceNoLinkInfo)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_ENVIRONMENT_VARIABLES_LOCATION_BLOCK ) == LIBLNK_DATA_FLAG_HAS_ENVIRONMENT_VARIABLES_LOCATION_BLOCK )
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_ENVIRONMENT_VARIABLES_LOCATION_BLOCK ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tContains environment variables location block (HasExpString)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_RUN_IN_SEPARATE_PROCESS ) == LIBLNK_DATA_FLAG_RUN_IN_SEPARATE_PROCESS )
+	if( ( data_flags & LIBLNK_DATA_FLAG_RUN_IN_SEPARATE_PROCESS ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tRun in separate process (RunInSeparateProcess)\n" );
 	}
 
-	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_DARWIN_IDENTIFIER ) == LIBLNK_DATA_FLAG_HAS_DARWIN_IDENTIFIER )
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_DARWIN_IDENTIFIER ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tContains Darwin properites location block (HasDarwinID)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_RUN_AS_USER ) == LIBLNK_DATA_FLAG_RUN_AS_USER )
+	if( ( data_flags & LIBLNK_DATA_FLAG_RUN_AS_USER ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tRun as user (RunAsUser)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_BLOCK ) == LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_BLOCK )
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_BLOCK ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tContains icon location block (HasExpIcon)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_NO_PIDL_ALIAS ) == LIBLNK_DATA_FLAG_NO_PIDL_ALIAS )
+	if( ( data_flags & LIBLNK_DATA_FLAG_NO_PIDL_ALIAS ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\t(NoPidlAlias)\n" );
 	}
 
-	if( ( data_flags & LIBLNK_DATA_FLAG_RUN_WITH_SHIM_LAYER ) == LIBLNK_DATA_FLAG_RUN_WITH_SHIM_LAYER )
+	if( ( data_flags & LIBLNK_DATA_FLAG_RUN_WITH_SHIM_LAYER ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tContains shim layer properties block (RunWithShimLayer)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK ) == LIBLNK_DATA_FLAG_NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK )
+	if( ( data_flags & LIBLNK_DATA_FLAG_NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tDoes not contain distributed link tracking data block (ForceNoLinkTrack)\n" );
 	}
-	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_METADATA_PROPERTY_STORE_DATA_BLOCK ) == LIBLNK_DATA_FLAG_HAS_METADATA_PROPERTY_STORE_DATA_BLOCK )
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_METADATA_PROPERTY_STORE_DATA_BLOCK ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tContains metadata property store block (HasTargetMetadata)\n" );
 	}
 
 	if( ( data_flags & 0x00100000 ) == 0x00100000 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\t(DisableLinkPathTracking)\n" );
 	}
 	if( ( data_flags & 0x00200000 ) == 0x00200000 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\t(DisableKnownFolderTracking)\n" );
 	}
 	if( ( data_flags & 0x00400000 ) == 0x00400000 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\t(AllowLinkToLink)\n" );
 	}
 	if( ( data_flags & 0x00800000 ) == 0x00800000 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\t(UnaliasOnSave)\n" );
 	}
 	if( ( data_flags & 0x01000000 ) == 0x01000000 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\t(PreferEnvironmentPath)\n" );
 	}
 	if( ( data_flags & 0x02000000 ) == 0x02000000 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\t(KeepLocalIDListForUNCTarget)\n" );
 	}
 
-	libnotify_verbose_printf(
+	libnotify_printf(
 	 "\n" );
 
 	return( 1 );
@@ -187,89 +187,89 @@ int liblnk_debug_print_file_attribute_flags(
 {
 	static char *function = "liblnk_debug_print_file_attribute_flags";
 
-	libnotify_verbose_printf(
+	libnotify_printf(
 	 "%s: file attribute flags: 0x%08" PRIx32 "\n",
 	 function,
 	 file_attribute_flags );
 
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_READ_ONLY ) == LIBLNK_FILE_ATTRIBUTE_FLAG_READ_ONLY )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_READ_ONLY ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tIs read-only (FILE_ATTRIBUTE_READ_ONLY)\n" );
 	}
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_HIDDEN ) == LIBLNK_FILE_ATTRIBUTE_FLAG_HIDDEN )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_HIDDEN ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tIs hidden (FILE_ATTRIBUTE_HIDDEN)\n" );
 	}
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_SYSTEM ) == LIBLNK_FILE_ATTRIBUTE_FLAG_SYSTEM )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_SYSTEM ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tIs system (FILE_ATTRIBUTE_SYSTEM)\n" );
 	}
 
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_DIRECTORY ) == LIBLNK_FILE_ATTRIBUTE_FLAG_DIRECTORY )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_DIRECTORY ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tIs directory (FILE_ATTRIBUTE_DIRECTORY)\n" );
 	}
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_ARCHIVE ) == LIBLNK_FILE_ATTRIBUTE_FLAG_ARCHIVE )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_ARCHIVE ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tShould be archived (FILE_ATTRIBUTE_ARCHIVE)\n" );
 	}
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_DEVICE ) == LIBLNK_FILE_ATTRIBUTE_FLAG_DEVICE )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_DEVICE ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tIs device (FILE_ATTRIBUTE_DEVICE)\n" );
 	}
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_NORMAL ) == LIBLNK_FILE_ATTRIBUTE_FLAG_NORMAL )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_NORMAL ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tIs normal (FILE_ATTRIBUTE_NORMAL)\n" );
 	}
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_TEMPORARY ) == LIBLNK_FILE_ATTRIBUTE_FLAG_TEMPORARY )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_TEMPORARY ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tIs temporary (FILE_ATTRIBUTE_TEMPORARY)\n" );
 	}
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_SPARSE_FILE ) == LIBLNK_FILE_ATTRIBUTE_FLAG_SPARSE_FILE )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_SPARSE_FILE ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tIs a sparse file (FILE_ATTRIBUTE_SPARSE_FILE)\n" );
 	}
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_REPARSE_POINT ) == LIBLNK_FILE_ATTRIBUTE_FLAG_REPARSE_POINT )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_REPARSE_POINT ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tIs a reparse point or symbolic link (FILE_ATTRIBUTE_FLAG_REPARSE_POINT)\n" );
 	}
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_COMPRESSED ) == LIBLNK_FILE_ATTRIBUTE_FLAG_COMPRESSED )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_COMPRESSED ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tIs compressed (FILE_ATTRIBUTE_COMPRESSED)\n" );
 	}
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_OFFLINE ) == LIBLNK_FILE_ATTRIBUTE_FLAG_OFFLINE )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_OFFLINE ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tIs offline (FILE_ATTRIBUTE_OFFLINE)\n" );
 	}
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_NOT_CONTENT_INDEXED ) == LIBLNK_FILE_ATTRIBUTE_FLAG_NOT_CONTENT_INDEXED )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_NOT_CONTENT_INDEXED ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tContent should not be indexed (FILE_ATTRIBUTE_NOT_CONTENT_INDEXED)\n" );
 	}
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_ENCRYPTED ) == LIBLNK_FILE_ATTRIBUTE_FLAG_ENCRYPTED )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_ENCRYPTED ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tIs encrypted (FILE_ATTRIBUTE_ENCRYPTED)\n" );
 	}
 
-	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_VIRTUAL ) == LIBLNK_FILE_ATTRIBUTE_FLAG_VIRTUAL )
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_VIRTUAL ) != 0 )
 	{
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "\tIs virtual (FILE_ATTRIBUTE_VIRTUAL)\n" );
 	}
-	libnotify_verbose_printf(
+	libnotify_printf(
 	 "\n" );
 
 	return( 1 );
@@ -284,7 +284,7 @@ int liblnk_debug_print_network_provider_type(
 {
 	static char *function = "liblnk_debug_print_network_provider_type";
 
-	libnotify_verbose_printf(
+	libnotify_printf(
 	 "%s: network provider type: 0x%08" PRIx32 " (",
 	 function,
 	 network_provider_type );
@@ -292,211 +292,211 @@ int liblnk_debug_print_network_provider_type(
 	switch( network_provider_type )
 	{
 		case 0x001a0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_AVID" );
 			break;
 
 		case 0x001b0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_DOCUSPACE" );
 			break;
 
 		case 0x001c0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_MANGOSOFT" );
 			break;
 
 		case 0x001d0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_SERNET" );
 			break;
 
 		case 0x001e0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_RIVERFRONT1" );
 			break;
 
 		case 0x001f0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_RIVERFRONT2" );
 			break;
 
 		case 0x00200000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_DECORB" );
 			break;
 
 		case 0x00210000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_PROTSTOR" );
 			break;
 
 		case 0x00220000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_FJ_REDIR" );
 			break;
 
 		case 0x00230000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_DISTINCT" );
 			break;
 
 		case 0x00240000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_TWINS" );
 			break;
 
 		case 0x00250000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_RDR2SAMPLE" );
 			break;
 
 		case 0x00260000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_CSC" );
 			break;
 
 		case 0x00270000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_3IN1" );
 			break;
 
 		case 0x00290000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_EXTENDNET" );
 			break;
 
 		case 0x002a0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_STAC" );
 			break;
 
 		case 0x002b0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_FOXBAT" );
 			break;
 
 		case 0x002c0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_YAHOO" );
 			break;
 
 		case 0x002d0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_EXIFS" );
 			break;
 
 		case 0x002e0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_DAV" );
 			break;
 
 		case 0x002f0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_KNOWARE" );
 			break;
 
 		case 0x00300000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_OBJECT_DIRE" );
 			break;
 
 		case 0x00310000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_MASFAX" );
 			break;
 
 		case 0x00320000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_HOB_NFS" );
 			break;
 
 		case 0x00330000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_SHIVA" );
 			break;
 
 		case 0x00340000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_IBMAL" );
 			break;
 
 		case 0x00350000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_LOCK" );
 			break;
 
 		case 0x00360000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_TERMSRV" );
 			break;
 
 		case 0x00370000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_SRT" );
 			break;
 
 		case 0x00380000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_QUINCY" );
 			break;
 
 		case 0x00390000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_OPENAFS" );
 			break;
 
 		case 0x003a0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_AVID1" );
 			break;
 
 		case 0x003b0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_DFS" );
 			break;
 
 		case 0x003c0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_KWNP" );
 			break;
 
 		case 0x003d0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_ZENWORKS" );
 			break;
 
 		case 0x003e0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_DRIVEONWEB" );
 			break;
 
 		case 0x003f0000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_VMWARE" );
 			break;
 
 		case 0x00400000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_RSFX" );
 			break;
 
 		case 0x00410000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_MFILES" );
 			break;
 
 		case 0x00420000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_MS_NFS" );
 			break;
 
 		case 0x00430000:
-			libnotify_verbose_printf(
+			libnotify_printf(
 			 "WNNC_NET_GOOGLE" );
 			break;
 	}
-	libnotify_verbose_printf(
+	libnotify_printf(
 	 ")\n" );
 
 	return( 1 );
@@ -540,7 +540,7 @@ int liblnk_debug_print_read_offsets(
 
 		return( -1 );
 	}
-	libnotify_verbose_printf(
+	libnotify_printf(
 	 "Offsets read:\n" );
 
 	for( offset_iterator = 0;
@@ -564,7 +564,7 @@ int liblnk_debug_print_read_offsets(
 
 			return( -1 );
 		}
-		libnotify_verbose_printf(
+		libnotify_printf(
 		 "%08" PRIu64 " ( 0x%08" PRIx64 " ) - %08" PRIu64 " ( 0x%08" PRIx64 " ) size: %" PRIu64 "\n",
 		 offset,
 		 offset,
@@ -572,7 +572,7 @@ int liblnk_debug_print_read_offsets(
 		 offset + size,
 		 size );
 	}
-	libnotify_verbose_printf(
+	libnotify_printf(
 	 "\n" );
 
 	return( 1 );

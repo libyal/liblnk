@@ -12,6 +12,7 @@ lib_LTLIBRARIES = liblnk.la
 
 liblnk_la_SOURCES = \
 	liblnk.c \
+	liblnk_codepage.h \
 	liblnk_data_string.c liblnk_data_string.h \
 	liblnk_debug.c liblnk_debug.h \
 	liblnk_definitions.h \

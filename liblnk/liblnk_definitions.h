@@ -1,8 +1,8 @@
 /*
  * The internal definitions
  *
- * Copyright (c) 2008-2009, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations. All rights reserved.
+ * Copyright (c) 2008-2010, Joachim Metz <forensics@hoffmannbv.nl>,
+ * Hoffmann Investigations.
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -24,10 +24,10 @@
 #define _LIBLNK_INTERNAL_DEFINITIONS_H
 
 #include <common.h>
-#include <endian.h>
+#include <byte_stream.h>
 
-#define LIBLNK_ENDIAN_BIG		_ENDIAN_BIG
-#define LIBLNK_ENDIAN_LITTLE		_ENDIAN_LITTLE
+#define LIBLNK_ENDIAN_BIG						_BYTE_STREAM_ENDIAN_BIG
+#define LIBLNK_ENDIAN_LITTLE						_BYTE_STREAM_ENDIAN_LITTLE
 
 /* Define HAVE_LOCAL_LIBLNK for local use of liblnk
  */
@@ -38,28 +38,28 @@
  * for local use of liblnk
  */
 #else
-#define LIBLNK_VERSION			20090910
+#define LIBLNK_VERSION							20090913
 
 /* The liblnk version string
  */
-#define LIBLNK_VERSION_STRING		"20090910"
+#define LIBLNK_VERSION_STRING						"20090913"
 
 /* The liblnk file access
  * bit 1        set to 1 for read access
  * bit 2        set to 1 for write access
  * bit 3-8      not used
  */
-#define LIBLNK_FLAG_READ		0x01
+#define LIBLNK_FLAG_READ						0x01
 /* Reserved: not supported yet */
-#define LIBLNK_FLAG_WRITE		0x02
+#define LIBLNK_FLAG_WRITE						0x02
 
 /* The liblnk file access macros
  */
-#define LIBLNK_OPEN_READ		( LIBLNK_FLAG_READ )
+#define LIBLNK_OPEN_READ						( LIBLNK_FLAG_READ )
 /* Reserved: not supported yet */
-#define LIBLNK_OPEN_WRITE		( LIBLNK_FLAG_WRITE )
+#define LIBLNK_OPEN_WRITE						( LIBLNK_FLAG_WRITE )
 /* Reserved: not supported yet */
-#define LIBLNK_OPEN_READ_WRITE		( LIBLNK_FLAG_READ | LIBLNK_FLAG_WRITE )
+#define LIBLNK_OPEN_READ_WRITE						( LIBLNK_FLAG_READ | LIBLNK_FLAG_WRITE )
 
 /* The data flags
  */

@@ -1,8 +1,8 @@
 /*
  * The libfdatetime header wrapper
  *
- * Copyright (c) 2009, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations. All rights reserved.
+ * Copyright (c) 2009-2010, Joachim Metz <forensics@hoffmannbv.nl>,
+ * Hoffmann Investigations.
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -29,6 +29,7 @@
  */
 #if defined( HAVE_LOCAL_LIBFDATETIME )
 
+#include <libfdatetime_date_time_values.h>
 #include <libfdatetime_definitions.h>
 #include <libfdatetime_error.h>
 #include <libfdatetime_fat_date_time.h>

@@ -8,12 +8,31 @@ Refactor
 * volume information read into separate subfunction
 * network share information read into separate subfunction
 
+Tools:
+* replace filetime by libfdatetime
+
+Library
+* move libbfio handle from io handle to file
+* update support check signature (pff)
+
 Deployment:
 * update manuals
 * create debian package files
 * update macosx package files
 * update codegear files
 * check msvcpp files
+
+20100114
+* 2010 update
+* updated common, liberror, libnotify, libsystem, libuna, libbfio, libfdatetime
+* updates msvscpp files
+* removed All rights reserved
+* byte_stream update
+* libnotify update
+* updated guid.[ch]
+* updated liblnk_libuna.h
+* added liblnk_codepage.h
+* change default codepage to 1252
 
 20090913
 * added seek offset 0 when reading file header

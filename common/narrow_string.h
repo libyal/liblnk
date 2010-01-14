@@ -1,8 +1,8 @@
 /*
  * Narrow character string functions
  *
- * Copyright (c) 2006-2009, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations. All rights reserved.
+ * Copyright (c) 2006-2010, Joachim Metz <forensics@hoffmannbv.nl>,
+ * Hoffmann Investigations.
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -124,7 +124,7 @@ extern "C" {
 	(char *) memrchr( (void *) string, (int) character, size )
 #endif
 
-/* String formatted print (snprinf)
+/* String formatted print (snprintf)
  */
 #if defined( HAVE_GLIB_H )
 #define narrow_string_snprintf( target, size, ... ) \
@@ -137,10 +137,6 @@ extern "C" {
 #elif defined( HAVE_SNPRINTF ) || defined( WINAPI )
 #define narrow_string_snprintf( target, size, ... ) \
 	snprintf( target, size, __VA_ARGS__ )
-
-#elif defined( HAVE_SPRINTF )
-#define narrow_string_snprintf( target, size, ... ) \
-	sprintf( target, __VA_ARGS__ )
 #endif
 
 /* String input conversion (sscanf)
@@ -188,15 +184,11 @@ extern "C" {
 	(uint64_t) atoll( string )
 #endif
 
-/* Variable arguments formatted print to string function
+/* Variable arguments formatted print to string function (vsnprintf)
  */
 #if defined( HAVE_GLIB_H )
 #define narrow_string_vsnprintf( string, size, format, ... ) \
 	g_vsnprintf( string, size, format, __VA_ARGS__ )
-
-#elif defined( _MSC_VER )
-#define narrow_string_vsnprintf( string, size, format, ... ) \
-	_vsnprintf( string, size, format, __VA_ARGS__ )
 
 #elif defined( HAVE_VSNPRINTF ) || defined( WINAPI )
 #define narrow_string_vsnprintf( string, size, format, ... ) \

@@ -1,8 +1,8 @@
 /*
  * GUID functions
  *
- * Copyright (c) 2008-2009, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations. All rights reserved.
+ * Copyright (c) 2008-2010, Joachim Metz <forensics@hoffmannbv.nl>,
+ * Hoffmann Investigations.
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -34,12 +34,12 @@
 extern "C" {
 #endif
 
-#define GUID_SIZE		16
 #define GUID_STRING_SIZE	37
 
+typedef uint8_t guid_t;
+
 int guid_to_string(
-     uint8_t *guid,
-     size_t guid_size,
+     guid_t *guid,
      int byte_order,
      libsystem_character_t *string,
      size_t string_size,

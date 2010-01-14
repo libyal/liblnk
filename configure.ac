@@ -291,12 +291,9 @@ dnl Narrow character string functions used in common/narrow_string.h
 AC_CHECK_FUNCS(
  [snprintf],
  [],
- [AC_CHECK_FUNCS(
-  [sprintf],
-  [],
-  [AC_MSG_FAILURE(
-   [Missing functions: snprintf and sprintf],
-   [1]) ]) ])
+ [AC_MSG_FAILURE(
+  [Missing function: snprintf],
+  [1]) ])
 
 AC_CHECK_FUNCS(
  [sscanf],
@@ -1012,6 +1009,13 @@ AS_IF(
 	  [1]) ])
 
 	AC_CHECK_FUNCS(
+	 [vswprintf],
+	 [],
+	 [AC_MSG_FAILURE(
+	  [Missing functions: vswprintf],
+	  [1]) ])
+
+	AC_CHECK_FUNCS(
 	 [wcschr],
 	 [],
 	 [AC_CHECK_FUNCS(
@@ -1092,7 +1096,7 @@ AS_IF(
 	AC_DEFINE(
 	 [HAVE_WIDE_CHARACTER_TYPE],
 	 [1],
-	 [Defines if wide character type should be used])
+	 [Define to 1 if wide character type should be used])
 	AC_SUBST(
 	 [HAVE_WIDE_CHARACTER_TYPE],
 	 [1])
@@ -1123,7 +1127,7 @@ AS_IF(
 	[AC_DEFINE(
 	 [HAVE_VERBOSE_OUTPUT],
 	 [1],
-	 [Defines if verbose output should be used] )
+	 [Define to 1 if verbose output should be used] )
 	ac_cv_liblnk_enable_verbose_output=yes])
 
 dnl Check if liblnk should be build with debug output
@@ -1132,7 +1136,7 @@ AS_IF(
 	[AC_DEFINE(
 	 [HAVE_DEBUG_OUTPUT],
 	 [1],
-	 [Defines if debug output should be used] )
+	 [Define to 1 if debug output should be used] )
 	ac_cv_liblnk_enable_debug_output=yes])
 
 dnl Check if requires and build requires should be set in spec file

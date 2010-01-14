@@ -1,8 +1,8 @@
 /*
  * Shell item identifiers list functions
  *
- * Copyright (c) 2009, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations. All rights reserved.
+ * Copyright (c) 2009-2010, Joachim Metz <forensics@hoffmannbv.nl>,
+ * Hoffmann Investigations.
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -21,7 +21,7 @@
  */
 
 #include <common.h>
-#include <endian.h>
+#include <byte_stream.h>
 #include <memory.h>
 #include <types.h>
 
@@ -163,11 +163,14 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 		return( -1 );
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	libnotify_verbose_printf(
-	 "%s: reading shell item identifiers list at offset: %" PRIu64 " (0x%08" PRIx64 ")\n",
-	 function,
-	 shell_item_identifiers_list_offset,
-	 shell_item_identifiers_list_offset );
+	if( libnotify_verbose != 0 )
+	{
+		libnotify_printf(
+		 "%s: reading shell item identifiers list at offset: %" PRIu64 " (0x%08" PRIx64 ")\n",
+		 function,
+		 shell_item_identifiers_list_offset,
+		 shell_item_identifiers_list_offset );
+	}
 #endif
 
 	if( libbfio_handle_seek_offset(
@@ -203,15 +206,18 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 
 		return( -1 );
 	}
-	endian_little_convert_16bit(
-	 shell_item_identifiers_list_size,
-	 shell_item_identifiers_list_size_data );
+	byte_stream_copy_to_uint16_little_endian(
+	 shell_item_identifiers_list_size_data,
+	 shell_item_identifiers_list_size )
 	
 #if defined( HAVE_DEBUG_OUTPUT )
-	libnotify_verbose_printf(
-	 "%s: shell item identifiers list size\t: %" PRIzd "\n",
-	 function,
-	 shell_item_identifiers_list_size );
+	if( libnotify_verbose != 0 )
+	{
+		libnotify_printf(
+		 "%s: shell item identifiers list size\t: %" PRIzd "\n",
+		 function,
+		 shell_item_identifiers_list_size );
+	}
 #endif
 
 	if( shell_item_identifiers_list_size > (size_t) SSIZE_MAX )
@@ -261,30 +267,36 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 		return( -1 );
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	libnotify_verbose_printf(
-	 "%s: shell item identifiers list data:\n",
-	 function );
-	libnotify_verbose_print_data(
-	 shell_item_identifiers_list_data,
-	 shell_item_identifiers_list_size );
+	if( libnotify_verbose != 0 )
+	{
+		libnotify_printf(
+		 "%s: shell item identifiers list data:\n",
+		 function );
+		libnotify_print_data(
+		 shell_item_identifiers_list_data,
+		 shell_item_identifiers_list_size );
+	}
 #endif
 
 	shell_item_identifier_data = shell_item_identifiers_list_data;
 
 	do
 	{
-		endian_little_convert_16bit(
-		 shell_item_identifier_size,
-		 shell_item_identifier_data );
+		byte_stream_copy_to_uint16_little_endian(
+		 shell_item_identifier_data,
+		 shell_item_identifier_size );
 
 		shell_item_identifier_data += 2;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		libnotify_verbose_printf(
-		 "%s: shell item identifier: %d size\t: %" PRIu16 "\n",
-		 function,
-		 shell_item_identifier_index,
-		 shell_item_identifier_size );
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "%s: shell item identifier: %d size\t: %" PRIu16 "\n",
+			 function,
+			 shell_item_identifier_index,
+			 shell_item_identifier_size );
+		}
 #endif
 
 		if( shell_item_identifier_size > 0 )
@@ -292,13 +304,16 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 			shell_item_identifier_size -= 2;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			libnotify_verbose_printf(
-			 "%s: shell item identifier: %d data:\n",
-			 function,
-			 shell_item_identifier_index );
-			libnotify_verbose_print_data(
-			 shell_item_identifier_data,
-			 shell_item_identifier_size );
+			if( libnotify_verbose != 0 )
+			{
+				libnotify_printf(
+				 "%s: shell item identifier: %d data:\n",
+				 function,
+				 shell_item_identifier_index );
+				libnotify_print_data(
+				 shell_item_identifier_data,
+				 shell_item_identifier_size );
+			}
 #endif
 			shell_item_identifier_data += shell_item_identifier_size;
 

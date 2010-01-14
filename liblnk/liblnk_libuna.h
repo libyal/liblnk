@@ -1,8 +1,8 @@
 /*
  * The libuna header wrapper
  *
- * Copyright (c) 2008-2009, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations. All rights reserved.
+ * Copyright (c) 2008-2010, Joachim Metz <forensics@hoffmannbv.nl>,
+ * Hoffmann Investigations.
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -30,7 +30,6 @@
 #if defined( HAVE_LOCAL_LIBUNA )
 
 #include <libuna_byte_stream.h>
-#include <libuna_compare.h>
 #include <libuna_error.h>
 #include <libuna_unicode_character.h>
 #include <libuna_utf8_stream.h>
@@ -39,6 +38,7 @@
 #include <libuna_utf16_string.h>
 #include <libuna_utf32_stream.h>
 #include <libuna_utf32_string.h>
+#include <libuna_types.h>
 
 #elif defined( HAVE_LIBUNA_H )
 
