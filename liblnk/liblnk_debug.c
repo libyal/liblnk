@@ -1,8 +1,7 @@
 /*
  * Debug functions
  *
- * Copyright (c) 2008-2010, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations.
+ * Copyright (c) 2009-2010, Joachim Metz <jbmetz@users.sourceforge.net>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -512,7 +511,7 @@ int liblnk_debug_print_read_offsets(
 	static char *function = "liblnk_debug_print_read_offsets";
 	off64_t offset        = 0;
 	size64_t size         = 0;
-	int amount_of_offsets = 0;
+	int number_of_offsets = 0;
 	int offset_iterator   = 0;
 
 	if( file_io_handle == NULL )
@@ -526,16 +525,16 @@ int liblnk_debug_print_read_offsets(
 
 		return( -1 );
 	}
-	if( libbfio_handle_get_amount_of_offsets_read(
+	if( libbfio_handle_get_number_of_offsets_read(
 	     file_io_handle,
-	     &amount_of_offsets,
+	     &number_of_offsets,
 	     error ) != 1 )
 	{
 		liberror_error_set(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve amount of offsets read.",
+		 "%s: unable to retrieve number of offsets read.",
 		 function );
 
 		return( -1 );
@@ -544,7 +543,7 @@ int liblnk_debug_print_read_offsets(
 	 "Offsets read:\n" );
 
 	for( offset_iterator = 0;
-	     offset_iterator < amount_of_offsets;
+	     offset_iterator < number_of_offsets;
 	     offset_iterator++ )
 	{
 		if( libbfio_handle_get_offset_read(

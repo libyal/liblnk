@@ -2,7 +2,6 @@ TODO
 * change file header filetime conversion
 * implement libfdatetime
 * create API functions to access link information values
-* work on todo's
 
 Refactor
 * volume information read into separate subfunction
@@ -14,13 +13,25 @@ Tools:
 Library
 * move libbfio handle from io handle to file
 * update support check signature (pff)
+* move shell item code into libfwsi
+
+Release:
+* check TODOs
+* configure
+ - check inclusion of libuna functions
+ - check inclusion of libbfio functions
+ - check inclusion of libfdatetime functions
+* update manuals
+* update macosx package files
+* update msvcpp files
 
 Deployment:
-* update manuals
 * create debian package files
-* update macosx package files
-* update codegear files
-* check msvcpp files
+* create codegear files
+
+20100619
+* added libcstring
+* updated common, liberror, libnotify, libuna, libbfio, libfdatetime, libsystem
 
 20100114
 * 2010 update
@@ -56,5 +67,5 @@ Deployment:
 * worked on libfdatetime integration
 
 20090905
-* initial version based on libnk2
+* initial version based
 

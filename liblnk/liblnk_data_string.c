@@ -1,8 +1,7 @@
 /*
  * Data string functions
  *
- * Copyright (c) 2009-2010, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations.
+ * Copyright (c) 2009-2010, Joachim Metz <jbmetz@users.sourceforge.net>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -127,7 +126,7 @@ int liblnk_data_string_free(
 }
 
 /* Reads a data string
- * Returns the amount of bytes read if successful or -1 on error
+ * Returns the number of bytes read if successful or -1 on error
  */
 ssize_t liblnk_data_string_read(
          liblnk_data_string_t *data_string,
@@ -225,7 +224,7 @@ ssize_t liblnk_data_string_read(
 	}
 #endif
 
-	/* The size contains the amount of characters
+	/* The size contains the number of characters
 	 * a Unicode (UTF-16) string requires 2 bytes per character
 	 */
 	if( data_string->is_unicode != 0 )

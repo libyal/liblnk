@@ -1,6 +1,7 @@
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/common \
+	-I$(top_srcdir)/libcstring \
 	-I$(top_srcdir)/liberror \
 	-I$(top_srcdir)/libsystem \
 	@LIBUNA_CPPFLAGS@ \
@@ -11,7 +12,8 @@ AM_CPPFLAGS = \
 
 AM_LDFLAGS = @STATIC_LDFLAGS@
 
-bin_PROGRAMS = lnkinfo
+bin_PROGRAMS = \
+	lnkinfo
 
 lnkinfo_SOURCES = \
 	filetime.c filetime.h \
@@ -25,6 +27,9 @@ lnkinfo_LDADD  = \
 	../liblnk/liblnk.la \
 	../libsystem/libsystem.la \
 	@MEMWATCH_LIBADD@
+
+MAINTAINERCLEANFILES = \
+	Makefile.in
 
 distclean: clean
 	/bin/rm -f Makefile

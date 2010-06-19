@@ -1,8 +1,7 @@
 /*
  * Location information functions
  *
- * Copyright (c) 2009-2010, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations.
+ * Copyright (c) 2009-2010, Joachim Metz <jbmetz@users.sourceforge.net>
  *
  * Refer to AUTHORS for acknowledgements.
  *

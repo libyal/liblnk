@@ -3,8 +3,7 @@
  * This header should be included in header files that export or import
  * library functions
  *
- * Copyright (c) 2008-2010, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations.
+ * Copyright (c) 2009-2010, Joachim Metz <jbmetz@users.sourceforge.net>
  *
  * Refer to AUTHORS for acknowledgements.
  *

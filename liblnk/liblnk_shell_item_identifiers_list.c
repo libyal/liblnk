@@ -1,8 +1,7 @@
 /*
  * Shell item identifiers list functions
  *
- * Copyright (c) 2009-2010, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations.
+ * Copyright (c) 2009-2010, Joachim Metz <jbmetz@users.sourceforge.net>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -122,7 +121,7 @@ int liblnk_shell_item_identifiers_list_free(
 }
 
 /* Reads a shell item identifiers
- * Returns the amount of bytes read if successful or -1 on error
+ * Returns the number of bytes read if successful or -1 on error
  */
 ssize_t liblnk_shell_item_identifiers_list_read(
          liblnk_shell_item_identifiers_list_t *shell_item_identifiers_list,

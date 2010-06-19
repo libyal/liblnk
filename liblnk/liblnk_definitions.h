@@ -1,8 +1,7 @@
 /*
  * The internal definitions
  *
- * Copyright (c) 2008-2010, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations.
+ * Copyright (c) 2009-2010, Joachim Metz <jbmetz@users.sourceforge.net>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -38,11 +37,11 @@
  * for local use of liblnk
  */
 #else
-#define LIBLNK_VERSION							20090913
+#define LIBLNK_VERSION							20100619
 
 /* The liblnk version string
  */
-#define LIBLNK_VERSION_STRING						"20090913"
+#define LIBLNK_VERSION_STRING						"20100619"
 
 /* The liblnk file access
  * bit 1        set to 1 for read access

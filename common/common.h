@@ -1,6 +1,7 @@
 /*
  * Common include file
  *
+ * Copyright (c) 2010, Joachim Metz <jbmetz@users.sourceforge.net>
  * Copyright (c) 2006-2010, Joachim Metz <forensics@hoffmannbv.nl>,
  * Hoffmann Investigations.
  *
@@ -41,7 +42,9 @@
 
 /* Make sure WINAPI is defined
  */
-#if defined( _MSC_VER ) || defined( __BORLANDC__ )
+#if defined( _MSC_VER ) || defined( __BORLANDC__ ) || defined( HAVE_WINDOWS_H )
+#define WIN32_LEAN_AND_MEAN
+
 #include <windows.h>
 #endif
 

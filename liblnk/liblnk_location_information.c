@@ -1,8 +1,7 @@
 /*
  * Location information functions
  *
- * Copyright (c) 2009-2010, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations.
+ * Copyright (c) 2009-2010, Joachim Metz <jbmetz@users.sourceforge.net>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -150,7 +149,7 @@ int liblnk_location_information_free(
 }
 
 /* Reads a location information
- * Returns the amount of bytes read if successful or -1 on error
+ * Returns the number of bytes read if successful or -1 on error
  */
 ssize_t liblnk_location_information_read(
          liblnk_location_information_t *location_information,

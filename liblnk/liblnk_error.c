@@ -1,8 +1,7 @@
 /*
  * Error functions
  *
- * Copyright (c) 2006-2010, Joachim Metz <forensics@hoffmannbv.nl>,
- * Hoffmann Investigations.
+ * Copyright (c) 2009-2010, Joachim Metz <jbmetz@users.sourceforge.net>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -41,7 +40,7 @@ void liblnk_error_free(
 }
 
 /* Prints a descriptive string of the error to the stream
- * Returns the amount of printed characters if successful or -1 on error
+ * Returns the number of printed characters if successful or -1 on error
  */
 int liblnk_error_fprint(
      liblnk_error_t *error,
@@ -53,7 +52,7 @@ int liblnk_error_fprint(
 }
 
 /* Prints a descriptive string of the error to the string
- * Returns the amount of printed characters if successful or -1 on error
+ * Returns the number of printed characters if successful or -1 on error
  */
 int liblnk_error_sprint(
      liblnk_error_t *error,
@@ -67,7 +66,7 @@ int liblnk_error_sprint(
 }
 
 /* Prints a backtrace of the error to the stream
- * Returns the amount of printed characters if successful or -1 on error
+ * Returns the number of printed characters if successful or -1 on error
  */
 int liblnk_error_backtrace_fprint(
      liblnk_error_t *error,
@@ -79,7 +78,7 @@ int liblnk_error_backtrace_fprint(
 }
 
 /* Prints a backtrace of the error to the string
- * Returns the amount of printed characters if successful or -1 on error
+ * Returns the number of printed characters if successful or -1 on error
  */
 int liblnk_error_backtrace_sprint(
      liblnk_error_t *error,

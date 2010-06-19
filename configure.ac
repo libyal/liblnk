@@ -2,15 +2,13 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
-  [20090913],
-  [forensics@hoffmannbv.nl])
+  [20100619],
+  [jbmetz@users.sourceforge.net])
 
 AC_CONFIG_SRCDIR(
  [include/liblnk.h.in])
 
-AM_INIT_AUTOMAKE(
- [liblnk],
- [20090913])
+AM_INIT_AUTOMAKE([gnu 1.6])
 
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -25,6 +23,11 @@ LIBLNK_TEST_ENABLE(
  [wide-character-type],
  [wide_character_type],
  [enable wide character type support],
+ [no])
+LIBLNK_TEST_ENABLE(
+ [winapi],
+ [winapi],
+ [enable WINAPI support for cross-compilation],
  [no])
 LIBLNK_TEST_ENABLE(
  [static-executables],
@@ -98,37 +101,58 @@ AC_CHECK_HEADER(
   [HAVE_STDINT_H],
   [0])])
 
+dnl Headers included in common/common.h
+AS_IF(
+ [test "x$ac_cv_liblnk_enable_winapi" = xyes],
+ [AC_CHECK_HEADERS([windows.h])
+
+ AS_IF(
+  [test "x$ac_cv_header_windows_h" = xno],
+  [AC_MSG_FAILURE(
+   [Missing header: windows.h header is required to compile with winapi support],
+   [1]) ])
+ ])
+
 dnl Headers included in common/types.h
 AC_CHECK_HEADERS([limits.h])
 
-dnl Headers included in common/narrow_string.h and common/memory.h
-AC_CHECK_HEADERS([string.h])
-AC_CHECK_HEADERS([stdlib.h])
+dnl Headers included in common/memory.h and libcstring/libcstring_narrow_string.h
+AC_CHECK_HEADERS([stdlib.h string.h])
 
-dnl Headers included in libnotify/libnotify.c
+dnl Headers included in liberror/liberror_error.c and libnotify/libnotify_print.c
 AC_CHECK_HEADERS([stdarg.h])
-AC_CHECK_HEADERS([varargs.h])
 
-dnl Headers included in libnotify/libnotify.c, libbfio/libbfio_file.c and libewf/libewf_header_values.c
+AS_IF(
+ [test "x$ac_cv_header_stdarg_h" != xyes],
+ [AC_CHECK_HEADERS([varargs.h]) ])
+
+AS_IF(
+ [test "x$ac_cv_header_stdarg_h" != xyes && test "x$ac_cv_header_varargs_h" != xyes],
+ [AC_MSG_FAILURE(
+  [Missing headers: stdarg.h and varargs.h],
+  [1]) ])
+
+dnl Headers included in libnotify/libnotify_stream.c and libbfio/libbfio_file.c
 AC_CHECK_HEADERS([errno.h])
 
 dnl Headers included in libbfio/libbfio_file.c, libsystem/libsystem_directory_io.h and libsystem/libsystem_file_io.h
 AC_CHECK_HEADERS([sys/stat.h])
 
 dnl Headers included in libbfio/libbfio_file.c and libsystem/libsystem_file_io.h
-AC_CHECK_HEADERS([fcntl.h])
-AC_CHECK_HEADERS([unistd.h])
+AC_CHECK_HEADERS([fcntl.h unistd.h])
 
 dnl Headers included in libsystem/libsystem_glob.h
 AC_CHECK_HEADERS([glob.h])
 
+AS_IF(
+ [test "x$ac_cv_header_glob_h" = xno],
+ [AC_CHECK_HEADERS([io.h]) ])
+
 dnl Headers included in libsytem/libsystem_support.c
-AC_CHECK_HEADERS([langinfo.h])
-AC_CHECK_HEADERS([locale.h])
+AC_CHECK_HEADERS([langinfo.h locale.h])
 
 dnl Headers included in libsystem/libsystem_signal.h
-AC_CHECK_HEADERS([signal.h])
-AC_CHECK_HEADERS([sys/signal.h])
+AC_CHECK_HEADERS([signal.h sys/signal.h])
 
 dnl Other headers
 
@@ -226,9 +250,12 @@ AC_CHECK_FUNCS(
 AC_CHECK_FUNCS(
  [fseeko],
  [],
- [AC_MSG_FAILURE(
-  [Missing function: fseeko],
-  [1]) ])
+ [AC_CHECK_FUNCS(
+  [fseeko64],
+  [],
+  [AC_MSG_FAILURE(
+   [Missing function: fseeko and fseeko64],
+   [1]) ]) ])
 
 AC_CHECK_FUNCS(
  [fwrite],
@@ -287,7 +314,67 @@ AC_CHECK_FUNCS(
   [Missing function: realloc],
   [1]) ])
 
-dnl Narrow character string functions used in common/narrow_string.h
+dnl Narrow character string functions used in libcstring/libcstring_narrow_string.h
+AC_CHECK_FUNCS(
+ [fgets],
+ [],
+ [AC_MSG_FAILURE(
+  [Missing function: fgets],
+  [1]) ])
+
+AC_CHECK_FUNCS(
+ [memchr],
+ [],
+ [AC_CHECK_FUNCS(
+  [strchr],
+  [],
+  [AC_MSG_FAILURE(
+   [Missing functions: memchr and strchr],
+   [1]) ]) ])
+
+AC_CHECK_FUNCS(
+ [memcmp],
+ [],
+ [AC_CHECK_FUNCS(
+  [strncmp],
+  [],
+  [AC_CHECK_FUNCS(
+   [strcmp],
+   [],
+   [AC_MSG_FAILURE(
+    [Missing functions: memcmp, strncmp and strcmp],
+    [1]) ]) ]) ])
+
+AC_CHECK_FUNCS(
+ [memcpy],
+ [],
+ [AC_CHECK_FUNCS(
+  [strncpy],
+  [],
+  [AC_CHECK_FUNCS(
+   [strcpy],
+   [],
+   [AC_MSG_FAILURE(
+    [Missing functions: memcpy, strncpy and strcpy],
+    [1]) ]) ]) ])
+
+AC_CHECK_FUNCS(
+ [memrchr],
+ [AC_CHECK_DECLS(
+  [memrchr],
+  [ac_liblnk_have_memrchr=yes],
+  [ac_liblnk_have_memrchr=no]) ],
+ [ac_liblnk_have_memrchr=no])
+
+AS_IF(
+ [test "x$ac_liblnk_have_memrchr" = xno],
+ [AC_CHECK_FUNCS(
+  [strrchr],
+  [],
+  [AC_MSG_FAILURE(
+   [Missing functions: strrchr and memrchr],
+   [1]) ]) ])
+
 AC_CHECK_FUNCS(
  [snprintf],
  [],
@@ -310,16 +397,6 @@ AC_CHECK_FUNCS(
   [1]) ])
 
 AC_CHECK_FUNCS(
- [strchr],
- [],
- [AC_CHECK_FUNCS(
-  [memchr],
-  [],
-  [AC_MSG_FAILURE(
-   [Missing functions: strchr and memchr],
-   [1]) ]) ])
-
-AC_CHECK_FUNCS(
  [strncasecmp],
  [],
  [AC_CHECK_FUNCS(
@@ -327,41 +404,6 @@ AC_CHECK_FUNCS(
   [],
   [AC_MSG_FAILURE(
    [Missing functions: strncasecmp and strcasecmp],
-   [1]) ]) ])
-
-AC_CHECK_FUNCS(
- [strncmp],
- [],
- [AC_CHECK_FUNCS(
-  [strcmp],
-  [],
-  [AC_MSG_FAILURE(
-   [Missing functions: strncmp and strcmp],
-   [1]) ]) ])
-
-AC_CHECK_FUNCS(
- [strncpy],
- [],
- [AC_CHECK_FUNCS(
-  [strcpy],
-  [],
-  [AC_MSG_FAILURE(
-   [Missing functions: strncpy and strcpy],
-   [1]) ]) ])
-
-AC_CHECK_FUNCS(
- [strrchr],
- [],
- [AC_CHECK_FUNCS(
-  [memrchr],
-  [AC_CHECK_DECLS(
-   [memrchr],
-   [],
-   [AC_MSG_FAILURE(
-    [Missing declaration for function memrchr],
-    [1]) ]) ],
-  [AC_MSG_FAILURE(
-   [Missing functions: strrchr and memrchr],
    [1]) ]) ])
 
 AC_CHECK_FUNCS(
@@ -434,23 +476,17 @@ AC_CHECK_FUNCS(
   [Missing function: fstat],
   [1]) ])
 
-dnl Date and time functions used in libewf/libewf_date_time.h
-AC_CHECK_FUNCS(
- [localtime_r],
- [],
+dnl Check for error string functions used in libbfio/libbfio_error_string.h and libsystem/libsystem_error_string.c
+AC_FUNC_STRERROR_R()
+
+AS_IF(
+ [test "x$ac_cv_have_decl_strerror_r" = xno],
  [AC_CHECK_FUNCS(
-  [localtime],
+  [strerror],
   [],
   [AC_MSG_FAILURE(
-   [Missing functions: localtime_r and localtime],
+   [Missing functions: strerror_r and strerror],
    [1]) ]) ])
-
-AC_CHECK_FUNCS(
- [mktime],
- [],
- [AC_MSG_FAILURE(
-  [Missing function: mktime],
-  [1]) ])
 
 dnl Date and time functions used in libsystem/libsystem_date_time.h
 LIBLNK_CHECK_FUNC_CTIME
@@ -480,22 +516,7 @@ AC_CHECK_FUNCS(
   [Missing functions: chdir],
   [1]) ])
 
-AC_CHECK_FUNCS(
- [mkdir],
- [],
- [AC_MSG_FAILURE(
-  [Missing functions: mkdir],
-  [1]) ])
-
-dnl Check for error string functions used in libsystem/libsystem_error.c
-AC_FUNC_STRERROR_R(
- [],
- [AC_CHECK_FUNCS(
-  [strerror],
-  [],
-  [AC_MSG_FAILURE(
-   [Missing functions: strerror_r and strerror],
-   [1]) ]) ])
+LIBLNK_CHECK_FUNC_MKDIR
 
 dnl Commandline argument/option parsing functions in libsystem/libsystem_getopt.h
 AC_CHECK_FUNCS([getopt])
@@ -508,450 +529,168 @@ AC_CHECK_FUNCS(
   [Missing function: setlocale],
   [1]) ])
 
-LIBLNK_LANGINFO_CODESET
+LIBLNK_CHECK_FUNC_LANGINFO_CODESET
 
 dnl Other functions
 
 dnl Check for printf conversion specifier support
-LIBLNK_PRINTF_JD
-LIBLNK_PRINTF_ZD
+LIBLNK_CHECK_FUNC_PRINTF_JD
+LIBLNK_CHECK_FUNC_PRINTF_ZD
 
 dnl Checks for libraries and library functions
 dnl ac_liblnk_dummy is used to prevent AC_CHECK_LIB adding unnecessary -l<library> arguments
 
 dnl Check for enabling libuna for Unicode string support
-AC_CHECK_HEADERS(
- [libuna.h],
- [],
- [ac_liblnk_have_libuna=no])
+LIBLNK_CHECK_LIBUNA
 
 AS_IF(
-	[test "x$ac_liblnk_have_libuna" != xno],
-	[ac_liblnk_have_libuna=yes
-	AC_CHECK_LIB(
-	 una,
-	 libuna_get_version,
-	 [],
-	 [ac_liblnk_have_libuna=no])
-
-	dnl Byte stream functions
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf8_string_size_from_byte_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf8_string_copy_from_byte_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_byte_stream_size_from_utf8,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_byte_stream_copy_from_utf8,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf16_string_size_from_byte_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf16_string_copy_from_byte_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_byte_stream_size_from_utf16,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_byte_stream_copy_from_utf16,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf32_string_size_from_byte_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf32_string_copy_from_byte_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_byte_stream_size_from_utf32,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_byte_stream_copy_from_utf32,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-
-	dnl UTF-8 stream functions
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf8_string_size_from_utf8_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf8_string_copy_from_utf8_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf8_stream_size_from_utf8,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf8_stream_copy_from_utf8,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf16_string_size_from_utf8_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf16_string_copy_from_utf8_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf8_stream_size_from_utf16,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf8_stream_copy_from_utf16,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf32_string_size_from_utf8_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf32_string_copy_from_utf8_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf8_stream_size_from_utf32,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf8_stream_copy_from_utf32,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-
-	dnl UTF-16 stream functions
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf8_string_size_from_utf16_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf8_string_copy_from_utf16_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf16_stream_size_from_utf8,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf16_stream_copy_from_utf8,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf16_string_size_from_utf16_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf16_string_copy_from_utf16_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf16_stream_size_from_utf16,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf16_stream_copy_from_utf16,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf32_string_size_from_utf16_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf32_string_copy_from_utf16_stream,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf16_stream_size_from_utf32,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	AC_CHECK_LIB(
-	 una,
-	 libuna_utf16_stream_copy_from_utf32,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libuna=no])
-	])
-
-AS_IF(
-	[test "x$ac_liblnk_have_libuna" = xyes],
-	[AC_SUBST(
-	 [liblnk_pc_libs_private_libuna],
-	 [-luna])
-	AC_SUBST(
-	 [liblnk_spec_requires_libuna],
-	 [libuna])
-	AC_SUBST(
-	 [liblnk_spec_build_requires_libuna],
-	 [libuna-devel])
-	AC_SUBST(
-	 [LIBUNA_CPPFLAGS],
-	 [])
-	AC_SUBST(
-	 [LIBUNA_LIBADD],
-	 []) ],
-	[dnl If libuna is not available use the (local) version that came with liblnk
-	AC_DEFINE(
-	 [HAVE_LOCAL_LIBUNA],
-	 [1],
-	 [Define to 1 if the local version of libuna is used.])
-	AC_SUBST(
-	 [HAVE_LOCAL_LIBUNA],
-	 [1])
-	AC_SUBST(
-	 [liblnk_pc_libs_private_libuna],
-	 [])
-	AC_SUBST(
-	 [liblnk_spec_requires_libuna],
-	 [])
-	AC_SUBST(
-	 [liblnk_spec_build_requires_libuna],
-	 [])
-	AC_SUBST(
-	 [LIBUNA_CPPFLAGS],
-	 [-I../libuna])
-	AC_SUBST(
-	 [LIBUNA_LIBADD],
-	 [../libuna/libuna.la])
-	ac_liblnk_have_libuna=local])
+ [test "x$ac_liblnk_have_libuna" = xyes],
+ [dnl libuna is available
+ AC_SUBST(
+  [liblnk_pc_libs_private_libuna],
+  [-luna])
+ AC_SUBST(
+  [liblnk_spec_requires_libuna],
+  [libuna])
+ AC_SUBST(
+  [liblnk_spec_build_requires_libuna],
+  [libuna-devel])
+ AC_SUBST(
+  [LIBUNA_CPPFLAGS],
+  [])
+ AC_SUBST(
+  [LIBUNA_LIBADD],
+  []) ],
+ [dnl libuna is not available, using the (local) version that came with the source package
+ AC_DEFINE(
+  [HAVE_LOCAL_LIBUNA],
+  [1],
+  [Define to 1 if the local version of libuna is used.])
+ AC_SUBST(
+  [HAVE_LOCAL_LIBUNA],
+  [1])
+ AC_SUBST(
+  [liblnk_pc_libs_private_libuna],
+  [])
+ AC_SUBST(
+  [liblnk_spec_requires_libuna],
+  [])
+ AC_SUBST(
+  [liblnk_spec_build_requires_libuna],
+  [])
+ AC_SUBST(
+  [LIBUNA_CPPFLAGS],
+  [-I../libuna])
+ AC_SUBST(
+  [LIBUNA_LIBADD],
+  [../libuna/libuna.la])
+ ac_liblnk_have_libuna=local])
 
 AM_CONDITIONAL(
  [HAVE_LOCAL_LIBUNA],
  [test "x$ac_liblnk_have_libuna" = xlocal])
 
 dnl Check for enabling libbfio for basic file IO support
-AC_CHECK_HEADERS(
- [libbfio.h],
- [],
- [ac_liblnk_have_libbfio=no])
+LIBLNK_CHECK_LIBBFIO
 
 AS_IF(
-	[test "x$ac_liblnk_have_libbfio" != xno],
-	[ac_liblnk_have_libbfio=yes
-	AC_CHECK_LIB(
-	 bfio,
-	 libbfio_get_version,
-	 [],
-	 [ac_liblnk_have_libbfio=no])
-
-	dnl Handle functions
-	AC_CHECK_LIB(
-	 bfio,
-	 libbfio_handle_free,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libbfio=no])
-	AC_CHECK_LIB(
-	 bfio,
-	 libbfio_handle_open,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libbfio=no])
-	AC_CHECK_LIB(
-	 bfio,
-	 libbfio_handle_close,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libbfio=no])
-	AC_CHECK_LIB(
-	 bfio,
-	 libbfio_handle_read,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libbfio=no])
-
-	AC_CHECK_LIB(
-	 bfio,
-	 libbfio_handle_set_track_offsets_read,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libbfio=no])
-	AC_CHECK_LIB(
-	 bfio,
-	 libbfio_handle_get_offset_read,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libbfio=no])
-	AC_CHECK_LIB(
-	 bfio,
-	 libbfio_handle_get_amount_of_offsets_read,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libbfio=no])
-
-	dnl File functions
-	AC_CHECK_LIB(
-	 bfio,
-	 libbfio_file_initialize,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libbfio=no])
-	AC_CHECK_LIB(
-	 bfio,
-	 libbfio_file_set_name,
-	 [ac_liblnk_dummy=yes],
-	 [ac_liblnk_have_libbfio=no])
-
-	AS_IF(
-		[test "x$ac_cv_liblnk_enable_wide_character_type" != xno ],
-		[AC_CHECK_LIB(
-		 bfio,
-		 libbfio_file_set_name_wide,
-		 [ac_liblnk_dummy=yes],
-		 [ac_liblnk_have_libbfio=no])
-		])
-	])
-
-AS_IF(
-	[test "x$ac_liblnk_have_libbfio" = xyes],
-	[AC_SUBST(
-	 [liblnk_pc_libs_private_libbfio],
-	 [-lbfio])
-	AC_SUBST(
-	 [liblnk_spec_requires_libbfio],
-	 [libbfio])
-	AC_SUBST(
-	 [liblnk_spec_build_requires_libbfio],
-	 [libbfio-devel])
-	AC_SUBST(
-	 [LIBBFIO_CPPFLAGS],
-	 [])
-	AC_SUBST(
-	 [LIBBFIO_LIBADD],
-	 [])
-	AC_SUBST(
-	 [HAVE_LIBBFIO],
-	 [1]) ],
-	[dnl If libbfio is not available use the (local) version that came with liblnk
-	AC_DEFINE(
-	 [HAVE_LOCAL_LIBBFIO],
-	 [1],
-	 [Define to 1 if the local version of libbfio is used.])
-	AC_SUBST(
-	 [HAVE_LOCAL_LIBBFIO],
-	 [1])
-	AC_SUBST(
-	 [liblnk_pc_libs_private_libbfio],
-	 [])
-	AC_SUBST(
-	 [liblnk_spec_requires_libbfio],
-	 [])
-	AC_SUBST(
-	 [liblnk_spec_build_requires_libbfio],
-	 [])
-	AC_SUBST(
-	 [LIBBFIO_CPPFLAGS],
-	 [-I../libbfio])
-	AC_SUBST(
-	 [LIBBFIO_LIBADD],
-	 [../libbfio/libbfio.la])
-	AC_SUBST(
-	 [HAVE_LIBBFIO],
-	 [0])
-	ac_liblnk_have_libbfio=local])
+ [test "x$ac_liblnk_have_libbfio" = xyes],
+ [dnl libbfio is available
+ AC_SUBST(
+  [liblnk_pc_libs_private_libbfio],
+  [-lbfio])
+ AC_SUBST(
+  [liblnk_spec_requires_libbfio],
+  [libbfio])
+ AC_SUBST(
+  [liblnk_spec_build_requires_libbfio],
+  [libbfio-devel])
+ AC_SUBST(
+  [LIBBFIO_CPPFLAGS],
+  [])
+ AC_SUBST(
+  [LIBBFIO_LIBADD],
+  [])
+ AC_SUBST(
+  [HAVE_LIBBFIO],
+  [1]) ],
+ [dnl libbfio is not available, using the (local) version that came with the source package
+ AC_DEFINE(
+  [HAVE_LOCAL_LIBBFIO],
+  [1],
+  [Define to 1 if the local version of libbfio is used.])
+ AC_SUBST(
+  [HAVE_LOCAL_LIBBFIO],
+  [1])
+ AC_SUBST(
+  [liblnk_pc_libs_private_libbfio],
+  [])
+ AC_SUBST(
+  [liblnk_spec_requires_libbfio],
+  [])
+ AC_SUBST(
+  [liblnk_spec_build_requires_libbfio],
+  [])
+ AC_SUBST(
+  [LIBBFIO_CPPFLAGS],
+  [-I../libbfio])
+ AC_SUBST(
+  [LIBBFIO_LIBADD],
+  [../libbfio/libbfio.la])
+ AC_SUBST(
+  [HAVE_LIBBFIO],
+  [0])
+ ac_liblnk_have_libbfio=local])
 
 AM_CONDITIONAL(
  [HAVE_LOCAL_LIBBFIO],
  [test "x$ac_liblnk_have_libbfio" = xlocal])
 
 dnl Check for enabling libfdatetime for file date and time support
-AC_CHECK_HEADERS(
- [libfdatetime.h],
- [],
- [ac_liblnk_have_libfdatetime=no])
+LIBLNK_CHECK_LIBFDATETIME
 
 AS_IF(
-	[test "x$ac_liblnk_have_libfdatetime" != xno],
-	[ac_liblnk_have_libfdatetime=yes
-	AC_CHECK_LIB(
-	 fdatetime,
-	 libfdatetime_get_version,
-	 [],
-	 [ac_liblnk_have_libfdatetime=no])
-
-	])
-
-AS_IF(
-	[test "x$ac_liblnk_have_libfdatetime" = xyes],
-	[AC_SUBST(
-	 [liblnk_pc_libs_private_libfdatetime],
-	 [-lfdatetime])
-	AC_SUBST(
-	 [liblnk_spec_requires_libfdatetime],
-	 [libfdatetime])
-	AC_SUBST(
-	 [liblnk_spec_build_requires_libfdatetime],
-	 [libfdatetime-devel])
-	AC_SUBST(
-	 [LIBFDATETIME_CPPFLAGS],
-	 [])
-	AC_SUBST(
-	 [LIBFDATETIME_LIBADD],
-	 []) ],
-	[dnl If libfdatetime is not available use the (local) version that came with liblnk
-	AC_DEFINE(
-	 [HAVE_LOCAL_LIBFDATETIME],
-	 [1],
-	 [Define to 1 if the local version of libfdatetime is used.])
-	AC_SUBST(
-	 [HAVE_LOCAL_LIBFDATETIME],
-	 [1])
-	AC_SUBST(
-	 [liblnk_pc_libs_private_libfdatetime],
-	 [])
-	AC_SUBST(
-	 [liblnk_spec_requires_libfdatetime],
-	 [])
-	AC_SUBST(
-	 [liblnk_spec_build_requires_libfdatetime],
-	 [])
-	AC_SUBST(
-	 [LIBFDATETIME_CPPFLAGS],
-	 [-I../libfdatetime])
-	AC_SUBST(
-	 [LIBFDATETIME_LIBADD],
-	 [../libfdatetime/libfdatetime.la])
-	ac_liblnk_have_libfdatetime=local])
+ [test "x$ac_liblnk_have_libfdatetime" = xyes],
+ [dnl libfdatetime is available
+ AC_SUBST(
+  [liblnk_pc_libs_private_libfdatetime],
+  [-lfdatetime])
+ AC_SUBST(
+  [liblnk_spec_requires_libfdatetime],
+  [libfdatetime])
+ AC_SUBST(
+  [liblnk_spec_build_requires_libfdatetime],
+  [libfdatetime-devel])
+ AC_SUBST(
+  [LIBFDATETIME_CPPFLAGS],
+  [])
+ AC_SUBST(
+  [LIBFDATETIME_LIBADD],
+  []) ],
+ [dnl libfdatetime is not available, using the (local) version that came with the source package
+ AC_DEFINE(
+  [HAVE_LOCAL_LIBFDATETIME],
+  [1],
+  [Define to 1 if the local version of libfdatetime is used.])
+ AC_SUBST(
+  [HAVE_LOCAL_LIBFDATETIME],
+  [1])
+ AC_SUBST(
+  [liblnk_pc_libs_private_libfdatetime],
+  [])
+ AC_SUBST(
+  [liblnk_spec_requires_libfdatetime],
+  [])
+ AC_SUBST(
+  [liblnk_spec_build_requires_libfdatetime],
+  [])
+ AC_SUBST(
+  [LIBFDATETIME_CPPFLAGS],
+  [-I../libfdatetime])
+ AC_SUBST(
+  [LIBFDATETIME_LIBADD],
+  [../libfdatetime/libfdatetime.la])
+ ac_liblnk_have_libfdatetime=local])
 
 AM_CONDITIONAL(
  [HAVE_LOCAL_LIBFDATETIME],
@@ -959,155 +698,142 @@ AM_CONDITIONAL(
 
 dnl Check if liblnk should be build with wide character type support
 AS_IF(
-	[test "x$ac_cv_liblnk_enable_wide_character_type" != xno ],
-	[dnl Check for the wide character header
-	AC_CHECK_HEADERS(
-	 [wchar.h],
-	 [AC_DEFINE(
-	  [HAVE_WCHAR_H],
-	  [1],
-	  [Define to 1 if you have the <wchar.h> header file.])
-	 AC_SUBST(
-	  [HAVE_WCHAR_H],
-	  [1]) ],
-	 [AC_MSG_FAILURE(
-	  [Missing header: wchar.h],
-	  [1]) ])
+ [test "x$ac_cv_liblnk_enable_winapi" = xyes],
+ [ac_cv_liblnk_enable_wide_character_type=yes])
 
-	dnl Determine wide character byte size
-	AC_CHECK_SIZEOF([wchar_t])
+AS_IF(
+ [test "x$ac_cv_liblnk_enable_wide_character_type" != xno ],
+ [dnl Check for the wide character header
+ AC_CHECK_HEADERS(
+  [wchar.h],
+  [AC_DEFINE(
+   [HAVE_WCHAR_H],
+   [1],
+   [Define to 1 if you have the <wchar.h> header file.])
+  AC_SUBST(
+   [HAVE_WCHAR_H],
+   [1]) ],
+  [AC_MSG_FAILURE(
+   [Missing header: wchar.h],
+   [1]) ])
 
-	dnl Check for wide character string functions
-	dnl Wide character string functions used in common/string_conversion.h
-	AC_CHECK_FUNCS(
-	 [btowc],
-	 [],
-	 [AC_MSG_FAILURE(
-	  [Missing functions: btowc],
-	  [1]) ])
+ dnl Determine wide character byte size
+ AC_CHECK_SIZEOF([wchar_t])
 
-	AC_CHECK_FUNCS(
-	 [wctob],
-	 [],
-	 [AC_MSG_FAILURE(
-	  [Missing functions: wctob],
-	  [1]) ])
+ dnl Check for wide character string functions
 
-	dnl Wide character string functions used in common/wide_string.h
-	AC_CHECK_FUNCS(
-	 [fgetws],
-	 [],
-	 [AC_MSG_FAILURE(
-	  [Missing functions: fgetws],
-	  [1]) ])
+ dnl Wide character string functions used in common/file_stream.h
+ AC_CHECK_FUNCS(
+  [fgetws],
+  [],
+  [AC_MSG_FAILURE(
+   [Missing function: fgetws],
+   [1]) ])
 
-	AC_CHECK_FUNCS(
-	 [swprintf],
-	 [],
-	 [AC_MSG_FAILURE(
-	  [Missing functions: swprintf],
-	  [1]) ])
+ dnl Wide character string functions used in libcstring/libcstring_wide_string.h
+ AC_CHECK_FUNCS(
+  [swprintf],
+  [],
+  [AC_MSG_FAILURE(
+   [Missing function: swprintf],
+   [1]) ])
 
-	AC_CHECK_FUNCS(
-	 [vswprintf],
-	 [],
-	 [AC_MSG_FAILURE(
-	  [Missing functions: vswprintf],
-	  [1]) ])
+ AC_CHECK_FUNCS(
+  [wmemchr],
+  [],
+  [AC_CHECK_FUNCS(
+   [wcschr],
+   [],
+   [AC_MSG_FAILURE(
+    [Missing functions: wmemchr and wcschr],
+    [1]) ]) ])
 
-	AC_CHECK_FUNCS(
-	 [wcschr],
-	 [],
-	 [AC_CHECK_FUNCS(
-	  [wmemchr],
-	  [],
-	  [AC_MSG_FAILURE(
-	   [Missing functions: wcschr and wmemchr],
-	   [1]) ]) ])
+ AC_CHECK_FUNCS(
+  [wmemcmp],
+  [],
+  [AC_CHECK_FUNCS(
+   [wcsncmp],
+   [],
+   [AC_CHECK_FUNCS(
+    [wcscmp],
+    [],
+    [AC_MSG_FAILURE(
+     [Missing functions: wmemcmp, wcsncmp and wcscmp],
+     [1]) ]) ]) ])
 
-	AC_CHECK_FUNCS(
-	 [wcsncasecmp],
-	 [],
-	 [AC_CHECK_FUNCS(
-	  [wcscasecmp],
-	  [],
-	  [AC_MSG_FAILURE(
-	   [Missing functions: wcsncasecmp and wcscasecmp],
-	   [1]) ]) ])
+ AC_CHECK_FUNCS(
+  [wmemcpy],
+  [],
+  [AC_CHECK_FUNCS(
+   [wcsncpy],
+   [],
+   [AC_CHECK_FUNCS(
+    [wcscpy],
+    [],
+    [AC_MSG_FAILURE(
+     [Missing functions: wmemcpy, wcsncpy and wcscpy],
+     [1]) ]) ]) ])
 
-	AC_CHECK_FUNCS(
-	 [wcsncmp],
-	 [],
-	 [AC_CHECK_FUNCS(
-	  [wmemcmp],
-	  [],
-	  [AC_CHECK_FUNCS(
-	   [wcscmp],
-	   [],
-	   [AC_MSG_FAILURE(
-	    [Missing functions: wcsncmp, wmemcmp and wcscmp],
-	    [1]) ]) ]) ])
+ AC_CHECK_FUNCS(
+  [wmemrchr],
+  [],
+  [AC_CHECK_FUNCS(
+   [wcsrchr],
+   [],
+   [AC_MSG_FAILURE(
+    [Missing functions: wmemrchr and wcsrchr],
+    [1]) ]) ])
 
-	AC_CHECK_FUNCS(
-	 [wcsncpy],
-	 [],
-	 [AC_CHECK_FUNCS(
-	  [wmemcpy],
-	  [],
-	  [AC_CHECK_FUNCS(
-	   [wcscpy],
-	   [],
-	   [AC_MSG_FAILURE(
-	    [Missing functions: wcsncpy, wmemcpy and wcscpy],
-	    [1]) ]) ]) ])
+ AC_CHECK_FUNCS(
+  [wcslen],
+  [],
+  [AC_MSG_FAILURE(
+   [Missing function: wcslen],
+   [1]) ])
 
-	AC_CHECK_FUNCS(
-	 [wcslen],
-	 [],
-	 [AC_MSG_FAILURE(
-	  [Missing functions: wcslen],
-	  [1]) ])
+ AC_CHECK_FUNCS(
+  [wcsncasecmp],
+  [],
+  [AC_CHECK_FUNCS(
+   [wcscasecmp],
+   [],
+   [AC_CHECK_FUNCS(
+    [towlower],
+    [],
+    [AC_MSG_FAILURE(
+     [Missing functions: wcsncasecmp, wcscasecmp and towlower],
+     [1]) ]) ]) ])
 
-	AC_CHECK_FUNCS(
-	 [wcsrchr],
-	 [],
-	 [AC_CHECK_FUNCS(
-	  [wmemrchr],
-	  [],
-	  [AC_MSG_FAILURE(
-	   [Missing functions: wcsrchr and wmemrchr],
-	   [1]) ]) ])
+ AC_CHECK_FUNCS(
+  [wcstoll],
+  [],
+  [AC_MSG_FAILURE(
+   [Missing function: wcstoll],
+   [1]) ])
 
-	AC_CHECK_FUNCS(
-	 [wcstoll],
-	 [],
-	 [AC_MSG_FAILURE(
-	  [Missing functions: wcstoll],
-	  [1]) ])
+ AC_CHECK_FUNCS(
+  [wcstoull],
+  [],
+  [AC_MSG_FAILURE(
+   [Missing function: wcstoull],
+   [1]) ])
 
-	AC_CHECK_FUNCS(
-	 [wcstoull],
-	 [],
-	 [AC_MSG_FAILURE(
-	  [Missing functions: wcstoull],
-	  [1]) ])
+ dnl Make the necessary definitions
+ AC_DEFINE(
+  [HAVE_WIDE_CHARACTER_TYPE],
+  [1],
+  [Define to 1 if wide character type should be used.])
+ AC_SUBST(
+  [HAVE_WIDE_CHARACTER_TYPE],
+  [1])
+ ac_cv_liblnk_enable_wide_character_type=yes],
 
-	dnl Make the necessary definitions
-	AC_DEFINE(
-	 [HAVE_WIDE_CHARACTER_TYPE],
-	 [1],
-	 [Define to 1 if wide character type should be used])
-	AC_SUBST(
-	 [HAVE_WIDE_CHARACTER_TYPE],
-	 [1])
-	ac_cv_liblnk_enable_wide_character_type=yes],
-
-	[AC_SUBST(
-	 [HAVE_WIDE_CHARACTER_TYPE],
-	 [0])
-	AC_SUBST(
-	 [HAVE_WCHAR_H],
-	 [0]) ])
+ [AC_SUBST(
+  [HAVE_WIDE_CHARACTER_TYPE],
+  [0])
+ AC_SUBST(
+  [HAVE_WCHAR_H],
+  [0]) ])
 
 AC_SUBST(
  [HAVE_WIDE_CHARACTER_SUPPORT_FUNCTIONS],
@@ -1115,58 +841,58 @@ AC_SUBST(
 
 dnl Check if lnktools should be build as static executables
 AS_IF(
-	[test "x$ac_cv_liblnk_enable_static_executables" != xno],
-	[STATIC_LDFLAGS="-all-static";
-	AC_SUBST(
-	 [STATIC_LDFLAGS])
-	ac_cv_liblnk_enable_static_executables=yes])
+ [test "x$ac_cv_liblnk_enable_static_executables" != xno],
+ [STATIC_LDFLAGS="-all-static";
+ AC_SUBST(
+  [STATIC_LDFLAGS])
+ ac_cv_liblnk_enable_static_executables=yes])
 
 dnl Check if liblnk should be build with verbose output
 AS_IF(
-	[test "x$ac_cv_liblnk_enable_verbose_output" != xno ],
-	[AC_DEFINE(
-	 [HAVE_VERBOSE_OUTPUT],
-	 [1],
-	 [Define to 1 if verbose output should be used] )
-	ac_cv_liblnk_enable_verbose_output=yes])
+ [test "x$ac_cv_liblnk_enable_verbose_output" != xno ],
+ [AC_DEFINE(
+  [HAVE_VERBOSE_OUTPUT],
+  [1],
+  [Define to 1 if verbose output should be used.])
+ ac_cv_liblnk_enable_verbose_output=yes])
 
 dnl Check if liblnk should be build with debug output
 AS_IF(
-	[test "x$ac_cv_liblnk_enable_debug_output" != xno ],
-	[AC_DEFINE(
-	 [HAVE_DEBUG_OUTPUT],
-	 [1],
-	 [Define to 1 if debug output should be used] )
-	ac_cv_liblnk_enable_debug_output=yes])
+ [test "x$ac_cv_liblnk_enable_debug_output" != xno ],
+ [AC_DEFINE(
+  [HAVE_DEBUG_OUTPUT],
+  [1],
+  [Definei to 1 if debug output should be used.])
+ ac_cv_liblnk_enable_debug_output=yes])
 
 dnl Check if requires and build requires should be set in spec file
 AS_IF(
-	[test "x$ac_liblnk_have_libuna" = xyes || test "x$ac_liblnk_have_libbfio" = xyes || test "x$ac_liblnk_have_libfdatetime" = xyes],
-	[AC_SUBST(
-	 [liblnk_spec_requires],
-	 [Requires:])
-	AC_SUBST(
-	 [liblnk_spec_build_requires],
-	 [BuildRequires:]) ],
-	[AC_SUBST(
-	 [liblnk_spec_requires],
-	 [])
-	AC_SUBST(
-	 [liblnk_spec_build_requires],
-	 [])
-	ac_liblnk_dummy=yes])
+ [test "x$ac_liblnk_have_libuna" = xyes || test "x$ac_liblnk_have_libbfio" = xyes || test "x$ac_liblnk_have_libfdatetime" = xyes || test "x$ac_liblnk_have_libfmapi" = xyes],
+ [AC_SUBST(
+  [liblnk_spec_requires],
+  [Requires:])
+ AC_SUBST(
+  [liblnk_spec_build_requires],
+  [BuildRequires:]) ],
+ [AC_SUBST(
+  [liblnk_spec_requires],
+  [])
+ AC_SUBST(
+  [liblnk_spec_build_requires],
+  [])
+ ac_liblnk_dummy=yes])
 
 dnl Set memwatch support
 ac_liblnk_have_memwatch=yes
 
 AS_IF(
-	[test "x$ac_liblnk_have_memwatch" != xno ],
-	[AC_SUBST(
-	 [MEMWATCH_CPPFLAGS],
-	 ["-DMEMWATCH -DMEMWATCH_STDIO"])
-	AC_SUBST(
-	 [MEMWATCH_LIBADD],
-	 [../common/libmemwatch.la]) ])
+ [test "x$ac_liblnk_have_memwatch" != xno ],
+ [AC_SUBST(
+  [MEMWATCH_CPPFLAGS],
+  ["-DMEMWATCH -DMEMWATCH_STDIO"])
+ AC_SUBST(
+  [MEMWATCH_LIBADD],
+  [../common/libmemwatch.la]) ])
 
 AM_CONDITIONAL(
  [HAVE_MEMWATCH],
@@ -1177,20 +903,21 @@ CFLAGS="$CFLAGS -Wall";
 
 dnl Check if DLL support is needed in lnktools
 AS_IF(
-	[test x"$enable_shared" = xyes],
-	[AS_CASE(
-		[$host],
-		[*cygwin* | *mingw*],
-		[AC_SUBST(
-		 [LIBLNK_DLL_IMPORT],
-		 ["-DLIBLNK_DLL_IMPORT"])
-		])
-	])
+ [test x"$enable_shared" = xyes],
+ [AS_CASE(
+  [$host],
+  [*cygwin* | *mingw*],
+  [AC_SUBST(
+   [LIBLNK_DLL_IMPORT],
+   ["-DLIBLNK_DLL_IMPORT"])
+  ])
+ ])
 
 dnl Have configure make the Makefiles
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([include/Makefile])
 AC_CONFIG_FILES([common/Makefile])
+AC_CONFIG_FILES([libcstring/Makefile])
 AC_CONFIG_FILES([liberror/Makefile])
 AC_CONFIG_FILES([libnotify/Makefile])
 AC_CONFIG_FILES([libuna/Makefile])

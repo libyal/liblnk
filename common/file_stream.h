@@ -1,6 +1,7 @@
 /*
  * FILE stream functions
  *
+ * Copyright (c) 2010, Joachim Metz <jbmetz@users.sourceforge.net>
  * Copyright (c) 2006-2010, Joachim Metz <forensics@hoffmannbv.nl>,
  * Hoffmann Investigations.
  *
@@ -100,6 +101,10 @@ extern "C" {
 #elif defined( HAVE_FSEEKO )
 #define file_stream_seek_offset( stream, offset, whence ) \
 	fseeko( stream, offset, whence )
+
+#elif defined( HAVE_FSEEKO64 )
+#define file_stream_seek_offset( stream, offset, whence ) \
+	fseeko64( stream, offset, whence )
 #endif
 
 /* End of FILE stream
@@ -128,6 +133,10 @@ extern "C" {
 #if defined( HAVE_GLIB_H )
 #define file_stream_vfprintf( stream, format, ... ) \
 	g_vfprintf( stream, format, __VA_ARGS__ )
+
+#elif defined( __BORLANDC__ ) && ( __BORLANDC__ < 0x0560 )
+#define file_stream_vfprintf \
+	vfprintf
 
 #elif defined( HAVE_VFPRINTF ) || defined( WINAPI )
 #define file_stream_vfprintf( stream, format, ... ) \
