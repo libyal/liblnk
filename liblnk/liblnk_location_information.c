@@ -574,13 +574,16 @@ ssize_t liblnk_location_information_read(
 			}
 			location_information_value_data = &( location_information_value_data[ volume_label_offset ] );
 
-			value_size = 0;
-
-			while( location_information_value_data[ value_size ] != 0 )
+			for( value_size = 0;
+			     value_size < ( location_information_value_size - volume_label_offset );
+			     value_size++ )
 			{
-				value_size += 1;
+				if( location_information_value_data[ value_size ] == 0 )
+				{
+					break;
+				}
 			}
-			value_size += 1;
+			value_size++;
 
 #if defined( HAVE_DEBUG_OUTPUT )
 			if( libnotify_verbose != 0 )
@@ -616,12 +619,15 @@ ssize_t liblnk_location_information_read(
 			}
 			location_information_unicode_value_data = &( location_information_value_data[ unicode_volume_label_offset ] );
 
-			unicode_value_size = 0;
-
-			while( ( location_information_unicode_value_data[ unicode_value_size ] != 0 )
-			    || ( location_information_unicode_value_data[ unicode_value_size + 1 ] != 0 ) )
+			for( unicode_value_size = 0;
+			     ( unicode_value_size + 1 ) < ( location_information_value_size - unicode_volume_label_offset );
+			     unicode_value_size += 2 )
 			{
-				unicode_value_size += 2;
+				if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
+				 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
+				{
+					break;
+				}
 			}
 			unicode_value_size += 2;
 
@@ -895,11 +901,14 @@ ssize_t liblnk_location_information_read(
 		}
 		location_information_value_data = &( location_information_data[ local_path_offset ] );
 
-		value_size = 0;
-
-		while( location_information_value_data[ value_size ] != 0 )
+		for( value_size = 0;
+		     value_size < ( location_information_size - local_path_offset );
+		     value_size++ )
 		{
-			value_size++;
+			if( location_information_value_data[ value_size ] == 0 )
+			{
+				break;
+			}
 		}
 		value_size++;
 
@@ -953,11 +962,15 @@ ssize_t liblnk_location_information_read(
 		}
 		location_information_unicode_value_data = &( location_information_data[ unicode_local_path_offset ] );
 
-		unicode_value_size = 0;
-
-		while( location_information_unicode_value_data[ unicode_value_size ] != 0 )
+		for( unicode_value_size = 0;
+		     ( unicode_value_size + 1 ) < ( location_information_size - unicode_local_path_offset );
+		     unicode_value_size += 2 )
 		{
-			unicode_value_size += 2;
+			if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
+			 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
+			{
+				break;
+			}
 		}
 		unicode_value_size += 2;
 
@@ -1236,7 +1249,7 @@ ssize_t liblnk_location_information_read(
 
 		byte_stream_copy_to_uint32_little_endian(
 		 ( (lnk_network_share_information_t *) location_information_value_data )->size,
-		 value_size );
+		 location_information_value_size );
 
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
@@ -1246,7 +1259,7 @@ ssize_t liblnk_location_information_read(
 			 function );
 			libnotify_print_data(
 			 location_information_value_data,
-			 value_size );
+			 location_information_value_size );
 		}
 #endif
 
@@ -1267,7 +1280,7 @@ ssize_t liblnk_location_information_read(
 			libnotify_printf(
 			 "%s: network share information size\t\t\t: %" PRIu32 "\n",
 			 function,
-			 value_size );
+			 location_information_value_size );
 
 			byte_stream_copy_to_uint32_little_endian(
 			 ( (lnk_network_share_information_t *) location_information_value_data )->network_share_type,
@@ -1320,7 +1333,7 @@ ssize_t liblnk_location_information_read(
 		}
 		if( network_share_name_offset > 0 )
 		{
-			if( network_share_name_offset > value_size )
+			if( network_share_name_offset > location_information_value_size )
 			{
 				liberror_error_set(
 				 error,
@@ -1336,11 +1349,14 @@ ssize_t liblnk_location_information_read(
 			}
 			location_information_value_data = &( location_information_value_data[ network_share_name_offset ] );
 
-			value_size = 0;
-
-			while( location_information_value_data[ value_size ] != 0 )
+			for( value_size = 0;
+			     value_size < ( location_information_value_size - network_share_name_offset );
+			     value_size++ )
 			{
-				value_size++;
+				if( location_information_value_data[ value_size ] == 0 )
+				{
+					break;
+				}
 			}
 			value_size++;
 
@@ -1378,12 +1394,15 @@ ssize_t liblnk_location_information_read(
 			}
 			location_information_unicode_value_data = &( location_information_value_data[ unicode_network_share_name_offset ] );
 
-			unicode_value_size = 0;
-
-			while( ( location_information_unicode_value_data[ unicode_value_size ] != 0 )
-			    || ( location_information_unicode_value_data[ unicode_value_size + 1 ] != 0 ) )
+			for( unicode_value_size = 0;
+			     ( unicode_value_size + 1 ) < ( location_information_value_size - unicode_network_share_name_offset );
+			     unicode_value_size += 2 )
 			{
-				unicode_value_size += 2;
+				if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
+				 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
+				{
+					break;
+				}
 			}
 			unicode_value_size += 2;
 
@@ -1622,7 +1641,7 @@ ssize_t liblnk_location_information_read(
 #endif
 		if( device_name_offset > 0 )
 		{
-			if( device_name_offset > value_size )
+			if( device_name_offset > location_information_value_size )
 			{
 				liberror_error_set(
 				 error,
@@ -1638,11 +1657,14 @@ ssize_t liblnk_location_information_read(
 			}
 			location_information_value_data = &( location_information_value_data[ device_name_offset ] );
 
-			value_size = 0;
-
-			while( location_information_value_data[ value_size ] != 0 )
+			for( value_size = 0;
+			     value_size < ( location_information_value_size - network_share_name_offset );
+			     value_size++ )
 			{
-				value_size++;
+				if( location_information_value_data[ value_size ] == 0 )
+				{
+					break;
+				}
 			}
 			value_size++;
 
@@ -1680,12 +1702,15 @@ ssize_t liblnk_location_information_read(
 			}
 			location_information_unicode_value_data = &( location_information_value_data[ unicode_device_name_offset ] );
 
-			unicode_value_size = 0;
-
-			while( ( location_information_unicode_value_data[ unicode_value_size ] != 0 )
-			    || ( location_information_unicode_value_data[ unicode_value_size + 1 ] != 0 ) )
+			for( unicode_value_size = 0;
+			     ( unicode_value_size + 1 ) < ( location_information_value_size - unicode_device_name_offset );
+			     unicode_value_size += 2 )
 			{
-				unicode_value_size += 2;
+				if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
+				 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
+				{
+					break;
+				}
 			}
 			unicode_value_size += 2;
 
@@ -1959,11 +1984,14 @@ ssize_t liblnk_location_information_read(
 		}
 		location_information_value_data = &( location_information_data[ common_path_offset ] );
 
-		value_size = 0;
-
-		while( location_information_value_data[ value_size ] != 0 )
+		for( value_size = 0;
+		     value_size < ( location_information_size - common_path_offset );
+		     value_size++ )
 		{
-			value_size++;
+			if( location_information_value_data[ value_size ] == 0 )
+			{
+				break;
+			}
 		}
 		value_size++;
 
@@ -2017,11 +2045,15 @@ ssize_t liblnk_location_information_read(
 		}
 		location_information_unicode_value_data = &( location_information_data[ unicode_common_path_offset ] );
 
-		unicode_value_size = 0;
-
-		while( location_information_unicode_value_data[ unicode_value_size ] != 0 )
+		for( unicode_value_size = 0;
+		     ( unicode_value_size + 1 ) < ( location_information_size - unicode_common_path_offset );
+		     unicode_value_size += 2 )
 		{
-			unicode_value_size += 2;
+			if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
+			 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
+			{
+				break;
+			}
 		}
 		unicode_value_size += 2;
 

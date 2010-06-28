@@ -1,8 +1,8 @@
 TODO
 * move file_io_handle from io handle to file
 * change file header filetime conversion
-* implement libfdatetime
 * create API functions to access link information values
+* what about trailing data in xp lnk files ?
 
 Refactor
 * volume information read into separate subfunction
@@ -22,6 +22,8 @@ Release:
  - check inclusion of libuna functions
  - check inclusion of libbfio functions
  - check inclusion of libfdatetime functions
+ - check inclusion of libfguid functions
+ - check inclusion of libfwsi functions
 * update manuals
 * update macosx package files
 * update msvcpp files
@@ -36,6 +38,7 @@ Deployment:
 * clean up
 * added libfguid
 * added support for libcstring and libfguid
+* worked on libfwsi
 
 20100619
 * added libcstring

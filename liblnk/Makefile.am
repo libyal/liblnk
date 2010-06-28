@@ -8,6 +8,7 @@ AM_CPPFLAGS = \
 	@LIBBFIO_CPPFLAGS@ \
 	@LIBFDATETIME_CPPFLAGS@ \
 	@LIBFGUID_CPPFLAGS@ \
+	@LIBFWSI_CPPFLAGS@ \
 	@MEMWATCH_CPPFLAGS@
 
 lib_LTLIBRARIES = liblnk.la
@@ -26,6 +27,7 @@ liblnk_la_SOURCES = \
 	liblnk_libbfio.h \
 	liblnk_libfdatetime.h \
 	liblnk_libfguid.h \
+	liblnk_libfwsi.h \
 	liblnk_libuna.h \
 	liblnk_link_information.c liblnk_link_information.h \
 	liblnk_location_information.c liblnk_location_information.h \
@@ -42,7 +44,8 @@ liblnk_la_LIBADD = \
 	@LIBUNA_LIBADD@ \
 	@LIBBFIO_LIBADD@ \
 	@LIBFDATETIME_LIBADD@ \
-	@LIBFGUID_LIBADD@
+	@LIBFGUID_LIBADD@ \
+	@LIBFWSI_LIBADD@
 
 liblnk_la_LDFLAGS = -no-undefined -version-info 1:0:0
 

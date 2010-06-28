@@ -760,6 +760,70 @@ AM_CONDITIONAL(
  [HAVE_LOCAL_LIBFGUID],
  [test "x$ac_liblnk_have_libfguid" = xlocal])
 
+dnl Check for enabling libfwsi for Windows Shell identifier support
+AC_CHECK_HEADERS(
+ [libfwsi.h],
+ [],
+ [ac_liblnk_have_libfwsi=no])
+
+AS_IF(
+	[test "x$ac_liblnk_have_libfwsi" != xno],
+	[ac_liblnk_have_libfwsi=yes
+	AC_CHECK_LIB(
+	 fwsi,
+	 libfwsi_get_version,
+	 [],
+	 [ac_liblnk_have_libfwsi=no])
+
+	])
+
+AS_IF(
+[test "x$ac_liblnk_have_libfwsi" = xyes],
+ [dnl libfwsi is available
+ AC_SUBST(
+  [liblnk_pc_libs_private_libfwsi],
+  [-lfwsi])
+ AC_SUBST(
+  [liblnk_spec_requires_libfwsi],
+  [libfwsi])
+ AC_SUBST(
+  [liblnk_spec_build_requires_libfwsi],
+  [libfwsi-devel])
+ AC_SUBST(
+  [LIBFWSI_CPPFLAGS],
+  [])
+ AC_SUBST(
+  [LIBFWSI_LIBADD],
+  []) ],
+ [dnl libfwsi is not available, using the (local) version that came with the source package
+ AC_DEFINE(
+  [HAVE_LOCAL_LIBFWSI],
+  [1],
+  [Define to 1 if the local version of libfwsi is used.])
+ AC_SUBST(
+  [HAVE_LOCAL_LIBFWSI],
+  [1])
+ AC_SUBST(
+  [liblnk_pc_libs_private_libfwsi],
+  [])
+ AC_SUBST(
+  [liblnk_spec_requires_libfwsi],
+  [])
+ AC_SUBST(
+  [liblnk_spec_build_requires_libfwsi],
+  [])
+ AC_SUBST(
+  [LIBFWSI_CPPFLAGS],
+  [-I../libfwsi])
+ AC_SUBST(
+  [LIBFWSI_LIBADD],
+  [../libfwsi/libfwsi.la])
+ ac_liblnk_have_libfwsi=local])
+
+AM_CONDITIONAL(
+ [HAVE_LOCAL_LIBFWSI],
+ [test "x$ac_liblnk_have_libfwsi" = xlocal])
+
 dnl Check if liblnk should be build with wide character type support
 AS_IF(
  [test "x$ac_cv_liblnk_enable_winapi" = xyes],
@@ -988,6 +1052,7 @@ AC_CONFIG_FILES([libuna/Makefile])
 AC_CONFIG_FILES([libbfio/Makefile])
 AC_CONFIG_FILES([libfdatetime/Makefile])
 AC_CONFIG_FILES([libfguid/Makefile])
+AC_CONFIG_FILES([libfwsi/Makefile])
 AC_CONFIG_FILES([liblnk/Makefile])
 AC_CONFIG_FILES([libsystem/Makefile])
 AC_CONFIG_FILES([lnktools/Makefile])
@@ -1015,6 +1080,7 @@ Building:
    libbfio support:                          $ac_liblnk_have_libbfio
    libfdatetime support:                     $ac_liblnk_have_libfdatetime
    libfguid support:                         $ac_liblnk_have_libfguid
+   libfwsi support:                          $ac_liblnk_have_libfwsi
 
 Features:
    Wide character type support:              $ac_cv_liblnk_enable_wide_character_type

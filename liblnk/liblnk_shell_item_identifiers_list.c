@@ -29,6 +29,7 @@
 
 #include "liblnk_definitions.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_libfwsi.h"
 #include "liblnk_shell_item_identifiers_list.h"
 
 /* Creates shell item identifiers
@@ -131,6 +132,7 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 {
 	uint8_t shell_item_identifiers_list_size_data[ 2 ];
 
+	libfwsi_item_t *shell_item                = NULL;
 	uint8_t *shell_item_identifier_data       = NULL;
 	uint8_t *shell_item_identifiers_list_data = NULL;
 	static char *function                     = "liblnk_shell_item_identifiers_list_read";
@@ -279,48 +281,82 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 
 	shell_item_identifier_data = shell_item_identifiers_list_data;
 
+	if( libfwsi_item_initialize(
+	     &shell_item,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 "%s: unable to create shell item.",
+		 function );
+
+		memory_free(
+		 shell_item_identifiers_list_data );
+
+		return( -1 );
+	}
 	do
 	{
-		byte_stream_copy_to_uint16_little_endian(
-		 shell_item_identifier_data,
-		 shell_item_identifier_size );
-
-		shell_item_identifier_data += 2;
-
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
 		{
 			libnotify_printf(
-			 "%s: shell item identifier: %d size\t: %" PRIu16 "\n",
+			 "%s: shell item identifier: %d\n",
 			 function,
-			 shell_item_identifier_index,
-			 shell_item_identifier_size );
+			 shell_item_identifier_index );
 		}
 #endif
-
-		if( shell_item_identifier_size > 0 )
+		if( libfwsi_item_copy_from_byte_stream(
+		     shell_item,
+		     shell_item_identifier_data,
+		     shell_item_identifiers_list_size,
+		     error ) != 1 )
 		{
-			shell_item_identifier_size -= 2;
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy byte stream to shell item.",
+			 function );
 
-#if defined( HAVE_DEBUG_OUTPUT )
-			if( libnotify_verbose != 0 )
-			{
-				libnotify_printf(
-				 "%s: shell item identifier: %d data:\n",
-				 function,
-				 shell_item_identifier_index );
-				libnotify_print_data(
-				 shell_item_identifier_data,
-				 shell_item_identifier_size );
-			}
-#endif
-			shell_item_identifier_data += shell_item_identifier_size;
+			libfwsi_item_free(
+			 &shell_item,
+			 NULL );
+			memory_free(
+			 shell_item_identifiers_list_data );
 
-			shell_item_identifier_index++;
+			return( -1 );
 		}
+		/* TODO replace by function to obtain size from shell item */
+		byte_stream_copy_to_uint16_little_endian(
+		 shell_item_identifier_data,
+		 shell_item_identifier_size );
+
+		shell_item_identifier_data       += shell_item_identifier_size;
+		shell_item_identifiers_list_size -= shell_item_identifier_size;
+
+		shell_item_identifier_index++;
 	}
 	while( shell_item_identifier_size != 0 );
 
+	if( libfwsi_item_free(
+	     &shell_item,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+		 "%s: unable to free shell item.",
+		 function );
+
+		memory_free(
+		 shell_item_identifiers_list_data );
+
+		return( -1 );
+	}
 	memory_free(
 	 shell_item_identifiers_list_data );
 

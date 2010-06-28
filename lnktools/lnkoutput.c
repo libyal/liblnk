@@ -47,6 +47,12 @@
 #include <libfguid.h>
 #endif
 
+#if defined( HAVE_LOCAL_LIBFWSI )
+#include <libfwsi_definitions.h>
+#elif defined( HAVE_LIBFWSI )
+#include <libfwsi.h>
+#endif
+
 /* If libtool DLL support is enabled set LIBLNK_DLL_IMPORT
  * before including liblnk.h
  */
@@ -117,6 +123,11 @@ void lnkoutput_version_fprint(
 	 stream,
 	 ", libfguid %s",
 	 LIBFGUID_VERSION_STRING );
+
+	fprintf(
+	 stream,
+	 ", libfwsi %s",
+	 LIBFWSI_VERSION_STRING );
 
         fprintf(
 	 stream,
