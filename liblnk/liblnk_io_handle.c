@@ -24,17 +24,17 @@
 #include <memory.h>
 #include <types.h>
 
+#include <libcstring.h>
 #include <liberror.h>
 #include <libnotify.h>
 
 #include "liblnk_debug.h"
 #include "liblnk_definitions.h"
 #include "liblnk_file_information.h"
-#include "liblnk_guid.h"
 #include "liblnk_io_handle.h"
 #include "liblnk_libbfio.h"
 #include "liblnk_libfdatetime.h"
-#include "liblnk_string.h"
+#include "liblnk_libfguid.h"
 
 #include "lnk_file_header.h"
 
@@ -277,12 +277,14 @@ int liblnk_io_handle_read_file_header(
 	uint32_t header_size              = 0;
 
 #if defined( HAVE_VERBOSE_OUTPUT )
-	liblnk_character_t date_time_string[ 24 ];
-	liblnk_character_t guid_string[ LIBLNK_GUID_STRING_SIZE ];
+	libcstring_system_character_t filetime_string[ 24 ];
+	libcstring_system_character_t guid_string[ LIBFGUID_IDENTIFIER_STRING_SIZE ];
 
 	libfdatetime_filetime_t *filetime = NULL;
+	libfguid_identifier_t *guid       = NULL;
 	uint32_t value_32bit              = 0;
 	uint16_t value_16bit              = 0;
+	int result                        = 0;
 #endif
 
 	if( io_handle == NULL )
@@ -381,9 +383,8 @@ int liblnk_io_handle_read_file_header(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_IO,
 		 LIBERROR_IO_ERROR_SEEK_FAILED,
-		 "%s: unable to seek file header offset: %" PRIu64 ".",
-		 function,
-		 0 );
+		 "%s: unable to seek file header offset: 0.",
+		 function );
 
 		return( -1 );
 	}
@@ -446,9 +447,10 @@ int liblnk_io_handle_read_file_header(
 
 		return( -1 );
 	}
+	/* TODO is a libfguid version of the class identifier needed ? */
 	if( memory_copy(
 	     class_identifier,
-	     (liblnk_guid_t *) file_header.class_identifier,
+	     file_header.class_identifier,
 	     16 ) == NULL )
 	{
 		liberror_error_set(
@@ -485,57 +487,107 @@ int liblnk_io_handle_read_file_header(
 	if( libnotify_verbose != 0 )
 	{
 		libnotify_printf(
-		 "%s: header size\t\t: %" PRIu32 "\n",
+		 "%s: header size\t\t\t: %" PRIu32 "\n",
 		 function,
 		 header_size );
 
-		if( liblnk_guid_to_string(
-		     (liblnk_guid_t *) file_header.class_identifier,
-		     LIBFDATETIME_ENDIAN_LITTLE,
-		     guid_string,
-		     LIBLNK_GUID_STRING_SIZE,
+		if( libfguid_identifier_initialize(
+		     &guid,
 		     error ) != 1 )
 		{
 			liberror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_CONVERSION,
-			 LIBERROR_CONVERSION_ERROR_GENERIC,
-			 "%s: unable to create guid string.",
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 "%s: unable to create GUID.",
+			 function );
+
+			return( -1 );
+		}
+		if( libfguid_identifier_copy_from_byte_stream(
+		     guid,
+		     file_header.class_identifier,
+		     16,
+		     LIBFGUID_ENDIAN_LITTLE,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy byte stream to GUID.",
+			 function );
+
+			libfguid_identifier_free(
+			 &guid,
+			 NULL );
+
+			return( -1 );
+		}
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+		result = libfguid_identifier_copy_to_utf16_string(
+			  guid,
+			  (uint16_t *) guid_string,
+			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  error );
+#else
+		result = libfguid_identifier_copy_to_utf8_string(
+			  guid,
+			  (uint8_t *) guid_string,
+			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  error );
+#endif
+		if( result != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy GUID to string.",
+			 function );
+
+			libfguid_identifier_free(
+			 &guid,
+			 NULL );
+
+			return( -1 );
+		}
+		if( libfguid_identifier_free(
+		     &guid,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free GUID.",
 			 function );
 
 			return( -1 );
 		}
 		libnotify_printf(
-		 "%s: class identifier\t: %s\n",
+		 "%s: class identifier\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
 		 function,
 		 guid_string );
 
-		if( liblnk_debug_print_data_flags(
-		     *data_flags,
-		     error ) != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
-			 "%s: unable to print data flags.",
-			 function );
+		libnotify_printf(
+		 "%s: data flags\t\t\t: 0x%08" PRIx32 "\n",
+		 function,
+		 *data_flags );
+		liblnk_debug_print_data_flags(
+		 *data_flags );
+		libnotify_printf(
+		 "\n" );
 
-			return( -1 );
-		}
-		if( liblnk_debug_print_file_attribute_flags(
-		     file_information->attribute_flags,
-		     error ) != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
-			 "%s: unable to print file attribute flags.",
-			 function );
+		libnotify_printf(
+		 "%s: file attribute flags\t\t: 0x%08" PRIx32 "\n",
+		 function,
+		 file_information->attribute_flags );
+		liblnk_debug_print_file_attribute_flags(
+		 file_information->attribute_flags );
+		libnotify_printf(
+		 "\n" );
 
-			return( -1 );
-		}
 		if( libfdatetime_filetime_initialize(
 		     &filetime,
 		     error ) != 1 )
@@ -558,9 +610,9 @@ int liblnk_io_handle_read_file_header(
 		{
 			liberror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_CONVERSION,
-			 LIBERROR_CONVERSION_ERROR_GENERIC,
-			 "%s: unable to create creation time.",
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy byte stream to filetime.",
 			 function );
 
 			libfdatetime_filetime_free(
@@ -569,19 +621,30 @@ int liblnk_io_handle_read_file_header(
 
 			return( -1 );
 		}
-		if( libfdatetime_filetime_copy_to_utf8_string(
-		     filetime,
-		     date_time_string,
-		     24,
-		     LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
-		     LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
-		     error ) != 1 )
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+		result = libfdatetime_filetime_copy_to_utf16_string(
+			  filetime,
+			  (uint16_t *) filetime_string,
+			  24,
+			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
+			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
+			  error );
+#else
+		result = libfdatetime_filetime_copy_to_utf8_string(
+			  filetime,
+			  (uint8_t *) filetime_string,
+			  24,
+			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
+			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
+			  error );
+#endif
+		if( result != 1 )
 		{
 			liberror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_CONVERSION,
-			 LIBERROR_CONVERSION_ERROR_GENERIC,
-			 "%s: unable to create filetime string.",
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy filetime to string.",
 			 function );
 
 			libfdatetime_filetime_free(
@@ -591,9 +654,9 @@ int liblnk_io_handle_read_file_header(
 			return( -1 );
 		}
 		libnotify_printf(
-		 "%s: creation time\t: %s\n",
+		 "%s: creation time\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
 		 function,
-		 (char *) date_time_string );
+		 filetime_string );
 
 		if( libfdatetime_filetime_copy_from_byte_stream(
 		     filetime,
@@ -604,9 +667,9 @@ int liblnk_io_handle_read_file_header(
 		{
 			liberror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_CONVERSION,
-			 LIBERROR_CONVERSION_ERROR_GENERIC,
-			 "%s: unable to create access time.",
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy byte stream to filetime.",
 			 function );
 
 			libfdatetime_filetime_free(
@@ -615,19 +678,30 @@ int liblnk_io_handle_read_file_header(
 
 			return( -1 );
 		}
-		if( libfdatetime_filetime_copy_to_utf8_string(
-		     filetime,
-		     date_time_string,
-		     24,
-		     LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
-		     LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
-		     error ) != 1 )
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+		result = libfdatetime_filetime_copy_to_utf16_string(
+			  filetime,
+			  (uint16_t *) filetime_string,
+			  24,
+			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
+			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
+			  error );
+#else
+		result = libfdatetime_filetime_copy_to_utf8_string(
+			  filetime,
+			  (uint8_t *) filetime_string,
+			  24,
+			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
+			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
+			  error );
+#endif
+		if( result != 1 )
 		{
 			liberror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_CONVERSION,
-			 LIBERROR_CONVERSION_ERROR_GENERIC,
-			 "%s: unable to create filetime string.",
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy filetime to string.",
 			 function );
 
 			libfdatetime_filetime_free(
@@ -637,9 +711,9 @@ int liblnk_io_handle_read_file_header(
 			return( -1 );
 		}
 		libnotify_printf(
-		 "%s: access time\t\t: %s\n",
+		 "%s: access time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
 		 function,
-		 (char *) date_time_string );
+		 filetime_string );
 
 		if( libfdatetime_filetime_copy_from_byte_stream(
 		     filetime,
@@ -650,9 +724,9 @@ int liblnk_io_handle_read_file_header(
 		{
 			liberror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_CONVERSION,
-			 LIBERROR_CONVERSION_ERROR_GENERIC,
-			 "%s: unable to create modification time.",
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy byte stream to filetime.",
 			 function );
 
 			libfdatetime_filetime_free(
@@ -661,19 +735,30 @@ int liblnk_io_handle_read_file_header(
 
 			return( -1 );
 		}
-		if( libfdatetime_filetime_copy_to_utf8_string(
-		     filetime,
-		     date_time_string,
-		     24,
-		     LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
-		     LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
-		     error ) != 1 )
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+		result = libfdatetime_filetime_copy_to_utf16_string(
+			  filetime,
+			  (uint16_t *) filetime_string,
+			  24,
+			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
+			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
+			  error );
+#else
+		result = libfdatetime_filetime_copy_to_utf8_string(
+			  filetime,
+			  (uint8_t *) filetime_string,
+			  24,
+			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
+			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
+			  error );
+#endif
+		if( result != 1 )
 		{
 			liberror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_CONVERSION,
-			 LIBERROR_CONVERSION_ERROR_GENERIC,
-			 "%s: unable to create filetime string.",
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy filetime to string.",
 			 function );
 
 			libfdatetime_filetime_free(
@@ -683,9 +768,9 @@ int liblnk_io_handle_read_file_header(
 			return( -1 );
 		}
 		libnotify_printf(
-		 "%s: modification time\t: %s\n",
+		 "%s: modification time\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
 		 function,
-		 (char *) date_time_string );
+		 filetime_string );
 
 		if( libfdatetime_filetime_free(
 		     &filetime,
@@ -701,7 +786,7 @@ int liblnk_io_handle_read_file_header(
 			return( -1 );
 		}
 		libnotify_printf(
-		 "%s: file size\t\t: %" PRIu32 " bytes\n",
+		 "%s: file size\t\t\t: %" PRIu32 " bytes\n",
 		 function,
 		 file_information->size );
 
@@ -709,7 +794,7 @@ int liblnk_io_handle_read_file_header(
 		 file_header.icon_index,
 		 value_32bit );
 		libnotify_printf(
-		 "%s: icon index\t\t: 0x%08" PRIx32 "\n",
+		 "%s: icon index\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 value_32bit );
 
@@ -717,7 +802,7 @@ int liblnk_io_handle_read_file_header(
 		 file_header.show_window_value,
 		 value_32bit );
 		libnotify_printf(
-		 "%s: show window value\t: 0x%08" PRIx32 "\n",
+		 "%s: show window value\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 value_32bit );
 
@@ -725,7 +810,7 @@ int liblnk_io_handle_read_file_header(
 		 file_header.hot_key_value,
 		 value_16bit );
 		libnotify_printf(
-		 "%s: hot key value\t: 0x%04" PRIx16 "\n",
+		 "%s: hot key value\t\t: 0x%04" PRIx16 "\n",
 		 function,
 		 value_16bit );
 

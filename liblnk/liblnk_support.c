@@ -21,10 +21,9 @@
 
 #include <common.h>
 #include <memory.h>
-#include <narrow_string.h>
 #include <types.h>
-#include <wide_string.h>
 
+#include <libcstring.h>
 #include <liberror.h>
 
 #include "liblnk_definitions.h"
@@ -63,7 +62,7 @@ int liblnk_check_file_signature(
 
 		return( -1 );
 	}
-	filename_length = narrow_string_length(
+	filename_length = libcstring_narrow_string_length(
 	                   filename );
 
 	if( filename_length == 0 )
@@ -169,7 +168,7 @@ int liblnk_check_file_signature_wide(
 
 		return( -1 );
 	}
-	filename_length = wide_string_length(
+	filename_length = libcstring_wide_string_length(
 	                   filename );
 
 	if( filename_length == 0 )

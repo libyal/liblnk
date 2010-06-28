@@ -9,11 +9,11 @@ SUBDIRS = \
 	libuna \
 	libbfio \
 	libfdatetime \
+	libfguid \
 	liblnk \
 	libsystem \
 	lnktools \
 	manuals \
-	macosx \
 	msvscpp
 
 REDHAT_FILES = \
@@ -45,6 +45,7 @@ library:
 	(cd $(srcdir)/libuna && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libbfio && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libfdatetime && $(MAKE) $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libfguid && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/liblnk && $(MAKE) $(AM_MAKEFLAGS))
 
 distclean: clean
@@ -66,6 +67,7 @@ splint:
 	(cd $(srcdir)/libuna && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libbfio && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libfdatetime && $(MAKE) splint $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libfguid && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/liblnk && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libsystem && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/lnktools && $(MAKE) splint $(AM_MAKEFLAGS))

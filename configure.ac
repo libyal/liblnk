@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
-  [20100619],
+  [20100628],
   [jbmetz@users.sourceforge.net])
 
 AC_CONFIG_SRCDIR(
@@ -696,6 +696,70 @@ AM_CONDITIONAL(
  [HAVE_LOCAL_LIBFDATETIME],
  [test "x$ac_liblnk_have_libfdatetime" = xlocal])
 
+dnl Check for enabling libfguid for file GUID/UUID support
+AC_CHECK_HEADERS(
+ [libfguid.h],
+ [],
+ [ac_liblnk_have_libfguid=no])
+
+AS_IF(
+	[test "x$ac_liblnk_have_libfguid" != xno],
+	[ac_liblnk_have_libfguid=yes
+	AC_CHECK_LIB(
+	 fguid,
+	 libfguid_get_version,
+	 [],
+	 [ac_liblnk_have_libfguid=no])
+
+	])
+
+AS_IF(
+[test "x$ac_liblnk_have_libfguid" = xyes],
+ [dnl libfguid is available
+ AC_SUBST(
+  [liblnk_pc_libs_private_libfguid],
+  [-lfguid])
+ AC_SUBST(
+  [liblnk_spec_requires_libfguid],
+  [libfguid])
+ AC_SUBST(
+  [liblnk_spec_build_requires_libfguid],
+  [libfguid-devel])
+ AC_SUBST(
+  [LIBFGUID_CPPFLAGS],
+  [])
+ AC_SUBST(
+  [LIBFGUID_LIBADD],
+  []) ],
+ [dnl libfguid is not available, using the (local) version that came with the source package
+ AC_DEFINE(
+  [HAVE_LOCAL_LIBFGUID],
+  [1],
+  [Define to 1 if the local version of libfguid is used.])
+ AC_SUBST(
+  [HAVE_LOCAL_LIBFGUID],
+  [1])
+ AC_SUBST(
+  [liblnk_pc_libs_private_libfguid],
+  [])
+ AC_SUBST(
+  [liblnk_spec_requires_libfguid],
+  [])
+ AC_SUBST(
+  [liblnk_spec_build_requires_libfguid],
+  [])
+ AC_SUBST(
+  [LIBFGUID_CPPFLAGS],
+  [-I../libfguid])
+ AC_SUBST(
+  [LIBFGUID_LIBADD],
+  [../libfguid/libfguid.la])
+ ac_liblnk_have_libfguid=local])
+
+AM_CONDITIONAL(
+ [HAVE_LOCAL_LIBFGUID],
+ [test "x$ac_liblnk_have_libfguid" = xlocal])
+
 dnl Check if liblnk should be build with wide character type support
 AS_IF(
  [test "x$ac_cv_liblnk_enable_winapi" = xyes],
@@ -923,11 +987,11 @@ AC_CONFIG_FILES([libnotify/Makefile])
 AC_CONFIG_FILES([libuna/Makefile])
 AC_CONFIG_FILES([libbfio/Makefile])
 AC_CONFIG_FILES([libfdatetime/Makefile])
+AC_CONFIG_FILES([libfguid/Makefile])
 AC_CONFIG_FILES([liblnk/Makefile])
 AC_CONFIG_FILES([libsystem/Makefile])
 AC_CONFIG_FILES([lnktools/Makefile])
 AC_CONFIG_FILES([manuals/Makefile])
-AC_CONFIG_FILES([macosx/Makefile])
 AC_CONFIG_FILES([msvscpp/Makefile])
 dnl Have configure make the include files
 AC_CONFIG_FILES([include/liblnk.h])
@@ -937,7 +1001,6 @@ AC_CONFIG_FILES([include/liblnk/types.h])
 AC_CONFIG_FILES([liblnk/liblnk_definitions.h])
 dnl Have configure make distribution specific files
 AC_CONFIG_FILES([common/types.h])
-AC_CONFIG_FILES([macosx/Introduction.rtf])
 AC_CONFIG_FILES([liblnk.pc])
 AC_CONFIG_FILES([liblnk.spec])
 dnl Have configure write its configuration
@@ -951,6 +1014,7 @@ Building:
    libuna support:                           $ac_liblnk_have_libuna
    libbfio support:                          $ac_liblnk_have_libbfio
    libfdatetime support:                     $ac_liblnk_have_libfdatetime
+   libfguid support:                         $ac_liblnk_have_libfguid
 
 Features:
    Wide character type support:              $ac_cv_liblnk_enable_wide_character_type

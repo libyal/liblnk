@@ -7,6 +7,7 @@ AM_CPPFLAGS = \
 	@LIBUNA_CPPFLAGS@ \
 	@LIBBFIO_CPPFLAGS@ \
 	@LIBFDATETIME_CPPFLAGS@ \
+	@LIBFGUID_CPPFLAGS@ \
 	@MEMWATCH_CPPFLAGS@
 
 lib_LTLIBRARIES = liblnk.la
@@ -21,15 +22,14 @@ liblnk_la_SOURCES = \
 	liblnk_extern.h \
 	liblnk_file.c liblnk_file.h \
 	liblnk_file_information.c liblnk_file_information.h \
-	liblnk_guid.c liblnk_guid.h \
 	liblnk_io_handle.c liblnk_io_handle.h \
 	liblnk_libbfio.h \
 	liblnk_libfdatetime.h \
+	liblnk_libfguid.h \
 	liblnk_libuna.h \
 	liblnk_link_information.c liblnk_link_information.h \
 	liblnk_location_information.c liblnk_location_information.h \
 	liblnk_notify.c liblnk_notify.h \
-	liblnk_string.h \
 	liblnk_shell_item_identifiers_list.c liblnk_shell_item_identifiers_list.h \
 	liblnk_support.c liblnk_support.h \
 	lnk_file_header.h \
@@ -41,7 +41,8 @@ liblnk_la_LIBADD = \
 	../libnotify/libnotify.la \
 	@LIBUNA_LIBADD@ \
 	@LIBBFIO_LIBADD@ \
-	@LIBFDATETIME_LIBADD@
+	@LIBFDATETIME_LIBADD@ \
+	@LIBFGUID_LIBADD@
 
 liblnk_la_LDFLAGS = -no-undefined -version-info 1:0:0
 

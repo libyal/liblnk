@@ -28,11 +28,19 @@
 #include <liberror.h>
 
 #include "liblnk_libbfio.h"
-#include "liblnk_string.h"
 
 #if defined( __cplusplus )
 extern "C" {
 #endif
+
+enum LIBLNK_LOCATION_INFORMATION_STRING_FLAGS
+{
+	LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE		= 0x01,
+	LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE		= 0x02,
+	LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE	= 0x04,
+	LIBLNK_LOCATION_INFORMATION_STRING_FLAG_DEVICE_NAME_IS_UNICODE		= 0x08,
+	LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE		= 0x10
+};
 
 typedef struct liblnk_location_information liblnk_location_information_t;
 
@@ -42,35 +50,39 @@ struct liblnk_location_information
 	 */
 	uint32_t flags;
 
-	/* The volume label string
+	/* The string flags
 	 */
-	liblnk_character_t *volume_label;
+	uint8_t string_flags; 
 
-	/* The size of the volume label string
+	/* The volume label
+	 */
+	uint8_t *volume_label;
+
+	/* The volume label size
 	 */
 	size_t volume_label_size;
 
-	/* The local path string
+	/* The local path
 	 */
-	liblnk_character_t *local_path;
+	uint8_t *local_path;
 
-	/* The size of the local path string
+	/* The local path size
 	 */
 	size_t local_path_size;
 
-	/* The network share name string
+	/* The network share name
 	 */
-	liblnk_character_t *network_share_name;
+	uint8_t *network_share_name;
 
-	/* The size of the network share name string
+	/* The network share name size
 	 */
 	size_t network_share_name_size;
 
-	/* The device name string
+	/* The device name
 	 */
-	liblnk_character_t *device_name;
+	uint8_t *device_name;
 
-	/* The size of the device name string
+	/* The device name size
 	 */
 	size_t device_name_size;
 
@@ -78,11 +90,11 @@ struct liblnk_location_information
 	 */
 	uint32_t network_provider_type;
 
-	/* The common path string
+	/* The common path
 	 */
-	liblnk_character_t *common_path;
+	uint8_t *common_path;
 
-	/* The size of the common path string
+	/* The common path size
 	 */
 	size_t common_path_size;
 };

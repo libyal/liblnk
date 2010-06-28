@@ -7,6 +7,7 @@ AM_CPPFLAGS = \
 	@LIBUNA_CPPFLAGS@ \
 	@LIBBFIO_CPPFLAGS@ \
 	@LIBFDATETIME_CPPFLAGS@ \
+	@LIBFGUID_CPPFLAGS@ \
 	@MEMWATCH_CPPFLAGS@ \
 	@LIBLNK_DLL_IMPORT@
 
@@ -16,8 +17,6 @@ bin_PROGRAMS = \
 	lnkinfo
 
 lnkinfo_SOURCES = \
-	filetime.c filetime.h \
-	guid.c guid.h \
 	lnkinfo.c \
 	lnkinput.c lnkinput.h \
 	lnkoutput.c lnkoutput.h

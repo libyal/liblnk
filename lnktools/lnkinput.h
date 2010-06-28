@@ -25,6 +25,7 @@
 #include <common.h>
 #include <types.h>
 
+#include <libcstring.h>
 #include <liberror.h>
 
 #include <libsystem.h>
@@ -34,7 +35,7 @@ extern "C" {
 #endif
 
 int lnkinput_determine_ascii_codepage(
-     const libsystem_character_t *argument,
+     const libcstring_system_character_t *argument,
      int *ascii_codepage,
      liberror_error_t **error );
 

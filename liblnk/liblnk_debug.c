@@ -29,24 +29,14 @@
 #include "liblnk_debug.h"
 #include "liblnk_definitions.h"
 #include "liblnk_libbfio.h"
-#include "liblnk_string.h"
 
 #if defined( HAVE_DEBUG_OUTPUT )
 
 /* Prints the data flags
- * Returns 1 if successful or -1 on error
  */
-int liblnk_debug_print_data_flags(
-     uint32_t data_flags,
-     liberror_error_t **error )
+void liblnk_debug_print_data_flags(
+      uint32_t data_flags )
 {
-	static char *function = "liblnk_debug_print_data_flags";
-
-	libnotify_printf(
-	 "%s: data flags: 0x%08" PRIx32 "\n",
-	 function,
-	 data_flags );
-
 	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) != 0 )
 	{
 		libnotify_printf(
@@ -170,27 +160,13 @@ int liblnk_debug_print_data_flags(
 		libnotify_printf(
 		 "\t(KeepLocalIDListForUNCTarget)\n" );
 	}
-
-	libnotify_printf(
-	 "\n" );
-
-	return( 1 );
 }
 
 /* Prints the file attribute flags
- * Returns 1 if successful or -1 on error
  */
-int liblnk_debug_print_file_attribute_flags(
-     uint32_t file_attribute_flags,
-     liberror_error_t **error )
+void liblnk_debug_print_file_attribute_flags(
+      uint32_t file_attribute_flags )
 {
-	static char *function = "liblnk_debug_print_file_attribute_flags";
-
-	libnotify_printf(
-	 "%s: file attribute flags: 0x%08" PRIx32 "\n",
-	 function,
-	 file_attribute_flags );
-
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_READ_ONLY ) != 0 )
 	{
 		libnotify_printf(
@@ -268,237 +244,139 @@ int liblnk_debug_print_file_attribute_flags(
 		libnotify_printf(
 		 "\tIs virtual (FILE_ATTRIBUTE_VIRTUAL)\n" );
 	}
-	libnotify_printf(
-	 "\n" );
-
-	return( 1 );
 }
 
 /* Prints the nework provider type
- * Returns 1 if successful or -1 on error
  */
-int liblnk_debug_print_network_provider_type(
-     uint32_t network_provider_type,
-     liberror_error_t **error )
+const char *liblnk_debug_print_network_provider_type(
+             uint32_t network_provider_type )
 {
-	static char *function = "liblnk_debug_print_network_provider_type";
-
-	libnotify_printf(
-	 "%s: network provider type: 0x%08" PRIx32 " (",
-	 function,
-	 network_provider_type );
-
 	switch( network_provider_type )
 	{
 		case 0x001a0000:
-			libnotify_printf(
-			 "WNNC_NET_AVID" );
-			break;
+			return( "WNNC_NET_AVID" );
 
 		case 0x001b0000:
-			libnotify_printf(
-			 "WNNC_NET_DOCUSPACE" );
-			break;
+			return( "WNNC_NET_DOCUSPACE" );
 
 		case 0x001c0000:
-			libnotify_printf(
-			 "WNNC_NET_MANGOSOFT" );
-			break;
+			return( "WNNC_NET_MANGOSOFT" );
 
 		case 0x001d0000:
-			libnotify_printf(
-			 "WNNC_NET_SERNET" );
-			break;
+			return( "WNNC_NET_SERNET" );
 
 		case 0x001e0000:
-			libnotify_printf(
-			 "WNNC_NET_RIVERFRONT1" );
-			break;
+			return( "WNNC_NET_RIVERFRONT1" );
 
 		case 0x001f0000:
-			libnotify_printf(
-			 "WNNC_NET_RIVERFRONT2" );
-			break;
+			return( "WNNC_NET_RIVERFRONT2" );
 
 		case 0x00200000:
-			libnotify_printf(
-			 "WNNC_NET_DECORB" );
-			break;
+			return( "WNNC_NET_DECORB" );
 
 		case 0x00210000:
-			libnotify_printf(
-			 "WNNC_NET_PROTSTOR" );
-			break;
+			return( "WNNC_NET_PROTSTOR" );
 
 		case 0x00220000:
-			libnotify_printf(
-			 "WNNC_NET_FJ_REDIR" );
-			break;
+			return( "WNNC_NET_FJ_REDIR" );
 
 		case 0x00230000:
-			libnotify_printf(
-			 "WNNC_NET_DISTINCT" );
-			break;
+			return( "WNNC_NET_DISTINCT" );
 
 		case 0x00240000:
-			libnotify_printf(
-			 "WNNC_NET_TWINS" );
-			break;
+			return( "WNNC_NET_TWINS" );
 
 		case 0x00250000:
-			libnotify_printf(
-			 "WNNC_NET_RDR2SAMPLE" );
-			break;
+			return( "WNNC_NET_RDR2SAMPLE" );
 
 		case 0x00260000:
-			libnotify_printf(
-			 "WNNC_NET_CSC" );
-			break;
+			return( "WNNC_NET_CSC" );
 
 		case 0x00270000:
-			libnotify_printf(
-			 "WNNC_NET_3IN1" );
-			break;
+			return( "WNNC_NET_3IN1" );
 
 		case 0x00290000:
-			libnotify_printf(
-			 "WNNC_NET_EXTENDNET" );
-			break;
+			return( "WNNC_NET_EXTENDNET" );
 
 		case 0x002a0000:
-			libnotify_printf(
-			 "WNNC_NET_STAC" );
-			break;
+			return( "WNNC_NET_STAC" );
 
 		case 0x002b0000:
-			libnotify_printf(
-			 "WNNC_NET_FOXBAT" );
-			break;
+			return( "WNNC_NET_FOXBAT" );
 
 		case 0x002c0000:
-			libnotify_printf(
-			 "WNNC_NET_YAHOO" );
-			break;
+			return( "WNNC_NET_YAHOO" );
 
 		case 0x002d0000:
-			libnotify_printf(
-			 "WNNC_NET_EXIFS" );
-			break;
+			return( "WNNC_NET_EXIFS" );
 
 		case 0x002e0000:
-			libnotify_printf(
-			 "WNNC_NET_DAV" );
-			break;
+			return( "WNNC_NET_DAV" );
 
 		case 0x002f0000:
-			libnotify_printf(
-			 "WNNC_NET_KNOWARE" );
-			break;
+			return( "WNNC_NET_KNOWARE" );
 
 		case 0x00300000:
-			libnotify_printf(
-			 "WNNC_NET_OBJECT_DIRE" );
-			break;
+			return( "WNNC_NET_OBJECT_DIRE" );
 
 		case 0x00310000:
-			libnotify_printf(
-			 "WNNC_NET_MASFAX" );
-			break;
+			return( "WNNC_NET_MASFAX" );
 
 		case 0x00320000:
-			libnotify_printf(
-			 "WNNC_NET_HOB_NFS" );
-			break;
+			return( "WNNC_NET_HOB_NFS" );
 
 		case 0x00330000:
-			libnotify_printf(
-			 "WNNC_NET_SHIVA" );
-			break;
+			return( "WNNC_NET_SHIVA" );
 
 		case 0x00340000:
-			libnotify_printf(
-			 "WNNC_NET_IBMAL" );
-			break;
+			return( "WNNC_NET_IBMAL" );
 
 		case 0x00350000:
-			libnotify_printf(
-			 "WNNC_NET_LOCK" );
-			break;
+			return( "WNNC_NET_LOCK" );
 
 		case 0x00360000:
-			libnotify_printf(
-			 "WNNC_NET_TERMSRV" );
-			break;
+			return( "WNNC_NET_TERMSRV" );
 
 		case 0x00370000:
-			libnotify_printf(
-			 "WNNC_NET_SRT" );
-			break;
+			return( "WNNC_NET_SRT" );
 
 		case 0x00380000:
-			libnotify_printf(
-			 "WNNC_NET_QUINCY" );
-			break;
+			return( "WNNC_NET_QUINCY" );
 
 		case 0x00390000:
-			libnotify_printf(
-			 "WNNC_NET_OPENAFS" );
-			break;
+			return( "WNNC_NET_OPENAFS" );
 
 		case 0x003a0000:
-			libnotify_printf(
-			 "WNNC_NET_AVID1" );
-			break;
+			return( "WNNC_NET_AVID1" );
 
 		case 0x003b0000:
-			libnotify_printf(
-			 "WNNC_NET_DFS" );
-			break;
+			return( "WNNC_NET_DFS" );
 
 		case 0x003c0000:
-			libnotify_printf(
-			 "WNNC_NET_KWNP" );
-			break;
+			return( "WNNC_NET_KWNP" );
 
 		case 0x003d0000:
-			libnotify_printf(
-			 "WNNC_NET_ZENWORKS" );
-			break;
+			return( "WNNC_NET_ZENWORKS" );
 
 		case 0x003e0000:
-			libnotify_printf(
-			 "WNNC_NET_DRIVEONWEB" );
-			break;
+			return( "WNNC_NET_DRIVEONWEB" );
 
 		case 0x003f0000:
-			libnotify_printf(
-			 "WNNC_NET_VMWARE" );
-			break;
+			return( "WNNC_NET_VMWARE" );
 
 		case 0x00400000:
-			libnotify_printf(
-			 "WNNC_NET_RSFX" );
-			break;
+			return( "WNNC_NET_RSFX" );
 
 		case 0x00410000:
-			libnotify_printf(
-			 "WNNC_NET_MFILES" );
-			break;
+			return( "WNNC_NET_MFILES" );
 
 		case 0x00420000:
-			libnotify_printf(
-			 "WNNC_NET_MS_NFS" );
-			break;
+			return( "WNNC_NET_MS_NFS" );
 
 		case 0x00430000:
-			libnotify_printf(
-			 "WNNC_NET_GOOGLE" );
-			break;
+			return( "WNNC_NET_GOOGLE" );
 	}
-	libnotify_printf(
-	 ")\n" );
-
-	return( 1 );
+	return( "_UNKNOWN_" );
 }
 
 /* Prints the read offsets

@@ -1,5 +1,5 @@
 /*
- * GUID functions
+ * The libfguid header wrapper
  *
  * Copyright (c) 2009-2010, Joachim Metz <jbmetz@users.sourceforge.net>
  *
@@ -19,33 +19,32 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _GUID_H )
-#define _GUID_H
+#if !defined( _LIBLNK_LIBFGUID_H )
+#define _LIBLNK_LIBFGUID_H
 
 #include <common.h>
-#include <types.h>
 
-#include <liberror.h>
+/* Define HAVE_LOCAL_LIBFGUID for local use of libfguid
+ */
+#if defined( HAVE_LOCAL_LIBFGUID )
 
-#include <libsystem.h>
+#include <libfguid_definitions.h>
+#include <libfguid_identifier.h>
+#include <libfguid_types.h>
 
-#if defined( __cplusplus )
-extern "C" {
+#elif defined( HAVE_LIBFGUID_H )
+
+/* If libtool DLL support is enabled set LIBFGUID_DLL_IMPORT
+ * before including libfguid.h
+ */
+#if defined( _WIN32 ) && defined( DLL_IMPORT )
+#define LIBFGUID_DLL_IMPORT
 #endif
 
-#define GUID_STRING_SIZE	37
+#include <libfguid.h>
 
-typedef uint8_t guid_t;
-
-int guid_to_string(
-     guid_t *guid,
-     int byte_order,
-     libsystem_character_t *string,
-     size_t string_size,
-     liberror_error_t **error );
-
-#if defined( __cplusplus )
-}
+#else
+#error Missing libfguid.h
 #endif
 
 #endif

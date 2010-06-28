@@ -35,7 +35,7 @@
 
 #if !defined( HAVE_LOCAL_LIBLNK )
 
-/* Set the verbose notification
+/* Sets the verbose notification
  */
 void liblnk_notify_set_verbose(
       int verbose )
@@ -44,7 +44,7 @@ void liblnk_notify_set_verbose(
 	 verbose );
 }
 
-/* Set the notification stream
+/* Sets the notification stream
  * Returns 1 if successful or -1 on error
  */
 int liblnk_notify_set_stream(

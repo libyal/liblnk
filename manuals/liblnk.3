@@ -1,4 +1,4 @@
-.Dd June 19, 2010
+.Dd June 28, 2010
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -83,13 +83,13 @@ Link information functions
 .Ft int
 .Fn liblnk_file_get_file_size "liblnk_file_t *file, uint32_t *file_size, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_local_path_size "liblnk_file_t *file, size_t *local_path_size, liblnk_error_t **error"
+.Fn liblnk_file_get_utf8_local_path_size "liblnk_file_t *file, size_t *utf8_string_size, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_local_path "liblnk_file_t *file, uint8_t *local_path, size_t local_path_size, liblnk_error_t **error"
+.Fn liblnk_file_get_utf8_local_path "liblnk_file_t *file, uint8_t *utf8_string, size_t utf8_string_size, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_network_path_size "liblnk_file_t *file, size_t *network_path_size, liblnk_error_t **error"
+.Fn liblnk_file_get_utf8_network_path_size "liblnk_file_t *file, size_t *utf8_string_size, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_network_path "liblnk_file_t *file, uint8_t *network_path, size_t network_path_size, liblnk_error_t **error"
+.Fn liblnk_file_get_utf8_network_path "liblnk_file_t *file, uint8_t *utf8_string, size_t utf8_string_size, liblnk_error_t **error"
 .Sh DESCRIPTION
 The
 .Fn liblnk_get_version
@@ -126,7 +126,7 @@ To have other code to determine if liblnk was compiled with libbfio support it d
  in liblnk/features.h.
 
 .Sh BUGS
-Please report bugs of any kind to <forensics@hoffmannbv.nl> or on the project website:
+Please report bugs of any kind to <jbmetz@users.sourceforge.net> or on the project website:
 http://liblnk.sourceforge.net/
 .Sh AUTHOR
 These man pages were written by Joachim Metz.

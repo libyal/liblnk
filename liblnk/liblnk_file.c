@@ -20,11 +20,10 @@
  */
 
 #include <common.h>
-#include <narrow_string.h>
 #include <memory.h>
 #include <types.h>
-#include <wide_string.h>
 
+#include <libcstring.h>
 #include <liberror.h>
 #include <libnotify.h>
 
@@ -357,8 +356,8 @@ int liblnk_file_open(
 
 		return( -1 );
 	}
-	if( ( ( flags & LIBLNK_FLAG_READ ) != LIBLNK_FLAG_READ )
-	 && ( ( flags & LIBLNK_FLAG_WRITE ) != LIBLNK_FLAG_WRITE ) )
+	if( ( ( flags & LIBLNK_FLAG_READ ) == 0 )
+	 && ( ( flags & LIBLNK_FLAG_WRITE ) == 0 ) )
 	{
 		liberror_error_set(
 		 error,
@@ -369,7 +368,7 @@ int liblnk_file_open(
 
 		return( -1 );
 	}
-	if( ( flags & LIBLNK_FLAG_WRITE ) == LIBLNK_FLAG_WRITE )
+	if( ( flags & LIBLNK_FLAG_WRITE ) != 0 )
 	{
 		liberror_error_set(
 		 error,
@@ -418,7 +417,7 @@ int liblnk_file_open(
 	if( libbfio_file_set_name(
 	     file_io_handle,
 	     filename,
-	     narrow_string_length(
+	     libcstring_narrow_string_length(
 	      filename ) + 1,
 	     error ) != 1 )
 	{
@@ -497,8 +496,8 @@ int liblnk_file_open_wide(
 
 		return( -1 );
 	}
-	if( ( ( flags & LIBLNK_FLAG_READ ) != LIBLNK_FLAG_READ )
-	 && ( ( flags & LIBLNK_FLAG_WRITE ) != LIBLNK_FLAG_WRITE ) )
+	if( ( ( flags & LIBLNK_FLAG_READ ) == 0 )
+	 && ( ( flags & LIBLNK_FLAG_WRITE ) == 0 ) )
 	{
 		liberror_error_set(
 		 error,
@@ -509,7 +508,7 @@ int liblnk_file_open_wide(
 
 		return( -1 );
 	}
-	if( ( flags & LIBLNK_FLAG_WRITE ) == LIBLNK_FLAG_WRITE )
+	if( ( flags & LIBLNK_FLAG_WRITE ) != 0 )
 	{
 		liberror_error_set(
 		 error,
@@ -558,7 +557,7 @@ int liblnk_file_open_wide(
 	if( libbfio_file_set_name_wide(
 	     file_io_handle,
 	     filename,
-	     wide_string_length(
+	     libcstring_wide_string_length(
 	      filename ) + 1,
 	     error ) != 1 )
 	{
@@ -637,8 +636,8 @@ int liblnk_file_open_file_io_handle(
 
 		return( -1 );
 	}
-	if( ( ( flags & LIBLNK_FLAG_READ ) != LIBLNK_FLAG_READ )
-	 && ( ( flags & LIBLNK_FLAG_WRITE ) != LIBLNK_FLAG_WRITE ) )
+	if( ( ( flags & LIBLNK_FLAG_READ ) == 0 )
+	 && ( ( flags & LIBLNK_FLAG_WRITE ) == 0 ) )
 	{
 		liberror_error_set(
 		 error,
@@ -649,7 +648,7 @@ int liblnk_file_open_file_io_handle(
 
 		return( -1 );
 	}
-	if( ( flags & LIBLNK_FLAG_WRITE ) == LIBLNK_FLAG_WRITE )
+	if( ( flags & LIBLNK_FLAG_WRITE ) != 0 )
 	{
 		liberror_error_set(
 		 error,
@@ -662,7 +661,7 @@ int liblnk_file_open_file_io_handle(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
-	if( ( flags & LIBLNK_FLAG_READ ) == LIBLNK_FLAG_READ )
+	if( ( flags & LIBLNK_FLAG_READ ) != 0 )
 	{
 		file_io_flags = LIBBFIO_FLAG_READ;
 	}
@@ -814,11 +813,11 @@ int liblnk_file_open_read(
 	}
 	file_offset = sizeof( lnk_file_header_t );
 
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_IS_UNICODE ) == LIBLNK_DATA_FLAG_IS_UNICODE )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_IS_UNICODE ) != 0 )
 	{
 		is_unicode = 1;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) == LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) != 0 )
 	{
 		if( liblnk_shell_item_identifiers_list_initialize(
 		     &( internal_file->link_target_identifier ),
@@ -859,7 +858,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) == LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) != 0 )
 	{
 		if( liblnk_location_information_initialize(
 		     &( internal_file->location_information ),
@@ -901,7 +900,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) == LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) != 0 )
 	{
 		if( liblnk_data_string_initialize(
 		     &( internal_file->description ),
@@ -943,7 +942,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) == LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) != 0 )
 	{
 		if( liblnk_data_string_initialize(
 		     &( internal_file->relative_path ),
@@ -985,7 +984,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) == LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) != 0 )
 	{
 		if( liblnk_data_string_initialize(
 		     &( internal_file->working_directory ),
@@ -1027,7 +1026,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) == LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) != 0 )
 	{
 		if( liblnk_data_string_initialize(
 		     &( internal_file->command_line_arguments ),
@@ -1069,7 +1068,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) == LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING )
+	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) != 0 )
 	{
 		if( liblnk_data_string_initialize(
 		     &( internal_file->icon_location ),
@@ -1243,14 +1242,15 @@ int liblnk_file_set_ascii_codepage(
 	internal_file = (liblnk_internal_file_t *) file;
 
 	if( ( ascii_codepage != LIBLNK_CODEPAGE_ASCII )
-	 || ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1250 )
-	 || ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1251 )
-	 || ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1252 )
-	 || ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1253 )
-	 || ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1254 )
-	 || ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1256 )
-	 || ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1257 )
-	 || ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1258 ) )
+	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_874 )
+	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1250 )
+	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1251 )
+	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1252 )
+	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1253 )
+	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1254 )
+	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1256 )
+	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1257 )
+	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1258 ) )
 	{
 		liberror_error_set(
 		 error,
