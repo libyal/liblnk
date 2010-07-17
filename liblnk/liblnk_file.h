@@ -50,6 +50,18 @@ typedef struct liblnk_internal_file liblnk_internal_file_t;
 
 struct liblnk_internal_file
 {
+	/* The IO handle
+	 */
+	liblnk_io_handle_t *io_handle;
+
+	/* The file IO handle
+	 */
+	libbfio_handle_t *file_io_handle;
+
+	/* Value to indicate if the file IO handle was created inside the library
+	 */
+	uint8_t file_io_handle_created_in_library;
+
 	/* The data flags
 	 */
 	uint32_t data_flags;
@@ -90,10 +102,6 @@ struct liblnk_internal_file
 	/* The icon location
 	 */
 	liblnk_data_string_t *icon_location;
-
-	/* The io handle
-	 */
-	liblnk_io_handle_t *io_handle;
 
 	/* The codepage of the extended ASCII strings
 	 */

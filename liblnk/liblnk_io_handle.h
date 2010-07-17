@@ -40,13 +40,9 @@ typedef struct liblnk_io_handle liblnk_io_handle_t;
 
 struct liblnk_io_handle
 {
-	/* The file io handle
+	/* dummy
 	 */
-	libbfio_handle_t *file_io_handle;
-
-	/* Value to indicate if the file io handle was created inside the library
-	 */
-	uint8_t handle_created_in_library;
+	int dummy;
 };
 
 int liblnk_io_handle_initialize(
@@ -57,18 +53,9 @@ int liblnk_io_handle_free(
      liblnk_io_handle_t **io_handle,
      liberror_error_t **error );
 
-int liblnk_io_handle_open(
-     liblnk_io_handle_t *io_handle,
-     libbfio_handle_t *file_io_handle,
-     int flags,
-     liberror_error_t **error );
-
-int liblnk_io_handle_close(
-     liblnk_io_handle_t *io_handle,
-     liberror_error_t **error );
-
 int liblnk_io_handle_read_file_header(
      liblnk_io_handle_t *io_handle,
+     libbfio_handle_t *file_io_handle,
      uint32_t *data_flags,
      uint8_t *class_identifier,
      size_t class_identifier_size,

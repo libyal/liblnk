@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
-  [20100628],
+  [20100727],
   [jbmetz@users.sourceforge.net])
 
 AC_CONFIG_SRCDIR(
@@ -442,6 +442,13 @@ AC_CHECK_FUNCS(
   [1]) ])
 
 AC_CHECK_FUNCS(
+ [fstat],
+ [],
+ [AC_MSG_FAILURE(
+  [Missing function: fstat],
+  [1]) ])
+
+AC_CHECK_FUNCS(
  [lseek],
  [],
  [AC_MSG_FAILURE(
@@ -463,17 +470,17 @@ AC_CHECK_FUNCS(
   [1]) ])
 
 AC_CHECK_FUNCS(
+ [stat],
+ [],
+ [AC_MSG_FAILURE(
+  [Missing function: stat],
+  [1]) ])
+
+AC_CHECK_FUNCS(
  [write],
  [],
  [AC_MSG_FAILURE(
   [Missing function: write],
-  [1]) ])
-
-AC_CHECK_FUNCS(
- [fstat],
- [],
- [AC_MSG_FAILURE(
-  [Missing function: fstat],
   [1]) ])
 
 dnl Check for error string functions used in libbfio/libbfio_error_string.h and libsystem/libsystem_error_string.c
@@ -990,12 +997,12 @@ AS_IF(
  [AC_DEFINE(
   [HAVE_DEBUG_OUTPUT],
   [1],
-  [Definei to 1 if debug output should be used.])
+  [Define to 1 if debug output should be used.])
  ac_cv_liblnk_enable_debug_output=yes])
 
 dnl Check if requires and build requires should be set in spec file
 AS_IF(
- [test "x$ac_liblnk_have_libuna" = xyes || test "x$ac_liblnk_have_libbfio" = xyes || test "x$ac_liblnk_have_libfdatetime" = xyes || test "x$ac_liblnk_have_libfmapi" = xyes],
+ [test "x$ac_liblnk_have_libuna" = xyes || test "x$ac_liblnk_have_libbfio" = xyes || test "x$ac_liblnk_have_libfdatetime" = xyes || test "x$ac_liblnk_have_libfguid" = xyes || test "x$ac_liblnk_have_libfwsi" = xyes],
  [AC_SUBST(
   [liblnk_spec_requires],
   [Requires:])
@@ -1011,7 +1018,7 @@ AS_IF(
  ac_liblnk_dummy=yes])
 
 dnl Set memwatch support
-ac_liblnk_have_memwatch=yes
+ac_liblnk_have_memwatch=no
 
 AS_IF(
  [test "x$ac_liblnk_have_memwatch" != xno ],

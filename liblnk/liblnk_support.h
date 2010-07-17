@@ -48,7 +48,7 @@ LIBLNK_EXTERN int liblnk_check_file_signature_wide(
 #endif
 
 LIBLNK_EXTERN int liblnk_check_file_signature_file_io_handle(
-                   libbfio_handle_t *bfio_handle,
+                   libbfio_handle_t *file_io_handle,
                    liberror_error_t **error );
 
 #if defined( __cplusplus )

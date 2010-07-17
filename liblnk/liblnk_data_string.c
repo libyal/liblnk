@@ -157,7 +157,7 @@ ssize_t liblnk_data_string_read(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid file io handle.",
+		 "%s: invalid file IO handle.",
 		 function );
 
 		return( -1 );

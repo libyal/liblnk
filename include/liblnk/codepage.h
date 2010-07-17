@@ -24,6 +24,10 @@
 
 #include <liblnk/types.h>
 
+#if defined( __cplusplus )
+extern "C" {
+#endif
+
 /* The codepage definitions
  */
 enum LIBLNK_CODEPAGE
@@ -101,6 +105,10 @@ enum LIBLNK_CODEPAGE
 #define LIBLNK_CODEPAGE_WINDOWS_ARABIC			LIBLNK_CODEPAGE_WINDOWS_1256
 #define LIBLNK_CODEPAGE_WINDOWS_BALTIC			LIBLNK_CODEPAGE_WINDOWS_1257
 #define LIBLNK_CODEPAGE_WINDOWS_VIETNAMESE		LIBLNK_CODEPAGE_WINDOWS_1258
+
+#if defined( __cplusplus )
+}
+#endif
 
 #endif
 

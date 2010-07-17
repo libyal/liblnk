@@ -7,8 +7,8 @@ License: LGPL
 Source: %{name}-%{version}.tar.gz
 URL: http://liblnk.sourceforge.net
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-@liblnk_spec_requires@ @libppf_spec_requires_libbfio@ @libppf_spec_requires_libfdatetime@ @libppf_spec_requires_libuna@
-@liblnk_spec_build_requires@ @libppf_spec_build_requires_libbfio@ @libppf_spec_build_requires_libfdatetime@ @libppf_spec_build_requires_libuna@
+@liblnk_spec_requires@ @liblnk_spec_requires_libbfio@ @liblnk_spec_requires_libfdatetime@ @liblnk_spec_requires_libfguid@ @liblnk_spec_requires_libfwsi@ @liblnk_spec_requires_libuna@
+@liblnk_spec_build_requires@ @liblnk_spec_build_requires_libbfio@ @liblnk_spec_build_requires_libfdatetime@ @liblnk_spec_build_requires_libfguid@ @liblnk_spec_build_requires_libfwsi@ @liblnk_spec_build_requires_libuna@
 
 %description
 liblnk is a library to support the Windows Shortcut File (LNK) format 
@@ -69,6 +69,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_mandir}/man1/*
 
 %changelog
+* Sat Jul 17 2010 Joachim Metz <jbmetz@users.sourceforge.net> 20100717-1
+- Added libfguid and libfwsi support
+
 * Sun Sep  6 2009 Joachim Metz <jbmetz@users.sourceforge.net> 20090906-1
 - Initial version
 

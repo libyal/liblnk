@@ -32,6 +32,12 @@ Deployment:
 * create debian package files
 * create codegear files
 
+20100717
+* updated configure.ac
+* updated include/error.h and liberror
+* updated incluse/codepage.h
+* updated common, libsystem, libuna, libbfio, libfdatetime, libffwsi
+
 20100628
 * updated common, libcstring, liberror, libnotify, libsystem
 * updated libuna, libbfio, libfdatetime

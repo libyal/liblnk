@@ -41,7 +41,7 @@
 const uint8_t lnk_file_class_identifier[ 16 ] = \
 	{ 0x01, 0x14, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46 };
 
-/* Initialize an io handle
+/* Initialize an IO handle
  * Make sure the value io_handle is pointing to is set to NULL
  * Returns 1 if successful or -1 on error
  */
@@ -57,7 +57,7 @@ int liblnk_io_handle_initialize(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid io handle.",
+		 "%s: invalid IO handle.",
 		 function );
 
 		return( -1 );
@@ -73,7 +73,7 @@ int liblnk_io_handle_initialize(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_MEMORY,
 			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create io handle.",
+			 "%s: unable to create IO handle.",
 			 function );
 
 			return( -1 );
@@ -101,7 +101,7 @@ int liblnk_io_handle_initialize(
 	return( 1 );
 }
 
-/* Frees an exisisting io handle
+/* Frees an exisisting IO handle
  * Returns 1 if successful or -1 on error
  */
 int liblnk_io_handle_free(
@@ -109,7 +109,6 @@ int liblnk_io_handle_free(
      liberror_error_t **error )
 {
 	static char *function = "liblnk_io_handle_free";
-	int result            = 1;
 
 	if( io_handle == NULL )
 	{
@@ -117,146 +116,19 @@ int liblnk_io_handle_free(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid io handle.",
+		 "%s: invalid IO handle.",
 		 function );
 
 		return( -1 );
 	}
 	if( *io_handle != NULL )
 	{
-		if( ( ( *io_handle )->handle_created_in_library != 0 )
-		 && ( ( *io_handle )->file_io_handle != NULL )
-		 && ( libbfio_handle_free(
-		       &( ( *io_handle )->file_io_handle ),
-		       error ) != 1 ) )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free file io handle.",
-			 function );
-
-			result = -1;
-		}
 		memory_free(
 		 *io_handle );
 
 		*io_handle = NULL;
 	}
-	return( result );
-}
-
-/* Opens an io handle
- * Returns 1 if successful or -1 on error
- */
-int liblnk_io_handle_open(
-     liblnk_io_handle_t *io_handle,
-     libbfio_handle_t *file_io_handle,
-     int flags,
-     liberror_error_t **error )
-{
-        static char *function = "liblnk_io_handle_open";
-
-        if( io_handle == NULL )
-        {
-                liberror_error_set(
-                 error,
-                 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-                 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-                 "%s: invalid io handle.",
-                 function );
-
-                return( -1 );
-        }
-	if( io_handle->file_io_handle != NULL )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
-		 "%s: invalid io handle - file io handle already set.",
-		 function );
-
-		return( -1 );
-	}
-        if( file_io_handle == NULL )
-        {
-                liberror_error_set(
-                 error,
-                 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-                 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-                 "%s: invalid file io handle.",
-                 function );
-
-                return( -1 );
-        }
-	io_handle->file_io_handle = file_io_handle;
-
-	if( libbfio_handle_open(
-	     io_handle->file_io_handle,
-	     flags,
-	     error ) != 1 )
-	{
-                liberror_error_set(
-                 error,
-                 LIBERROR_ERROR_DOMAIN_IO,
-                 LIBERROR_IO_ERROR_OPEN_FAILED,
-                 "%s: unable to open file io handle.",
-                 function );
-
-                return( -1 );
-	}
 	return( 1 );
-}
-
-/* Closes an io handle
- * Returns 0 if successful or -1 on error
- */
-int liblnk_io_handle_close(
-     liblnk_io_handle_t *io_handle,
-     liberror_error_t **error )
-{
-        static char *function = "liblnk_io_handle_close";
-
-        if( io_handle == NULL )
-        {
-                liberror_error_set(
-                 error,
-                 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-                 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-                 "%s: invalid io handle.",
-                 function );
-
-                return( -1 );
-        }
-#if defined( HAVE_DEBUG_OUTPUT )
-	if( liblnk_debug_print_read_offsets(
-	     io_handle->file_io_handle,
-	     error ) != 1 )
-	{
-		liberror_error_set(
-		 error,
-                 LIBERROR_ERROR_DOMAIN_RUNTIME,
-                 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
-		 "%s: unable to print the read offsets.",
-		 function );
-	}
-#endif
-	if( libbfio_handle_close(
-	     io_handle->file_io_handle,
-	     error ) != 0 )
-	{
-                liberror_error_set(
-                 error,
-                 LIBERROR_ERROR_DOMAIN_IO,
-                 LIBERROR_IO_ERROR_CLOSE_FAILED,
-                 "%s: unable to close file io handle.",
-                 function );
-
-                return( -1 );
-	}
-	return( 0 );
 }
 
 /* Reads the file header
@@ -264,6 +136,7 @@ int liblnk_io_handle_close(
  */
 int liblnk_io_handle_read_file_header(
      liblnk_io_handle_t *io_handle,
+     libbfio_handle_t *file_io_handle,
      uint32_t *data_flags,
      uint8_t *class_identifier,
      size_t class_identifier_size,
@@ -293,18 +166,7 @@ int liblnk_io_handle_read_file_header(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid io handle.",
-		 function );
-
-		return( -1 );
-	}
-	if( io_handle->file_io_handle == NULL )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid io handle - missing file io handle.",
+		 "%s: invalid IO handle.",
 		 function );
 
 		return( -1 );
@@ -372,9 +234,8 @@ int liblnk_io_handle_read_file_header(
 		 function );
 	}
 #endif
-
 	if( libbfio_handle_seek_offset(
-	     io_handle->file_io_handle,
+	     file_io_handle,
 	     0,
 	     SEEK_SET,
 	     error ) == -1 )
@@ -389,7 +250,7 @@ int liblnk_io_handle_read_file_header(
 		return( -1 );
 	}
 	read_count = libbfio_handle_read(
-	              io_handle->file_io_handle,
+	              file_io_handle,
 	              (uint8_t *) &file_header,
 	              sizeof( lnk_file_header_t ),
 	              error );

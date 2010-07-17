@@ -29,6 +29,7 @@
 
 #include "liblnk_codepage.h"
 #include "liblnk_data_string.h"
+#include "liblnk_debug.h"
 #include "liblnk_definitions.h"
 #include "liblnk_io_handle.h"
 #include "liblnk_file.h"
@@ -118,7 +119,7 @@ int liblnk_file_initialize(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to create io handle.",
+			 "%s: unable to create IO handle.",
 			 function );
 
 			liblnk_file_information_free(
@@ -162,128 +163,15 @@ int liblnk_file_free(
 	{
 		internal_file = (liblnk_internal_file_t *) *file;
 
-		if( ( internal_file->file_information != NULL )
-		 && ( liblnk_file_information_free(
-		       &( internal_file->file_information ),
-		       error ) != 1 ) )
+		if( liblnk_io_handle_free(
+		     &( internal_file->io_handle ),
+		     error ) != 1 )
 		{
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free file information.",
-			 function );
-
-			result = -1;
-		}
-		if( ( internal_file->link_target_identifier != NULL )
-		 && ( liblnk_shell_item_identifiers_list_free(
-		       &( internal_file->link_target_identifier ),
-		       error ) != 1 ) )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free link target identifier.",
-			 function );
-
-			result = -1;
-		}
-		if( ( internal_file->location_information != NULL )
-		 && ( liblnk_location_information_free(
-		       &( internal_file->location_information ),
-		       error ) != 1 ) )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free location information.",
-			 function );
-
-			result = -1;
-		}
-		if( ( internal_file->description != NULL )
-		 && ( liblnk_data_string_free(
-		       &( internal_file->description ),
-		       error ) != 1 ) )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free description.",
-			 function );
-
-			result = -1;
-		}
-		if( ( internal_file->relative_path != NULL )
-		 && ( liblnk_data_string_free(
-		       &( internal_file->relative_path ),
-		       error ) != 1 ) )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free relative path.",
-			 function );
-
-			result = -1;
-		}
-		if( ( internal_file->working_directory != NULL )
-		 && ( liblnk_data_string_free(
-		       &( internal_file->working_directory ),
-		       error ) != 1 ) )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free working directory.",
-			 function );
-
-			result = -1;
-		}
-		if( ( internal_file->command_line_arguments != NULL )
-		 && ( liblnk_data_string_free(
-		       &( internal_file->command_line_arguments ),
-		       error ) != 1 ) )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free command line arguments.",
-			 function );
-
-			result = -1;
-		}
-		if( ( internal_file->icon_location != NULL )
-		 && ( liblnk_data_string_free(
-		       &( internal_file->icon_location ),
-		       error ) != 1 ) )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free icon location.",
-			 function );
-
-			result = -1;
-		}
-		if( ( internal_file->io_handle != NULL )
-		 && ( liblnk_io_handle_free(
-		       &( internal_file->io_handle ),
-		       error ) != 1 ) )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free io handle.",
+			 "%s: unable to free IO handle.",
 			 function );
 
 			result = -1;
@@ -321,7 +209,7 @@ int liblnk_file_signal_abort(
 	return( 1 );
 }
 
-/* Opens a Windows Shortcut file
+/* Opens a file
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_open(
@@ -389,7 +277,7 @@ int liblnk_file_open(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-		 "%s: unable to create file io handle.",
+		 "%s: unable to create file IO handle.",
 		 function );
 
 		return( -1 );
@@ -404,7 +292,7 @@ int liblnk_file_open(
                  error,
                  LIBERROR_ERROR_DOMAIN_RUNTIME,
                  LIBERROR_RUNTIME_ERROR_SET_FAILED,
-                 "%s: unable to set track offsets read in file io handle.",
+                 "%s: unable to set track offsets read in file IO handle.",
                  function );
 
 		libbfio_handle_free(
@@ -425,7 +313,7 @@ int liblnk_file_open(
                  error,
                  LIBERROR_ERROR_DOMAIN_RUNTIME,
                  LIBERROR_RUNTIME_ERROR_SET_FAILED,
-                 "%s: unable to set filename in file io handle.",
+                 "%s: unable to set filename in file IO handle.",
                  function );
 
 		libbfio_handle_free(
@@ -454,14 +342,14 @@ int liblnk_file_open(
 
 		return( -1 );
 	}
-	internal_file->io_handle->handle_created_in_library = 1;
+	internal_file->file_io_handle_created_in_library = 1;
 
 	return( 1 );
 }
 
 #if defined( HAVE_WIDE_CHARACTER_TYPE )
 
-/* Opens a Windows Shortcut file
+/* Opens a file
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_open_wide(
@@ -529,7 +417,7 @@ int liblnk_file_open_wide(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-		 "%s: unable to create file io handle.",
+		 "%s: unable to create file IO handle.",
 		 function );
 
 		return( -1 );
@@ -544,7 +432,7 @@ int liblnk_file_open_wide(
                  error,
                  LIBERROR_ERROR_DOMAIN_RUNTIME,
                  LIBERROR_RUNTIME_ERROR_SET_FAILED,
-                 "%s: unable to set track offsets read in file io handle.",
+                 "%s: unable to set track offsets read in file IO handle.",
                  function );
 
 		libbfio_handle_free(
@@ -565,7 +453,7 @@ int liblnk_file_open_wide(
                  error,
                  LIBERROR_ERROR_DOMAIN_RUNTIME,
                  LIBERROR_RUNTIME_ERROR_SET_FAILED,
-                 "%s: unable to set filename in file io handle.",
+                 "%s: unable to set filename in file IO handle.",
                  function );
 
 		libbfio_handle_free(
@@ -594,14 +482,14 @@ int liblnk_file_open_wide(
 
 		return( -1 );
 	}
-	internal_file->io_handle->handle_created_in_library = 1;
+	internal_file->file_io_handle_created_in_library = 1;
 
 	return( 1 );
 }
 
 #endif
 
-/* Opens a Windows Shortcut file using a Basic File IO (bfio) handle
+/* Opens a file using a Basic File IO (bfio) handle
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_open_file_io_handle(
@@ -613,6 +501,7 @@ int liblnk_file_open_file_io_handle(
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_open_file_io_handle";
 	int file_io_flags                     = 0;
+	int file_io_handle_is_open            = 0;
 
 	if( file == NULL )
 	{
@@ -625,19 +514,32 @@ int liblnk_file_open_file_io_handle(
 
 		return( -1 );
 	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->file_io_handle != NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid internal file - file IO handle already set.",
+		 function );
+
+		return( -1 );
+	}
 	if( file_io_handle == NULL )
 	{
 		liberror_error_set(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid file io handle.",
+		 "%s: invalid file IO handle.",
 		 function );
 
 		return( -1 );
 	}
-	if( ( ( flags & LIBLNK_FLAG_READ ) == 0 )
-	 && ( ( flags & LIBLNK_FLAG_WRITE ) == 0 ) )
+	if( ( ( flags & LIBLNK_FLAG_READ ) != LIBLNK_FLAG_READ )
+	 && ( ( flags & LIBLNK_FLAG_WRITE ) != LIBLNK_FLAG_WRITE ) )
 	{
 		liberror_error_set(
 		 error,
@@ -648,7 +550,7 @@ int liblnk_file_open_file_io_handle(
 
 		return( -1 );
 	}
-	if( ( flags & LIBLNK_FLAG_WRITE ) != 0 )
+	if( ( flags & LIBLNK_FLAG_WRITE ) == LIBLNK_FLAG_WRITE )
 	{
 		liberror_error_set(
 		 error,
@@ -659,26 +561,43 @@ int liblnk_file_open_file_io_handle(
 
 		return( -1 );
 	}
-	internal_file = (liblnk_internal_file_t *) file;
-
-	if( ( flags & LIBLNK_FLAG_READ ) != 0 )
+	if( ( flags & LIBLNK_FLAG_READ ) == LIBLNK_FLAG_READ )
 	{
 		file_io_flags = LIBBFIO_FLAG_READ;
 	}
-	if( liblnk_io_handle_open(
-	     internal_file->io_handle,
-	     file_io_handle,
-	     file_io_flags,
-	     error ) != 1 )
+	internal_file->file_io_handle = file_io_handle;
+
+	file_io_handle_is_open = libbfio_handle_is_open(
+	                          internal_file->file_io_handle,
+	                          error );
+
+	if( file_io_handle_is_open == -1 )
 	{
 		liberror_error_set(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_IO,
 		 LIBERROR_IO_ERROR_OPEN_FAILED,
-		 "%s: unable to open file handle.",
+		 "%s: unable to open file.",
 		 function );
 
 		return( -1 );
+	}
+	else if( file_io_handle_is_open == 0 )
+	{
+		if( libbfio_handle_open(
+		     internal_file->file_io_handle,
+		     flags,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_OPEN_FAILED,
+			 "%s: unable to open file IO handle.",
+			 function );
+
+			return( -1 );
+		}
 	}
 	if( liblnk_file_open_read(
 	     internal_file,
@@ -696,7 +615,7 @@ int liblnk_file_open_file_io_handle(
 	return( 1 );
 }
 
-/* Closes a Windows Shortcut file
+/* Closes a file
  * Returns 0 if successful or -1 on error
  */
 int liblnk_file_close(
@@ -720,34 +639,196 @@ int liblnk_file_close(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
-	if( internal_file->io_handle == NULL )
+	if( internal_file->file_io_handle == NULL )
 	{
 		liberror_error_set(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid file - missing io handle.",
+		 "%s: invalid file - missing file IO handle.",
 		 function );
 
 		return( -1 );
 	}
-	result = liblnk_io_handle_close(
-	          internal_file->io_handle,
-	          error );
-
-	if( result != 0 )
+	if( internal_file->file_io_handle_created_in_library != 0 )
 	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_CLOSE_FAILED,
-		 "%s: unable to close io handle.",
-		 function );
+#if defined( HAVE_DEBUG_OUTPUT )
+		if( libnotify_verbose != 0 )
+		{
+			if( liblnk_debug_print_read_offsets(
+			     internal_file->file_io_handle,
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+				 "%s: unable to print the read offsets.",
+				 function );
+
+				result = -1;
+			}
+		}
+#endif
+		if( libbfio_handle_close(
+		     internal_file->file_io_handle,
+		     error ) != 0 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_CLOSE_FAILED,
+			 "%s: unable to close file IO handle.",
+			 function );
+
+			result = -1;
+		}
+		if( libbfio_handle_free(
+		     &( internal_file->file_io_handle ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free file IO handle.",
+			 function );
+
+			result = -1;
+		}
+	}
+	if( internal_file->file_information != NULL )
+	{
+		if( liblnk_file_information_free(
+		     &( internal_file->file_information ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free file information.",
+			 function );
+
+			result = -1;
+		}
+	}
+	if( internal_file->link_target_identifier != NULL )
+	{
+		if( liblnk_shell_item_identifiers_list_free(
+		     &( internal_file->link_target_identifier ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free link target identifier.",
+			 function );
+
+			result = -1;
+		}
+	}
+	if( internal_file->location_information != NULL )
+	{
+		if( liblnk_location_information_free(
+		     &( internal_file->location_information ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free location information.",
+			 function );
+
+			result = -1;
+		}
+	}
+	if( internal_file->description != NULL )
+	{
+		if( liblnk_data_string_free(
+		     &( internal_file->description ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free description.",
+			 function );
+
+			result = -1;
+		}
+	}
+	if( internal_file->relative_path != NULL )
+	{
+		if( liblnk_data_string_free(
+		     &( internal_file->relative_path ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free relative path.",
+			 function );
+
+			result = -1;
+		}
+	}
+	if( internal_file->working_directory != NULL )
+	{
+		if( liblnk_data_string_free(
+		     &( internal_file->working_directory ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free working directory.",
+			 function );
+
+			result = -1;
+		}
+	}
+	if( internal_file->command_line_arguments != NULL )
+	{
+		if( liblnk_data_string_free(
+		     &( internal_file->command_line_arguments ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free command line arguments.",
+			 function );
+
+			result = -1;
+		}
+	}
+	if( internal_file->icon_location != NULL )
+	{
+		if( liblnk_data_string_free(
+		     &( internal_file->icon_location ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free icon location.",
+			 function );
+
+			result = -1;
+		}
 	}
 	return( result );
 }
 
-/* Opens a Windows Shortcut file for reading
+/* Opens a file for reading
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_open_read(
@@ -782,7 +863,7 @@ int liblnk_file_open_read(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal file - missing io handle.",
+		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -796,6 +877,7 @@ int liblnk_file_open_read(
 #endif
 	if( liblnk_io_handle_read_file_header(
 	     internal_file->io_handle,
+	     internal_file->file_io_handle,
 	     &( internal_file->data_flags ),
 	     internal_file->class_identifier,
 	     16,
@@ -841,7 +923,7 @@ int liblnk_file_open_read(
 #endif
 		read_count = liblnk_shell_item_identifiers_list_read(
 		              internal_file->link_target_identifier,
-		              internal_file->io_handle->file_io_handle,
+		              internal_file->file_io_handle,
 		              file_offset,
 		              error );
 
@@ -882,7 +964,7 @@ int liblnk_file_open_read(
 #endif
 		read_count = liblnk_location_information_read(
 		              internal_file->location_information,
-		              internal_file->io_handle->file_io_handle,
+		              internal_file->file_io_handle,
 		              file_offset,
 		              internal_file->ascii_codepage,
 		              error );
@@ -924,7 +1006,7 @@ int liblnk_file_open_read(
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->description,
-		              internal_file->io_handle->file_io_handle,
+		              internal_file->file_io_handle,
 		              file_offset,
 		              is_unicode,
 		              error );
@@ -966,7 +1048,7 @@ int liblnk_file_open_read(
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->relative_path,
-		              internal_file->io_handle->file_io_handle,
+		              internal_file->file_io_handle,
 		              file_offset,
 		              is_unicode,
 		              error );
@@ -1008,7 +1090,7 @@ int liblnk_file_open_read(
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->working_directory,
-		              internal_file->io_handle->file_io_handle,
+		              internal_file->file_io_handle,
 		              file_offset,
 		              is_unicode,
 		              error );
@@ -1050,7 +1132,7 @@ int liblnk_file_open_read(
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->command_line_arguments,
-		              internal_file->io_handle->file_io_handle,
+		              internal_file->file_io_handle,
 		              file_offset,
 		              is_unicode,
 		              error );
@@ -1092,7 +1174,7 @@ int liblnk_file_open_read(
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->icon_location,
-		              internal_file->io_handle->file_io_handle,
+		              internal_file->file_io_handle,
 		              file_offset,
 		              is_unicode,
 		              error );
@@ -1116,7 +1198,7 @@ int liblnk_file_open_read(
 	if( libnotify_verbose != 0 )
 	{
 		if( libbfio_handle_get_size(
-		     internal_file->io_handle->file_io_handle,
+		     internal_file->file_io_handle,
 		     &file_size,
 		     error ) != 1 )
 		{
@@ -1148,7 +1230,7 @@ int liblnk_file_open_read(
 				return( -1 );
 			}
 			read_count = libbfio_handle_read(
-				      internal_file->io_handle->file_io_handle,
+				      internal_file->file_io_handle,
 				      trailing_data,
 				      trailing_data_size,
 				      error );

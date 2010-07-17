@@ -39,7 +39,7 @@ const char *liblnk_get_version(
 	return( (const char *) LIBLNK_VERSION_STRING );
 }
 
-/* Determines if a file is a PPF file (check for the LNK file signature)
+/* Determines if a file is a Windows Shortcut File file (check for the file signature)
  * Returns 1 if true, 0 if not or -1 on error
  */
 int liblnk_check_file_signature(
@@ -145,7 +145,7 @@ int liblnk_check_file_signature(
 
 #if defined( HAVE_WIDE_CHARACTER_TYPE )
 
-/* Determines if a file is a LNK file (check for the LNK file signature)
+/* Determines if a file is a Windows Shortcut File file (check for the file signature)
  * Returns 1 if true, 0 if not or -1 on error
  */
 int liblnk_check_file_signature_wide(
@@ -251,33 +251,35 @@ int liblnk_check_file_signature_wide(
 
 #endif
 
-/* Determines if a file is a LNK file (check for the LNK file signature) using a Basic File IO (bfio) handle
+/* Determines if a file is a Windows Shortcut File file (check for the file signature) using a Basic File IO (bfio) handle
  * Returns 1 if true, 0 if not or -1 on error
  */
 int liblnk_check_file_signature_file_io_handle(
-     libbfio_handle_t *bfio_handle,
+     libbfio_handle_t *file_io_handle,
      liberror_error_t **error )
 {
 	uint8_t signature[ 20 ];
 
-	static char *function = "liblnk_check_file_signature_file_io_handle";
-	ssize_t read_count    = 0;
+	static char *function      = "liblnk_check_file_signature_file_io_handle";
+	ssize_t read_count         = 0;
+	int file_io_handle_is_open = 0;
 
-	if( bfio_handle == NULL )
+	if( file_io_handle == NULL )
 	{
 		liberror_error_set(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid bfio handle.",
+		 "%s: invalid file io handle.",
 		 function );
 
 		return( -1 );
 	}
-	if( libbfio_handle_open(
-	     bfio_handle,
-	     LIBBFIO_OPEN_READ,
-	     error ) != 1 )
+	file_io_handle_is_open = libbfio_handle_is_open(
+	                          file_io_handle,
+	                          error );
+
+	if( file_io_handle_is_open == -1 )
 	{
 		liberror_error_set(
 		 error,
@@ -288,8 +290,46 @@ int liblnk_check_file_signature_file_io_handle(
 
 		return( -1 );
 	}
+	else if( file_io_handle_is_open == 0 )
+	{
+		if( libbfio_handle_open(
+		     file_io_handle,
+		     LIBBFIO_OPEN_READ,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_OPEN_FAILED,
+			 "%s: unable to open file.",
+			 function );
+
+			return( -1 );
+		}
+	}
+	if( libbfio_handle_seek_offset(
+	     file_io_handle,
+	     0,
+	     SEEK_SET,
+	     error ) == -1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_IO,
+		 LIBERROR_IO_ERROR_SEEK_FAILED,
+		 "%s: unable to seek file header offset: 0.",
+		 function );
+
+		if( file_io_handle_is_open == 0 )
+		{
+			libbfio_handle_close(
+			 file_io_handle,
+			 error );
+		}
+		return( -1 );
+	}
 	read_count = libbfio_handle_read(
-	              bfio_handle,
+	              file_io_handle,
 	              signature,
 	              20,
 	              error );
@@ -303,24 +343,29 @@ int liblnk_check_file_signature_file_io_handle(
 		 "%s: unable to read signature.",
 		 function );
 
-		libbfio_handle_close(
-		 bfio_handle,
-		 NULL );
-
+		if( file_io_handle_is_open == 0 )
+		{
+			libbfio_handle_close(
+			 file_io_handle,
+			 error );
+		}
 		return( -1 );
 	}
-	if( libbfio_handle_close(
-	     bfio_handle,
-	     error ) != 0 )
+	if( file_io_handle_is_open == 0 )
 	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_CLOSE_FAILED,
-		 "%s: unable to close file.",
-		 function );
+		if( libbfio_handle_close(
+		     file_io_handle,
+		     error ) != 0 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_CLOSE_FAILED,
+			 "%s: unable to close file.",
+			 function );
 
-		return( -1 );
+			return( -1 );
+		}
 	}
 	if( memory_compare(
 	     lnk_file_class_identifier,

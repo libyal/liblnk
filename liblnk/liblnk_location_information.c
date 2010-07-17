@@ -209,7 +209,7 @@ ssize_t liblnk_location_information_read(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid file io handle.",
+		 "%s: invalid file IO handle.",
 		 function );
 
 		return( -1 );
@@ -460,7 +460,7 @@ ssize_t liblnk_location_information_read(
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: volume information offset smaller than location information header size.",
 			 function );
 
@@ -476,7 +476,7 @@ ssize_t liblnk_location_information_read(
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: volume information offset exceeds location information data.",
 			 function );
 
@@ -563,7 +563,7 @@ ssize_t liblnk_location_information_read(
 				liberror_error_set(
 				 error,
 				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 				 "%s: volume label offset exceeds volume information data.",
 				 function );
 
@@ -608,7 +608,7 @@ ssize_t liblnk_location_information_read(
 				liberror_error_set(
 				 error,
 				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 				 "%s: unicode volume label offset exceeds volume information data.",
 				 function );
 
@@ -874,7 +874,7 @@ ssize_t liblnk_location_information_read(
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: local path information offset smaller than location information header size",
 			 function );
 
@@ -890,7 +890,7 @@ ssize_t liblnk_location_information_read(
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: local path offset exceeds location information data.",
 			 function );
 
@@ -935,7 +935,7 @@ ssize_t liblnk_location_information_read(
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: unicode local path information offset smaller than location information header size",
 			 function );
 
@@ -951,7 +951,7 @@ ssize_t liblnk_location_information_read(
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: unicode local path offset exceeds location information data.",
 			 function );
 
@@ -1220,7 +1220,7 @@ ssize_t liblnk_location_information_read(
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: network share information offset smaller than location information header size.",
 			 function );
 
@@ -1236,7 +1236,7 @@ ssize_t liblnk_location_information_read(
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: network share information offset exceeds location information data.",
 			 function );
 
@@ -1338,7 +1338,7 @@ ssize_t liblnk_location_information_read(
 				liberror_error_set(
 				 error,
 				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 				 "%s: network share name offset exceeds network share information data.",
 				 function );
 
@@ -1383,7 +1383,7 @@ ssize_t liblnk_location_information_read(
 				liberror_error_set(
 				 error,
 				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 				 "%s: unicode network share name offset exceeds volume information data.",
 				 function );
 
@@ -1646,7 +1646,7 @@ ssize_t liblnk_location_information_read(
 				liberror_error_set(
 				 error,
 				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 				 "%s: device name offset exceeds network share information data.",
 				 function );
 
@@ -1691,7 +1691,7 @@ ssize_t liblnk_location_information_read(
 				liberror_error_set(
 				 error,
 				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 				 "%s: unicode device name offset exceeds volume information data.",
 				 function );
 
@@ -1957,7 +1957,7 @@ ssize_t liblnk_location_information_read(
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: common path offset smaller than location information header size.",
 			 function );
 
@@ -1973,7 +1973,7 @@ ssize_t liblnk_location_information_read(
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: common path offset exceeds location information data.",
 			 function );
 
@@ -2018,7 +2018,7 @@ ssize_t liblnk_location_information_read(
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: unicode common path information offset smaller than location information header size",
 			 function );
 
@@ -2034,7 +2034,7 @@ ssize_t liblnk_location_information_read(
 			liberror_error_set(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_RANGE,
+			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: unicode common path offset exceeds location information data.",
 			 function );
 

@@ -48,7 +48,7 @@ extern "C" {
 LIBLNK_EXTERN const char *liblnk_get_version(
                            void );
 
-/* Determines if a file is a LNK file (check for the LNK file signature)
+/* Determines if a file is a Windows Shortcut File file (check for the file signature)
  * Returns 1 if true, 0 if not or -1 on error
  */
 LIBLNK_EXTERN int liblnk_check_file_signature(
@@ -56,7 +56,7 @@ LIBLNK_EXTERN int liblnk_check_file_signature(
                    liblnk_error_t **error );
 
 #if defined( LIBLNK_HAVE_WIDE_CHARACTER_TYPE )
-/* Determines if a file is a LNK file (check for the LNK file signature)
+/* Determines if a file is a Windows Shortcut File file (check for the file signature)
  * Returns 1 if true, 0 if not or -1 on error
  */
 LIBLNK_EXTERN int liblnk_check_file_signature_wide(
@@ -65,7 +65,7 @@ LIBLNK_EXTERN int liblnk_check_file_signature_wide(
 #endif
 
 #if defined( LIBLNK_HAVE_BFIO )
-/* Determines if a file is a LNK file (check for the LNK file signature) using a Basic File IO (bfio) handle
+/* Determines if a file is a Windows Shortcut File file (check for the file signature) using a Basic File IO (bfio) handle
  * Returns 1 if true, 0 if not or -1 on error
  */
 LIBLNK_EXTERN int liblnk_check_file_signature_file_io_handle(
