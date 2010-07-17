@@ -58,6 +58,17 @@ int liblnk_file_get_data_flags(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
 	if( data_flags == NULL )
 	{
 		liberror_error_set(
@@ -69,7 +80,7 @@ int liblnk_file_get_data_flags(
 
 		return( -1 );
 	}
-	*data_flags = internal_file->data_flags;
+	*data_flags = internal_file->io_handle->data_flags;
 
 	return( 1 );
 }
@@ -97,11 +108,22 @@ int liblnk_file_link_refers_to_file(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) == LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION )
+	if( internal_file->io_handle == NULL )
 	{
-		return( 1 );
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
 	}
-	return( 0 );
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) == 0 )
+	{
+		return( 0 );
+	}
+	return( 1 );
 }
 
 /* Retrieves the linked file's attribute flags
@@ -395,6 +417,17 @@ int liblnk_file_get_utf8_local_path_size(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
 	if( utf8_string_size == NULL )
 	{
 		liberror_error_set(
@@ -428,7 +461,7 @@ int liblnk_file_get_utf8_local_path_size(
 		result = libuna_utf8_string_size_from_byte_stream(
 			  internal_file->location_information->local_path,
 			  internal_file->location_information->local_path_size,
-			  internal_file->ascii_codepage,
+			  internal_file->io_handle->ascii_codepage,
 			  &utf8_local_path_size,
 			  error );
 	}
@@ -457,7 +490,7 @@ int liblnk_file_get_utf8_local_path_size(
 		result = libuna_utf8_string_size_from_byte_stream(
 			  internal_file->location_information->common_path,
 			  internal_file->location_information->common_path_size,
-			  internal_file->ascii_codepage,
+			  internal_file->io_handle->ascii_codepage,
 			  &utf8_common_path_size,
 			  error );
 	}
@@ -506,6 +539,17 @@ int liblnk_file_get_utf8_local_path(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
 	if( utf8_string == NULL )
 	{
 		liberror_error_set(
@@ -550,7 +594,7 @@ int liblnk_file_get_utf8_local_path(
 		result = libuna_utf8_string_size_from_byte_stream(
 			  internal_file->location_information->local_path,
 			  internal_file->location_information->local_path_size,
-			  internal_file->ascii_codepage,
+			  internal_file->io_handle->ascii_codepage,
 			  &utf8_local_path_size,
 			  error );
 	}
@@ -593,7 +637,7 @@ int liblnk_file_get_utf8_local_path(
 			  utf8_string_size,
 			  internal_file->location_information->local_path,
 			  internal_file->location_information->local_path_size,
-			  internal_file->ascii_codepage,
+			  internal_file->io_handle->ascii_codepage,
 			  error );
 	}
 	if( result != 1 )
@@ -624,7 +668,7 @@ int liblnk_file_get_utf8_local_path(
 			  utf8_string_size - ( utf8_local_path_size - 1 ),
 			  internal_file->location_information->common_path,
 			  internal_file->location_information->common_path_size,
-			  internal_file->ascii_codepage,
+			  internal_file->io_handle->ascii_codepage,
 			  error );
 	}
 	if( result != 1 )
@@ -670,6 +714,17 @@ int liblnk_file_get_utf8_network_path_size(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
 	if( utf8_string_size == NULL )
 	{
 		liberror_error_set(
@@ -703,7 +758,7 @@ int liblnk_file_get_utf8_network_path_size(
 		result = libuna_utf8_string_size_from_byte_stream(
 			  internal_file->location_information->network_share_name,
 			  internal_file->location_information->network_share_name_size,
-			  internal_file->ascii_codepage,
+			  internal_file->io_handle->ascii_codepage,
 			  &utf8_network_share_name_size,
 			  error );
 	}
@@ -732,7 +787,7 @@ int liblnk_file_get_utf8_network_path_size(
 		result = libuna_utf8_string_size_from_byte_stream(
 			  internal_file->location_information->common_path,
 			  internal_file->location_information->common_path_size,
-			  internal_file->ascii_codepage,
+			  internal_file->io_handle->ascii_codepage,
 			  &utf8_common_path_size,
 			  error );
 	}
@@ -781,6 +836,17 @@ int liblnk_file_get_utf8_network_path(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
 	if( utf8_string == NULL )
 	{
 		liberror_error_set(
@@ -825,7 +891,7 @@ int liblnk_file_get_utf8_network_path(
 		result = libuna_utf8_string_size_from_byte_stream(
 			  internal_file->location_information->network_share_name,
 			  internal_file->location_information->network_share_name_size,
-			  internal_file->ascii_codepage,
+			  internal_file->io_handle->ascii_codepage,
 			  &utf8_network_share_name_size,
 			  error );
 	}
@@ -868,7 +934,7 @@ int liblnk_file_get_utf8_network_path(
 			  utf8_string_size,
 			  internal_file->location_information->network_share_name,
 			  internal_file->location_information->network_share_name_size,
-			  internal_file->ascii_codepage,
+			  internal_file->io_handle->ascii_codepage,
 			  error );
 	}
 	if( result != 1 )
@@ -899,7 +965,7 @@ int liblnk_file_get_utf8_network_path(
 			  utf8_string_size - ( utf8_network_share_name_size - 1 ),
 			  internal_file->location_information->common_path,
 			  internal_file->location_information->common_path_size,
-			  internal_file->ascii_codepage,
+			  internal_file->io_handle->ascii_codepage,
 			  error );
 	}
 	if( result != 1 )

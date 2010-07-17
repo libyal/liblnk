@@ -219,6 +219,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\liblnk\lnk_data_blocks.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\liblnk\lnk_file_header.h"
 				>
 			</File>

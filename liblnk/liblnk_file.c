@@ -38,8 +38,6 @@
 #include "liblnk_location_information.h"
 #include "liblnk_shell_item_identifiers_list.h"
 
-#include "lnk_file_header.h"
-
 /* Initialize a file
  * Make sure the value file is pointing to is set to NULL
  * Returns 1 if successful or -1 on error
@@ -130,8 +128,6 @@ int liblnk_file_initialize(
 
 			return( -1 );
 		}
-		internal_file->ascii_codepage = LIBLNK_CODEPAGE_WINDOWS_1252;
-
 		*file = (liblnk_file_t *) internal_file;
 	}
 	return( 1 );
@@ -184,14 +180,15 @@ int liblnk_file_free(
 	return( result );
 }
 
-/* Signals the liblnk file to abort its current activity
+/* Signals the file to abort its current activity
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_signal_abort(
      liblnk_file_t *file,
      liberror_error_t **error )
 {
-	static char *function = "liblnk_file_signal_abort";
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_signal_abort";
 
 	if( file == NULL )
 	{
@@ -204,7 +201,20 @@ int liblnk_file_signal_abort(
 
 		return( -1 );
 	}
-	( (liblnk_internal_file_t *) file )->abort = 1;
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file->io_handle->abort = 1;
 
 	return( 1 );
 }
@@ -233,6 +243,8 @@ int liblnk_file_open(
 
 		return( -1 );
 	}
+	internal_file = (liblnk_internal_file_t *) file;
+
 	if( filename == NULL )
 	{
 		liberror_error_set(
@@ -267,8 +279,6 @@ int liblnk_file_open(
 
 		return( -1 );
 	}
-	internal_file = (liblnk_internal_file_t *) file;
-
 	if( libbfio_file_initialize(
 	     &file_io_handle,
 	     error ) != 1 )
@@ -373,6 +383,8 @@ int liblnk_file_open_wide(
 
 		return( -1 );
 	}
+	internal_file = (liblnk_internal_file_t *) file;
+
 	if( filename == NULL )
 	{
 		liberror_error_set(
@@ -407,8 +419,6 @@ int liblnk_file_open_wide(
 
 		return( -1 );
 	}
-	internal_file = (liblnk_internal_file_t *) file;
-
 	if( libbfio_file_initialize(
 	     &file_io_handle,
 	     error ) != 1 )
@@ -838,11 +848,9 @@ int liblnk_file_open_read(
 	static char *function     = "liblnk_file_open_read";
 	off64_t file_offset       = 0;
 	ssize_t read_count        = 0;
-	uint8_t is_unicode        = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
 	uint8_t *trailing_data    = NULL;
-	size64_t file_size        = 0;
 	size_t trailing_data_size = 0;
 #endif
 
@@ -875,14 +883,15 @@ int liblnk_file_open_read(
 		 "Reading file header:\n" );
 	}
 #endif
-	if( liblnk_io_handle_read_file_header(
-	     internal_file->io_handle,
-	     internal_file->file_io_handle,
-	     &( internal_file->data_flags ),
-	     internal_file->class_identifier,
-	     16,
-	     internal_file->file_information,
-	     error ) != 1 )
+	read_count = liblnk_io_handle_read_file_header(
+	              internal_file->io_handle,
+	              internal_file->file_io_handle,
+	              internal_file->class_identifier,
+	              16,
+	              internal_file->file_information,
+	              error );
+
+	if( read_count <= 1 )
 	{
 		liberror_error_set(
 		 error,
@@ -893,13 +902,9 @@ int liblnk_file_open_read(
 
 		return( -1 );
 	}
-	file_offset = sizeof( lnk_file_header_t );
+	file_offset += read_count;
 
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_IS_UNICODE ) != 0 )
-	{
-		is_unicode = 1;
-	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) != 0 )
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) != 0 )
 	{
 		if( liblnk_shell_item_identifiers_list_initialize(
 		     &( internal_file->link_target_identifier ),
@@ -940,7 +945,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) != 0 )
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) != 0 )
 	{
 		if( liblnk_location_information_initialize(
 		     &( internal_file->location_information ),
@@ -964,9 +969,9 @@ int liblnk_file_open_read(
 #endif
 		read_count = liblnk_location_information_read(
 		              internal_file->location_information,
+		              internal_file->io_handle,
 		              internal_file->file_io_handle,
 		              file_offset,
-		              internal_file->ascii_codepage,
 		              error );
 
 		if( read_count <= -1 )
@@ -982,7 +987,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) != 0 )
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) != 0 )
 	{
 		if( liblnk_data_string_initialize(
 		     &( internal_file->description ),
@@ -1006,9 +1011,9 @@ int liblnk_file_open_read(
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->description,
+		              internal_file->io_handle,
 		              internal_file->file_io_handle,
 		              file_offset,
-		              is_unicode,
 		              error );
 
 		if( read_count <= -1 )
@@ -1024,7 +1029,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) != 0 )
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) != 0 )
 	{
 		if( liblnk_data_string_initialize(
 		     &( internal_file->relative_path ),
@@ -1048,9 +1053,9 @@ int liblnk_file_open_read(
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->relative_path,
+		              internal_file->io_handle,
 		              internal_file->file_io_handle,
 		              file_offset,
-		              is_unicode,
 		              error );
 
 		if( read_count <= -1 )
@@ -1066,7 +1071,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) != 0 )
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) != 0 )
 	{
 		if( liblnk_data_string_initialize(
 		     &( internal_file->working_directory ),
@@ -1090,9 +1095,9 @@ int liblnk_file_open_read(
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->working_directory,
+		              internal_file->io_handle,
 		              internal_file->file_io_handle,
 		              file_offset,
-		              is_unicode,
 		              error );
 
 		if( read_count <= -1 )
@@ -1108,7 +1113,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) != 0 )
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) != 0 )
 	{
 		if( liblnk_data_string_initialize(
 		     &( internal_file->command_line_arguments ),
@@ -1132,9 +1137,9 @@ int liblnk_file_open_read(
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->command_line_arguments,
+		              internal_file->io_handle,
 		              internal_file->file_io_handle,
 		              file_offset,
-		              is_unicode,
 		              error );
 
 		if( read_count <= -1 )
@@ -1150,7 +1155,7 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	if( ( internal_file->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) != 0 )
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) != 0 )
 	{
 		if( liblnk_data_string_initialize(
 		     &( internal_file->icon_location ),
@@ -1174,9 +1179,9 @@ int liblnk_file_open_read(
 #endif
 		read_count = liblnk_data_string_read(
 		              internal_file->icon_location,
+		              internal_file->io_handle,
 		              internal_file->file_io_handle,
 		              file_offset,
-		              is_unicode,
 		              error );
 
 		if( read_count <= -1 )
@@ -1192,28 +1197,40 @@ int liblnk_file_open_read(
 		}
 		file_offset += read_count;
 	}
-	/* TODO read other parts */
-
-#if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( file_offset < (off64_t) internal_file->io_handle->file_size )
 	{
-		if( libbfio_handle_get_size(
-		     internal_file->file_io_handle,
-		     &file_size,
-		     error ) != 1 )
+#if defined( HAVE_VERBOSE_OUTPUT )
+		if( libnotify_verbose != 0 )
+		{
+			libnotify_printf(
+			 "Reading extra data blocks:\n" );
+		}
+#endif
+		read_count = liblnk_io_handle_read_data_blocks(
+		              internal_file->io_handle,
+		              internal_file->file_io_handle,
+		              file_offset,
+		              error );
+
+		if( read_count <= -1 )
 		{
 			liberror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve file size.",
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_READ_FAILED,
+			 "%s: unable to read extra data blocks.",
 			 function );
 
 			return( -1 );
 		}
-		if( file_offset < (off64_t) file_size )
+		file_offset += read_count;
+	}
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( libnotify_verbose != 0 )
+	{
+		if( file_offset < (off64_t) internal_file->io_handle->file_size )
 		{
-			trailing_data_size = (size_t) ( file_size - file_offset );
+			trailing_data_size = (size_t) ( internal_file->io_handle->file_size - file_offset );
 
 			trailing_data = (uint8_t *) memory_allocate(
 						     sizeof( uint8_t ) * trailing_data_size );
@@ -1244,18 +1261,25 @@ int liblnk_file_open_read(
 				 "%s: unable to read trailing data.",
 				 function );
 
+				memory_free(
+				 trailing_data );
+
 				return( -1 );
 			}
+			file_offset += read_count;
+
 			libnotify_printf(
 			 "%s: trailing data:\n",
 			 function );
 			libnotify_print_data(
 			 trailing_data,
 			 trailing_data_size );
+
+			memory_free(
+			 trailing_data );
 		}
 	}
 #endif
-
 	return( 1 );
 }
 
@@ -1283,6 +1307,17 @@ int liblnk_file_get_ascii_codepage(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
 	if( ascii_codepage == NULL )
 	{
 		liberror_error_set(
@@ -1294,7 +1329,7 @@ int liblnk_file_get_ascii_codepage(
 
 		return( -1 );
 	}
-	*ascii_codepage = internal_file->ascii_codepage;
+	*ascii_codepage = internal_file->io_handle->ascii_codepage;
 
 	return( 1 );
 }
@@ -1323,6 +1358,17 @@ int liblnk_file_set_ascii_codepage(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
 	if( ( ascii_codepage != LIBLNK_CODEPAGE_ASCII )
 	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_874 )
 	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1250 )
@@ -1343,7 +1389,7 @@ int liblnk_file_set_ascii_codepage(
 
 		return( -1 );
 	}
-	internal_file->ascii_codepage = ascii_codepage;
+	internal_file->io_handle->ascii_codepage = ascii_codepage;
 
 	return( 1 );
 }

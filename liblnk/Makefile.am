@@ -34,6 +34,7 @@ liblnk_la_SOURCES = \
 	liblnk_notify.c liblnk_notify.h \
 	liblnk_shell_item_identifiers_list.c liblnk_shell_item_identifiers_list.h \
 	liblnk_support.c liblnk_support.h \
+	lnk_data_blocks.h \
 	lnk_file_header.h \
 	lnk_location_information.h
 

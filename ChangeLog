@@ -1,17 +1,23 @@
 TODO
-* move file_io_handle from io handle to file
 * change file header filetime conversion
-* create API functions to access link information values
 * what about trailing data in xp lnk files ?
 
 Refactor
 * volume information read into separate subfunction
 * network share information read into separate subfunction
 
-Tools:
-* replace filetime by libfdatetime
+Debug
+* print descriptive name of data_block_signature
+* print values of additional extra blocks
+  - console properties data block
+  - console codepage data block
+  - shim layer data block
+  - metadata property store data block
+  - shell item identifiers list data block
+* remaining known folder identifiers in test set
 
 Library
+* create API functions to access link information values
 * move libbfio handle from io handle to file
 * update support check signature (pff)
 * move shell item code into libfwsi

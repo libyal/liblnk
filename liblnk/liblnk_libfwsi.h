@@ -29,6 +29,7 @@
 #if defined( HAVE_LOCAL_LIBFWSI )
 
 #include <libfwsi_definitions.h>
+#include <libfwsi_folder_identifier.h>
 #include <libfwsi_item.h>
 #include <libfwsi_types.h>
 

@@ -27,6 +27,7 @@
 
 #include <liberror.h>
 
+#include "liblnk_io_handle.h"
 #include "liblnk_libbfio.h"
 
 #if defined( __cplusplus )
@@ -37,7 +38,7 @@ typedef struct liblnk_data_string liblnk_data_string_t;
 
 struct liblnk_data_string
 {
-	/* Value to indicate if the string data is in Unicode
+	/* Value to indicate if the string data is in Unicode (UTF-16 little-endian)
 	 */
 	uint8_t is_unicode;
 
@@ -45,9 +46,9 @@ struct liblnk_data_string
 	 */
 	uint8_t *data;
 
-	/* The string size
+	/* The data size
 	 */
-	size_t size;
+	size_t data_size;
 };
 
 int liblnk_data_string_initialize(
@@ -60,9 +61,9 @@ int liblnk_data_string_free(
 
 ssize_t liblnk_data_string_read(
          liblnk_data_string_t *data_string,
+         liblnk_io_handle_t *io_handle,
          libbfio_handle_t *file_io_handle,
          off64_t data_string_offset,
-         uint8_t is_unicode,
          liberror_error_t **error );
 
 #if defined( __cplusplus )

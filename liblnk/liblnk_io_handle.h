@@ -40,9 +40,21 @@ typedef struct liblnk_io_handle liblnk_io_handle_t;
 
 struct liblnk_io_handle
 {
-	/* dummy
+	/* The file size
 	 */
-	int dummy;
+	size64_t file_size;
+
+	/* The data flags
+	 */
+	uint32_t data_flags;
+
+	/* The codepage of the extended ASCII strings
+	 */
+	int ascii_codepage;
+
+	/* Value to indicate if abort was signalled
+	 */
+	int abort;
 };
 
 int liblnk_io_handle_initialize(
@@ -53,14 +65,19 @@ int liblnk_io_handle_free(
      liblnk_io_handle_t **io_handle,
      liberror_error_t **error );
 
-int liblnk_io_handle_read_file_header(
-     liblnk_io_handle_t *io_handle,
-     libbfio_handle_t *file_io_handle,
-     uint32_t *data_flags,
-     uint8_t *class_identifier,
-     size_t class_identifier_size,
-     liblnk_file_information_t *file_information,
-     liberror_error_t **error );
+ssize_t liblnk_io_handle_read_file_header(
+         liblnk_io_handle_t *io_handle,
+         libbfio_handle_t *file_io_handle,
+         uint8_t *class_identifier,
+         size_t class_identifier_size,
+         liblnk_file_information_t *file_information,
+         liberror_error_t **error );
+
+ssize_t liblnk_io_handle_read_data_blocks(
+        liblnk_io_handle_t *io_handle,
+        libbfio_handle_t *file_io_handle,
+        off64_t data_blocks_offset,
+        liberror_error_t **error );
 
 #if defined( __cplusplus )
 }

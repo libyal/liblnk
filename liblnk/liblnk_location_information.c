@@ -155,9 +155,9 @@ int liblnk_location_information_free(
  */
 ssize_t liblnk_location_information_read(
          liblnk_location_information_t *location_information,
+         liblnk_io_handle_t *io_handle,
          libbfio_handle_t *file_io_handle,
          off64_t location_information_offset,
-         int ascii_codepage,
          liberror_error_t **error )
 {
 	uint8_t location_information_size_data[ 4 ];
@@ -203,13 +203,13 @@ ssize_t liblnk_location_information_read(
 
 		return( -1 );
 	}
-	if( file_io_handle == NULL )
+	if( io_handle == NULL )
 	{
 		liberror_error_set(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid file IO handle.",
+		 "%s: invalid IO handle.",
 		 function );
 
 		return( -1 );
@@ -218,13 +218,12 @@ ssize_t liblnk_location_information_read(
 	if( libnotify_verbose != 0 )
 	{
 		libnotify_printf(
-		 "%s: reading location information at offset: %" PRIu64 " (0x%08" PRIx64 ")\n",
+		 "%s: reading location information at offset: %" PRIi64 " (0x%08" PRIx64 ")\n",
 		 function,
 		 location_information_offset,
 		 location_information_offset );
 	}
 #endif
-
 	if( libbfio_handle_seek_offset(
 	     file_io_handle,
 	     location_information_offset,
@@ -235,7 +234,7 @@ ssize_t liblnk_location_information_read(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_IO,
 		 LIBERROR_IO_ERROR_SEEK_FAILED,
-		 "%s: unable to seek location information offset: %" PRIu64 ".",
+		 "%s: unable to seek location information offset: %" PRIi64 ".",
 		 function,
 		 location_information_offset );
 
@@ -756,14 +755,14 @@ ssize_t liblnk_location_information_read(
 				result = libuna_utf16_string_size_from_byte_stream(
 					  location_information->volume_label,
 					  location_information->volume_label_size,
-				          ascii_codepage,
+				          io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #else
 				result = libuna_utf8_string_size_from_byte_stream(
 					  location_information->volume_label,
 					  location_information->volume_label_size,
-				          ascii_codepage,
+				          io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #endif
@@ -827,7 +826,7 @@ ssize_t liblnk_location_information_read(
 					  value_string_size,
 					  location_information->volume_label,
 					  location_information->volume_label_size,
-					  ascii_codepage,
+					  io_handle->ascii_codepage,
 					  error );
 #else
 				result = libuna_utf8_string_copy_from_byte_stream(
@@ -835,7 +834,7 @@ ssize_t liblnk_location_information_read(
 					  value_string_size,
 					  location_information->volume_label,
 					  location_information->volume_label_size,
-					  ascii_codepage,
+					  io_handle->ascii_codepage,
 					  error );
 #endif
 			}
@@ -1102,14 +1101,14 @@ ssize_t liblnk_location_information_read(
 				result = libuna_utf16_string_size_from_byte_stream(
 					  location_information->local_path,
 					  location_information->local_path_size,
-				          ascii_codepage,
+				          io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #else
 				result = libuna_utf8_string_size_from_byte_stream(
 					  location_information->local_path,
 					  location_information->local_path_size,
-				          ascii_codepage,
+				          io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #endif
@@ -1173,7 +1172,7 @@ ssize_t liblnk_location_information_read(
 					  value_string_size,
 					  location_information->local_path,
 					  location_information->local_path_size,
-					  ascii_codepage,
+					  io_handle->ascii_codepage,
 					  error );
 #else
 				result = libuna_utf8_string_copy_from_byte_stream(
@@ -1181,7 +1180,7 @@ ssize_t liblnk_location_information_read(
 					  value_string_size,
 					  location_information->local_path,
 					  location_information->local_path_size,
-					  ascii_codepage,
+					  io_handle->ascii_codepage,
 					  error );
 #endif
 			}
@@ -1531,14 +1530,14 @@ ssize_t liblnk_location_information_read(
 				result = libuna_utf16_string_size_from_byte_stream(
 					  location_information->network_share_name,
 					  location_information->network_share_name_size,
-				          ascii_codepage,
+				          io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #else
 				result = libuna_utf8_string_size_from_byte_stream(
 					  location_information->network_share_name,
 					  location_information->network_share_name_size,
-				          ascii_codepage,
+				          io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #endif
@@ -1602,7 +1601,7 @@ ssize_t liblnk_location_information_read(
 					  value_string_size,
 					  location_information->network_share_name,
 					  location_information->network_share_name_size,
-					  ascii_codepage,
+					  io_handle->ascii_codepage,
 					  error );
 #else
 				result = libuna_utf8_string_copy_from_byte_stream(
@@ -1610,7 +1609,7 @@ ssize_t liblnk_location_information_read(
 					  value_string_size,
 					  location_information->network_share_name,
 					  location_information->network_share_name_size,
-					  ascii_codepage,
+					  io_handle->ascii_codepage,
 					  error );
 #endif
 			}
@@ -1839,14 +1838,14 @@ ssize_t liblnk_location_information_read(
 				result = libuna_utf16_string_size_from_byte_stream(
 					  location_information->device_name,
 					  location_information->device_name_size,
-				          ascii_codepage,
+				          io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #else
 				result = libuna_utf8_string_size_from_byte_stream(
 					  location_information->device_name,
 					  location_information->device_name_size,
-				          ascii_codepage,
+				          io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #endif
@@ -1910,7 +1909,7 @@ ssize_t liblnk_location_information_read(
 					  value_string_size,
 					  location_information->device_name,
 					  location_information->device_name_size,
-					  ascii_codepage,
+					  io_handle->ascii_codepage,
 					  error );
 #else
 				result = libuna_utf8_string_copy_from_byte_stream(
@@ -1918,7 +1917,7 @@ ssize_t liblnk_location_information_read(
 					  value_string_size,
 					  location_information->device_name,
 					  location_information->device_name_size,
-					  ascii_codepage,
+					  io_handle->ascii_codepage,
 					  error );
 #endif
 			}
@@ -2186,14 +2185,14 @@ ssize_t liblnk_location_information_read(
 				result = libuna_utf16_string_size_from_byte_stream(
 					  location_information->common_path,
 					  location_information->common_path_size,
-				          ascii_codepage,
+				          io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #else
 				result = libuna_utf8_string_size_from_byte_stream(
 					  location_information->common_path,
 					  location_information->common_path_size,
-				          ascii_codepage,
+				          io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #endif
@@ -2257,7 +2256,7 @@ ssize_t liblnk_location_information_read(
 					  value_string_size,
 					  location_information->common_path,
 					  location_information->common_path_size,
-					  ascii_codepage,
+					  io_handle->ascii_codepage,
 					  error );
 #else
 				result = libuna_utf8_string_copy_from_byte_stream(
@@ -2265,7 +2264,7 @@ ssize_t liblnk_location_information_read(
 					  value_string_size,
 					  location_information->common_path,
 					  location_information->common_path_size,
-					  ascii_codepage,
+					  io_handle->ascii_codepage,
 					  error );
 #endif
 			}

@@ -93,6 +93,12 @@ void liblnk_debug_print_data_flags(
 		 "\tRun in separate process (RunInSeparateProcess)\n" );
 	}
 
+	if( ( data_flags & 0x00000800UL ) != 0 )
+	{
+		libnotify_printf(
+		 "\t0x00000800 (reserved)\n" );
+	}
+
 	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_DARWIN_IDENTIFIER ) != 0 )
 	{
 		libnotify_printf(
@@ -130,35 +136,35 @@ void liblnk_debug_print_data_flags(
 		 "\tContains metadata property store block (HasTargetMetadata)\n" );
 	}
 
-	if( ( data_flags & 0x00100000 ) == 0x00100000 )
+	if( ( data_flags & 0x00100000UL ) != 0 )
 	{
 		libnotify_printf(
-		 "\t(DisableLinkPathTracking)\n" );
+		 "\t0x00100000 (DisableLinkPathTracking)\n" );
 	}
-	if( ( data_flags & 0x00200000 ) == 0x00200000 )
+	if( ( data_flags & 0x00200000UL ) != 0 )
 	{
 		libnotify_printf(
-		 "\t(DisableKnownFolderTracking)\n" );
+		 "\t0x00200000 (DisableKnownFolderTracking)\n" );
 	}
-	if( ( data_flags & 0x00400000 ) == 0x00400000 )
+	if( ( data_flags & 0x00400000UL ) != 0 )
 	{
 		libnotify_printf(
-		 "\t(AllowLinkToLink)\n" );
+		 "\t0x00400000 (AllowLinkToLink)\n" );
 	}
-	if( ( data_flags & 0x00800000 ) == 0x00800000 )
+	if( ( data_flags & 0x00800000UL ) != 0 )
 	{
 		libnotify_printf(
-		 "\t(UnaliasOnSave)\n" );
+		 "\t0x00800000 (UnaliasOnSave)\n" );
 	}
-	if( ( data_flags & 0x01000000 ) == 0x01000000 )
+	if( ( data_flags & 0x01000000UL ) != 0 )
 	{
 		libnotify_printf(
-		 "\t(PreferEnvironmentPath)\n" );
+		 "\t0x01000000 (PreferEnvironmentPath)\n" );
 	}
-	if( ( data_flags & 0x02000000 ) == 0x02000000 )
+	if( ( data_flags & 0x02000000UL ) != 0 )
 	{
 		libnotify_printf(
-		 "\t(KeepLocalIDListForUNCTarget)\n" );
+		 "\t0x02000000 (KeepLocalIDListForUNCTarget)\n" );
 	}
 }
 
@@ -442,7 +448,7 @@ int liblnk_debug_print_read_offsets(
 			return( -1 );
 		}
 		libnotify_printf(
-		 "%08" PRIu64 " ( 0x%08" PRIx64 " ) - %08" PRIu64 " ( 0x%08" PRIx64 " ) size: %" PRIu64 "\n",
+		 "%08" PRIi64 " ( 0x%08" PRIx64 " ) - %08" PRIi64 " ( 0x%08" PRIx64 " ) size: %" PRIu64 "\n",
 		 offset,
 		 offset,
 		 offset + size,

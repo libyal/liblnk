@@ -27,6 +27,7 @@
 
 #include <liberror.h>
 
+#include "liblnk_io_handle.h"
 #include "liblnk_libbfio.h"
 
 #if defined( __cplusplus )
@@ -109,9 +110,9 @@ int liblnk_location_information_free(
 
 ssize_t liblnk_location_information_read(
          liblnk_location_information_t *location_information,
+         liblnk_io_handle_t *io_handle,
          libbfio_handle_t *file_io_handle,
          off64_t location_information_offset,
-         int ascii_codepage,
          liberror_error_t **error );
 
 #if defined( __cplusplus )

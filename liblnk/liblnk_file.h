@@ -62,10 +62,6 @@ struct liblnk_internal_file
 	 */
 	uint8_t file_io_handle_created_in_library;
 
-	/* The data flags
-	 */
-	uint32_t data_flags;
-
 	/* The class identifier
 	 */
 	uint8_t class_identifier[ 16 ];
@@ -102,14 +98,6 @@ struct liblnk_internal_file
 	/* The icon location
 	 */
 	liblnk_data_string_t *icon_location;
-
-	/* The codepage of the extended ASCII strings
-	 */
-	int ascii_codepage;
-
-	/* Value to indicate if abort was signalled
-	 */
-	int abort;
 };
 
 LIBLNK_EXTERN int liblnk_file_initialize(

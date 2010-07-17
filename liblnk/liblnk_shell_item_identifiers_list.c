@@ -167,7 +167,7 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 	if( libnotify_verbose != 0 )
 	{
 		libnotify_printf(
-		 "%s: reading shell item identifiers list at offset: %" PRIu64 " (0x%08" PRIx64 ")\n",
+		 "%s: reading shell item identifiers list at offset: %" PRIi64 " (0x%08" PRIx64 ")\n",
 		 function,
 		 shell_item_identifiers_list_offset,
 		 shell_item_identifiers_list_offset );
@@ -184,7 +184,7 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_IO,
 		 LIBERROR_IO_ERROR_SEEK_FAILED,
-		 "%s: unable to seek shell item identifiers list offset: %" PRIu64 ".",
+		 "%s: unable to seek shell item identifiers list offset: %" PRIi64 ".",
 		 function,
 		 shell_item_identifiers_list_offset );
 
