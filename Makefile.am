@@ -14,6 +14,7 @@ SUBDIRS = \
 	liblnk \
 	libsystem \
 	lnktools \
+	po \
 	manuals \
 	msvscpp
 
@@ -21,9 +22,12 @@ REDHAT_FILES = \
 	liblnk.spec \
 	liblnk.spec.in
 
-EXTRA_DIST = \
-        $(REDHAT_FILES) \
-	liblnk.pc.in
+EXTRA_DIST =
+	config.rpath \
+	README.mingw \
+	po/Makevars.in \
+	liblnk.pc.in \
+        $(REDHAT_FILES)
 
 MAINTAINERCLEANFILES = \
 	Makefile.in

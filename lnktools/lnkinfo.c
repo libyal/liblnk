@@ -239,7 +239,7 @@ int lnkinfo_file_info_fprint(
 
 			return( -1 );
 		}
-		if( libfdatetime_filetime_copy_from_uint64(
+		if( libfdatetime_filetime_copy_from_64bit(
 		     filetime,
 		     value_64bit,
 		     error ) != 1 )
@@ -314,7 +314,7 @@ int lnkinfo_file_info_fprint(
 
 			return( -1 );
 		}
-		if( libfdatetime_filetime_copy_from_uint64(
+		if( libfdatetime_filetime_copy_from_64bit(
 		     filetime,
 		     value_64bit,
 		     error ) != 1 )
@@ -389,7 +389,7 @@ int lnkinfo_file_info_fprint(
 
 			return( -1 );
 		}
-		if( libfdatetime_filetime_copy_from_uint64(
+		if( libfdatetime_filetime_copy_from_64bit(
 		     filetime,
 		     value_64bit,
 		     error ) != 1 )
@@ -634,6 +634,7 @@ int main( int argc, char * const argv[] )
 	 1 );
 
         if( libsystem_initialize(
+             "lnktools",
              &error ) != 1 )
 	{
 		fprintf(

@@ -133,7 +133,7 @@ int liblnk_file_initialize(
 	return( 1 );
 }
 
-/* Frees an exisisting file
+/* Frees a file
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_free(
@@ -225,7 +225,7 @@ int liblnk_file_signal_abort(
 int liblnk_file_open(
      liblnk_file_t *file,
      const char *filename,
-     int flags,
+     int access_flags,
      liberror_error_t **error )
 {
 	libbfio_handle_t *file_io_handle      = NULL;
@@ -256,19 +256,19 @@ int liblnk_file_open(
 
 		return( -1 );
 	}
-	if( ( ( flags & LIBLNK_FLAG_READ ) == 0 )
-	 && ( ( flags & LIBLNK_FLAG_WRITE ) == 0 ) )
+	if( ( ( access_flags & LIBLNK_ACCESS_FLAG_READ ) == 0 )
+	 && ( ( access_flags & LIBLNK_ACCESS_FLAG_WRITE ) == 0 ) )
 	{
 		liberror_error_set(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported flags.",
+		 "%s: unsupported accesss flags.",
 		 function );
 
 		return( -1 );
 	}
-	if( ( flags & LIBLNK_FLAG_WRITE ) != 0 )
+	if( ( access_flags & LIBLNK_ACCESS_FLAG_WRITE ) != 0 )
 	{
 		liberror_error_set(
 		 error,
@@ -335,7 +335,7 @@ int liblnk_file_open(
 	if( liblnk_file_open_file_io_handle(
 	     file,
 	     file_io_handle,
-	     flags,
+	     access_flags,
 	     error ) != 1 )
 	{
 		liberror_error_set(
@@ -365,7 +365,7 @@ int liblnk_file_open(
 int liblnk_file_open_wide(
      liblnk_file_t *file,
      const wchar_t *filename,
-     int flags,
+     int access_flags,
      liberror_error_t **error )
 {
 	libbfio_handle_t *file_io_handle      = NULL;
@@ -396,19 +396,19 @@ int liblnk_file_open_wide(
 
 		return( -1 );
 	}
-	if( ( ( flags & LIBLNK_FLAG_READ ) == 0 )
-	 && ( ( flags & LIBLNK_FLAG_WRITE ) == 0 ) )
+	if( ( ( access_flags & LIBLNK_ACCESS_FLAG_READ ) == 0 )
+	 && ( ( access_flags & LIBLNK_ACCESS_FLAG_WRITE ) == 0 ) )
 	{
 		liberror_error_set(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported flags.",
+		 "%s: unsupported access flags.",
 		 function );
 
 		return( -1 );
 	}
-	if( ( flags & LIBLNK_FLAG_WRITE ) != 0 )
+	if( ( access_flags & LIBLNK_ACCESS_FLAG_WRITE ) != 0 )
 	{
 		liberror_error_set(
 		 error,
@@ -475,7 +475,7 @@ int liblnk_file_open_wide(
 	if( liblnk_file_open_file_io_handle(
 	     file,
 	     file_io_handle,
-	     flags,
+	     access_flags,
 	     error ) != 1 )
 	{
 		liberror_error_set(
@@ -505,12 +505,12 @@ int liblnk_file_open_wide(
 int liblnk_file_open_file_io_handle(
      liblnk_file_t *file,
      libbfio_handle_t *file_io_handle,
-     int flags,
+     int access_flags,
      liberror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_open_file_io_handle";
-	int file_io_flags                     = 0;
+	int bfio_access_flags                 = 0;
 	int file_io_handle_is_open            = 0;
 
 	if( file == NULL )
@@ -548,32 +548,32 @@ int liblnk_file_open_file_io_handle(
 
 		return( -1 );
 	}
-	if( ( ( flags & LIBLNK_FLAG_READ ) != LIBLNK_FLAG_READ )
-	 && ( ( flags & LIBLNK_FLAG_WRITE ) != LIBLNK_FLAG_WRITE ) )
+	if( ( ( access_flags & LIBLNK_ACCESS_FLAG_READ ) == 0 )
+	 && ( ( access_flags & LIBLNK_ACCESS_FLAG_WRITE ) == 0 ) )
 	{
 		liberror_error_set(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported flags.",
+		 "%s: unsupported access flags.",
 		 function );
 
 		return( -1 );
 	}
-	if( ( flags & LIBLNK_FLAG_WRITE ) == LIBLNK_FLAG_WRITE )
+	if( ( access_flags & LIBLNK_ACCESS_FLAG_WRITE ) != 0 )
 	{
 		liberror_error_set(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: write access to personal folder files currently not supported.",
+		 "%s: write access to  Windows Shortcut files currently not supported.",
 		 function );
 
 		return( -1 );
 	}
-	if( ( flags & LIBLNK_FLAG_READ ) == LIBLNK_FLAG_READ )
+	if( ( access_flags & LIBLNK_ACCESS_FLAG_READ ) != 0 )
 	{
-		file_io_flags = LIBBFIO_FLAG_READ;
+		bfio_access_flags = LIBBFIO_FLAG_READ;
 	}
 	internal_file->file_io_handle = file_io_handle;
 
@@ -596,7 +596,7 @@ int liblnk_file_open_file_io_handle(
 	{
 		if( libbfio_handle_open(
 		     internal_file->file_io_handle,
-		     flags,
+		     bfio_access_flags,
 		     error ) != 1 )
 		{
 			liberror_error_set(

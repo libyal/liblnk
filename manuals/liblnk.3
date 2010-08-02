@@ -1,4 +1,4 @@
-.Dd June 28, 2010
+.Dd August 2, 2010
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -51,7 +51,7 @@ File functions
 .Ft int
 .Fn liblnk_file_free "liblnk_file_t **file, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_open "liblnk_file_t *file, const char *filename, int flags, liblnk_error_t **error"
+.Fn liblnk_file_open "liblnk_file_t *file, const char *filename, int access_flags, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_close "liblnk_file_t *file, liblnk_error_t **error"
 .Ft int
@@ -61,11 +61,11 @@ File functions
 .Pp
 Available when compiled with wide character string support:
 .Ft int
-.Fn liblnk_file_open_wide "liblnk_file_t *file, const wchar_t *filename, int flags, liblnk_error_t **error"
+.Fn liblnk_file_open_wide "liblnk_file_t *file, const wchar_t *filename, int access_flags, liblnk_error_t **error"
 .Pp
 Available when compiled with libbfio support:
 .Ft int
-.Fn liblnk_file_open_file_io_handle "liblnk_file_t *file, libbfio_handle_t *file_io_handle, int flags, liblnk_error_t **error"
+.Fn liblnk_file_open_file_io_handle "liblnk_file_t *file, libbfio_handle_t *file_io_handle, int access_flags, liblnk_error_t **error"
 .Pp
 Link information functions
 .Ft int
@@ -111,7 +111,9 @@ liblnk allows to be compiled with wide character support.
 To compile liblnk with wide character support use
 .Ar ./configure --enable-wide-character-type=yes
 or pass the definition
-.Ar HAVE_WIDE_CHARACTER_TYPE
+.Ar _UNICODE
+ or
+.Ar UNICODE
  to the compiler (i.e. in case of Microsoft Visual Studio (MSVS) C++).
 
 To have other code to determine if liblnk was compiled with wide character support it defines

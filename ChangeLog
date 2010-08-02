@@ -38,6 +38,9 @@ Deployment:
 * create debian package files
 * create codegear files
 
+20100802
+* updated include/error.h and liberror
+
 20100717
 * updated configure.ac
 * updated include/error.h and liberror
@@ -90,5 +93,5 @@ Deployment:
 * worked on libfdatetime integration
 
 20090905
-* initial version based
+* initial version
 

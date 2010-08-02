@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
-  [20100727],
+  [20100802],
   [jbmetz@users.sourceforge.net])
 
 AC_CONFIG_SRCDIR(
@@ -55,6 +55,9 @@ AC_PROG_MAKE_SET
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
+
+dnl Support of internationalization (i18n)
+AM_GNU_GETTEXT([external])
 
 dnl Check for compiler language support
 AC_C_CONST
@@ -113,11 +116,18 @@ AS_IF(
    [1]) ])
  ])
 
+AS_IF(
+ [test "x$ac_cv_liblnk_enable_winapi" = xno],
+ [AC_CHECK_HEADERS([libintl.h]) ])
+
 dnl Headers included in common/types.h
 AC_CHECK_HEADERS([limits.h])
 
 dnl Headers included in common/memory.h and libcstring/libcstring_narrow_string.h
 AC_CHECK_HEADERS([stdlib.h string.h])
+
+dnl Headers included in libcstring/libcstring_locale.c
+AC_CHECK_HEADERS([langinfo.h locale.h])
 
 dnl Headers included in liberror/liberror_error.c and libnotify/libnotify_print.c
 AC_CHECK_HEADERS([stdarg.h])
@@ -147,9 +157,6 @@ AC_CHECK_HEADERS([glob.h])
 AS_IF(
  [test "x$ac_cv_header_glob_h" = xno],
  [AC_CHECK_HEADERS([io.h]) ])
-
-dnl Headers included in libsytem/libsystem_support.c
-AC_CHECK_HEADERS([langinfo.h locale.h])
 
 dnl Headers included in libsystem/libsystem_signal.h
 AC_CHECK_HEADERS([signal.h sys/signal.h])
@@ -313,6 +320,24 @@ AC_CHECK_FUNCS(
  [AC_MSG_FAILURE(
   [Missing function: realloc],
   [1]) ])
+
+dnl Check for environment functions in libcstring/libcstring_locale.c
+AC_CHECK_FUNCS(
+ [getenv],
+ [],
+ [AC_MSG_FAILURE(
+  [Missing function: getenv],
+  [1]) ])
+
+dnl Check for localization functions in libcstring/libcstring_locale.c
+AC_CHECK_FUNCS(
+ [setlocale],
+ [],
+ [AC_MSG_FAILURE(
+  [Missing function: setlocale],
+  [1]) ])
+
+LIBLNK_CHECK_FUNC_LANGINFO_CODESET
 
 dnl Narrow character string functions used in libcstring/libcstring_narrow_string.h
 AC_CHECK_FUNCS(
@@ -528,15 +553,11 @@ LIBLNK_CHECK_FUNC_MKDIR
 dnl Commandline argument/option parsing functions in libsystem/libsystem_getopt.h
 AC_CHECK_FUNCS([getopt])
 
-dnl Check for locale functions in libsystem/libsystem_support.h
-AC_CHECK_FUNCS(
- [setlocale],
- [],
- [AC_MSG_FAILURE(
-  [Missing function: setlocale],
-  [1]) ])
+dnl Check for internationalization functions in <library>/<library>_i18n.c and libsystem/libsystem_support.c
+AC_CHECK_FUNCS([bindtextdomain])
 
-LIBLNK_CHECK_FUNC_LANGINFO_CODESET
+dnl Check for internationalization functions in libsystem/libsystem_support.c
+AC_CHECK_FUNCS([textdomain])
 
 dnl Other functions
 
@@ -1063,6 +1084,8 @@ AC_CONFIG_FILES([libfwsi/Makefile])
 AC_CONFIG_FILES([liblnk/Makefile])
 AC_CONFIG_FILES([libsystem/Makefile])
 AC_CONFIG_FILES([lnktools/Makefile])
+AC_CONFIG_FILES([po/Makefile.in])
+AC_CONFIG_FILES([po/Makevars])
 AC_CONFIG_FILES([manuals/Makefile])
 AC_CONFIG_FILES([msvscpp/Makefile])
 dnl Have configure make the include files

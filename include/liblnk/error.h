@@ -182,15 +182,18 @@ enum LIBLNK_INPUT_ERROR
 	 */
 	LIBLNK_INPUT_ERROR_SIGNATURE_MISMATCH		= 2,
 
-	/* A CRC in the input did not match
+	/* A checksum in the input did not match
 	 */
-	LIBLNK_INPUT_ERROR_CRC_MISMATCH			= 3,
+	LIBLNK_INPUT_ERROR_CHECKSUM_MISMATCH		= 3,
 
 	/* A value in the input did not match a previously
 	 * read value or calculated value
 	 */
 	LIBLNK_INPUT_ERROR_VALUE_MISMATCH		= 4
 };
+
+/* TODO deprecated remove after a while */
+#define LIBLNK_INPUT_ERROR_CRC_MISMATCH			LIBLNK_INPUT_ERROR_CHECKSUM_MISMATCH
 
 /* The memory error codes
  * to signify errors regarding memory
@@ -273,7 +276,11 @@ enum LIBLNK_RUNTIME_ERROR
 
 	/* The value is unsupported
 	 */
-	LIBLNK_RUNTIME_ERROR_UNSUPPORTED_VALUE		= 14
+	LIBLNK_RUNTIME_ERROR_UNSUPPORTED_VALUE		= 14,
+
+	/* An abort was requested
+	 */
+	LIBLNK_RUNTIME_ERROR_ABORT_REQUESTED		= 15
 };
 
 /* TODO deprecated remove after a while */

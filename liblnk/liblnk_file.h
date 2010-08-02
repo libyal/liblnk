@@ -115,21 +115,21 @@ LIBLNK_EXTERN int liblnk_file_signal_abort(
 LIBLNK_EXTERN int liblnk_file_open(
                    liblnk_file_t *file,
                    const char *filename,
-                   int flags,
+                   int access_flags,
                    liberror_error_t **error );
 
 #if defined( HAVE_WIDE_CHARACTER_TYPE )
 LIBLNK_EXTERN int liblnk_file_open_wide(
                    liblnk_file_t *file,
                    const wchar_t *filename,
-                   int flags,
+                   int access_flags,
                    liberror_error_t **error );
 #endif
 
 LIBLNK_EXTERN int liblnk_file_open_file_io_handle(
                    liblnk_file_t *file,
                    libbfio_handle_t *file_io_handle,
-                   int flags,
+                   int access_flags,
                    liberror_error_t **error );
 
 LIBLNK_EXTERN int liblnk_file_close(

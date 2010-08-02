@@ -37,28 +37,35 @@
  * for local use of liblnk
  */
 #else
-#define LIBLNK_VERSION							20100727
+#define LIBLNK_VERSION							20100802
 
 /* The liblnk version string
  */
-#define LIBLNK_VERSION_STRING						"20100727"
+#define LIBLNK_VERSION_STRING						"20100802"
 
 /* The liblnk file access
  * bit 1        set to 1 for read access
  * bit 2        set to 1 for write access
  * bit 3-8      not used
  */
-#define LIBLNK_FLAG_READ						0x01
+enum LIBLNK_ACCESS_FLAGS
+{
+	LIBLNK_ACCESS_FLAG_READ						= 0x01,
 /* Reserved: not supported yet */
-#define LIBLNK_FLAG_WRITE						0x02
+	LIBLNK_ACCESS_FLAG_WRITE					= 0x02
+};
 
-/* The liblnk file access macros
+/* The libpff file access macros
  */
-#define LIBLNK_OPEN_READ						( LIBLNK_FLAG_READ )
+#define LIBLNK_OPEN_READ						( LIBLNK_ACCESS_FLAG_READ )
 /* Reserved: not supported yet */
-#define LIBLNK_OPEN_WRITE						( LIBLNK_FLAG_WRITE )
+#define LIBLNK_OPEN_WRITE						( LIBLNK_ACCESS_FLAG_WRITE )
 /* Reserved: not supported yet */
-#define LIBLNK_OPEN_READ_WRITE						( LIBLNK_FLAG_READ | LIBLNK_FLAG_WRITE )
+#define LIBLNK_OPEN_READ_WRITE						( LIBLNK_ACCESS_FLAG_READ | LIBLNK_ACCESS_FLAG_WRITE )
+
+/* TODO deprecated remove after a while */
+#define LIBLNK_FLAG_READ						LIBLNK_ACCESS_FLAG_READ
+#define LIBLNK_FLAG_WRITE						LIBLNK_ACCESS_FLAG_WRITE
 
 /* The data flags
  */
