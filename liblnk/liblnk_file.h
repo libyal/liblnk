@@ -29,8 +29,9 @@
 
 #include "liblnk_data_string.h"
 #include "liblnk_extern.h"
-#include "liblnk_io_handle.h"
 #include "liblnk_file_information.h"
+#include "liblnk_io_handle.h"
+#include "liblnk_libbfio.h"
 #include "liblnk_location_information.h"
 #include "liblnk_shell_item_identifiers_list.h"
 

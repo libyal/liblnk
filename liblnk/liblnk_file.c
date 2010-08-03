@@ -707,6 +707,8 @@ int liblnk_file_close(
 			result = -1;
 		}
 	}
+	internal_file->file_io_handle = NULL;
+
 	if( internal_file->file_information != NULL )
 	{
 		if( liblnk_file_information_free(
