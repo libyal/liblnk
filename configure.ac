@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
-  [20100802],
+  [20100816],
   [jbmetz@users.sourceforge.net])
 
 AC_CONFIG_SRCDIR(
@@ -430,6 +430,13 @@ AC_CHECK_FUNCS(
   [AC_MSG_FAILURE(
    [Missing functions: strncasecmp and strcasecmp],
    [1]) ]) ])
+
+AC_CHECK_FUNCS(
+ [strstr],
+ [],
+ [AC_MSG_FAILURE(
+  [Missing function: strstr],
+  [1]) ])
 
 AC_CHECK_FUNCS(
  [strtoll],
@@ -959,6 +966,13 @@ AS_IF(
     [AC_MSG_FAILURE(
      [Missing functions: wcsncasecmp, wcscasecmp and towlower],
      [1]) ]) ]) ])
+
+ AC_CHECK_FUNCS(
+  [wcsstr],
+  [],
+  [AC_MSG_FAILURE(
+   [Missing function: wcsstr],
+   [1]) ])
 
  AC_CHECK_FUNCS(
   [wcstoll],

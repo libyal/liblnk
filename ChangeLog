@@ -38,6 +38,9 @@ Deployment:
 * create debian package files
 * create codegear files
 
+20100816
+* updated libcstring, libsystem, libuna, libbfio
+
 20100802
 * updated include/error.h and liberror
 
