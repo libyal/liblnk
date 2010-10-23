@@ -159,6 +159,24 @@ int liblnk_file_free(
 	{
 		internal_file = (liblnk_internal_file_t *) *file;
 
+		if( internal_file->file_io_handle != NULL )
+		{
+			if( liblnk_file_close(
+			     *file,
+			     error ) != 0 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_IO,
+				 LIBERROR_IO_ERROR_CLOSE_FAILED,
+				 "%s: unable to close file.",
+				 function );
+
+				result = -1;
+			}
+		}
+		*file = NULL;
+
 		if( liblnk_io_handle_free(
 		     &( internal_file->io_handle ),
 		     error ) != 1 )
@@ -174,8 +192,6 @@ int liblnk_file_free(
 		}
 		memory_free(
 		 internal_file );
-
-		*file = NULL;
 	}
 	return( result );
 }
@@ -707,7 +723,8 @@ int liblnk_file_close(
 			result = -1;
 		}
 	}
-	internal_file->file_io_handle = NULL;
+	internal_file->file_io_handle                    = NULL;
+	internal_file->file_io_handle_created_in_library = 0;
 
 	if( internal_file->file_information != NULL )
 	{
@@ -878,7 +895,7 @@ int liblnk_file_open_read(
 
 		return( -1 );
 	}
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 	if( libnotify_verbose != 0 )
 	{
 		libnotify_printf(
@@ -921,7 +938,7 @@ int liblnk_file_open_read(
 
 			return( -1 );
 		}
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
 		{
 			libnotify_printf(
@@ -962,7 +979,7 @@ int liblnk_file_open_read(
 
 			return( -1 );
 		}
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
 		{
 			libnotify_printf(
@@ -1004,7 +1021,7 @@ int liblnk_file_open_read(
 
 			return( -1 );
 		}
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
 		{
 			libnotify_printf(
@@ -1046,7 +1063,7 @@ int liblnk_file_open_read(
 
 			return( -1 );
 		}
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
 		{
 			libnotify_printf(
@@ -1088,7 +1105,7 @@ int liblnk_file_open_read(
 
 			return( -1 );
 		}
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
 		{
 			libnotify_printf(
@@ -1130,7 +1147,7 @@ int liblnk_file_open_read(
 
 			return( -1 );
 		}
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
 		{
 			libnotify_printf(
@@ -1172,7 +1189,7 @@ int liblnk_file_open_read(
 
 			return( -1 );
 		}
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
 		{
 			libnotify_printf(
@@ -1201,7 +1218,7 @@ int liblnk_file_open_read(
 	}
 	if( file_offset < (off64_t) internal_file->io_handle->file_size )
 	{
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
 		{
 			libnotify_printf(

@@ -287,8 +287,6 @@ LIBLNK_EXTERN int liblnk_file_get_file_size(
                    uint32_t *file_size,
                    liblnk_error_t **error );
 
-/* TODO add raw and UTF16 functions */
-
 /* Retrieves the UTF-8 string size of the linked file's local path
  * The size includes the end of string character
  * The local path is only set if the link refers to a file on a local volume
@@ -330,6 +328,8 @@ LIBLNK_EXTERN int liblnk_file_get_utf8_network_path(
                    uint8_t *utf8_string,
                    size_t utf8_string_size,
                    liblnk_error_t **error );
+
+/* TODO add UTF16 functions */
 
 #if defined( __cplusplus )
 }

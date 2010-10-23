@@ -281,7 +281,6 @@ ssize_t liblnk_location_information_read(
 			 function );
 		}
 #endif
-
 		return( read_count );
 	}
 	if( location_information_size > (size_t) SSIZE_MAX )
@@ -363,7 +362,7 @@ ssize_t liblnk_location_information_read(
 	 ( (lnk_location_information_t *) location_information_data )->common_path_offset,
 	 common_path_offset );
 
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 	if( libnotify_verbose != 0 )
 	{
 		libnotify_printf(
@@ -416,7 +415,7 @@ ssize_t liblnk_location_information_read(
 		 ( (lnk_location_information_t *) location_information_data )->unicode_local_path_offset,
 		 unicode_local_path_offset );
 
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
 		{
 			libnotify_printf(
@@ -432,7 +431,7 @@ ssize_t liblnk_location_information_read(
 		 ( (lnk_location_information_t *) location_information_data )->unicode_common_path_offset,
 		 unicode_common_path_offset );
 
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
 		{
 			libnotify_printf(
@@ -442,7 +441,7 @@ ssize_t liblnk_location_information_read(
 		}
 #endif
 	}
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 	if( libnotify_verbose != 0 )
 	{
 		libnotify_printf(
@@ -506,7 +505,7 @@ ssize_t liblnk_location_information_read(
 		 ( (lnk_volume_information_t *) location_information_value_data )->volume_label_offset,
 		 volume_label_offset );
 
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
 		{
 			libnotify_printf(
@@ -545,7 +544,7 @@ ssize_t liblnk_location_information_read(
 			 ( (lnk_volume_information_t *) location_information_value_data )->unicode_volume_label_offset,
 			 unicode_volume_label_offset );
 
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 			if( libnotify_verbose != 0 )
 			{
 				libnotify_printf(
@@ -1273,7 +1272,7 @@ ssize_t liblnk_location_information_read(
 		 ( (lnk_network_share_information_t *) location_information_value_data )->network_provider_type,
 		 location_information->network_provider_type );
 
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
 		{
 			libnotify_printf(
@@ -1316,7 +1315,7 @@ ssize_t liblnk_location_information_read(
 			 ( (lnk_network_share_information_t *) location_information_value_data )->unicode_device_name_offset,
 			 unicode_device_name_offset );
 
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 			if( libnotify_verbose != 0 )
 			{
 				libnotify_printf(
@@ -2297,14 +2296,13 @@ ssize_t liblnk_location_information_read(
 	memory_free(
 	 location_information_data );
 
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 	if( libnotify_verbose != 0 )
 	{
 		libnotify_printf(
 		 "\n" );
 	}
 #endif
-
 	return( read_count + 4 );
 }
 

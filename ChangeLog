@@ -20,7 +20,11 @@ Library
 * create API functions to access link information values
 * move libbfio handle from io handle to file
 * update support check signature (pff)
-* move shell item code into libfwsi
+* move shell item code into libfwsi (check)
+* add libfvalue
+
+API
+* add UTF-16 functions
 
 Release:
 * check TODOs
@@ -38,6 +42,12 @@ Deployment:
 * create debian package files
 * create codegear files
 
+20101023
+* updated include/error.h
+* updated common, liberror, libnotify, libsystem, libbfio, libfdatetime,
+  libfwsi
+* code clean up
+
 20100816
 * updated libcstring, libsystem, libuna, libbfio
 
@@ -48,7 +58,7 @@ Deployment:
 * updated configure.ac
 * updated include/error.h and liberror
 * updated incluse/codepage.h
-* updated common, libsystem, libuna, libbfio, libfdatetime, libffwsi
+* updated common, libsystem, libuna, libbfio, libfdatetime, libfwsi
 
 20100628
 * updated common, libcstring, liberror, libnotify, libsystem

@@ -37,11 +37,11 @@
  * for local use of liblnk
  */
 #else
-#define LIBLNK_VERSION							20100816
+#define LIBLNK_VERSION							20101023
 
 /* The liblnk version string
  */
-#define LIBLNK_VERSION_STRING						"20100816"
+#define LIBLNK_VERSION_STRING						"20101023"
 
 /* The liblnk file access
  * bit 1        set to 1 for read access
@@ -62,10 +62,6 @@ enum LIBLNK_ACCESS_FLAGS
 #define LIBLNK_OPEN_WRITE						( LIBLNK_ACCESS_FLAG_WRITE )
 /* Reserved: not supported yet */
 #define LIBLNK_OPEN_READ_WRITE						( LIBLNK_ACCESS_FLAG_READ | LIBLNK_ACCESS_FLAG_WRITE )
-
-/* TODO deprecated remove after a while */
-#define LIBLNK_FLAG_READ						LIBLNK_ACCESS_FLAG_READ
-#define LIBLNK_FLAG_WRITE						LIBLNK_ACCESS_FLAG_WRITE
 
 /* The data flags
  */

@@ -153,7 +153,7 @@ ssize_t liblnk_io_handle_read_file_header(
 	ssize_t read_count                = 0;
 	uint32_t header_size              = 0;
 
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 	libcstring_system_character_t filetime_string[ 24 ];
 	libcstring_system_character_t guid_string[ LIBFGUID_IDENTIFIER_STRING_SIZE ];
 
@@ -351,7 +351,7 @@ ssize_t liblnk_io_handle_read_file_header(
 	 file_header.file_size,
 	 file_information->size );
 
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 	if( libnotify_verbose != 0 )
 	{
 		libnotify_printf(
@@ -900,7 +900,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 				{
 /* TODO notify that flag was not set */
 				}
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 				if( libnotify_verbose != 0 )
 				{
 					libnotify_printf(
@@ -1085,7 +1085,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 			case LIBLNK_DATA_BLOCK_SIGNATURE_DISTRIBUTED_LINK_TRACKER_PROPERTIES:
 /* TODO add data block size check */
 /* TODO add size and version check */
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 				if( libnotify_verbose != 0 )
 				{
 					if( libfguid_identifier_initialize(
@@ -1439,7 +1439,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 
 			case LIBLNK_DATA_BLOCK_SIGNATURE_SPECIAL_FOLDER_LOCATION:
 /* TODO add data block size check */
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 				if( libnotify_verbose != 0 )
 				{
 					byte_stream_copy_to_uint32_little_endian(
@@ -1472,7 +1472,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 				{
 /* TODO notify that flag was not set */
 				}
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 				if( libnotify_verbose != 0 )
 				{
 					libnotify_printf(
@@ -1660,7 +1660,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 				{
 /* TODO notify that flag was not set */
 				}
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 				if( libnotify_verbose != 0 )
 				{
 					libnotify_printf(
@@ -1844,7 +1844,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 
 			case LIBLNK_DATA_BLOCK_SIGNATURE_KNOWN_FOLDER_LOCATION:
 /* TODO add data block size check */
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 				if( libnotify_verbose != 0 )
 				{
 					if( libfguid_identifier_initialize(
@@ -1949,7 +1949,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 				break;
 
 			default:
-#if defined( HAVE_VERBOSE_OUTPUT )
+#if defined( HAVE_DEBUG_OUTPUT )
 				if( libnotify_verbose != 0 )
 				{
 					libnotify_printf(

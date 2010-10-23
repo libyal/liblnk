@@ -22,6 +22,8 @@
 #if !defined( _LIBLNK_ERROR_H )
 #define _LIBLNK_ERROR_H
 
+#include <liblnk/types.h>
+
 /* External error type definition hides internal structure
  */
 typedef intptr_t liblnk_error_t;
