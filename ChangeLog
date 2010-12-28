@@ -42,6 +42,10 @@ Deployment:
 * create debian package files
 * create codegear files
 
+20101228
+* updated common
+* updated libfwsi
+
 20101023
 * updated include/error.h
 * updated common, liberror, libnotify, libsystem, libbfio, libfdatetime,

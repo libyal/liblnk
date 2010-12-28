@@ -2,8 +2,8 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
-  [20101023],
-  [jbmetz@users.sourceforge.net])
+ [20101228],
+ [jbmetz@users.sourceforge.net])
 
 AC_CONFIG_SRCDIR(
  [include/liblnk.h.in])
