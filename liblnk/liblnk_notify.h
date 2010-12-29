@@ -37,19 +37,23 @@ extern "C" {
 
 #if !defined( HAVE_LOCAL_LIBLNK )
 
-LIBLNK_EXTERN void liblnk_notify_set_verbose(
-                    int verbose );
+LIBLNK_EXTERN \
+void liblnk_notify_set_verbose(
+      int verbose );
 
-LIBLNK_EXTERN int liblnk_notify_set_stream(
-                   FILE *stream,
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_notify_set_stream(
+     FILE *stream,
+     liberror_error_t **error );
 
-LIBLNK_EXTERN int liblnk_notify_stream_open(
-                   const char *filename,
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_notify_stream_open(
+     const char *filename,
+     liberror_error_t **error );
 
-LIBLNK_EXTERN int liblnk_notify_stream_close(
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_notify_stream_close(
+     liberror_error_t **error );
 
 #endif
 

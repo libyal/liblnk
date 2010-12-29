@@ -9,12 +9,12 @@
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,27 +24,22 @@
 
 #include <liblnk/features.h>
 
-#if @HAVE_SYS_TYPES_H@ || defined( HAVE_SYS_TYPES_H )
-#include <sys/types.h>
-
-#else
-#error Missing system type definitions (sys/types.h)
-#endif
-
+/* Microsoft C/C++ compiler
+ */
 #if defined( _MSC_VER )
 
-/* Define LIBLNK_DEFINITION_INTEGER_TYPES to avoid conflict if types are already defined
+/* Define _LIBLNK_TYPES_H_INTEGERS to avoid conflict
  */
-#if !defined( LIBLNK_DEFINITION_INTEGER_TYPES )
-
-#define LIBLNK_DEFINITION_INTEGER_TYPES
+#if !defined( _LIBLNK_TYPES_H_INTEGERS )
+#define _LIBLNK_TYPES_H_INTEGERS
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* Windows does not have <inttypes.h> or <stdint.h> and therefore does not support the
- * (u)int#_t type definitions it has __int# defintions instead
+/* The Microsoft Visual Studio C++ compiler does not have <inttypes.h> or <stdint.h>
+ * therefore it does not support the (u)int#_t type definitions
+ * it has __int# defintions instead
  */
 typedef __int8			int8_t;
 typedef unsigned __int8		uint8_t;
@@ -65,15 +60,17 @@ typedef __int32			ssize_t;
 }
 #endif
 
-#endif /* LIBUNA_DEFINITION_INTEGER_TYPES */
+#endif /* !defined( _LIBLNK_TYPES_H_INTEGERS ) */
 
+/* Borland C/C++ compiler
+ */
 #elif defined( __BORLANDC__ )
 #if __BORLANDC__ <= 0x0560
 
-/* Define LIBEWF_DEFINITION_INTEGER_TYPES to avoid conflict
+/* Define _LIBLNK_TYPES_H_INTEGERS to avoid conflict
  */
-#if !defined( LIBEWF_DEFINITION_INTEGER_TYPES )
-#define LIBEWF_DEFINITION_INTEGER_TYPES
+#if !defined( _LIBLNK_TYPES_H_INTEGERS )
+#define _LIBLNK_TYPES_H_INTEGERS
 
 #ifdef __cplusplus
 extern "C" {
@@ -104,13 +101,27 @@ typedef unsigned __int32	intptr_t;
 }
 #endif
 
-#endif /* LIBEWF_DEFINITION_INTEGER_TYPES */
+#endif /* !defined( _LIBLNK_TYPES_H_INTEGERS ) */
 
 #else
 #include <stdint.h>
 #endif /* __BORLANDC__ <= 0x0560 */
 
-#elif @HAVE_INTTYPES_H@ || defined( HAVE_INTTYPES_H )
+/* Other compilers
+ */
+#else
+
+#if @HAVE_SYS_TYPES_H@ || defined( HAVE_SYS_TYPES_H )
+#include <sys/types.h>
+
+#else
+#error Missing system type definitions (sys/types.h)
+#endif
+
+/* Type definitions for compilers that have access to
+ * <inttypes.h> or <stdint.h>
+ */
+#if @HAVE_INTTYPES_H@ || defined( HAVE_INTTYPES_H )
 #include <inttypes.h>
 
 #elif @HAVE_STDINT_H@ || defined( HAVE_STDINT_H )
@@ -119,6 +130,8 @@ typedef unsigned __int32	intptr_t;
 #else
 #error Missing integer type definitions (inttypes.h, stdint.h)
 #endif
+
+#endif /* Compiler specific integer type definitions */
 
 #if defined( LIBLNK_HAVE_WIDE_CHARACTER_TYPE )
 
@@ -161,8 +174,6 @@ typedef unsigned __int32	intptr_t;
 #undef LIBLNK_DEFINITION_ISOC99
 #endif
 
-#else
-#error Missing wide character type definition (wchar.h)
 #endif
 
 #endif

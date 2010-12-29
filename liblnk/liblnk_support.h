@@ -34,22 +34,26 @@
 extern "C" {
 #endif
 
-LIBLNK_EXTERN const char *liblnk_get_version(
-                           void );
+LIBLNK_EXTERN \
+const char *liblnk_get_version(
+             void );
 
-LIBLNK_EXTERN int liblnk_check_file_signature(
-                   const char *filename,
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_check_file_signature(
+     const char *filename,
+     liberror_error_t **error );
 
 #if defined( HAVE_WIDE_CHARACTER_TYPE )
-LIBLNK_EXTERN int liblnk_check_file_signature_wide(
-                   const wchar_t *filename,
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_check_file_signature_wide(
+     const wchar_t *filename,
+     liberror_error_t **error );
 #endif
 
-LIBLNK_EXTERN int liblnk_check_file_signature_file_io_handle(
-                   libbfio_handle_t *file_io_handle,
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_check_file_signature_file_io_handle(
+     libbfio_handle_t *file_io_handle,
+     liberror_error_t **error );
 
 #if defined( __cplusplus )
 }

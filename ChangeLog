@@ -1,6 +1,7 @@
 TODO
 * change file header filetime conversion
 * what about trailing data in xp lnk files ?
+* fix msvscpp build
 
 Refactor
 * volume information read into separate subfunction
@@ -41,6 +42,13 @@ Release:
 Deployment:
 * create debian package files
 * create codegear files
+
+20101229
+* updated configure.ac
+* updated include/error.h, include/types.h
+* updated libcstring, liberror, libnotify, libsystem, libuna, libbfio,
+  libfdatetime
+* fixes for mingw compilation
 
 20101228
 * updated common

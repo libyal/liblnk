@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
- [20101228],
+ [20101229],
  [jbmetz@users.sourceforge.net])
 
 AC_CONFIG_SRCDIR(
@@ -28,7 +28,7 @@ LIBLNK_TEST_ENABLE(
  [winapi],
  [winapi],
  [enable WINAPI support for cross-compilation],
- [no])
+ [auto-detect])
 LIBLNK_TEST_ENABLE(
  [static-executables],
  [static_executables],
@@ -63,41 +63,48 @@ dnl Check for compiler language support
 AC_C_CONST
 AC_C_VOLATILE
 
+dnl Automatically enable winapi support for mingw
+AS_IF(
+ [test "x$ac_cv_liblnk_enable_winapi" = xauto-detect],
+ [ac_liblnk_target_string="$target";
+
+ AS_IF(
+  [test "x$ac_liblnk_target_string" = x],
+  [ac_liblnk_target_string="$build"])
+
+ AS_CASE(
+  [$ac_liblnk_target_string],
+  [*mingw*],[AC_MSG_NOTICE(
+             [Detected MinGW enabling WINAPI support for cross-compilation])
+            ac_cv_liblnk_enable_winapi=yes],
+  [*],[ac_cv_liblnk_enable_winapi=no])
+ ])
+
 dnl Check for headers
 dnl Headers included in liblnk/types.h
-AC_CHECK_HEADER(
- [sys/types.h],
- [AC_DEFINE(
-  [HAVE_SYS_TYPES_H],
-  [1],
-  [Define to 1 if you have the <sys/types.h> header file.])
- AC_SUBST(
+AC_CHECK_HEADERS([sys/types.h inttypes.h stdint.h])
+
+AS_IF(
+ [test "x$ac_cv_header_sys_types_h" = xyes],
+ [AC_SUBST(
   [HAVE_SYS_TYPES_H],
   [1])],
  [AC_SUBST(
   [HAVE_SYS_TYPES_H],
   [0])])
 
-AC_CHECK_HEADER(
- [inttypes.h],
- [AC_DEFINE(
-  [HAVE_INTTYPES_H],
-  [1],
-  [Define to 1 if you have the <inttypes.h> header file.])
- AC_SUBST(
+AS_IF(
+ [test "x$ac_cv_header_inttypes_h" = xyes],
+ [AC_SUBST(
   [HAVE_INTTYPES_H],
   [1])],
  [AC_SUBST(
   [HAVE_INTTYPES_H],
   [0])])
 
-AC_CHECK_HEADER(
- [stdint.h],
- [AC_DEFINE(
-  [HAVE_STDINT_H],
-  [1],
-  [Define to 1 if you have the <stdint.h> header file.])
- AC_SUBST(
+AS_IF(
+ [test "x$ac_cv_header_stdint_h" = xyes],
+ [AC_SUBST(
   [HAVE_STDINT_H],
   [1])],
  [AC_SUBST(
@@ -363,12 +370,9 @@ AC_CHECK_FUNCS(
  [AC_CHECK_FUNCS(
   [strncmp],
   [],
-  [AC_CHECK_FUNCS(
-   [strcmp],
-   [],
-   [AC_MSG_FAILURE(
-    [Missing functions: memcmp, strncmp and strcmp],
-    [1]) ]) ]) ])
+  [AC_MSG_FAILURE(
+   [Missing functions: memcmp and strncmp],
+   [1]) ]) ])
 
 AC_CHECK_FUNCS(
  [memcpy],
@@ -376,12 +380,9 @@ AC_CHECK_FUNCS(
  [AC_CHECK_FUNCS(
   [strncpy],
   [],
-  [AC_CHECK_FUNCS(
-   [strcpy],
-   [],
-   [AC_MSG_FAILURE(
-    [Missing functions: memcpy, strncpy and strcpy],
-    [1]) ]) ]) ])
+  [AC_MSG_FAILURE(
+   [Missing functions: memcpy and strncpy],
+   [1]) ]) ])
 
 AC_CHECK_FUNCS(
  [memrchr],
@@ -917,12 +918,9 @@ AS_IF(
   [AC_CHECK_FUNCS(
    [wcsncmp],
    [],
-   [AC_CHECK_FUNCS(
-    [wcscmp],
-    [],
-    [AC_MSG_FAILURE(
-     [Missing functions: wmemcmp, wcsncmp and wcscmp],
-     [1]) ]) ]) ])
+   [AC_MSG_FAILURE(
+    [Missing functions: wmemcmp and wcsncmp],
+    [1]) ]) ])
 
  AC_CHECK_FUNCS(
   [wmemcpy],
@@ -930,12 +928,9 @@ AS_IF(
   [AC_CHECK_FUNCS(
    [wcsncpy],
    [],
-   [AC_CHECK_FUNCS(
-    [wcscpy],
-    [],
-    [AC_MSG_FAILURE(
-     [Missing functions: wmemcpy, wcsncpy and wcscpy],
-     [1]) ]) ]) ])
+   [AC_MSG_FAILURE(
+    [Missing functions: wmemcpy and wcsncpy],
+    [1]) ]) ])
 
  AC_CHECK_FUNCS(
   [wmemrchr],
@@ -986,6 +981,14 @@ AS_IF(
   [],
   [AC_MSG_FAILURE(
    [Missing function: wcstoull],
+   [1]) ])
+
+ dnl Wide character string functions used in liberror/liberror_error.h
+ AC_CHECK_FUNCS(
+  [wcstombs],
+  [],
+  [AC_MSG_FAILURE(
+   [Missing function: wcstombs],
    [1]) ])
 
  dnl Make the necessary definitions

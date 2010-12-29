@@ -39,26 +39,31 @@ extern "C" {
 
 #if !defined( HAVE_LOCAL_LIBLNK )
 
-LIBLNK_EXTERN void liblnk_error_free(
-                    liblnk_error_t **error );
+LIBLNK_EXTERN \
+void liblnk_error_free(
+      liblnk_error_t **error );
 
-LIBLNK_EXTERN int liblnk_error_fprint(
-                   liblnk_error_t *error,
-                   FILE *stream );
+LIBLNK_EXTERN \
+int liblnk_error_fprint(
+     liblnk_error_t *error,
+     FILE *stream );
 
-LIBLNK_EXTERN int liblnk_error_sprint(
-                   liblnk_error_t *error,
-                   char *string,
-                   size_t size );
+LIBLNK_EXTERN \
+int liblnk_error_sprint(
+     liblnk_error_t *error,
+     char *string,
+     size_t size );
 
-LIBLNK_EXTERN int liblnk_error_backtrace_fprint(
-                   liblnk_error_t *error,
-                   FILE *stream );
+LIBLNK_EXTERN \
+int liblnk_error_backtrace_fprint(
+     liblnk_error_t *error,
+     FILE *stream );
 
-LIBLNK_EXTERN int liblnk_error_backtrace_sprint(
-                   liblnk_error_t *error,
-                   char *string,
-                   size_t size );
+LIBLNK_EXTERN \
+int liblnk_error_backtrace_sprint(
+     liblnk_error_t *error,
+     char *string,
+     size_t size );
 
 #endif
 

@@ -18,15 +18,21 @@ SUBDIRS = \
 	manuals \
 	msvscpp
 
+GETTEXT_FILES = \
+	config.rpath \
+	po/Makevars.in
+
+PKGCONFIG_FILES = \
+	liblnk.pc.in
+
 SPEC_FILES = \
 	liblnk.spec \
 	liblnk.spec.in
 
-EXTRA_DIST =
-	config.rpath \
+EXTRA_DIST = \
 	README.mingw \
-	po/Makevars.in \
-	liblnk.pc.in \
+	$(GETTEXT_FILES) \
+	$(PKGCONFIG_FILES) \
         $(SPEC_FILES)
 
 MAINTAINERCLEANFILES = \

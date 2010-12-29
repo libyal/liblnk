@@ -35,7 +35,7 @@
 #include "liblnk_location_information.h"
 #include "liblnk_shell_item_identifiers_list.h"
 
-#if defined( _MSC_VER ) || defined( __BORLANDC__ )
+#if defined( _MSC_VER ) || defined( __BORLANDC__ ) || defined( __MINGW32_VERSION ) || defined( __MINGW64_VERSION_MAJOR )
 
 /* This inclusion is needed otherwise some linkers
  * mess up exporting all functions
@@ -101,55 +101,64 @@ struct liblnk_internal_file
 	liblnk_data_string_t *icon_location;
 };
 
-LIBLNK_EXTERN int liblnk_file_initialize(
-                   liblnk_file_t **file,
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_initialize(
+     liblnk_file_t **file,
+     liberror_error_t **error );
 
-LIBLNK_EXTERN int liblnk_file_free(
-                   liblnk_file_t **file,
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_free(
+     liblnk_file_t **file,
+     liberror_error_t **error );
 
-LIBLNK_EXTERN int liblnk_file_signal_abort(
-                   liblnk_file_t *file,
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_signal_abort(
+     liblnk_file_t *file,
+     liberror_error_t **error );
 
-LIBLNK_EXTERN int liblnk_file_open(
-                   liblnk_file_t *file,
-                   const char *filename,
-                   int access_flags,
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_open(
+     liblnk_file_t *file,
+     const char *filename,
+     int access_flags,
+     liberror_error_t **error );
 
 #if defined( HAVE_WIDE_CHARACTER_TYPE )
-LIBLNK_EXTERN int liblnk_file_open_wide(
-                   liblnk_file_t *file,
-                   const wchar_t *filename,
-                   int access_flags,
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_open_wide(
+     liblnk_file_t *file,
+     const wchar_t *filename,
+     int access_flags,
+     liberror_error_t **error );
 #endif
 
-LIBLNK_EXTERN int liblnk_file_open_file_io_handle(
-                   liblnk_file_t *file,
-                   libbfio_handle_t *file_io_handle,
-                   int access_flags,
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_open_file_io_handle(
+     liblnk_file_t *file,
+     libbfio_handle_t *file_io_handle,
+     int access_flags,
+     liberror_error_t **error );
 
-LIBLNK_EXTERN int liblnk_file_close(
-                   liblnk_file_t *file,
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_close(
+     liblnk_file_t *file,
+     liberror_error_t **error );
 
 int liblnk_file_open_read(
      liblnk_internal_file_t *internal_file,
      liberror_error_t **error );
 
-LIBLNK_EXTERN int liblnk_file_get_ascii_codepage(
-                   liblnk_file_t *file,
-                   int *ascii_codepage,
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_ascii_codepage(
+     liblnk_file_t *file,
+     int *ascii_codepage,
+     liberror_error_t **error );
 
-LIBLNK_EXTERN int liblnk_file_set_ascii_codepage(
-                   liblnk_file_t *file,
-                   int ascii_codepage,
-                   liberror_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_set_ascii_codepage(
+     liblnk_file_t *file,
+     int ascii_codepage,
+     liberror_error_t **error );
 
 #if defined( __cplusplus )
 }

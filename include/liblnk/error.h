@@ -292,7 +292,11 @@ enum LIBLNK_RUNTIME_ERROR
  */
 enum LIBLNK_OUTPUT_ERROR
 {
-	LIBLNK_OUTPUT_ERROR_GENERIC			= 0
+	LIBLNK_OUTPUT_ERROR_GENERIC			= 0,
+
+	/* There is insuficient space to write the output
+	 */
+	LIBLNK_OUTPUT_ERROR_INSUFFICIENT_SPACE		= 1
 };
 
 #endif

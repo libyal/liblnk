@@ -26,6 +26,7 @@ lnkinfo_LDADD  = \
 	../liberror/liberror.la \
 	../liblnk/liblnk.la \
 	../libsystem/libsystem.la \
+	@LIBFDATETIME_LIBADD@ \
 	@MEMWATCH_LIBADD@
 
 MAINTAINERCLEANFILES = \
