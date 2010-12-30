@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="liberror"
-	ProjectGUID="{BD3A95FA-A3DE-4B79-A889-A7E5ECA4B69C}"
-	RootNamespace="liberror"
+	Name="libcstring"
+	ProjectGUID="{20FFC4C9-F44C-45F6-A827-4819B4DF3C9F}"
+	RootNamespace="libcstring"
 	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
@@ -39,7 +39,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\libcstring"
+				AdditionalIncludeDirectories="..\..\include;..\..\common"
 				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE"
 				RuntimeLibrary="2"
 				WarningLevel="4"
@@ -57,7 +57,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\liberror.lib"
+				OutputFile="$(OutDir)\libcstring.lib"
 				ModuleDefinitionFile=""
 				IgnoreAllDefaultLibraries="false"
 			/>
@@ -87,7 +87,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\liberror\liberror_error.c"
+				RelativePath="..\..\libcstring\libcstring_system_string.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libcstring\libcstring_wide.c"
 				>
 			</File>
 		</Filter>
@@ -97,19 +101,35 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\liberror\liberror.h"
+				RelativePath="..\..\libcstring\libcstring.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\liberror\liberror_definitions.h"
+				RelativePath="..\..\libcstring\libcstring_codepage.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\liberror\liberror_error.h"
+				RelativePath="..\..\libcstring\libcstring_definitions.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\liberror\liberror_types.h"
+				RelativePath="..\..\libcstring\libcstring_narrow.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libcstring\libcstring_string.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libcstring\libcstring_system_string.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libcstring\libcstring_types.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libcstring\libcstring_wide.h"
 				>
 			</File>
 		</Filter>

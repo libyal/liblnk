@@ -1,4 +1,4 @@
-.Dd August 2, 2010
+.Dd December 30, 2010
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -87,9 +87,17 @@ Link information functions
 .Ft int
 .Fn liblnk_file_get_utf8_local_path "liblnk_file_t *file, uint8_t *utf8_string, size_t utf8_string_size, liblnk_error_t **error"
 .Ft int
+.Fn liblnk_file_get_utf16_local_path_size "liblnk_file_t *file, size_t *utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_local_path "liblnk_file_t *file, uint16_t *utf16_string, size_t utf16_string_size, liblnk_error_t **error"
+.Ft int
 .Fn liblnk_file_get_utf8_network_path_size "liblnk_file_t *file, size_t *utf8_string_size, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_get_utf8_network_path "liblnk_file_t *file, uint8_t *utf8_string, size_t utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_network_path_size "liblnk_file_t *file, size_t *utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_network_path "liblnk_file_t *file, uint16_t *utf16_string, size_t utf16_string_size, liblnk_error_t **error"
 .Sh DESCRIPTION
 The
 .Fn liblnk_get_version

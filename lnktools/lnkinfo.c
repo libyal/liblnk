@@ -496,7 +496,7 @@ int lnkinfo_file_info_fprint(
 				return( -1 );
 			}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-			result = liblnk_file_get_utf8_local_path(
+			result = liblnk_file_get_utf16_local_path(
 			          file,
 			          (uint16_t *) value_string,
 			          value_string_size,

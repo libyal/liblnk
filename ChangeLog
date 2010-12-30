@@ -2,6 +2,7 @@ TODO
 * change file header filetime conversion
 * what about trailing data in xp lnk files ?
 * fix msvscpp build
+  - utf16 functions
 
 Refactor
 * volume information read into separate subfunction
@@ -42,6 +43,11 @@ Release:
 Deployment:
 * create debian package files
 * create codegear files
+
+20101230
+* updated msvscpp files
+* added unused
+* added UTF-16 functions
 
 20101229
 * updated configure.ac
