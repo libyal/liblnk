@@ -1,7 +1,7 @@
 /*
  * The internal definitions
  *
- * Copyright (c) 2009-2010, Joachim Metz <jbmetz@users.sourceforge.net>
+ * Copyright (c) 2009-2011, Joachim Metz <jbmetz@users.sourceforge.net>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -37,11 +37,11 @@
  * for local use of liblnk
  */
 #else
-#define LIBLNK_VERSION							20101230
+#define LIBLNK_VERSION							20110104
 
 /* The liblnk version string
  */
-#define LIBLNK_VERSION_STRING						"20101230"
+#define LIBLNK_VERSION_STRING						"20110104"
 
 /* The liblnk file access
  * bit 1        set to 1 for read access
