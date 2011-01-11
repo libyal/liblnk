@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
- [20110104],
+ [20110111],
  [jbmetz@users.sourceforge.net])
 
 AC_CONFIG_SRCDIR(
@@ -507,6 +507,13 @@ AC_CHECK_FUNCS(
  [],
  [AC_MSG_FAILURE(
   [Missing function: stat],
+  [1]) ])
+
+AC_CHECK_FUNCS(
+ [ftruncate],
+ [],
+ [AC_MSG_FAILURE(
+  [Missing function: ftruncate],
   [1]) ])
 
 AC_CHECK_FUNCS(

@@ -355,7 +355,7 @@ ssize_t liblnk_io_handle_read_file_header(
 	if( libnotify_verbose != 0 )
 	{
 		libnotify_printf(
-		 "%s: header size\t\t\t: %" PRIu32 "\n",
+		 "%s: header size\t\t\t\t: %" PRIu32 "\n",
 		 function,
 		 header_size );
 
@@ -434,12 +434,12 @@ ssize_t liblnk_io_handle_read_file_header(
 			return( -1 );
 		}
 		libnotify_printf(
-		 "%s: class identifier\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "%s: class identifier\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
 		 function,
 		 guid_string );
 
 		libnotify_printf(
-		 "%s: data flags\t\t\t: 0x%08" PRIx32 "\n",
+		 "%s: data flags\t\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 io_handle->data_flags );
 		liblnk_debug_print_data_flags(
@@ -448,7 +448,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		 "\n" );
 
 		libnotify_printf(
-		 "%s: file attribute flags\t\t: 0x%08" PRIx32 "\n",
+		 "%s: file attribute flags\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 file_information->attribute_flags );
 		liblnk_debug_print_file_attribute_flags(
@@ -522,7 +522,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			return( -1 );
 		}
 		libnotify_printf(
-		 "%s: creation time\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+		 "%s: creation time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
 		 function,
 		 filetime_string );
 
@@ -579,7 +579,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			return( -1 );
 		}
 		libnotify_printf(
-		 "%s: access time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+		 "%s: access time\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
 		 function,
 		 filetime_string );
 
@@ -636,7 +636,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			return( -1 );
 		}
 		libnotify_printf(
-		 "%s: modification time\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+		 "%s: modification time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
 		 function,
 		 filetime_string );
 
@@ -654,7 +654,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			return( -1 );
 		}
 		libnotify_printf(
-		 "%s: file size\t\t\t: %" PRIu32 " bytes\n",
+		 "%s: file size\t\t\t\t: %" PRIu32 " bytes\n",
 		 function,
 		 file_information->size );
 
@@ -662,7 +662,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		 file_header.icon_index,
 		 value_32bit );
 		libnotify_printf(
-		 "%s: icon index\t\t\t: 0x%08" PRIx32 "\n",
+		 "%s: icon index\t\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 value_32bit );
 
@@ -670,7 +670,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		 file_header.show_window_value,
 		 value_32bit );
 		libnotify_printf(
-		 "%s: show window value\t\t: 0x%08" PRIx32 "\n",
+		 "%s: show window value\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 value_32bit );
 
@@ -678,7 +678,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		 file_header.hot_key_value,
 		 value_16bit );
 		libnotify_printf(
-		 "%s: hot key value\t\t: 0x%04" PRIx16 "\n",
+		 "%s: hot key value\t\t\t: 0x%04" PRIx16 "\n",
 		 function,
 		 value_16bit );
 

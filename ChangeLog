@@ -44,6 +44,13 @@ Deployment:
 * create debian package files
 * create codegear files
 
+20110111
+* updated configure.ac
+* updated common, libcstring, libsystem, libuna, libbfio, 
+
+20110104
+* 2011 update
+
 20101230
 * updated msvscpp files
 * added unused
