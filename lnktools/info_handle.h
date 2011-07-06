@@ -1,5 +1,5 @@
-/*
- * Support functions
+/* 
+ * Info handle
  *
  * Copyright (c) 2009-2011, Joachim Metz <jbmetz@users.sourceforge.net>
  *
@@ -9,68 +9,81 @@
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_SUPPORT_H )
-#define _LIBLNK_SUPPORT_H
+#if !defined( _INFO_HANDLE_H )
+#define _INFO_HANDLE_H
 
 #include <common.h>
+#include <file_stream.h>
 #include <types.h>
 
+#include <libcstring.h>
 #include <liberror.h>
 
-#include "liblnk_extern.h"
-#include "liblnk_libbfio.h"
+#include "lnktools_liblnk.h"
 
 #if defined( __cplusplus )
 extern "C" {
 #endif
 
-#if !defined( HAVE_LOCAL_LIBLNK )
+typedef struct info_handle info_handle_t;
 
-LIBLNK_EXTERN \
-const char *liblnk_get_version(
-             void );
+struct info_handle
+{
+	/* The liblnk input file
+	 */
+	liblnk_file_t *input_file;
 
-LIBLNK_EXTERN \
-int liblnk_get_access_flags_read(
-     void );
+	/* The ascii codepage
+	 */
+	int ascii_codepage;
 
-LIBLNK_EXTERN \
-int liblnk_get_codepage(
-     int *codepage,
+	/* The nofication output stream
+	 */
+	FILE *notify_stream;
+
+	/* Value to indicate if abort was signalled
+	 */
+	int abort;
+};
+
+int info_handle_initialize(
+     info_handle_t **info_handle,
      liberror_error_t **error );
 
-LIBLNK_EXTERN \
-int liblnk_set_codepage(
-     int codepage,
+int info_handle_free(
+     info_handle_t **info_handle,
      liberror_error_t **error );
 
-#endif /* !defined( HAVE_LOCAL_LIBLNK ) */
-
-LIBLNK_EXTERN \
-int liblnk_check_file_signature(
-     const char *filename,
+int info_handle_signal_abort(
+     info_handle_t *info_handle,
      liberror_error_t **error );
 
-#if defined( HAVE_WIDE_CHARACTER_TYPE )
-LIBLNK_EXTERN \
-int liblnk_check_file_signature_wide(
-     const wchar_t *filename,
+int info_handle_set_ascii_codepage(
+     info_handle_t *info_handle,
+     const libcstring_system_character_t *string,
      liberror_error_t **error );
-#endif
 
-LIBLNK_EXTERN \
-int liblnk_check_file_signature_file_io_handle(
-     libbfio_handle_t *file_io_handle,
+int info_handle_open(
+     info_handle_t *info_handle,
+     const libcstring_system_character_t *filename,
+     liberror_error_t **error );
+
+int info_handle_close(
+     info_handle_t *info_handle,
+     liberror_error_t **error );
+
+int info_handle_file_fprint(
+     info_handle_t *info_handle,
      liberror_error_t **error );
 
 #if defined( __cplusplus )

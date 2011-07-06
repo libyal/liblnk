@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
- [20110111],
+ [20110706],
  [jbmetz@users.sourceforge.net])
 
 AC_CONFIG_SRCDIR(
@@ -337,6 +337,15 @@ AC_CHECK_FUNCS(
   [1]) ])
 
 dnl Check for localization functions in libcstring/libcstring_locale.c
+AS_IF(
+ [test "x$ac_cv_liblnk_enable_winapi" = xno],
+ [AC_CHECK_FUNCS(
+  [localeconv],
+  [],
+  [AC_MSG_FAILURE(
+   [Missing function: localeconv],
+   [1]) ]) ])
+
 AC_CHECK_FUNCS(
  [setlocale],
  [],
@@ -1025,6 +1034,10 @@ AS_IF(
  [STATIC_LDFLAGS="-all-static";
  AC_SUBST(
   [STATIC_LDFLAGS])
+ AC_DEFINE(
+  [HAVE_STATIC_EXECUTABLES],
+  [1],
+  [Define if executables should be static compiled.])
  ac_cv_liblnk_enable_static_executables=yes])
 
 dnl Check if liblnk should be build with verbose output
@@ -1111,6 +1124,8 @@ AC_CONFIG_FILES([lnktools/Makefile])
 AC_CONFIG_FILES([po/Makefile.in])
 AC_CONFIG_FILES([po/Makevars])
 AC_CONFIG_FILES([manuals/Makefile])
+AC_CONFIG_FILES([tests/Makefile])
+AC_CONFIG_FILES([examples/Makefile])
 AC_CONFIG_FILES([msvscpp/Makefile])
 dnl Have configure make the include files
 AC_CONFIG_FILES([include/liblnk.h])

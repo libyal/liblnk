@@ -1,4 +1,4 @@
-.Dd January 4, 2011
+.Dd July 6, 2011
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -12,6 +12,12 @@
 Support functions
 .Ft const char *
 .Fn liblnk_get_version "void"
+.Ft int
+.Fn liblnk_get_access_flags_read
+.Ft int
+.Fn liblnk_get_codepage "int *codepage, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_set_codepage "int codepage, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_check_file_signature "const char *filename, liblnk_error_t **error"
 .Pp

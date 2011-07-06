@@ -1,4 +1,7 @@
 TODO
+* lnk2 output shorten default version output
+* update msvscpp files, add VSDebug
+* info handle, merge old function with new code
 * change file header filetime conversion
 * what about trailing data in xp lnk files ?
 * fix msvscpp build
@@ -39,10 +42,23 @@ Release:
 * update manuals
 * update macosx package files
 * update msvcpp files
+* automated tests
 
-Deployment:
-* create debian package files
-* create codegear files
+Bindings:
+* python
+* .net
+* java
+
+20110706
+* updated README.mingw
+* updated configure
+* updated codepage definitions
+* updated common, libcstring, libsystem, libuna, libbfio, libfdatetime,
+  libfguid,
+* added liblnk_get_access_flags_read, liblnk_get_codepage, liblnk_set_codepage
+* code clean up
+* added tests and examples
+* filetime added microseconds precision
 
 20110111
 * updated configure.ac

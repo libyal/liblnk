@@ -16,6 +16,8 @@ SUBDIRS = \
 	lnktools \
 	po \
 	manuals \
+	tests \
+	examples \
 	msvscpp
 
 GETTEXT_FILES = \

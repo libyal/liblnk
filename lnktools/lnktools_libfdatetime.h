@@ -1,5 +1,5 @@
 /*
- * The libfdatetime header wrapper
+ * The internal libfdatetime header
  *
  * Copyright (c) 2009-2011, Joachim Metz <jbmetz@users.sourceforge.net>
  *
@@ -19,8 +19,8 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_LIBFDATETIME_H )
-#define _LIBLNK_LIBFDATETIME_H
+#if !defined( _NK2TOOLS_LIBFDATETIME_H )
+#define _NK2TOOLS_LIBFDATETIME_H
 
 #include <common.h>
 

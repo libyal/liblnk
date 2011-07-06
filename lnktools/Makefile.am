@@ -18,15 +18,19 @@ bin_PROGRAMS = \
 	lnkinfo
 
 lnkinfo_SOURCES = \
+	info_handle.c info_handle.h \
 	lnkinfo.c \
 	lnkinput.c lnkinput.h \
-	lnkoutput.c lnkoutput.h
+	lnkoutput.c lnkoutput.h \
+	lnktools_libfdatetime.h \
+	lnktools_liblnk.h
 
 lnkinfo_LDADD  = \
 	../liberror/liberror.la \
 	../liblnk/liblnk.la \
 	../libsystem/libsystem.la \
 	@LIBFDATETIME_LIBADD@ \
+	@LIBINTL@ \
 	@MEMWATCH_LIBADD@
 
 MAINTAINERCLEANFILES = \

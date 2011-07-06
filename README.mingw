@@ -7,8 +7,9 @@ To build a DLL using mingw use:
 mingw32-configure --enable-winapi=yes
 mingw32-make
 
-It is recommended that you use WINAPI support but it is possible to compile
-liblnk without it (--enable-winapi=no)
+It is recommended that you use WINAPI support but it is possible to compile 
+liblnk without it (--enable-winapi=no). As of version 20110111 the default
+behaviour is that liblnk will try to auto-detect MinGW and enable WINAPI support.
 
 If mingw32-configure and mingw32-make are not available you'll need to build
 it by hand. For this you can use a script similar to the following:

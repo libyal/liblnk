@@ -1,5 +1,5 @@
 /*
- * The libfdatetime header wrapper
+ * The internal liblnk header
  *
  * Copyright (c) 2009-2011, Joachim Metz <jbmetz@users.sourceforge.net>
  *
@@ -19,36 +19,21 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_LIBFDATETIME_H )
-#define _LIBLNK_LIBFDATETIME_H
+#if !defined( _LNKTOOLS_LIBLNK_H )
+#define _LNKTOOLS_LIBLNK_H
 
 #include <common.h>
 
-/* Define HAVE_LOCAL_LIBFDATETIME for local use of libfdatetime
+/* If Cygwin libtool DLL support is enabled set LIBLNK_DLL_IMPORT
+ * before including liblnk.h
  */
-#if defined( HAVE_LOCAL_LIBFDATETIME )
-
-#include <libfdatetime_date_time_values.h>
-#include <libfdatetime_definitions.h>
-#include <libfdatetime_fat_date_time.h>
-#include <libfdatetime_filetime.h>
-#include <libfdatetime_nsf_timedate.h>
-#include <libfdatetime_types.h>
-
-#elif defined( HAVE_LIBFDATETIME_H )
-
-/* If libtool DLL support is enabled set LIBFDATETIME_DLL_IMPORT
- * before including libfdatetime.h
- */
-#if defined( _WIN32 ) && defined( DLL_IMPORT )
-#define LIBFDATETIME_DLL_IMPORT
+#if defined( _WIN32 ) && defined( DLL_EXPORT )
+#if !defined( HAVE_STATIC_EXECUTABLES )
+#define LIBLNK_DLL_IMPORT
+#endif
 #endif
 
-#include <libfdatetime.h>
-
-#else
-#error Missing libfdatetime.h
-#endif
+#include <liblnk.h>
 
 #endif
 

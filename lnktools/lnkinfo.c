@@ -35,45 +35,14 @@
 #include <stdlib.h>
 #endif
 
-/* Define HAVE_LOCAL_LIBFDATETIME for local use of libfdatetime
- */
-#if defined( HAVE_LOCAL_LIBFDATETIME )
-
-#include <libfdatetime_date_time_values.h>
-#include <libfdatetime_definitions.h>
-#include <libfdatetime_error.h>
-#include <libfdatetime_fat_date_time.h>
-#include <libfdatetime_filetime.h>
-#include <libfdatetime_types.h>
-
-#elif defined( HAVE_LIBFDATETIME_H )
-
-/* If libtool DLL support is enabled set LIBFDATETIME_DLL_IMPORT
- * before including libfdatetime.h
- */
-#if defined( _WIN32 ) && defined( DLL_IMPORT )
-#define LIBFDATETIME_DLL_IMPORT
-#endif
-
-#include <libfdatetime.h>
-
-#else
-#error Missing libfdatetime.h
-#endif
-
-/* If libtool DLL support is enabled set LIBLNK_DLL_IMPORT
- * before including liblnk.h
- */
-#if defined( _WIN32 ) && defined( DLL_EXPORT )
-#define LIBLNK_DLL_IMPORT
-#endif
-
-#include <liblnk.h>
-
 #include <libsystem.h>
 
-#include "lnkinput.h"
+#include "info_handle.h"
 #include "lnkoutput.h"
+#include "lnktools_liblnk.h"
+
+info_handle_t *lnkinfo_info_handle = NULL;
+int lnkinfo_abort                  = 0;
 
 /* Prints the executable usage information
  */
@@ -98,517 +67,41 @@ void usage_fprint(
 	fprintf( stream, "\t-V:     print version\n" );
 }
 
-/* Prints file information
- * Returns 1 if successful or -1 on error
+/* Signal handler for lnkinfo
  */
-int lnkinfo_file_info_fprint(
-     FILE *stream,
-     liblnk_file_t *file,
-     liblnk_error_t **error )
+void lnkinfo_signal_handler(
+      libsystem_signal_t signal )
 {
-	libcstring_system_character_t filetime_string[ 24 ];
+	liberror_error_t *error = NULL;
+	static char *function   = "lnkinfo_signal_handler";
 
-	libfdatetime_filetime_t *filetime           = NULL;
-	libcstring_system_character_t *value_string = NULL;
-	static char *function                       = "lnkinfo_file_info_fprint";
-	size_t value_string_size                    = 0;
-	uint64_t value_64bit                        = 0;
-	uint32_t data_flags                         = 0;
-	uint32_t file_attribute_flags               = 0;
-	int result                                  = 0;
+	lnkinfo_abort = 1;
 
-	if( stream == NULL )
+	if( lnkinfo_info_handle != NULL )
 	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid stream.",
+		if( info_handle_signal_abort(
+		     lnkinfo_info_handle,
+		     &error ) != 1 )
+		{
+			libsystem_notify_printf(
+			 "%s: unable to signal info handle to abort.\n",
+			 function );
+
+			libsystem_notify_print_error_backtrace(
+			 error );
+			liberror_error_free(
+			 &error );
+		}
+	}
+	/* Force stdin to close otherwise any function reading it will remain blocked
+	 */
+	if( libsystem_file_io_close(
+	     0 ) != 0 )
+	{
+		libsystem_notify_printf(
+		 "%s: unable to close stdin.\n",
 		 function );
-
-		return( -1 );
 	}
-	if( file == NULL )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid file.",
-		 function );
-
-		return( -1 );
-	}
-	if( liblnk_file_get_data_flags(
-	     file,
-	     &data_flags,
-	     error ) != 1 )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve data flags.",
-		 function );
-
-		return( -1 );
-	}
-	fprintf(
-	 stream,
-	 "Windows Shortcut information:\n" );
-
-	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) != 0 )
-	{
-		fprintf(
-		 stream,
-		 "\tContains a link target identifier\n" );
-	}
-	fprintf(
-	 stream,
-	 "\n" );
-
-	result = liblnk_file_link_refers_to_file(
-	          file,
-	          error );
-
-	if( result == -1 )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine if the shortcut refers to a file.",
-		 function );
-
-		return( -1 );
-	}
-	else if( result != 0 )
-	{
-		fprintf(
-		 stream,
-		 "Linked file information:\n" );
-
-		if( libfdatetime_filetime_initialize(
-		     &filetime,
-		     error ) != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to create filetime.",
-			 function );
-
-			return( -1 );
-		}
-		if( liblnk_file_get_file_attribute_flags(
-		     file,
-		     &file_attribute_flags,
-		     error ) != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve file attribute flags.",
-			 function );
-
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
-		}
-		/* Creation time
-		 */
-		if( liblnk_file_get_file_creation_time(
-		     file,
-		     &value_64bit,
-		     error ) != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve file creation time.",
-			 function );
-
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
-		}
-		if( libfdatetime_filetime_copy_from_64bit(
-		     filetime,
-		     value_64bit,
-		     error ) != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy 64-bit value to filetime.",
-			 function );
-
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
-		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libfdatetime_filetime_copy_to_utf16_string(
-			  filetime,
-			  (uint16_t *) filetime_string,
-			  24,
-			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
-			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
-			  error );
-#else
-		result = libfdatetime_filetime_copy_to_utf8_string(
-			  filetime,
-			  (uint8_t *) filetime_string,
-			  24,
-			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
-			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy filetime to string.",
-			 function );
-
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
-		}
-		fprintf(
-		 stream,
-		 "\tCreation time\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
-		 filetime_string );
-
-		/* Modification time
-		 */
-		if( liblnk_file_get_file_modification_time(
-		     file,
-		     &value_64bit,
-		     error ) != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve file modification time.",
-			 function );
-
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
-		}
-		if( libfdatetime_filetime_copy_from_64bit(
-		     filetime,
-		     value_64bit,
-		     error ) != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy 64-bit value to filetime.",
-			 function );
-
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
-		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libfdatetime_filetime_copy_to_utf16_string(
-			  filetime,
-			  (uint16_t *) filetime_string,
-			  24,
-			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
-			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
-			  error );
-#else
-		result = libfdatetime_filetime_copy_to_utf8_string(
-			  filetime,
-			  (uint8_t *) filetime_string,
-			  24,
-			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
-			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy filetime to string.",
-			 function );
-
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
-		}
-		fprintf(
-		 stream,
-		 "\tModification time\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
-		 filetime_string );
-
-		/* Access time
-		 */
-		if( liblnk_file_get_file_access_time(
-		     file,
-		     &value_64bit,
-		     error ) != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve file access time.",
-			 function );
-
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
-		}
-		if( libfdatetime_filetime_copy_from_64bit(
-		     filetime,
-		     value_64bit,
-		     error ) != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy 64-bit value to filetime.",
-			 function );
-
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
-		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libfdatetime_filetime_copy_to_utf16_string(
-			  filetime,
-			  (uint16_t *) filetime_string,
-			  24,
-			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
-			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
-			  error );
-#else
-		result = libfdatetime_filetime_copy_to_utf8_string(
-			  filetime,
-			  (uint8_t *) filetime_string,
-			  24,
-			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
-			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy filetime to string.",
-			 function );
-
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
-		}
-		fprintf(
-		 stream,
-		 "\tAccess time\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
-		 filetime_string );
-
-		if( libfdatetime_filetime_free(
-		     &filetime,
-		     error ) != 1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free filetime.",
-			 function );
-
-			return( -1 );
-		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-		result = liblnk_file_get_utf16_local_path_size(
-		          file,
-		          &value_string_size,
-		          error );
-#else
-		result = liblnk_file_get_utf8_local_path_size(
-		          file,
-		          &value_string_size,
-		          error );
-#endif
-		if( result == -1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve local path size.",
-			 function );
-
-			return( -1 );
-		}
-		else if( result != 0 )
-		{
-			value_string = (libcstring_system_character_t *) memory_allocate(
-			                                                  sizeof( libcstring_system_character_t ) * value_string_size );
-
-			if( value_string == NULL )
-			{
-				liberror_error_set(
-				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-				 "%s: unable to create local path value string.",
-				 function );
-
-				return( -1 );
-			}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-			result = liblnk_file_get_utf16_local_path(
-			          file,
-			          (uint16_t *) value_string,
-			          value_string_size,
-			          error );
-#else
-			result = liblnk_file_get_utf8_local_path(
-			          file,
-			          (uint8_t *) value_string,
-			          value_string_size,
-			          error );
-#endif
-			if( result == -1 )
-			{
-				liberror_error_set(
-				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-				 "%s: unable to retrieve local path.",
-				 function );
-
-				memory_free(
-				 value_string );
-
-				return( -1 );
-			}
-			fprintf(
-			 stream,
-			 "\tLocal path\t\t: %s\n",
-			 value_string );
-
-			memory_free(
-			 value_string );
-		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-		result = liblnk_file_get_utf16_network_path_size(
-		          file,
-		          &value_string_size,
-		          error );
-#else
-		result = liblnk_file_get_utf8_network_path_size(
-		          file,
-		          &value_string_size,
-		          error );
-#endif
-		if( result == -1 )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve local path size.",
-			 function );
-
-			return( -1 );
-		}
-		else if( result != 0 )
-		{
-			value_string = (libcstring_system_character_t *) memory_allocate(
-			                                                  sizeof( libcstring_system_character_t ) * value_string_size );
-
-			if( value_string == NULL )
-			{
-				liberror_error_set(
-				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-				 "%s: unable to create local path value string.",
-				 function );
-
-				return( -1 );
-			}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-			result = liblnk_file_get_utf16_network_path(
-			          file,
-			          (uint16_t *) value_string,
-			          value_string_size,
-			          error );
-#else
-			result = liblnk_file_get_utf8_network_path(
-			          file,
-			          (uint8_t *) value_string,
-			          value_string_size,
-			          error );
-#endif
-			if( result == -1 )
-			{
-				liberror_error_set(
-				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-				 "%s: unable to retrieve local path.",
-				 function );
-
-				memory_free(
-				 value_string );
-
-				return( -1 );
-			}
-			fprintf(
-			 stream,
-			 "\tNetwork path\t\t: %s\n",
-			 value_string );
-
-			memory_free(
-			 value_string );
-		}
-	}
-	fprintf(
-	 stream,
-	 "\n" );
-
-	return( 1 );
 }
 
 /* The main program
@@ -619,13 +112,13 @@ int wmain( int argc, wchar_t * const argv[] )
 int main( int argc, char * const argv[] )
 #endif
 {
-	liblnk_error_t *error                 = NULL;
-	liblnk_file_t *lnk_file               = NULL;
-	libcstring_system_character_t *source = NULL;
-	char *program                         = "lnkinfo";
-	libcstring_system_integer_t option    = 0;
-	int ascii_codepage                    = LIBLNK_CODEPAGE_WINDOWS_1252;
-	int verbose                           = 0;
+	liblnk_error_t *error                                = NULL;
+	libcstring_system_character_t *option_ascii_codepage = NULL;
+	libcstring_system_character_t *source                = NULL;
+	char *program                                        = "lnkinfo";
+	libcstring_system_integer_t option                   = 0;
+	int result                                           = 0;
+	int verbose                                          = 0;
 
 	libsystem_notify_set_stream(
 	 stderr,
@@ -633,9 +126,9 @@ int main( int argc, char * const argv[] )
 	libsystem_notify_set_verbose(
 	 1 );
 
-        if( libsystem_initialize(
-             "lnktools",
-             &error ) != 1 )
+	if( libsystem_initialize(
+	     "lnktools",
+	     &error ) != 1 )
 	{
 		fprintf(
 		 stderr,
@@ -664,7 +157,7 @@ int main( int argc, char * const argv[] )
 				fprintf(
 				 stderr,
 				 "Invalid argument: %" PRIs_LIBCSTRING_SYSTEM "\n",
-				 argv[ optind ] );
+				 argv[ optind - 1 ] );
 
 				usage_fprint(
 				 stdout );
@@ -672,22 +165,8 @@ int main( int argc, char * const argv[] )
 				return( EXIT_FAILURE );
 
 			case (libcstring_system_integer_t) 'c':
-				if( lnkinput_determine_ascii_codepage(
-				     optarg,
-				     &ascii_codepage,
-				     &error ) != 1 )
-				{
-					libsystem_notify_print_error_backtrace(
-					 error );
-					liberror_error_free(
-					 &error );
+				option_ascii_codepage = optarg;
 
-					ascii_codepage = LIBLNK_CODEPAGE_WINDOWS_1252;
-
-					fprintf(
-					 stderr,
-					 "Unsupported ASCII codepage defaulting to: windows-1252.\n" );
-				}
 				break;
 
 			case (libcstring_system_integer_t) 'h':
@@ -729,126 +208,96 @@ int main( int argc, char * const argv[] )
 	liblnk_notify_set_verbose(
 	 verbose );
 
-	if( liblnk_file_initialize(
-	     &lnk_file,
+	if( info_handle_initialize(
+	     &lnkinfo_info_handle,
 	     &error ) != 1 )
 	{
 		fprintf(
 		 stderr,
-		 "Unable to initialize liblnk file.\n" );
+		 "Unable to initialize info handle.\n" );
 
-		libsystem_notify_print_error_backtrace(
-		 error );
-		liblnk_error_free(
-		 &error );
-
-		return( EXIT_FAILURE );
+		goto on_error;
 	}
-	if( liblnk_file_set_ascii_codepage(
-	     lnk_file,
-	     ascii_codepage,
-	     &error ) != 1 )
+	if( option_ascii_codepage != NULL )
 	{
-		fprintf(
-		 stderr,
-		 "Unable to set ASCII codepage.\n" );
+		result = info_handle_set_ascii_codepage(
+		          lnkinfo_info_handle,
+		          option_ascii_codepage,
+		          &error );
 
-		libsystem_notify_print_error_backtrace(
-		 error );
-		liblnk_error_free(
-		 &error );
+		if( result == -1 )
+		{
+			fprintf(
+			 stderr,
+			 "Unable to set ASCII codepage in info handle.\n" );
 
-		liblnk_file_free(
-		 &lnk_file,
-		 NULL );
-
-		return( EXIT_FAILURE );
+			goto on_error;
+		}
+		else if( result == 0 )
+		{
+			fprintf(
+			 stderr,
+			 "Unsupported ASCII codepage defaulting to: windows-1252.\n" );
+		}
 	}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-	if( liblnk_file_open_wide(
-	     lnk_file,
+	if( info_handle_open(
+	     lnkinfo_info_handle,
 	     source,
-	     LIBLNK_OPEN_READ,
 	     &error ) != 1 )
-#else
-	if( liblnk_file_open(
-	     lnk_file,
-	     source,
-	     LIBLNK_OPEN_READ,
-	     &error ) != 1 )
-#endif
 	{
 		fprintf(
 		 stderr,
-		 "Error opening file: %" PRIs_LIBCSTRING_SYSTEM ".\n",
-		 argv[ optind ] );
+		 "Unable to open: %" PRIs_LIBCSTRING_SYSTEM ".\n",
+		 source );
 
-		libsystem_notify_print_error_backtrace(
-		 error );
-		liblnk_error_free(
-		 &error );
-
-		liblnk_file_free(
-		 &lnk_file,
-		 NULL );
-
-		return( EXIT_FAILURE );
+		goto on_error;
 	}
-	if( lnkinfo_file_info_fprint(
-	     stdout,
-	     lnk_file,
+	if( info_handle_file_fprint(
+	     lnkinfo_info_handle,
 	     &error ) != 1 )
 	{
 		fprintf(
 		 stderr,
 		 "Unable to print file information.\n" );
 
-		libsystem_notify_print_error_backtrace(
-		 error );
-		liblnk_error_free(
-		 &error );
-
-		liblnk_file_free(
-		 &lnk_file,
-		 NULL );
-
-		return( EXIT_FAILURE );
+		goto on_error;
 	}
-	if( liblnk_file_close(
-	     lnk_file,
+	if( info_handle_close(
+	     lnkinfo_info_handle,
 	     &error ) != 0 )
 	{
 		fprintf(
 		 stderr,
-		 "Error closing file: %" PRIs_LIBCSTRING_SYSTEM ".\n",
-		 argv[ optind ] );
+		 "Unable to close info handle.\n" );
 
-		libsystem_notify_print_error_backtrace(
-		 error );
-		liblnk_error_free(
-		 &error );
-
-		liblnk_file_free(
-		 &lnk_file,
-		 NULL );
-
-		return( EXIT_FAILURE );
+		goto on_error;
 	}
-	if( liblnk_file_free(
-	     &lnk_file,
+	if( info_handle_free(
+	     &lnkinfo_info_handle,
 	     &error ) != 1 )
 	{
 		fprintf(
 		 stderr,
-		 "Unable to free liblnk file.\n" );
+		 "Unable to free info handle.\n" );
 
-		libsystem_notify_print_error_backtrace(
-		 error );
-		liblnk_error_free(
-		 &error );
-
-		return( EXIT_FAILURE );
+		goto on_error;
 	}
 	return( EXIT_SUCCESS );
+
+on_error:
+	if( error != NULL )
+	{
+		libsystem_notify_print_error_backtrace(
+		 error );
+		liberror_error_free(
+		 &error );
+	}
+	if( lnkinfo_info_handle != NULL )
+	{
+		info_handle_free(
+		 &lnkinfo_info_handle,
+		 NULL );
+	}
+	return( EXIT_FAILURE );
 }
 

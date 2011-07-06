@@ -45,32 +45,60 @@ extern "C" {
 
 /* Returns the library version
  */
-LIBLNK_EXTERN const char *liblnk_get_version(
-                           void );
+LIBLNK_EXTERN \
+const char *liblnk_get_version(
+             void );
+
+/* Returns the access flags for reading
+ */
+LIBLNK_EXTERN \
+int liblnk_get_access_flags_read(
+     void );
+
+/* Retrieves the narrow system string codepage
+ * A value of 0 represents no codepage, UTF-8 encoding is used instead
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_get_codepage(
+     int *codepage,
+     liblnk_error_t **error );
+
+/* Sets the narrow system string codepage
+ * A value of 0 represents no codepage, UTF-8 encoding is used instead
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_set_codepage(
+     int codepage,
+     liblnk_error_t **error );
 
 /* Determines if a file is a Windows Shortcut File file (check for the file signature)
  * Returns 1 if true, 0 if not or -1 on error
  */
-LIBLNK_EXTERN int liblnk_check_file_signature(
-                   const char *filename,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_check_file_signature(
+     const char *filename,
+     liblnk_error_t **error );
 
 #if defined( LIBLNK_HAVE_WIDE_CHARACTER_TYPE )
 /* Determines if a file is a Windows Shortcut File file (check for the file signature)
  * Returns 1 if true, 0 if not or -1 on error
  */
-LIBLNK_EXTERN int liblnk_check_file_signature_wide(
-                   const wchar_t *filename,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_check_file_signature_wide(
+     const wchar_t *filename,
+     liblnk_error_t **error );
 #endif
 
 #if defined( LIBLNK_HAVE_BFIO )
 /* Determines if a file is a Windows Shortcut File file (check for the file signature) using a Basic File IO (bfio) handle
  * Returns 1 if true, 0 if not or -1 on error
  */
-LIBLNK_EXTERN int liblnk_check_file_signature_file_io_handle(
-                   libbfio_handle_t *file_io_handle,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_check_file_signature_file_io_handle(
+     libbfio_handle_t *file_io_handle,
+     liblnk_error_t **error );
 #endif
 
 /* -------------------------------------------------------------------------
@@ -79,29 +107,33 @@ LIBLNK_EXTERN int liblnk_check_file_signature_file_io_handle(
 
 /* Sets the verbose notification
  */
-LIBLNK_EXTERN void liblnk_notify_set_verbose(
-                    int verbose );
+LIBLNK_EXTERN \
+void liblnk_notify_set_verbose(
+      int verbose );
 
 /* Sets the notification stream
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_notify_set_stream(
-                   FILE *stream,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_notify_set_stream(
+     FILE *stream,
+     liblnk_error_t **error );
 
 /* Opens the notification stream using a filename
  * The stream is opened in append mode
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_notify_stream_open(
-                   const char *filename,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_notify_stream_open(
+     const char *filename,
+     liblnk_error_t **error );
 
 /* Closes the notification stream if opened using a filename
  * Returns 0 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_notify_stream_close(
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_notify_stream_close(
+     liblnk_error_t **error );
 
 /* -------------------------------------------------------------------------
  * Error functions
@@ -109,38 +141,45 @@ LIBLNK_EXTERN int liblnk_notify_stream_close(
 
 /* Frees the error including elements
  */
-LIBLNK_EXTERN void liblnk_error_free(
-                    liblnk_error_t **error );
+LIBLNK_EXTERN \
+void liblnk_error_free(
+      liblnk_error_t **error );
 
 /* Prints a descriptive string of the error to the stream
  * Returns the number of printed characters if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_error_fprint(
-                   liblnk_error_t *error,
-                   FILE *stream );
+LIBLNK_EXTERN \
+int liblnk_error_fprint(
+     liblnk_error_t *error,
+     FILE *stream );
 
 /* Prints a descriptive string of the error to the string
+ * The end-of-string character is not included in the return value
  * Returns the number of printed characters if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_error_sprint(
-                   liblnk_error_t *error,
-                   char *string,
-                   size_t size );
+LIBLNK_EXTERN \
+int liblnk_error_sprint(
+     liblnk_error_t *error,
+     char *string,
+     size_t size );
 
 /* Prints a backtrace of the error to the stream
  * Returns the number of printed characters if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_error_backtrace_fprint(
-                   liblnk_error_t *error,
-                   FILE *stream );
+LIBLNK_EXTERN \
+int liblnk_error_backtrace_fprint(
+     liblnk_error_t *error,
+     FILE *stream );
 
 /* Prints a backtrace of the error to the string
+ * The end-of-string character is not included in the return value
  * Returns the number of printed characters if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_error_backtrace_sprint(
-                   liblnk_error_t *error,
-                   char *string,
-                   size_t size );
+LIBLNK_EXTERN \
+int liblnk_error_backtrace_sprint(
+     liblnk_error_t *error,
+     char *string,
+     size_t size );
 
 /* -------------------------------------------------------------------------
  * File functions
@@ -150,77 +189,86 @@ LIBLNK_EXTERN int liblnk_error_backtrace_sprint(
  * Make sure the value file is pointing to is set to NULL
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_initialize(
-                   liblnk_file_t **file,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_initialize(
+     liblnk_file_t **file,
+     liblnk_error_t **error );
 
 /* Frees a file
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_free(
-                   liblnk_file_t **file,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_free(
+     liblnk_file_t **file,
+     liblnk_error_t **error );
 
 /* Signals the file to abort its current activity
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_signal_abort(
-                   liblnk_file_t *file,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_signal_abort(
+     liblnk_file_t *file,
+     liblnk_error_t **error );
 
 /* Opens a file
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_open(
-                   liblnk_file_t *file,
-                   const char *filename,
-                   int access_flags,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_open(
+     liblnk_file_t *file,
+     const char *filename,
+     int access_flags,
+     liblnk_error_t **error );
 
 #if defined( LIBLNK_HAVE_WIDE_CHARACTER_TYPE )
 /* Opens a file
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_open_wide(
-                   liblnk_file_t *file,
-                   const wchar_t *filename,
-                   int access_flags,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_open_wide(
+     liblnk_file_t *file,
+     const wchar_t *filename,
+     int access_flags,
+     liblnk_error_t **error );
 #endif
 
 #if defined( LIBLNK_HAVE_BFIO )
 /* Opens a file using a Basic File IO (bfio) handle
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_open_file_io_handle(
-                   liblnk_file_t *file,
-                   libbfio_handle_t *file_io_handle,
-                   int access_flags,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_open_file_io_handle(
+     liblnk_file_t *file,
+     libbfio_handle_t *file_io_handle,
+     int access_flags,
+     liblnk_error_t **error );
 #endif
 
 /* Closes a file
  * Returns 0 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_close(
-                   liblnk_file_t *file,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_close(
+     liblnk_file_t *file,
+     liblnk_error_t **error );
 
 /* Retrieves the file ASCII codepage
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_ascii_codepage(
-                   liblnk_file_t *file,
-                   int *ascii_codepage,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_ascii_codepage(
+     liblnk_file_t *file,
+     int *ascii_codepage,
+     liblnk_error_t **error );
 
 /* Sets the file ASCII codepage
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_set_ascii_codepage(
-                   liblnk_file_t *file,
-                   int ascii_codepage,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_set_ascii_codepage(
+     liblnk_file_t *file,
+     int ascii_codepage,
+     liblnk_error_t **error );
 
 /* -------------------------------------------------------------------------
  * Link information functions
@@ -230,146 +278,161 @@ LIBLNK_EXTERN int liblnk_file_set_ascii_codepage(
  * The data flags contain information about the available link information
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_data_flags(
-                   liblnk_file_t *file,
-                   uint32_t *data_flags,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_data_flags(
+     liblnk_file_t *file,
+     uint32_t *data_flags,
+     liblnk_error_t **error );
 
 /* Determines if the link refers to a file
  * Returns 1 if the link refers to a file, 0 if not or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_link_refers_to_file(
-                   liblnk_file_t *file,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_link_refers_to_file(
+     liblnk_file_t *file,
+     liblnk_error_t **error );
 
 /* Retrieves the linked file's attribute flags
  * The file attribute flags are only set when the link refers to a file
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_file_attribute_flags(
-                   liblnk_file_t *file,
-                   uint32_t *file_attribute_flags,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_file_attribute_flags(
+     liblnk_file_t *file,
+     uint32_t *file_attribute_flags,
+     liblnk_error_t **error );
 
 /* Retrieves the 64-bit filetime value containing the linked file's creation date and time
  * The creation time is only set when the link refers to a file
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_file_creation_time(
-                   liblnk_file_t *file,
-                   uint64_t *creation_time,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_file_creation_time(
+     liblnk_file_t *file,
+     uint64_t *creation_time,
+     liblnk_error_t **error );
 
 /* Retrieves the 64-bit filetime value containing the linked file's last modification date and time
  * The modification time is only set when the link refers to a file
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_file_modification_time(
-                   liblnk_file_t *file,
-                   uint64_t *modification_time,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_file_modification_time(
+     liblnk_file_t *file,
+     uint64_t *modification_time,
+     liblnk_error_t **error );
 
 /* Retrieves the 64-bit filetime value containing the linked file's last access date and time
  * The access time is only set when the link refers to a file
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_file_access_time(
-                   liblnk_file_t *file,
-                   uint64_t *access_time,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_file_access_time(
+     liblnk_file_t *file,
+     uint64_t *access_time,
+     liblnk_error_t **error );
 
 /* Retrieves the linked file's size
  * The file size is only set if the link refers to a file
  * Returns 1 if successful or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_file_size(
-                   liblnk_file_t *file,
-                   uint32_t *file_size,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_file_size(
+     liblnk_file_t *file,
+     uint32_t *file_size,
+     liblnk_error_t **error );
 
 /* Retrieves the UTF-8 string size of the linked file's local path
  * The size includes the end of string character
  * The local path is only set if the link refers to a file on a local volume
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_utf8_local_path_size(
-                   liblnk_file_t *file,
-                   size_t *utf8_string_size,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_utf8_local_path_size(
+     liblnk_file_t *file,
+     size_t *utf8_string_size,
+     liblnk_error_t **error );
 
 /* Retrieves the UTF-8 string size of the linked file's local path
  * The size should include the end of string character
  * The local path is only set if the link refers to a file on a local volume
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_utf8_local_path(
-                   liblnk_file_t *file,
-                   uint8_t *utf8_string,
-                   size_t utf8_string_size,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_utf8_local_path(
+     liblnk_file_t *file,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liblnk_error_t **error );
 
 /* Retrieves the UTF-16 string size of the linked file's local path
  * The size includes the end of string character
  * The local path is only set if the link refers to a file on a local volume
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_utf16_local_path_size(
-                   liblnk_file_t *file,
-                   size_t *utf16_string_size,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_utf16_local_path_size(
+     liblnk_file_t *file,
+     size_t *utf16_string_size,
+     liblnk_error_t **error );
 
 /* Retrieves the UTF-16 string size of the linked file's local path
  * The size should include the end of string character
  * The local path is only set if the link refers to a file on a local volume
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_utf16_local_path(
-                   liblnk_file_t *file,
-                   uint16_t *utf16_string,
-                   size_t utf16_string_size,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_utf16_local_path(
+     liblnk_file_t *file,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liblnk_error_t **error );
 
 /* Retrieves the UTF-8 string size of the linked file's network path
  * The size includes the end of string character
  * The network path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_utf8_network_path_size(
-                   liblnk_file_t *file,
-                   size_t *utf8_string_size,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_utf8_network_path_size(
+     liblnk_file_t *file,
+     size_t *utf8_string_size,
+     liblnk_error_t **error );
 
 /* Retrieves the UTF-8 string size of the linked file's network path
  * The size should include the end of string character
  * The network path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_utf8_network_path(
-                   liblnk_file_t *file,
-                   uint8_t *utf8_string,
-                   size_t utf8_string_size,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_utf8_network_path(
+     liblnk_file_t *file,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liblnk_error_t **error );
 
 /* Retrieves the UTF-16 string size of the linked file's network path
  * The size includes the end of string character
  * The network path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_utf16_network_path_size(
-                   liblnk_file_t *file,
-                   size_t *utf16_string_size,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_utf16_network_path_size(
+     liblnk_file_t *file,
+     size_t *utf16_string_size,
+     liblnk_error_t **error );
 
 /* Retrieves the UTF-16 string size of the linked file's network path
  * The size should include the end of string character
  * The network path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
-LIBLNK_EXTERN int liblnk_file_get_utf16_network_path(
-                   liblnk_file_t *file,
-                   uint16_t *utf16_string,
-                   size_t utf16_string_size,
-                   liblnk_error_t **error );
+LIBLNK_EXTERN \
+int liblnk_file_get_utf16_network_path(
+     liblnk_file_t *file,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liblnk_error_t **error );
 
 #if defined( __cplusplus )
 }
