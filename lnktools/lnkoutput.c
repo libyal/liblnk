@@ -20,6 +20,7 @@
  */
 
 #include <common.h>
+#include <file_stream.h>
 #include <memory.h>
 #include <types.h>
 
@@ -53,18 +54,10 @@
 #include <libfwsi.h>
 #endif
 
-/* If libtool DLL support is enabled set LIBLNK_DLL_IMPORT
- * before including liblnk.h
- */
-#if defined( _WIN32 ) && defined( DLL_EXPORT )
-#define LIBLNK_DLL_IMPORT
-#endif
-
-#include <liblnk.h>
-
 #include <libsystem.h>
 
 #include "lnkoutput.h"
+#include "lnktools_liblnk.h"
 
 /* Prints the copyright information
  */
@@ -86,6 +79,27 @@ void lnkoutput_copyright_fprint(
 /* Prints the version information
  */
 void lnkoutput_version_fprint(
+      FILE *stream,
+      const char *program )
+{
+	if( stream == NULL )
+	{
+		return;
+	}
+	if( program == NULL )
+	{
+		return;
+	}
+        fprintf(
+	 stream,
+	 "%s %s\n\n",
+         program,
+	 LIBLNK_VERSION_STRING );
+}
+
+/* Prints the detailed version information
+ */
+void lnkoutput_version_detailed_fprint(
       FILE *stream,
       const char *program )
 {

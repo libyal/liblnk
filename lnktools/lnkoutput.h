@@ -23,9 +23,8 @@
 #define _LNKOUTPUT_H
 
 #include <common.h>
+#include <file_stream.h>
 #include <types.h>
-
-#include <libsystem.h>
 
 #if defined( __cplusplus )
 extern "C" {
@@ -35,6 +34,10 @@ void lnkoutput_copyright_fprint(
       FILE *stream );
 
 void lnkoutput_version_fprint(
+      FILE *stream,
+      const char *program );
+
+void lnkoutput_version_detailed_fprint(
       FILE *stream,
       const char *program );
 

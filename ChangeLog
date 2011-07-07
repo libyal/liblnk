@@ -1,11 +1,6 @@
 TODO
-* lnk2 output shorten default version output
-* update msvscpp files, add VSDebug
-* info handle, merge old function with new code
 * change file header filetime conversion
 * what about trailing data in xp lnk files ?
-* fix msvscpp build
-  - utf16 functions
 
 Refactor
 * volume information read into separate subfunction
@@ -29,25 +24,24 @@ Library
 * add libfvalue
 
 API
-* add UTF-16 functions
+* add functions
 
 Release:
 * check TODOs
 * configure
- - check inclusion of libuna functions
- - check inclusion of libbfio functions
- - check inclusion of libfdatetime functions
- - check inclusion of libfguid functions
- - check inclusion of libfwsi functions
+ - check inclusion local library functions
 * update manuals
 * update macosx package files
-* update msvcpp files
 * automated tests
 
 Bindings:
 * python
 * .net
 * java
+
+20110707
+* added detailed version information
+* updated msvscpp files, added VSDebug
 
 20110706
 * updated README.mingw
