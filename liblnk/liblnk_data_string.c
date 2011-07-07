@@ -54,8 +54,8 @@ int liblnk_data_string_initialize(
 	}
 	if( *data_string == NULL )
 	{
-		*data_string = (liblnk_data_string_t *) memory_allocate(
-		                                         sizeof( liblnk_data_string_t ) );
+		*data_string = memory_allocate_structure(
+		                liblnk_data_string_t );
 
 		if( *data_string == NULL )
 		{
@@ -66,7 +66,7 @@ int liblnk_data_string_initialize(
 			 "%s: unable to create data string.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		if( memory_set(
 		     *data_string,
@@ -80,15 +80,20 @@ int liblnk_data_string_initialize(
 			 "%s: unable to clear data string.",
 			 function );
 
-			memory_free(
-			 *data_string );
-
-			*data_string = NULL;
-
-			return( -1 );
+			goto on_error;
 		}
 	}
 	return( 1 );
+
+on_error:
+	if( *data_string != NULL )
+	{
+		memory_free(
+		 *data_string );
+
+		*data_string = NULL;
+	}
+	return( -1 );
 }
 
 /* Frees data string
@@ -203,7 +208,7 @@ ssize_t liblnk_data_string_read(
 		 function,
 		 data_string_offset );
 
-		return( -1 );
+		goto on_error;
 	}
 	read_count = libbfio_handle_read(
 	              file_io_handle,
@@ -220,7 +225,7 @@ ssize_t liblnk_data_string_read(
 		 "%s: unable to read data string size.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	byte_stream_copy_to_uint16_little_endian(
 	 data_string_size_data,
@@ -252,7 +257,7 @@ ssize_t liblnk_data_string_read(
 		 "%s: data string size value exceeds maximum.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	data_string->data = (uint8_t *) memory_allocate(
 	                                 sizeof( uint8_t ) * data_string->data_size );
@@ -267,7 +272,7 @@ ssize_t liblnk_data_string_read(
 		 "%s: unable to create data string data.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	read_count = libbfio_handle_read(
 	              file_io_handle,
@@ -284,7 +289,7 @@ ssize_t liblnk_data_string_read(
 		 "%s: unable to read data string data.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libnotify_verbose != 0 )
@@ -346,10 +351,10 @@ ssize_t liblnk_data_string_read(
 			 "%s: unable to determine size of data string.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
-		value_string = (libcstring_system_character_t *) memory_allocate(
-								  sizeof( libcstring_system_character_t ) * value_string_size );
+		value_string = libcstring_system_string_allocate(
+		                value_string_size );
 
 		if( value_string == NULL )
 		{
@@ -360,7 +365,7 @@ ssize_t liblnk_data_string_read(
 			 "%s: unable to create data string.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		if( data_string->is_unicode != 0 )
 		{
@@ -411,23 +416,379 @@ ssize_t liblnk_data_string_read(
 			 "%s: unable to set data string.",
 			 function );
 
-			memory_free(
-			 value_string );
-
-			return( -1 );
+			goto on_error;
 		}
 		libnotify_printf(
 		 "%s: data string\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
 		 function,
 		 value_string );
 
+		memory_free(
+		 value_string );
+
+		value_string = NULL;
+
 		libnotify_printf(
 		 "\n" );
+	}
+#endif
+	return( read_count + 2 );
 
+on_error:
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( value_string != NULL )
+	{
 		memory_free(
 		 value_string );
 	}
 #endif
-	return( read_count + 2 );
+	if( data_string->data != NULL )
+	{
+		memory_free(
+		 data_string->data );
+
+		data_string->data = NULL;
+	}
+	return( -1 );
+}
+
+/* Retrieves the size of the UTF-8 encoded data string
+ * The size includes the end of string character
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_data_string_get_utf8_string_size(
+     liblnk_data_string_t *data_string,
+     int ascii_codepage,
+     size_t *utf8_string_size,
+     liberror_error_t **error )
+{
+	static char *function = "liblnk_data_string_get_utf8_string_size";
+	int result            = 0;
+
+	if( data_string == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data string.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_string->data == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid data string - missing data.",
+		 function );
+
+		return( -1 );
+	}
+	if( utf8_string_size == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid UTF-8 string size.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_string->is_unicode != 0 )
+	{
+		result = libuna_utf8_string_size_from_utf16_stream(
+			  data_string->data,
+			  data_string->data_size,
+			  LIBUNA_ENDIAN_LITTLE,
+			  utf8_string_size,
+			  error );
+	}
+	else
+	{
+		result = libuna_utf8_string_size_from_byte_stream(
+			  data_string->data,
+			  data_string->data_size,
+			  ascii_codepage,
+			  utf8_string_size,
+			  error );
+	}
+	if( result != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-8 data string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-8 encoded data string
+ * The size should include the end of string character
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_data_string_get_utf8_string(
+     liblnk_data_string_t *data_string,
+     int ascii_codepage,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liberror_error_t **error )
+{
+	static char *function = "liblnk_data_string_get_utf8_string";
+	int result            = 0;
+
+	if( data_string == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data string.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_string->data == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid data string - missing data.",
+		 function );
+
+		return( -1 );
+	}
+	if( utf8_string == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid UTF-8 string.",
+		 function );
+
+		return( -1 );
+	}
+	if( utf8_string_size > (size_t) SSIZE_MAX )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid UTF-8 string size value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_string->is_unicode != 0 )
+	{
+		result = libuna_utf8_string_copy_from_utf16_stream(
+			  utf8_string,
+			  utf8_string_size,
+			  data_string->data,
+			  data_string->data_size,
+			  LIBUNA_ENDIAN_LITTLE,
+			  error );
+	}
+	else
+	{
+		result = libuna_utf8_string_copy_from_byte_stream(
+			  utf8_string,
+			  utf8_string_size,
+			  data_string->data,
+			  data_string->data_size,
+			  ascii_codepage,
+			  error );
+	}
+	if( result != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-8 data string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-16 encoded data string
+ * The size includes the end of string character
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_data_string_get_utf16_string_size(
+     liblnk_data_string_t *data_string,
+     int ascii_codepage,
+     size_t *utf16_string_size,
+     liberror_error_t **error )
+{
+	static char *function = "liblnk_data_string_get_utf16_string_size";
+	int result            = 0;
+
+	if( data_string == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data string.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_string->data == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid data string - missing data.",
+		 function );
+
+		return( -1 );
+	}
+	if( utf16_string_size == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid UTF-16 string size.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_string->is_unicode != 0 )
+	{
+		result = libuna_utf16_string_size_from_utf16_stream(
+			  data_string->data,
+			  data_string->data_size,
+			  LIBUNA_ENDIAN_LITTLE,
+			  utf16_string_size,
+			  error );
+	}
+	else
+	{
+		result = libuna_utf16_string_size_from_byte_stream(
+			  data_string->data,
+			  data_string->data_size,
+			  ascii_codepage,
+			  utf16_string_size,
+			  error );
+	}
+	if( result != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-16 data string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-16 encoded data string
+ * The size should include the end of string character
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_data_string_get_utf16_string(
+     liblnk_data_string_t *data_string,
+     int ascii_codepage,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liberror_error_t **error )
+{
+	static char *function = "liblnk_data_string_get_utf16_string";
+	int result            = 0;
+
+	if( data_string == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data string.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_string->data == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid data string - missing data.",
+		 function );
+
+		return( -1 );
+	}
+	if( utf16_string == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid UTF-16 string.",
+		 function );
+
+		return( -1 );
+	}
+	if( utf16_string_size > (size_t) SSIZE_MAX )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid UTF-16 string size value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_string->is_unicode != 0 )
+	{
+		result = libuna_utf16_string_copy_from_utf16_stream(
+			  utf16_string,
+			  utf16_string_size,
+			  data_string->data,
+			  data_string->data_size,
+			  LIBUNA_ENDIAN_LITTLE,
+			  error );
+	}
+	else
+	{
+		result = libuna_utf16_string_copy_from_byte_stream(
+			  utf16_string,
+			  utf16_string_size,
+			  data_string->data,
+			  data_string->data_size,
+			  ascii_codepage,
+			  error );
+	}
+	if( result != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-16 data string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
 }
 

@@ -1,4 +1,4 @@
-.Dd July 6, 2011
+.Dd July 7, 2011
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -104,6 +104,46 @@ Link information functions
 .Fn liblnk_file_get_utf16_network_path_size "liblnk_file_t *file, size_t *utf16_string_size, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_get_utf16_network_path "liblnk_file_t *file, uint16_t *utf16_string, size_t utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_description_size "liblnk_file_t *file, size_t *utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_description "liblnk_file_t *file, uint8_t *utf8_string, size_t utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_description_size "liblnk_file_t *file, size_t *utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_description "liblnk_file_t *file, uint16_t *utf16_string, size_t utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_relative_path_size "liblnk_file_t *file, size_t *utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_relative_path "liblnk_file_t *file, uint8_t *utf8_string, size_t utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_relative_path_size "liblnk_file_t *file, size_t *utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_relative_path "liblnk_file_t *file, uint16_t *utf16_string, size_t utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_working_directory_size "liblnk_file_t *file, size_t *utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_working_directory "liblnk_file_t *file, uint8_t *utf8_string, size_t utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_working_directory_size "liblnk_file_t *file, size_t *utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_working_directory "liblnk_file_t *file, uint16_t *utf16_string, size_t utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_command_line_arguments_size "liblnk_file_t *file, size_t *utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_command_line_arguments "liblnk_file_t *file, uint8_t *utf8_string, size_t utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_command_line_arguments_size "liblnk_file_t *file, size_t *utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_command_line_arguments "liblnk_file_t *file, uint16_t *utf16_string, size_t utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_icon_location_size "liblnk_file_t *file, size_t *utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_icon_location "liblnk_file_t *file, uint8_t *utf8_string, size_t utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_icon_location_size "liblnk_file_t *file, size_t *utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_icon_location "liblnk_file_t *file, uint16_t *utf16_string, size_t utf16_string_size, liblnk_error_t **error"
 .Sh DESCRIPTION
 The
 .Fn liblnk_get_version

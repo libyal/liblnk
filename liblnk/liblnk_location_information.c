@@ -58,8 +58,8 @@ int liblnk_location_information_initialize(
 	}
 	if( *location_information == NULL )
 	{
-		*location_information = (liblnk_location_information_t *) memory_allocate(
-		                                                           sizeof( liblnk_location_information_t ) );
+		*location_information = memory_allocate_structure(
+		                         liblnk_location_information_t );
 
 		if( *location_information == NULL )
 		{
@@ -70,7 +70,7 @@ int liblnk_location_information_initialize(
 			 "%s: unable to create location information.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		if( memory_set(
 		     *location_information,
@@ -84,15 +84,20 @@ int liblnk_location_information_initialize(
 			 "%s: unable to clear location information.",
 			 function );
 
-			memory_free(
-			 *location_information );
-
-			*location_information = NULL;
-
-			return( -1 );
+			goto on_error;
 		}
 	}
 	return( 1 );
+
+on_error:
+	if( *location_information != NULL )
+	{
+		memory_free(
+		 *location_information );
+
+		*location_information = NULL;
+	}
+	return( -1 );
 }
 
 /* Frees location information
@@ -238,7 +243,7 @@ ssize_t liblnk_location_information_read(
 		 function,
 		 location_information_offset );
 
-		return( -1 );
+		goto on_error;
 	}
 	read_count = libbfio_handle_read(
 	              file_io_handle,
@@ -255,7 +260,7 @@ ssize_t liblnk_location_information_read(
 		 "%s: unable to read location information size.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	byte_stream_copy_to_uint32_little_endian(
 	 location_information_size_data,
@@ -270,7 +275,6 @@ ssize_t liblnk_location_information_read(
 		 location_information_size );
 	}
 #endif
-
 	if( location_information_size <= 4 )
 	{
 #if defined( HAVE_VERBOSE_OUTPUT )
@@ -292,7 +296,7 @@ ssize_t liblnk_location_information_read(
 		 "%s: location information size value exceeds maximum.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	location_information_size -= 4;
 
@@ -309,7 +313,7 @@ ssize_t liblnk_location_information_read(
 		 "%s: unable to create location information data.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	read_count = libbfio_handle_read(
 	              file_io_handle,
@@ -326,10 +330,7 @@ ssize_t liblnk_location_information_read(
 		 "%s: unable to read location information data.",
 		 function );
 
-		memory_free(
-		 location_information_data );
-
-		return( -1 );
+		goto on_error;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libnotify_verbose != 0 )
@@ -342,7 +343,6 @@ ssize_t liblnk_location_information_read(
 		 location_information_size );
 	}
 #endif
-
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_location_information_t *) location_information_data )->header_size,
 	 location_information_header_size );
@@ -391,7 +391,6 @@ ssize_t liblnk_location_information_read(
 		 common_path_offset );
 	}
 #endif
-
 	if( ( location_information_header_size != 28 )
 	 && ( location_information_header_size != 32 )
 	 && ( location_information_header_size != 36 ) )
@@ -404,10 +403,7 @@ ssize_t liblnk_location_information_read(
 		 function,
 		 location_information_header_size );
 
-		memory_free(
-		 location_information_data );
-
-		return( -1 );
+		goto on_error;
 	}
 	if( location_information_header_size > 28 )
 	{
@@ -462,10 +458,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: volume information offset smaller than location information header size.",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		volume_information_offset -= 4;
 
@@ -478,10 +471,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: volume information offset exceeds location information data.",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		location_information_value_data = &( location_information_data[ volume_information_offset ] );
 
@@ -565,10 +555,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: volume label offset exceeds volume information data.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			location_information_value_data = &( location_information_value_data[ volume_label_offset ] );
 
@@ -610,10 +597,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unicode volume label offset exceeds volume information data.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			location_information_unicode_value_data = &( location_information_value_data[ unicode_volume_label_offset ] );
 
@@ -656,10 +640,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to create volume label.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			if( memory_copy(
 			     location_information->volume_label,
@@ -673,14 +654,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to copy volume label.",
 				 function );
 
-				memory_free(
-				 location_information->volume_label );
-				memory_free(
-				 location_information_data );
-
-				location_information->volume_label = NULL;
-
-				return( -1 );
+				goto on_error;
 			}
 			location_information->volume_label_size = unicode_value_size;
 			location_information->string_flags     |= LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE;
@@ -699,10 +673,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to create volume label.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			if( memory_copy(
 			     location_information->volume_label,
@@ -716,14 +687,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to copy volume label.",
 				 function );
 
-				memory_free(
-				 location_information->volume_label );
-				memory_free(
-				 location_information_data );
-
-				location_information->volume_label = NULL;
-
-				return( -1 );
+				goto on_error;
 			}
 			location_information->volume_label_size = value_size;
 		}
@@ -775,13 +739,10 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to determine size of volume label string.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
-			value_string = (libcstring_system_character_t *) memory_allocate(
-			                                                  sizeof( libcstring_system_character_t ) * value_string_size );
+			value_string = libcstring_system_string_allocate(
+			                value_string_size );
 
 			if( value_string == NULL )
 			{
@@ -792,10 +753,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to create volume label string.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
 			{
@@ -846,12 +804,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to set volume label string.",
 				 function );
 
-				memory_free(
-				 value_string );
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			libnotify_printf(
 			 "%s: volume information volume label\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -860,6 +813,8 @@ ssize_t liblnk_location_information_read(
 
 			memory_free(
 			 value_string );
+
+			value_string = NULL;
 		}
 #endif
 	}
@@ -876,10 +831,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: local path information offset smaller than location information header size",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		local_path_offset -= 4;
 
@@ -892,10 +844,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: local path offset exceeds location information data.",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		location_information_value_data = &( location_information_data[ local_path_offset ] );
 
@@ -937,10 +886,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: unicode local path information offset smaller than location information header size",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		unicode_local_path_offset -= 4;
 
@@ -953,10 +899,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: unicode local path offset exceeds location information data.",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		location_information_unicode_value_data = &( location_information_data[ unicode_local_path_offset ] );
 
@@ -999,10 +942,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: unable to create local path.",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		if( memory_copy(
 		     location_information->local_path,
@@ -1016,14 +956,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: unable to copy local path.",
 			 function );
 
-			memory_free(
-			 location_information->local_path );
-			memory_free(
-			 location_information_data );
-
-			location_information->local_path = NULL;
-
-			return( -1 );
+			goto on_error;
 		}
 		location_information->local_path_size = unicode_value_size;
 		location_information->string_flags   |= LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE;
@@ -1042,10 +975,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: unable to create local path.",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		if( memory_copy(
 		     location_information->local_path,
@@ -1059,14 +989,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: unable to copy local path.",
 			 function );
 
-			memory_free(
-			 location_information->local_path );
-			memory_free(
-			 location_information_data );
-
-			location_information->local_path = NULL;
-
-			return( -1 );
+			goto on_error;
 		}
 		location_information->local_path_size = value_size;
 	}
@@ -1121,13 +1044,10 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to determine size of local path string.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
-			value_string = (libcstring_system_character_t *) memory_allocate(
-			                                                  sizeof( libcstring_system_character_t ) * value_string_size );
+			value_string = libcstring_system_string_allocate(
+			                value_string_size );
 
 			if( value_string == NULL )
 			{
@@ -1138,10 +1058,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to create local path string.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE ) != 0 )
 			{
@@ -1192,12 +1109,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to set local path string.",
 				 function );
 
-				memory_free(
-				 value_string );
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			libnotify_printf(
 			 "%s: local path\t\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -1206,6 +1118,8 @@ ssize_t liblnk_location_information_read(
 
 			memory_free(
 			 value_string );
+
+			value_string = NULL;
 		}
 	}
 #endif
@@ -1222,10 +1136,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: network share information offset smaller than location information header size.",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		network_share_information_offset -= 4;
 
@@ -1238,10 +1149,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: network share information offset exceeds location information data.",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		location_information_value_data = &( location_information_data[ network_share_information_offset ] );
 
@@ -1340,10 +1248,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: network share name offset exceeds network share information data.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			location_information_value_data = &( location_information_value_data[ network_share_name_offset ] );
 
@@ -1385,10 +1290,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unicode network share name offset exceeds volume information data.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			location_information_unicode_value_data = &( location_information_value_data[ unicode_network_share_name_offset ] );
 
@@ -1431,10 +1333,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to create network share name.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			if( memory_copy(
 			     location_information->network_share_name,
@@ -1448,14 +1347,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to copy network share name.",
 				 function );
 
-				memory_free(
-				 location_information->network_share_name );
-				memory_free(
-				 location_information_data );
-
-				location_information->network_share_name = NULL;
-
-				return( -1 );
+				goto on_error;
 			}
 			location_information->network_share_name_size = unicode_value_size;
 			location_information->string_flags           |= LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE;
@@ -1474,10 +1366,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to create network share name.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			if( memory_copy(
 			     location_information->network_share_name,
@@ -1491,14 +1380,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to copy network share name.",
 				 function );
 
-				memory_free(
-				 location_information->network_share_name );
-				memory_free(
-				 location_information_data );
-
-				location_information->network_share_name = NULL;
-
-				return( -1 );
+				goto on_error;
 			}
 			location_information->network_share_name_size = value_size;
 		}
@@ -1550,13 +1432,10 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to determine size of network share name string.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
-			value_string = (libcstring_system_character_t *) memory_allocate(
-			                                                  sizeof( libcstring_system_character_t ) * value_string_size );
+			value_string = libcstring_system_string_allocate(
+			                value_string_size );
 
 			if( value_string == NULL )
 			{
@@ -1567,10 +1446,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to create network share name string.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE ) != 0 )
 			{
@@ -1621,12 +1497,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to set network share name string.",
 				 function );
 
-				memory_free(
-				 value_string );
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			libnotify_printf(
 			 "%s: volume information network share name\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -1635,6 +1506,8 @@ ssize_t liblnk_location_information_read(
 
 			memory_free(
 			 value_string );
+
+			value_string = NULL;
 		}
 #endif
 		if( device_name_offset > 0 )
@@ -1648,10 +1521,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: device name offset exceeds network share information data.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			location_information_value_data = &( location_information_value_data[ device_name_offset ] );
 
@@ -1693,10 +1563,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unicode device name offset exceeds volume information data.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			location_information_unicode_value_data = &( location_information_value_data[ unicode_device_name_offset ] );
 
@@ -1739,10 +1606,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to create device name.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			if( memory_copy(
 			     location_information->device_name,
@@ -1756,14 +1620,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to copy device name.",
 				 function );
 
-				memory_free(
-				 location_information->device_name );
-				memory_free(
-				 location_information_data );
-
-				location_information->device_name = NULL;
-
-				return( -1 );
+				goto on_error;
 			}
 			location_information->device_name_size = unicode_value_size;
 			location_information->string_flags    |= LIBLNK_LOCATION_INFORMATION_STRING_FLAG_DEVICE_NAME_IS_UNICODE;
@@ -1782,10 +1639,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to create device name.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			if( memory_copy(
 			     location_information->device_name,
@@ -1799,14 +1653,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to copy device name.",
 				 function );
 
-				memory_free(
-				 location_information->device_name );
-				memory_free(
-				 location_information_data );
-
-				location_information->device_name = NULL;
-
-				return( -1 );
+				goto on_error;
 			}
 			location_information->device_name_size = value_size;
 		}
@@ -1858,13 +1705,10 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to determine size of device name string.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
-			value_string = (libcstring_system_character_t *) memory_allocate(
-			                                                  sizeof( libcstring_system_character_t ) * value_string_size );
+			value_string = libcstring_system_string_allocate(
+			                value_string_size );
 
 			if( value_string == NULL )
 			{
@@ -1875,10 +1719,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to create device name string.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_DEVICE_NAME_IS_UNICODE ) != 0 )
 			{
@@ -1929,12 +1770,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to set device name string.",
 				 function );
 
-				memory_free(
-				 value_string );
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			libnotify_printf(
 			 "%s: volume information device name\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -1943,6 +1779,8 @@ ssize_t liblnk_location_information_read(
 
 			memory_free(
 			 value_string );
+
+			value_string = NULL;
 		}
 #endif
 	}
@@ -1959,10 +1797,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: common path offset smaller than location information header size.",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		common_path_offset -= 4;
 
@@ -1975,10 +1810,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: common path offset exceeds location information data.",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		location_information_value_data = &( location_information_data[ common_path_offset ] );
 
@@ -2020,10 +1852,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: unicode common path information offset smaller than location information header size",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		unicode_common_path_offset -= 4;
 
@@ -2036,10 +1865,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: unicode common path offset exceeds location information data.",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		location_information_unicode_value_data = &( location_information_data[ unicode_common_path_offset ] );
 
@@ -2070,7 +1896,6 @@ ssize_t liblnk_location_information_read(
 			 unicode_value_size );
 		}
 #endif
-
 		location_information->common_path = (uint8_t *) memory_allocate(
 		                                                 sizeof( uint8_t ) * unicode_value_size );
 
@@ -2083,10 +1908,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: unable to create common path.",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		if( memory_copy(
 		     location_information->common_path,
@@ -2100,14 +1922,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: unable to copy common path.",
 			 function );
 
-			memory_free(
-			 location_information->common_path );
-			memory_free(
-			 location_information_data );
-
-			location_information->common_path = NULL;
-
-			return( -1 );
+			goto on_error;
 		}
 		location_information->common_path_size = unicode_value_size;
 		location_information->string_flags    |= LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE;
@@ -2126,10 +1941,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: unable to create common path.",
 			 function );
 
-			memory_free(
-			 location_information_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		if( memory_copy(
 		     location_information->common_path,
@@ -2143,14 +1955,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: unable to copy common path.",
 			 function );
 
-			memory_free(
-			 location_information->common_path );
-			memory_free(
-			 location_information_data );
-
-			location_information->common_path = NULL;
-
-			return( -1 );
+			goto on_error;
 		}
 		location_information->common_path_size = value_size;
 	}
@@ -2205,13 +2010,10 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to determine size of common path string.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
-			value_string = (libcstring_system_character_t *) memory_allocate(
-			                                                  sizeof( libcstring_system_character_t ) * value_string_size );
+			value_string = libcstring_system_string_allocate(
+			                value_string_size );
 
 			if( value_string == NULL )
 			{
@@ -2222,10 +2024,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to create common path string.",
 				 function );
 
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
 			{
@@ -2276,12 +2075,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unable to set common path string.",
 				 function );
 
-				memory_free(
-				 value_string );
-				memory_free(
-				 location_information_data );
-
-				return( -1 );
+				goto on_error;
 			}
 			libnotify_printf(
 			 "%s: common path\t\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -2290,11 +2084,15 @@ ssize_t liblnk_location_information_read(
 
 			memory_free(
 			 value_string );
+
+			value_string = NULL;
 		}
 	}
 #endif
 	memory_free(
 	 location_information_data );
+
+	location_information_data = NULL;
 
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libnotify_verbose != 0 )
@@ -2304,5 +2102,55 @@ ssize_t liblnk_location_information_read(
 	}
 #endif
 	return( read_count + 4 );
+
+on_error:
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( value_string != NULL )
+	{
+		memory_free(
+		 value_string );
+	}
+#endif
+	if( location_information->common_path != NULL )
+	{
+		memory_free(
+		 location_information->common_path );
+
+		location_information->common_path = NULL;
+	}
+	if( location_information->device_name != NULL )
+	{
+		memory_free(
+		 location_information->device_name );
+
+		location_information->device_name = NULL;
+	}
+	if( location_information->network_share_name != NULL )
+	{
+		memory_free(
+		 location_information->network_share_name );
+
+		location_information->network_share_name = NULL;
+	}
+	if( location_information->local_path != NULL )
+	{
+		memory_free(
+		 location_information->local_path );
+
+		location_information->local_path = NULL;
+	}
+	if( location_information->volume_label != NULL )
+	{
+		memory_free(
+		 location_information->volume_label );
+
+		location_information->volume_label = NULL;
+	}
+	if( location_information_data != NULL )
+	{
+		memory_free(
+		 location_information_data );
+	}
+	return( -1 );
 }
 

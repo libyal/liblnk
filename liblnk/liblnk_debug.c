@@ -404,7 +404,7 @@ int liblnk_debug_print_read_offsets(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid file IO handle.",
+		 "%s: invalid file io handle.",
 		 function );
 
 		return( -1 );

@@ -49,8 +49,8 @@ int liblnk_file_information_initialize(
 	}
 	if( *file_information == NULL )
 	{
-		*file_information = (liblnk_file_information_t *) memory_allocate(
-		                                                   sizeof( liblnk_file_information_t ) );
+		*file_information = memory_allocate_structure(
+		                     liblnk_file_information_t );
 
 		if( *file_information == NULL )
 		{
@@ -61,7 +61,7 @@ int liblnk_file_information_initialize(
 			 "%s: unable to create file information.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		if( memory_set(
 		     *file_information,
@@ -75,15 +75,20 @@ int liblnk_file_information_initialize(
 			 "%s: unable to clear file information.",
 			 function );
 
-			memory_free(
-			 *file_information );
-
-			*file_information = NULL;
-
-			return( -1 );
+			goto on_error;
 		}
 	}
 	return( 1 );
+
+on_error:
+	if( *file_information != NULL )
+	{
+		memory_free(
+		 *file_information );
+
+		*file_information = NULL;
+	}
+	return( -1 );
 }
 
 /* Frees file information

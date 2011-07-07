@@ -1,5 +1,4 @@
 TODO
-* change file header filetime conversion
 * what about trailing data in xp lnk files ?
 
 Refactor
@@ -25,6 +24,11 @@ Library
 
 API
 * add functions
+  - for shell item
+  - for description, relative path, working directory, command_line_arguments,
+  icon location
+  - for environment variables
+  - for distributed link tracker
 
 Release:
 * check TODOs
@@ -42,6 +46,7 @@ Bindings:
 20110707
 * added detailed version information
 * updated msvscpp files, added VSDebug
+* code clean up
 
 20110706
 * updated README.mingw

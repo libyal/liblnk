@@ -62,8 +62,8 @@ int liblnk_file_initialize(
 	}
 	if( *file == NULL )
 	{
-		internal_file = (liblnk_internal_file_t *) memory_allocate(
-		                                            sizeof( liblnk_internal_file_t ) );
+		internal_file = memory_allocate_structure(
+		                 liblnk_internal_file_t );
 
 		if( internal_file == NULL )
 		{
@@ -74,7 +74,7 @@ int liblnk_file_initialize(
 			 "%s: unable to create file.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		if( memory_set(
 		     internal_file,
@@ -104,10 +104,7 @@ int liblnk_file_initialize(
 			 "%s: unable to create file information.",
 			 function );
 
-			memory_free(
-			 internal_file );
-
-			return( -1 );
+			goto on_error;
 		}
 		if( liblnk_io_handle_initialize(
 		     &( internal_file->io_handle ),
@@ -120,17 +117,25 @@ int liblnk_file_initialize(
 			 "%s: unable to create IO handle.",
 			 function );
 
-			liblnk_file_information_free(
-			 &( internal_file->file_information ),
-			 NULL );
-			memory_free(
-			 internal_file );
-
-			return( -1 );
+			goto on_error;
 		}
 		*file = (liblnk_file_t *) internal_file;
 	}
 	return( 1 );
+
+on_error:
+	if( internal_file != NULL )
+	{
+		if( internal_file->file_information != NULL )
+		{
+			liblnk_file_information_free(
+			 &( internal_file->file_information ),
+			 NULL );
+		}
+		memory_free(
+		 internal_file );
+	}
+	return( -1 );
 }
 
 /* Frees a file
@@ -893,7 +898,7 @@ int liblnk_file_open_read(
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libnotify_verbose != 0 )
@@ -919,7 +924,7 @@ int liblnk_file_open_read(
 		 "%s: unable to read file header.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	file_offset += read_count;
 
@@ -936,7 +941,7 @@ int liblnk_file_open_read(
 			 "%s: unable to create link target identifier.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
@@ -960,7 +965,7 @@ int liblnk_file_open_read(
 			 "%s: unable to read link target identifier.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		file_offset += read_count;
 	}
@@ -977,7 +982,7 @@ int liblnk_file_open_read(
 			 "%s: unable to create location information.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
@@ -1002,7 +1007,7 @@ int liblnk_file_open_read(
 			 "%s: unable to read location information.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		file_offset += read_count;
 	}
@@ -1019,7 +1024,7 @@ int liblnk_file_open_read(
 			 "%s: unable to create description.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
@@ -1044,7 +1049,7 @@ int liblnk_file_open_read(
 			 "%s: unable to read description.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		file_offset += read_count;
 	}
@@ -1061,7 +1066,7 @@ int liblnk_file_open_read(
 			 "%s: unable to create relative path.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
@@ -1086,7 +1091,7 @@ int liblnk_file_open_read(
 			 "%s: unable to read relative path.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		file_offset += read_count;
 	}
@@ -1103,7 +1108,7 @@ int liblnk_file_open_read(
 			 "%s: unable to create working directory.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
@@ -1128,7 +1133,7 @@ int liblnk_file_open_read(
 			 "%s: unable to read working directory.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		file_offset += read_count;
 	}
@@ -1145,7 +1150,7 @@ int liblnk_file_open_read(
 			 "%s: unable to create command line arguments.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
@@ -1170,7 +1175,7 @@ int liblnk_file_open_read(
 			 "%s: unable to read command line arguments.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		file_offset += read_count;
 	}
@@ -1187,7 +1192,7 @@ int liblnk_file_open_read(
 			 "%s: unable to create icon location.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
@@ -1212,7 +1217,7 @@ int liblnk_file_open_read(
 			 "%s: unable to read icon location.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		file_offset += read_count;
 	}
@@ -1240,7 +1245,7 @@ int liblnk_file_open_read(
 			 "%s: unable to read extra data blocks.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		file_offset += read_count;
 	}
@@ -1263,7 +1268,7 @@ int liblnk_file_open_read(
 				 "%s: unable to create trailing data.",
 				 function );
 
-				return( -1 );
+				goto on_error;
 			}
 			read_count = libbfio_handle_read(
 				      internal_file->file_io_handle,
@@ -1283,7 +1288,7 @@ int liblnk_file_open_read(
 				memory_free(
 				 trailing_data );
 
-				return( -1 );
+				goto on_error;
 			}
 			file_offset += read_count;
 
@@ -1296,10 +1301,22 @@ int liblnk_file_open_read(
 
 			memory_free(
 			 trailing_data );
+
+			trailing_data = NULL;
 		}
 	}
 #endif
 	return( 1 );
+
+on_error:
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( trailing_data != NULL )
+	{
+		memory_free(
+		 trailing_data );
+	}
+#endif
+	return( -1 );
 }
 
 /* Retrieves the file ASCII codepage

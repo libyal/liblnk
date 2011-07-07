@@ -68,8 +68,8 @@ int liblnk_io_handle_initialize(
 	}
 	if( *io_handle == NULL )
 	{
-		*io_handle = (liblnk_io_handle_t *) memory_allocate(
-		                                     sizeof( liblnk_io_handle_t ) );
+		*io_handle = memory_allocate_structure(
+		              liblnk_io_handle_t );
 
 		if( *io_handle == NULL )
 		{
@@ -80,7 +80,7 @@ int liblnk_io_handle_initialize(
 			 "%s: unable to create IO handle.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		if( memory_set(
 		     *io_handle,
@@ -94,16 +94,21 @@ int liblnk_io_handle_initialize(
 			 "%s: unable to clear file.",
 			 function );
 
-			memory_free(
-			 *io_handle );
-
-			*io_handle = NULL;
-
-			return( -1 );
+			goto on_error;
 		}
 		( *io_handle )->ascii_codepage = LIBLNK_CODEPAGE_WINDOWS_1252;
 	}
 	return( 1 );
+
+on_error:
+	if( *io_handle != NULL )
+	{
+		memory_free(
+		 *io_handle );
+
+		*io_handle = NULL;
+	}
+	return( -1 );
 }
 
 /* Frees an IO handle
@@ -231,7 +236,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		 "%s: unable to retrieve file size.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libnotify_verbose != 0 )
@@ -254,7 +259,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		 "%s: unable to seek file header offset: 0.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	read_count = libbfio_handle_read(
 	              file_io_handle,
@@ -271,7 +276,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		 "%s: unable to read file header.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libnotify_verbose != 0 )
@@ -284,7 +289,6 @@ ssize_t liblnk_io_handle_read_file_header(
 		 sizeof( lnk_file_header_t ) );
 	}
 #endif
-
 	byte_stream_copy_to_uint32_little_endian(
 	 file_header.header_size,
 	 header_size );
@@ -299,7 +303,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		 function,
 		 header_size );
 
-		return( -1 );
+		goto on_error;
 	}
 	if( memory_compare(
 	     file_header.class_identifier,
@@ -313,7 +317,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		 "%s: unsupported file class identifier.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	/* TODO is a libfguid version of the class identifier needed ? */
 	if( memory_copy(
@@ -328,7 +332,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		 "%s: unable to copy class identifier.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	byte_stream_copy_to_uint32_little_endian(
 	 file_header.data_flags,
@@ -370,7 +374,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			 "%s: unable to create GUID.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		if( libfguid_identifier_copy_from_byte_stream(
 		     guid,
@@ -386,11 +390,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			 "%s: unable to copy byte stream to GUID.",
 			 function );
 
-			libfguid_identifier_free(
-			 &guid,
-			 NULL );
-
-			return( -1 );
+			goto on_error;
 		}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfguid_identifier_copy_to_utf16_string(
@@ -414,11 +414,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			 "%s: unable to copy GUID to string.",
 			 function );
 
-			libfguid_identifier_free(
-			 &guid,
-			 NULL );
-
-			return( -1 );
+			goto on_error;
 		}
 		if( libfguid_identifier_free(
 		     &guid,
@@ -431,7 +427,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			 "%s: unable to free GUID.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		libnotify_printf(
 		 "%s: class identifier\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -467,7 +463,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			 "%s: unable to create filetime.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		if( libfdatetime_filetime_copy_from_byte_stream(
 		     filetime,
@@ -483,11 +479,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			 "%s: unable to copy byte stream to filetime.",
 			 function );
 
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
+			goto on_error;
 		}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfdatetime_filetime_copy_to_utf16_string(
@@ -515,11 +507,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			 "%s: unable to copy filetime to string.",
 			 function );
 
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
+			goto on_error;
 		}
 		libnotify_printf(
 		 "%s: creation time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
@@ -540,11 +528,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			 "%s: unable to copy byte stream to filetime.",
 			 function );
 
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
+			goto on_error;
 		}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfdatetime_filetime_copy_to_utf16_string(
@@ -572,11 +556,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			 "%s: unable to copy filetime to string.",
 			 function );
 
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
+			goto on_error;
 		}
 		libnotify_printf(
 		 "%s: access time\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
@@ -597,11 +577,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			 "%s: unable to copy byte stream to filetime.",
 			 function );
 
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
+			goto on_error;
 		}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfdatetime_filetime_copy_to_utf16_string(
@@ -629,11 +605,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			 "%s: unable to copy filetime to string.",
 			 function );
 
-			libfdatetime_filetime_free(
-			 &filetime,
-			 NULL );
-
-			return( -1 );
+			goto on_error;
 		}
 		libnotify_printf(
 		 "%s: modification time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
@@ -651,7 +623,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			 "%s: unable to free filetime.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		libnotify_printf(
 		 "%s: file size\t\t\t\t: %" PRIu32 " bytes\n",
@@ -696,6 +668,23 @@ ssize_t liblnk_io_handle_read_file_header(
 	/* TODO compare file sizes */
 
 	return( read_count );
+
+on_error:
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( filetime != NULL )
+	{
+		libfdatetime_filetime_free(
+		 &filetime,
+		 NULL );
+	}
+	if( guid != NULL )
+	{
+		libfguid_identifier_free(
+		 &guid,
+		 NULL );
+	}
+#endif
+	return( -1 );
 }
 
 /* Reads the (extra) data blocks
@@ -761,7 +750,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 		 function,
 		 data_blocks_offset );
 
-		return( -1 );
+		goto on_error;
 	}
 	while( data_blocks_offset < (off64_t) io_handle->file_size )
 	{
@@ -780,7 +769,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 			 "%s: unable to read data block size.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		data_blocks_offset += read_count;
 		total_read_count   += read_count;
@@ -811,7 +800,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 			 "%s: data block size too small.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		data_block_size -= 4;
 
@@ -824,7 +813,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 			 "%s: data block size exceeds file size.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		data_block_data = (uint8_t *) memory_allocate(
 					       sizeof( uint8_t ) * data_block_size );
@@ -838,7 +827,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 			 "%s: unable to create data block data.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		read_count = libbfio_handle_read(
 			      file_io_handle,
@@ -855,10 +844,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 			 "%s: unable to read data block data.",
 			 function );
 
-			memory_free(
-			 data_block_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		data_blocks_offset += read_count;
 		total_read_count   += read_count;
@@ -934,10 +920,10 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to determine size of environment variables location string.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
-					value_string = (libcstring_system_character_t *) memory_allocate(
-					                                                  sizeof( libcstring_system_character_t ) * value_string_size );
+					value_string = libcstring_system_string_allocate(
+					                value_string_size );
 
 					if( value_string == NULL )
 					{
@@ -948,7 +934,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to create environment variables location string.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_copy_from_byte_stream(
@@ -976,10 +962,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to set environment variables location string.",
 						 function );
 
-						memory_free(
-						 value_string );
-
-						return( -1 );
+						goto on_error;
 					}
 					libnotify_printf(
 					 "%s: environment variables location\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -988,6 +971,8 @@ ssize_t liblnk_io_handle_read_data_blocks(
 
 					memory_free(
 					 value_string );
+
+					value_string = NULL;
 
 /* TODO print as string */
 					libnotify_printf(
@@ -1021,10 +1006,10 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to determine size of unicode environment variables location string.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
-					value_string = (libcstring_system_character_t *) memory_allocate(
-					                                                  sizeof( libcstring_system_character_t ) * value_string_size );
+					value_string = libcstring_system_string_allocate(
+					                value_string_size );
 
 					if( value_string == NULL )
 					{
@@ -1035,7 +1020,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to create unicode environment variables location string.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_copy_from_utf16_stream(
@@ -1063,10 +1048,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to set unicode environment variables location string.",
 						 function );
 
-						memory_free(
-						 value_string );
-
-						return( -1 );
+						goto on_error;
 					}
 					libnotify_printf(
 					 "%s: unicode environment variables location\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -1075,6 +1057,8 @@ ssize_t liblnk_io_handle_read_data_blocks(
 
 					memory_free(
 					 value_string );
+
+					value_string = NULL;
 
 					libnotify_printf(
 					 "\n" );
@@ -1099,7 +1083,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to create GUID.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
 					byte_stream_copy_to_uint32_little_endian(
 					 ( (lnk_data_block_distributed_link_tracker_properties_t *) data_block_data )->data_size,
@@ -1150,10 +1134,10 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to determine size of machine identifier string.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
-					value_string = (libcstring_system_character_t *) memory_allocate(
-					                                                  sizeof( libcstring_system_character_t ) * value_string_size );
+					value_string = libcstring_system_string_allocate(
+					                value_string_size );
 
 					if( value_string == NULL )
 					{
@@ -1164,7 +1148,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to create machine identifier string.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_copy_from_byte_stream(
@@ -1192,10 +1176,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to set machine identifier string.",
 						 function );
 
-						memory_free(
-						 value_string );
-
-						return( -1 );
+						goto on_error;
 					}
 					libnotify_printf(
 					 "%s: distributed link tracker machine identifier string\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -1204,6 +1185,8 @@ ssize_t liblnk_io_handle_read_data_blocks(
 
 					memory_free(
 					 value_string );
+
+					value_string = NULL;
 
 					if( libfguid_identifier_copy_from_byte_stream(
 					     guid,
@@ -1219,11 +1202,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to copy byte stream to GUID.",
 						 function );
 
-						libfguid_identifier_free(
-						 &guid,
-						 NULL );
-
-						return( -1 );
+						goto on_error;
 					}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libfguid_identifier_copy_to_utf16_string(
@@ -1247,11 +1226,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to copy GUID to string.",
 						 function );
 
-						libfguid_identifier_free(
-						 &guid,
-						 NULL );
-
-						return( -1 );
+						goto on_error;
 					}
 					libnotify_printf(
 					 "%s: distributed link tracker droid volume identifier\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -1272,11 +1247,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to copy byte stream to GUID.",
 						 function );
 
-						libfguid_identifier_free(
-						 &guid,
-						 NULL );
-
-						return( -1 );
+						goto on_error;
 					}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libfguid_identifier_copy_to_utf16_string(
@@ -1300,11 +1271,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to copy GUID to string.",
 						 function );
 
-						libfguid_identifier_free(
-						 &guid,
-						 NULL );
-
-						return( -1 );
+						goto on_error;
 					}
 					libnotify_printf(
 					 "%s: distributed link tracker droid file identifier\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -1325,11 +1292,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to copy byte stream to GUID.",
 						 function );
 
-						libfguid_identifier_free(
-						 &guid,
-						 NULL );
-
-						return( -1 );
+						goto on_error;
 					}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libfguid_identifier_copy_to_utf16_string(
@@ -1353,11 +1316,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to copy GUID to string.",
 						 function );
 
-						libfguid_identifier_free(
-						 &guid,
-						 NULL );
-
-						return( -1 );
+						goto on_error;
 					}
 					libnotify_printf(
 					 "%s: distributed link tracker birth droid volume identifier\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -1378,11 +1337,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to copy byte stream to GUID.",
 						 function );
 
-						libfguid_identifier_free(
-						 &guid,
-						 NULL );
-
-						return( -1 );
+						goto on_error;
 					}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libfguid_identifier_copy_to_utf16_string(
@@ -1406,11 +1361,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to copy GUID to string.",
 						 function );
 
-						libfguid_identifier_free(
-						 &guid,
-						 NULL );
-
-						return( -1 );
+						goto on_error;
 					}
 					libnotify_printf(
 					 "%s: distributed link tracker birth droid file identifier\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -1431,7 +1382,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to free GUID.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
 				}
 #endif
@@ -1506,10 +1457,10 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to determine size of darwin application identifier string.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
-					value_string = (libcstring_system_character_t *) memory_allocate(
-					                                                  sizeof( libcstring_system_character_t ) * value_string_size );
+					value_string = libcstring_system_string_allocate(
+					                value_string_size );
 
 					if( value_string == NULL )
 					{
@@ -1520,7 +1471,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to create darwin application identifier string.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_copy_from_byte_stream(
@@ -1548,10 +1499,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to set darwin application identifier string.",
 						 function );
 
-						memory_free(
-						 value_string );
-
-						return( -1 );
+						goto on_error;
 					}
 					libnotify_printf(
 					 "%s: darwin application identifier\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -1560,6 +1508,8 @@ ssize_t liblnk_io_handle_read_data_blocks(
 
 					memory_free(
 					 value_string );
+
+					value_string = NULL;
 
 /* TODO print as string */
 					libnotify_printf(
@@ -1593,10 +1543,10 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to determine size of unicode darwin application identifier string.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
-					value_string = (libcstring_system_character_t *) memory_allocate(
-					                                                  sizeof( libcstring_system_character_t ) * value_string_size );
+					value_string = libcstring_system_string_allocate(
+					                value_string_size );
 
 					if( value_string == NULL )
 					{
@@ -1607,7 +1557,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to create unicode darwin application identifier string.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_copy_from_utf16_stream(
@@ -1635,10 +1585,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to set unicode darwin application identifier string.",
 						 function );
 
-						memory_free(
-						 value_string );
-
-						return( -1 );
+						goto on_error;
 					}
 					libnotify_printf(
 					 "%s: unicode darwin application identifier\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -1647,6 +1594,8 @@ ssize_t liblnk_io_handle_read_data_blocks(
 
 					memory_free(
 					 value_string );
+
+					value_string = NULL;
 
 					libnotify_printf(
 					 "\n" );
@@ -1694,10 +1643,10 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to determine size of icon location string.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
-					value_string = (libcstring_system_character_t *) memory_allocate(
-					                                                  sizeof( libcstring_system_character_t ) * value_string_size );
+					value_string = libcstring_system_string_allocate(
+					                value_string_size );
 
 					if( value_string == NULL )
 					{
@@ -1708,7 +1657,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to create icon location string.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_copy_from_byte_stream(
@@ -1736,10 +1685,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to set icon location string.",
 						 function );
 
-						memory_free(
-						 value_string );
-
-						return( -1 );
+						goto on_error;
 					}
 					libnotify_printf(
 					 "%s: icon location\t\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -1748,6 +1694,8 @@ ssize_t liblnk_io_handle_read_data_blocks(
 
 					memory_free(
 					 value_string );
+
+					value_string = NULL;
 
 /* TODO print as string */
 					libnotify_printf(
@@ -1781,10 +1729,10 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to determine size of unicode icon location string.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
-					value_string = (libcstring_system_character_t *) memory_allocate(
-					                                                  sizeof( libcstring_system_character_t ) * value_string_size );
+					value_string = libcstring_system_string_allocate(
+					                value_string_size );
 
 					if( value_string == NULL )
 					{
@@ -1795,7 +1743,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to create unicode icon location string.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_copy_from_utf16_stream(
@@ -1823,10 +1771,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to set unicode icon location string.",
 						 function );
 
-						memory_free(
-						 value_string );
-
-						return( -1 );
+						goto on_error;
 					}
 					libnotify_printf(
 					 "%s: unicode icon location\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -1835,6 +1780,8 @@ ssize_t liblnk_io_handle_read_data_blocks(
 
 					memory_free(
 					 value_string );
+
+					value_string = NULL;
 
 					libnotify_printf(
 					 "\n" );
@@ -1858,7 +1805,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to create GUID.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
 					if( libfguid_identifier_copy_from_byte_stream(
 					     guid,
@@ -1874,11 +1821,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to copy byte stream to GUID.",
 						 function );
 
-						libfguid_identifier_free(
-						 &guid,
-						 NULL );
-
-						return( -1 );
+						goto on_error;
 					}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libfguid_identifier_copy_to_utf16_string(
@@ -1902,11 +1845,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to copy GUID to string.",
 						 function );
 
-						libfguid_identifier_free(
-						 &guid,
-						 NULL );
-
-						return( -1 );
+						goto on_error;
 					}
 					libnotify_printf(
 					 "%s: known folder identifier\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
@@ -1942,7 +1881,7 @@ ssize_t liblnk_io_handle_read_data_blocks(
 						 "%s: unable to free GUID.",
 						 function );
 
-						return( -1 );
+						goto on_error;
 					}
 				}
 #endif
@@ -1961,7 +1900,30 @@ ssize_t liblnk_io_handle_read_data_blocks(
 		}
 		memory_free(
 		 data_block_data );
+
+		data_block_data = NULL;
 	}
 	return( total_read_count );
+
+on_error:
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( guid != NULL )
+	{
+		libfguid_identifier_free(
+		 &guid,
+		 NULL );
+	}
+	if( value_string != NULL )
+	{
+		memory_free(
+		 value_string );
+	}
+#endif
+	if( data_block_data != NULL )
+	{
+		memory_free(
+		 data_block_data );
+	}
+	return( -1 );
 }
 

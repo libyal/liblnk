@@ -388,7 +388,7 @@ int liblnk_file_get_file_size(
 
 /* TODO add raw string functions */
 
-/* Retrieves the UTF-8 string size of the linked file's local path
+/* Retrieves the size of the UTF-8 encoded local path
  * The size includes the end of string character
  * The local path is only set if the link refers to a file on a local volume
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -471,7 +471,7 @@ int liblnk_file_get_utf8_local_path_size(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine size of UTF-8 local path string.",
+		 "%s: unable to retrieve UTF-8 local path string size.",
 		 function );
 
 		return( -1 );
@@ -500,7 +500,7 @@ int liblnk_file_get_utf8_local_path_size(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine size of UTF-8 common path string.",
+		 "%s: unable to retrieve UTF-8 common path string size.",
 		 function );
 
 		return( -1 );
@@ -510,7 +510,7 @@ int liblnk_file_get_utf8_local_path_size(
 	return( 1 );
 }
 
-/* Retrieves the UTF-8 string size of the linked file's local path
+/* Retrieves the UTF-8 encoded local path
  * The size should include the end of string character
  * The local path is only set if the link refers to a file on a local volume
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -604,7 +604,7 @@ int liblnk_file_get_utf8_local_path(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine size of UTF-8 local path string.",
+		 "%s: unable to retrieve UTF-8 local path string size.",
 		 function );
 
 		return( -1 );
@@ -685,7 +685,7 @@ int liblnk_file_get_utf8_local_path(
 	return( 1 );
 }
 
-/* Retrieves the UTF-16 string size of the linked file's local path
+/* Retrieves the size of the UTF-16 encoded local path
  * The size includes the end of string character
  * The local path is only set if the link refers to a file on a local volume
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -768,7 +768,7 @@ int liblnk_file_get_utf16_local_path_size(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine size of UTF-16 local path string.",
+		 "%s: unable to retrieve UTF-16 local path string size.",
 		 function );
 
 		return( -1 );
@@ -797,7 +797,7 @@ int liblnk_file_get_utf16_local_path_size(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine size of UTF-16 common path string.",
+		 "%s: unable to retrieve UTF-16 common path string size.",
 		 function );
 
 		return( -1 );
@@ -807,7 +807,7 @@ int liblnk_file_get_utf16_local_path_size(
 	return( 1 );
 }
 
-/* Retrieves the UTF-16 string size of the linked file's local path
+/* Retrieves the UTF-16 encoded local path
  * The size should include the end of string character
  * The local path is only set if the link refers to a file on a local volume
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -901,7 +901,7 @@ int liblnk_file_get_utf16_local_path(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine size of UTF-16 local path string.",
+		 "%s: unable to retrieve UTF-16 local path string size.",
 		 function );
 
 		return( -1 );
@@ -982,7 +982,7 @@ int liblnk_file_get_utf16_local_path(
 	return( 1 );
 }
 
-/* Retrieves the UTF-8 string size of the linked file's network path
+/* Retrieves the size of the UTF-8 encoded network path
  * The size includes the end of string character
  * The network path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -1065,7 +1065,7 @@ int liblnk_file_get_utf8_network_path_size(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine size of UTF-8 network share name string.",
+		 "%s: unable to retrieve UTF-8 network share name string size.",
 		 function );
 
 		return( -1 );
@@ -1094,7 +1094,7 @@ int liblnk_file_get_utf8_network_path_size(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine size of UTF-8 common path string.",
+		 "%s: unable to retrieve UTF-8 common path string size.",
 		 function );
 
 		return( -1 );
@@ -1104,7 +1104,7 @@ int liblnk_file_get_utf8_network_path_size(
 	return( 1 );
 }
 
-/* Retrieves the UTF-8 string size of the linked file's network path
+/* Retrieves the UTF-8 encoded network path
  * The size should include the end of string character
  * The network path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -1198,7 +1198,7 @@ int liblnk_file_get_utf8_network_path(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine size of UTF-8 network share name string.",
+		 "%s: unable to retrieve UTF-8 network share name string size.",
 		 function );
 
 		return( -1 );
@@ -1279,7 +1279,7 @@ int liblnk_file_get_utf8_network_path(
 	return( 1 );
 }
 
-/* Retrieves the UTF-16 string size of the linked file's network path
+/* Retrieves the size of the UTF-16 encoded network path
  * The size includes the end of string character
  * The network path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -1362,7 +1362,7 @@ int liblnk_file_get_utf16_network_path_size(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine size of UTF-16 network share name string.",
+		 "%s: unable to retrieve UTF-16 network share name string size.",
 		 function );
 
 		return( -1 );
@@ -1391,7 +1391,7 @@ int liblnk_file_get_utf16_network_path_size(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine size of UTF-16 common path string.",
+		 "%s: unable to retrieve UTF-16 common path string size.",
 		 function );
 
 		return( -1 );
@@ -1401,7 +1401,7 @@ int liblnk_file_get_utf16_network_path_size(
 	return( 1 );
 }
 
-/* Retrieves the UTF-16 string size of the linked file's network path
+/* Retrieves the UTF-16 encoded network path
  * The size should include the end of string character
  * The network path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -1495,7 +1495,7 @@ int liblnk_file_get_utf16_network_path(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine size of UTF-16 network share name string.",
+		 "%s: unable to retrieve UTF-16 network share name string size.",
 		 function );
 
 		return( -1 );
@@ -1576,4 +1576,1203 @@ int liblnk_file_get_utf16_network_path(
 	return( 1 );
 }
 
+/* Retrieves the size of the UTF-8 encoded description
+ * The size includes the end of string character
+ * The description is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf8_description_size(
+     liblnk_file_t *file,
+     size_t *utf8_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf8_description_size";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf8_string_size(
+	     internal_file->description,
+	     internal_file->io_handle->ascii_codepage,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-8 data string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-8 encoded description
+ * The size should include the end of string character
+ * The description is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf8_description(
+     liblnk_file_t *file,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf8_description";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf8_string(
+	     internal_file->description,
+	     internal_file->io_handle->ascii_codepage,
+	     utf8_string,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-8 data string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-16 encoded description
+ * The size includes the end of string character
+ * The description is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf16_description_size(
+     liblnk_file_t *file,
+     size_t *utf16_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf16_description_size";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf16_string_size(
+	     internal_file->description,
+	     internal_file->io_handle->ascii_codepage,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-16 data string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-16 encoded description
+ * The size should include the end of string character
+ * The description is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf16_description(
+     liblnk_file_t *file,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf16_description";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf16_string(
+	     internal_file->description,
+	     internal_file->io_handle->ascii_codepage,
+	     utf16_string,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-16 data string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-8 encoded relative path
+ * The size includes the end of string character
+ * The relative path is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf8_relative_path_size(
+     liblnk_file_t *file,
+     size_t *utf8_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf8_relative_path_size";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf8_string_size(
+	     internal_file->relative_path,
+	     internal_file->io_handle->ascii_codepage,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-8 data string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-8 encoded relative path
+ * The size should include the end of string character
+ * The relative path is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf8_relative_path(
+     liblnk_file_t *file,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf8_relative_path";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf8_string(
+	     internal_file->relative_path,
+	     internal_file->io_handle->ascii_codepage,
+	     utf8_string,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-8 data string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-16 encoded relative path
+ * The size includes the end of string character
+ * The relative path is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf16_relative_path_size(
+     liblnk_file_t *file,
+     size_t *utf16_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf16_relative_path_size";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf16_string_size(
+	     internal_file->relative_path,
+	     internal_file->io_handle->ascii_codepage,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-16 data string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-16 encoded relative path
+ * The size should include the end of string character
+ * The relative path is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf16_relative_path(
+     liblnk_file_t *file,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf16_relative_path";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf16_string(
+	     internal_file->relative_path,
+	     internal_file->io_handle->ascii_codepage,
+	     utf16_string,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-16 data string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-8 encoded working directory
+ * The size includes the end of string character
+ * The working directory is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf8_working_directory_size(
+     liblnk_file_t *file,
+     size_t *utf8_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf8_working_directory_size";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf8_string_size(
+	     internal_file->working_directory,
+	     internal_file->io_handle->ascii_codepage,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-8 data string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-8 encoded working directory
+ * The size should include the end of string character
+ * The working directory is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf8_working_directory(
+     liblnk_file_t *file,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf8_working_directory";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf8_string(
+	     internal_file->working_directory,
+	     internal_file->io_handle->ascii_codepage,
+	     utf8_string,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-8 data string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-16 encoded working directory
+ * The size includes the end of string character
+ * The working directory is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf16_working_directory_size(
+     liblnk_file_t *file,
+     size_t *utf16_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf16_working_directory_size";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf16_string_size(
+	     internal_file->working_directory,
+	     internal_file->io_handle->ascii_codepage,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-16 data string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-16 encoded working directory
+ * The size should include the end of string character
+ * The working directory is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf16_working_directory(
+     liblnk_file_t *file,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf16_working_directory";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf16_string(
+	     internal_file->working_directory,
+	     internal_file->io_handle->ascii_codepage,
+	     utf16_string,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-16 data string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-8 encoded command line arguments
+ * The size includes the end of string character
+ * The command line arguments is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf8_command_line_arguments_size(
+     liblnk_file_t *file,
+     size_t *utf8_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf8_command_line_arguments_size";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf8_string_size(
+	     internal_file->command_line_arguments,
+	     internal_file->io_handle->ascii_codepage,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-8 data string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-8 encoded command line arguments
+ * The size should include the end of string character
+ * The command line arguments is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf8_command_line_arguments(
+     liblnk_file_t *file,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf8_command_line_arguments";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf8_string(
+	     internal_file->command_line_arguments,
+	     internal_file->io_handle->ascii_codepage,
+	     utf8_string,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-8 data string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-16 encoded command line arguments
+ * The size includes the end of string character
+ * The command line arguments is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf16_command_line_arguments_size(
+     liblnk_file_t *file,
+     size_t *utf16_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf16_command_line_arguments_size";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf16_string_size(
+	     internal_file->command_line_arguments,
+	     internal_file->io_handle->ascii_codepage,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-16 data string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-16 encoded command line arguments
+ * The size should include the end of string character
+ * The command line arguments is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf16_command_line_arguments(
+     liblnk_file_t *file,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf16_command_line_arguments";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf16_string(
+	     internal_file->command_line_arguments,
+	     internal_file->io_handle->ascii_codepage,
+	     utf16_string,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-16 data string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-8 encoded icon location
+ * The size includes the end of string character
+ * The icon location is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf8_icon_location_size(
+     liblnk_file_t *file,
+     size_t *utf8_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf8_icon_location_size";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf8_string_size(
+	     internal_file->icon_location,
+	     internal_file->io_handle->ascii_codepage,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-8 data string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-8 encoded icon location
+ * The size should include the end of string character
+ * The icon location is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf8_icon_location(
+     liblnk_file_t *file,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf8_icon_location";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf8_string(
+	     internal_file->icon_location,
+	     internal_file->io_handle->ascii_codepage,
+	     utf8_string,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-8 data string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-16 encoded icon location
+ * The size includes the end of string character
+ * The icon location is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf16_icon_location_size(
+     liblnk_file_t *file,
+     size_t *utf16_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf16_icon_location_size";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf16_string_size(
+	     internal_file->icon_location,
+	     internal_file->io_handle->ascii_codepage,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-16 data string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-16 encoded icon location
+ * The size should include the end of string character
+ * The icon location is only set if the link refers to a file on a network share
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf16_icon_location(
+     liblnk_file_t *file,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf16_icon_location";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) == 0 )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf16_string(
+	     internal_file->icon_location,
+	     internal_file->io_handle->ascii_codepage,
+	     utf16_string,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-16 data string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
 

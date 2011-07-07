@@ -323,10 +323,10 @@ int info_handle_close(
 	return( 0 );
 }
 
-/* Prints the file information to a stream
+/* Prints the link target identifier information
  * Returns 1 if successful or -1 on error
  */
-int info_handle_file_fprint(
+int info_handle_link_target_identifier_fprint(
      info_handle_t *info_handle,
      liberror_error_t **error )
 {
@@ -334,10 +334,9 @@ int info_handle_file_fprint(
 
 	libfdatetime_filetime_t *filetime           = NULL;
 	libcstring_system_character_t *value_string = NULL;
-	static char *function                       = "info_handle_file_fprint";
+	static char *function                       = "info_handle_link_target_identifier_fprint";
 	size_t value_string_size                    = 0;
 	uint64_t value_64bit                        = 0;
-	uint32_t data_flags                         = 0;
 	uint32_t file_attribute_flags               = 0;
 	int result                                  = 0;
 
@@ -352,34 +351,6 @@ int info_handle_file_fprint(
 
 		return( -1 );
 	}
-	if( liblnk_file_get_data_flags(
-	     info_handle->input_file,
-	     &data_flags,
-	     error ) != 1 )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve data flags.",
-		 function );
-
-		return( -1 );
-	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "Windows Shortcut information:\n" );
-
-	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) != 0 )
-	{
-		fprintf(
-		 info_handle->notify_stream,
-		 "\tContains a link target identifier\n" );
-	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "\n" );
-
 	result = liblnk_file_link_refers_to_file(
 	          info_handle->input_file,
 	          error );
@@ -775,10 +746,6 @@ int info_handle_file_fprint(
 			value_string = NULL;
 		}
 	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "\n" );
-
 	return( 1 );
 
 on_error:
@@ -794,5 +761,233 @@ on_error:
 		 NULL );
 	}
 	return( -1 );
+}
+
+/* Prints the description
+ * Returns 1 if successful or -1 on error
+ */
+int info_handle_description_fprint(
+     info_handle_t *info_handle,
+     uint32_t data_flags,
+     liberror_error_t **error )
+{
+	libcstring_system_character_t *value_string = NULL;
+	static char *function                       = "info_handle_description_fprint";
+	size_t value_string_size                    = 0;
+	int result                                  = 0;
+
+	if( info_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid info handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) != 0 )
+	{
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+		result = liblnk_file_get_utf16_description_size(
+		          info_handle->input_file,
+		          &value_string_size,
+		          error );
+#else
+		result = liblnk_file_get_utf8_description_size(
+		          info_handle->input_file,
+		          &value_string_size,
+		          error );
+#endif
+		if( result == -1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve description size.",
+			 function );
+
+			goto on_error;
+		}
+		else if( result != 0 )
+		{
+			value_string = libcstring_system_string_allocate(
+			                value_string_size );
+
+			if( value_string == NULL )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_MEMORY,
+				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 "%s: unable to create local path value string.",
+				 function );
+
+				goto on_error;
+			}
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+			result = liblnk_file_get_utf16_description(
+			          info_handle->input_file,
+			          (uint16_t *) value_string,
+			          value_string_size,
+			          error );
+#else
+			result = liblnk_file_get_utf8_description(
+			          info_handle->input_file,
+			          (uint8_t *) value_string,
+			          value_string_size,
+			          error );
+#endif
+			if( result == -1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to retrieve description.",
+				 function );
+
+				goto on_error;
+			}
+			fprintf(
+			 info_handle->notify_stream,
+			 "\tDescription\t\t: %s\n",
+			 value_string );
+
+			memory_free(
+			 value_string );
+
+			value_string = NULL;
+		}
+	}
+	return( 1 );
+
+on_error:
+	if( value_string != NULL )
+	{
+		memory_free(
+		 value_string );
+	}
+	return( -1 );
+}
+
+/* Prints the file information
+ * Returns 1 if successful or -1 on error
+ */
+int info_handle_file_fprint(
+     info_handle_t *info_handle,
+     liberror_error_t **error )
+{
+	static char *function = "info_handle_file_fprint";
+	uint32_t data_flags   = 0;
+
+	if( info_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid info handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( liblnk_file_get_data_flags(
+	     info_handle->input_file,
+	     &data_flags,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve data flags.",
+		 function );
+
+		return( -1 );
+	}
+/* TODO refactor to separate sub function */
+	fprintf(
+	 info_handle->notify_stream,
+	 "Windows Shortcut information:\n" );
+
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) != 0 )
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tContains a link target identifier\n" );
+	}
+/* TODO: LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION */
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) != 0 )
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tContains a description string\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) != 0 )
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tContains a relative path string\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) != 0 )
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tContains a working directory string\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) != 0 )
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tContains a command line arguments string\n" );
+	}
+	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) != 0 )
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tContains an icon location string\n" );
+	}
+/* TODO */
+	fprintf(
+	 info_handle->notify_stream,
+	 "\n" );
+
+	if( info_handle_link_target_identifier_fprint(
+	     info_handle,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 "%s: unable to print link target identifier.",
+		 function );
+
+		return( -1 );
+	}
+	if( info_handle_description_fprint(
+	     info_handle,
+	     data_flags,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 "%s: unable to print description.",
+		 function );
+
+		return( -1 );
+	}
+/* TODO print more info */
+
+	fprintf(
+	 info_handle->notify_stream,
+	 "\n" );
+
+	return( 1 );
 }
 

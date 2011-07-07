@@ -54,8 +54,8 @@ int liblnk_shell_item_identifiers_list_initialize(
 	}
 	if( *shell_item_identifiers_list == NULL )
 	{
-		*shell_item_identifiers_list = (liblnk_shell_item_identifiers_list_t *) memory_allocate(
-		                                                                         sizeof( liblnk_shell_item_identifiers_list_t ) );
+		*shell_item_identifiers_list = memory_allocate_structure(
+		                                liblnk_shell_item_identifiers_list_t );
 
 		if( *shell_item_identifiers_list == NULL )
 		{
@@ -66,7 +66,7 @@ int liblnk_shell_item_identifiers_list_initialize(
 			 "%s: unable to create shell item identifiers list.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
 		if( memory_set(
 		     *shell_item_identifiers_list,
@@ -80,15 +80,20 @@ int liblnk_shell_item_identifiers_list_initialize(
 			 "%s: unable to clear shell item identifiers list.",
 			 function );
 
-			memory_free(
-			 *shell_item_identifiers_list );
-
-			*shell_item_identifiers_list = NULL;
-
-			return( -1 );
+			goto on_error;
 		}
 	}
 	return( 1 );
+
+on_error:
+	if( *shell_item_identifiers_list != NULL )
+	{
+		memory_free(
+		 *shell_item_identifiers_list );
+
+		*shell_item_identifiers_list = NULL;
+	}
+	return( -1 );
 }
 
 /* Frees shell item identifiers
@@ -152,17 +157,6 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 
 		return( -1 );
 	}
-	if( file_io_handle == NULL )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid file IO handle.",
-		 function );
-
-		return( -1 );
-	}
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libnotify_verbose != 0 )
 	{
@@ -173,7 +167,6 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 		 shell_item_identifiers_list_offset );
 	}
 #endif
-
 	if( libbfio_handle_seek_offset(
 	     file_io_handle,
 	     shell_item_identifiers_list_offset,
@@ -188,7 +181,7 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 		 function,
 		 shell_item_identifiers_list_offset );
 
-		return( -1 );
+		goto on_error;
 	}
 	read_count = libbfio_handle_read(
 	              file_io_handle,
@@ -205,7 +198,7 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 		 "%s: unable to read shell item identifiers list size.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	byte_stream_copy_to_uint16_little_endian(
 	 shell_item_identifiers_list_size_data,
@@ -230,7 +223,7 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 		 "%s: shell item identifiers list size value exceeds maximum.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	shell_item_identifiers_list_data = (uint8_t *) memory_allocate(
 	                                                sizeof( uint8_t ) * shell_item_identifiers_list_size );
@@ -245,7 +238,7 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 		 "%s: unable to create shell item identifiers list data.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	read_count = libbfio_handle_read(
 	              file_io_handle,
@@ -262,10 +255,7 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 		 "%s: unable to read shell item identifiers list data.",
 		 function );
 
-		memory_free(
-		 shell_item_identifiers_list_data );
-
-		return( -1 );
+		goto on_error;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libnotify_verbose != 0 )
@@ -292,10 +282,7 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 		 "%s: unable to create shell item.",
 		 function );
 
-		memory_free(
-		 shell_item_identifiers_list_data );
-
-		return( -1 );
+		goto on_error;
 	}
 	do
 	{
@@ -321,13 +308,7 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 			 "%s: unable to copy byte stream to shell item.",
 			 function );
 
-			libfwsi_item_free(
-			 &shell_item,
-			 NULL );
-			memory_free(
-			 shell_item_identifiers_list_data );
-
-			return( -1 );
+			goto on_error;
 		}
 		/* TODO replace by function to obtain size from shell item */
 		byte_stream_copy_to_uint16_little_endian(
@@ -352,14 +333,29 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 		 "%s: unable to free shell item.",
 		 function );
 
-		memory_free(
-		 shell_item_identifiers_list_data );
-
-		return( -1 );
+		goto on_error;
 	}
 	memory_free(
 	 shell_item_identifiers_list_data );
 
+	shell_item_identifiers_list_data = NULL;
+
 	return( read_count + 2 );
+
+on_error:
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( shell_item != NULL )
+	{
+		libfwsi_item_free(
+		 &shell_item,
+		 NULL );
+	}
+#endif
+	if( shell_item_identifiers_list_data != NULL )
+	{
+		memory_free(
+		 shell_item_identifiers_list_data );
+	}
+	return( -1 );
 }
 
