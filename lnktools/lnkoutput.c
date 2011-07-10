@@ -36,27 +36,12 @@
 #include <libbfio.h>
 #endif
 
-#if defined( HAVE_LOCAL_LIBFDATETIME )
-#include <libfdatetime_definitions.h>
-#elif defined( HAVE_LIBFDATETIME_H )
-#include <libfdatetime.h>
-#endif
-
-#if defined( HAVE_LOCAL_LIBFGUID )
-#include <libfguid_definitions.h>
-#elif defined( HAVE_LIBFGUID_H )
-#include <libfguid.h>
-#endif
-
-#if defined( HAVE_LOCAL_LIBFWSI )
-#include <libfwsi_definitions.h>
-#elif defined( HAVE_LIBFWSI )
-#include <libfwsi.h>
-#endif
-
 #include <libsystem.h>
 
 #include "lnkoutput.h"
+#include "lnktools_libfdatetime.h"
+#include "lnktools_libfguid.h"
+#include "lnktools_libfwsi.h"
 #include "lnktools_liblnk.h"
 
 /* Prints the copyright information

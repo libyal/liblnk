@@ -28,15 +28,20 @@
 #include <libnotify.h>
 
 #include "liblnk_codepage.h"
+#include "liblnk_data_block.h"
+#include "liblnk_data_block_strings.h"
 #include "liblnk_data_string.h"
 #include "liblnk_debug.h"
 #include "liblnk_definitions.h"
-#include "liblnk_io_handle.h"
+#include "liblnk_distributed_link_tracker_properties.h"
 #include "liblnk_file.h"
 #include "liblnk_file_information.h"
+#include "liblnk_io_handle.h"
+#include "liblnk_known_folder_location.h"
 #include "liblnk_libbfio.h"
 #include "liblnk_location_information.h"
 #include "liblnk_shell_item_identifiers_list.h"
+#include "liblnk_special_folder_location.h"
 
 /* Initialize a file
  * Make sure the value file is pointing to is set to NULL
@@ -859,6 +864,86 @@ int liblnk_file_close(
 			result = -1;
 		}
 	}
+	if( internal_file->environment_variables_location != NULL )
+	{
+		if( liblnk_data_string_free(
+		     &( internal_file->environment_variables_location ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free environment variables location.",
+			 function );
+
+			result = -1;
+		}
+	}
+	if( internal_file->darwin_application_identifier != NULL )
+	{
+		if( liblnk_data_string_free(
+		     &( internal_file->darwin_application_identifier ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free darwin application identifier.",
+			 function );
+
+			result = -1;
+		}
+	}
+	if( internal_file->special_folder_location != NULL )
+	{
+		if( liblnk_special_folder_location_free(
+		     &( internal_file->special_folder_location ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free special folder location.",
+			 function );
+
+			result = -1;
+		}
+	}
+	if( internal_file->known_folder_location != NULL )
+	{
+		if( liblnk_known_folder_location_free(
+		     &( internal_file->known_folder_location ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free known folder location.",
+			 function );
+
+			result = -1;
+		}
+	}
+	if( internal_file->distributed_link_tracker_properties != NULL )
+	{
+		if( liblnk_distributed_link_tracker_properties_free(
+		     &( internal_file->distributed_link_tracker_properties ),
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free distributed link tracker properties.",
+			 function );
+
+			result = -1;
+		}
+	}
 	return( result );
 }
 
@@ -869,13 +954,15 @@ int liblnk_file_open_read(
      liblnk_internal_file_t *internal_file,
      liberror_error_t **error )
 {
-	static char *function     = "liblnk_file_open_read";
-	off64_t file_offset       = 0;
-	ssize_t read_count        = 0;
+	liblnk_data_block_t *data_block = NULL;
+	static char *function           = "liblnk_file_open_read";
+	off64_t file_offset             = 0;
+	size_t data_block_data_size     = 0;
+	ssize_t read_count              = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	uint8_t *trailing_data    = NULL;
-	size_t trailing_data_size = 0;
+	uint8_t *trailing_data          = NULL;
+	size_t trailing_data_size       = 0;
 #endif
 
 	if( internal_file == NULL )
@@ -1223,6 +1310,12 @@ int liblnk_file_open_read(
 	}
 	if( file_offset < (off64_t) internal_file->io_handle->file_size )
 	{
+#ifdef TODO
+/* TODO */
+		if( ( io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_METADATA_PROPERTY_STORE_DATA_BLOCK ) != 0 )
+		{
+		}
+#endif
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libnotify_verbose != 0 )
 		{
@@ -1230,24 +1323,363 @@ int liblnk_file_open_read(
 			 "Reading extra data blocks:\n" );
 		}
 #endif
-		read_count = liblnk_io_handle_read_data_blocks(
-		              internal_file->io_handle,
-		              internal_file->file_io_handle,
-		              file_offset,
-		              error );
-
-		if( read_count <= -1 )
+		while( file_offset < (off64_t) internal_file->io_handle->file_size )
 		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_READ_FAILED,
-			 "%s: unable to read extra data blocks.",
-			 function );
+			if( liblnk_data_block_initialize(
+			     &data_block,
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+				 "%s: unable to create data block.",
+				 function );
 
-			goto on_error;
+				goto on_error;
+			}
+			read_count = liblnk_data_block_read(
+			              data_block,
+			              internal_file->io_handle,
+			              internal_file->file_io_handle,
+			              file_offset,
+			              error );
+
+			if( read_count <= -1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_IO,
+				 LIBERROR_IO_ERROR_READ_FAILED,
+				 "%s: unable to read data block.",
+				 function );
+
+				goto on_error;
+			}
+			file_offset += read_count;
+
+			data_block_data_size = data_block->data_size;
+
+			if( data_block_data_size > 0 )
+			{
+				switch( data_block->signature )
+				{
+					case LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION:
+#if defined( HAVE_VERBOSE_OUTPUT )
+						if( libnotify_verbose != 0 )
+						{
+							if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_ENVIRONMENT_VARIABLES_LOCATION_BLOCK ) == 0 )
+							{
+								libnotify_printf(
+								 "%s: environment variables location data block found but data flag was not set\n",
+								 function );
+							}
+						}
+#endif
+						if( liblnk_data_string_initialize(
+						     &( internal_file->environment_variables_location ),
+						     error ) != 1 )
+						{
+							liberror_error_set(
+							 error,
+							 LIBERROR_ERROR_DOMAIN_RUNTIME,
+							 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+							 "%s: unable to create environment variables location.",
+							 function );
+
+							goto on_error;
+						}
+#if defined( HAVE_DEBUG_OUTPUT )
+						if( libnotify_verbose != 0 )
+						{
+							libnotify_printf(
+							 "Reading environment variables location data block:\n" );
+						}
+#endif
+						if( liblnk_data_block_strings_read(
+						     internal_file->environment_variables_location,
+						     data_block,
+						     internal_file->io_handle,
+						     error ) != 1 )
+						{
+							liberror_error_set(
+							 error,
+							 LIBERROR_ERROR_DOMAIN_IO,
+							 LIBERROR_IO_ERROR_READ_FAILED,
+							 "%s: unable to read environment variables data block.",
+							 function );
+
+							goto on_error;
+						}
+						break;
+
+					case LIBLNK_DATA_BLOCK_SIGNATURE_DISTRIBUTED_LINK_TRACKER_PROPERTIES:
+#if defined( HAVE_VERBOSE_OUTPUT )
+						if( libnotify_verbose != 0 )
+						{
+							if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK ) != 0 )
+							{
+								libnotify_printf(
+								 "%s: environment variables location data block found but data flag was not set\n",
+								 function );
+							}
+						}
+#endif
+						if( liblnk_distributed_link_tracker_properties_initialize(
+						     &( internal_file->distributed_link_tracker_properties ),
+						     error ) != 1 )
+						{
+							liberror_error_set(
+							 error,
+							 LIBERROR_ERROR_DOMAIN_RUNTIME,
+							 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+							 "%s: unable to create distributed link tracker properties.",
+							 function );
+
+							goto on_error;
+						}
+#if defined( HAVE_DEBUG_OUTPUT )
+						if( libnotify_verbose != 0 )
+						{
+							libnotify_printf(
+							 "Reading distributed link tracker properties data block:\n" );
+						}
+#endif
+						if( liblnk_distributed_link_tracker_properties_read(
+						     internal_file->distributed_link_tracker_properties,
+						     data_block,
+						     internal_file->io_handle,
+						     error ) != 1 )
+						{
+							liberror_error_set(
+							 error,
+							 LIBERROR_ERROR_DOMAIN_IO,
+							 LIBERROR_IO_ERROR_READ_FAILED,
+							 "%s: unable to read distributed link tracker properties data block.",
+							 function );
+
+							goto on_error;
+						}
+						break;
+
+					case LIBLNK_DATA_BLOCK_SIGNATURE_SPECIAL_FOLDER_LOCATION:
+						if( liblnk_special_folder_location_initialize(
+						     &( internal_file->special_folder_location ),
+						     error ) != 1 )
+						{
+							liberror_error_set(
+							 error,
+							 LIBERROR_ERROR_DOMAIN_RUNTIME,
+							 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+							 "%s: unable to create special folder location.",
+							 function );
+
+							goto on_error;
+						}
+#if defined( HAVE_DEBUG_OUTPUT )
+						if( libnotify_verbose != 0 )
+						{
+							libnotify_printf(
+							 "Reading special folder location data block:\n" );
+						}
+#endif
+						if( liblnk_special_folder_location_read(
+						     internal_file->special_folder_location,
+						     data_block,
+						     error ) != 1 )
+						{
+							liberror_error_set(
+							 error,
+							 LIBERROR_ERROR_DOMAIN_IO,
+							 LIBERROR_IO_ERROR_READ_FAILED,
+							 "%s: unable to read special folder location data block.",
+							 function );
+
+							goto on_error;
+						}
+						break;
+
+					case LIBLNK_DATA_BLOCK_SIGNATURE_DARWIN_PROPERTIES:
+#if defined( HAVE_VERBOSE_OUTPUT )
+						if( libnotify_verbose != 0 )
+						{
+							if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_DARWIN_IDENTIFIER ) == 0 )
+							{
+								libnotify_printf(
+								 "%s: darwin application identifier data block found but data flag was not set\n",
+								 function );
+							}
+						}
+#endif
+						if( liblnk_data_string_initialize(
+						     &( internal_file->darwin_application_identifier ),
+						     error ) != 1 )
+						{
+							liberror_error_set(
+							 error,
+							 LIBERROR_ERROR_DOMAIN_RUNTIME,
+							 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+							 "%s: unable to create darwin application identifier.",
+							 function );
+
+							goto on_error;
+						}
+#if defined( HAVE_DEBUG_OUTPUT )
+						if( libnotify_verbose != 0 )
+						{
+							libnotify_printf(
+							 "Reading darwin application identifier data block:\n" );
+						}
+#endif
+						if( liblnk_data_block_strings_read(
+						     internal_file->darwin_application_identifier,
+						     data_block,
+						     internal_file->io_handle,
+						     error ) != 1 )
+						{
+							liberror_error_set(
+							 error,
+							 LIBERROR_ERROR_DOMAIN_IO,
+							 LIBERROR_IO_ERROR_READ_FAILED,
+							 "%s: unable to read darwin application identifier data block.",
+							 function );
+
+							goto on_error;
+						}
+						break;
+
+					case LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION:
+#if defined( HAVE_VERBOSE_OUTPUT )
+						if( libnotify_verbose != 0 )
+						{
+							if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_BLOCK ) == 0 )
+							{
+								libnotify_printf(
+								 "%s: icon location data block found but data flag was not set\n",
+								 function );
+							}
+						}
+#endif
+						if( internal_file->icon_location != NULL )
+						{
+							if( liblnk_data_string_free(
+							     &( internal_file->icon_location ),
+							     error ) != 1 )
+							{
+								liberror_error_set(
+								 error,
+								 LIBERROR_ERROR_DOMAIN_RUNTIME,
+								 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+								 "%s: unable to free icon location.",
+								 function );
+
+								goto on_error;
+							}
+						}
+						if( liblnk_data_string_initialize(
+						     &( internal_file->icon_location ),
+						     error ) != 1 )
+						{
+							liberror_error_set(
+							 error,
+							 LIBERROR_ERROR_DOMAIN_RUNTIME,
+							 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+							 "%s: unable to create icon location.",
+							 function );
+
+							goto on_error;
+						}
+#if defined( HAVE_DEBUG_OUTPUT )
+						if( libnotify_verbose != 0 )
+						{
+							libnotify_printf(
+							 "Reading icon location data block:\n" );
+						}
+#endif
+						if( liblnk_data_block_strings_read(
+						     internal_file->icon_location,
+						     data_block,
+						     internal_file->io_handle,
+						     error ) != 1 )
+						{
+							liberror_error_set(
+							 error,
+							 LIBERROR_ERROR_DOMAIN_IO,
+							 LIBERROR_IO_ERROR_READ_FAILED,
+							 "%s: unable to read icon location data block.",
+							 function );
+
+							goto on_error;
+						}
+						break;
+
+					case LIBLNK_DATA_BLOCK_SIGNATURE_KNOWN_FOLDER_LOCATION:
+						if( liblnk_known_folder_location_initialize(
+						     &( internal_file->known_folder_location ),
+						     error ) != 1 )
+						{
+							liberror_error_set(
+							 error,
+							 LIBERROR_ERROR_DOMAIN_RUNTIME,
+							 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+							 "%s: unable to create known folder location.",
+							 function );
+
+							goto on_error;
+						}
+#if defined( HAVE_DEBUG_OUTPUT )
+						if( libnotify_verbose != 0 )
+						{
+							libnotify_printf(
+							 "Reading known folder location data block:\n" );
+						}
+#endif
+						if( liblnk_known_folder_location_read(
+						     internal_file->known_folder_location,
+						     data_block,
+						     error ) != 1 )
+						{
+							liberror_error_set(
+							 error,
+							 LIBERROR_ERROR_DOMAIN_IO,
+							 LIBERROR_IO_ERROR_READ_FAILED,
+							 "%s: unable to read known folder location data block.",
+							 function );
+
+							goto on_error;
+						}
+						break;
+
+					default:
+#if defined( HAVE_DEBUG_OUTPUT )
+						if( libnotify_verbose != 0 )
+						{
+							libnotify_printf(
+							 "%s: unsupported extra data block type.\n\n",
+							 function );
+						}
+#endif
+						break;
+				}
+			}
+			if( liblnk_data_block_free(
+			     &data_block,
+			     error ) != 1 )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+				 "%s: unable to free data block.",
+				 function );
+
+				goto on_error;
+			}
+			if( data_block_data_size == 0 )
+			{
+				break;
+			}
 		}
-		file_offset += read_count;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libnotify_verbose != 0 )
@@ -1316,6 +1748,12 @@ on_error:
 		 trailing_data );
 	}
 #endif
+	if( data_block != NULL )
+	{
+		liblnk_data_block_free(
+		 &data_block,
+		 NULL );
+	}
 	return( -1 );
 }
 

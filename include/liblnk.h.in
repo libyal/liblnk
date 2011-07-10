@@ -436,7 +436,6 @@ int liblnk_file_get_utf16_network_path(
 
 /* Retrieves the size of the UTF-8 encoded description
  * The size includes the end of string character
- * The description is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -447,7 +446,6 @@ int liblnk_file_get_utf8_description_size(
 
 /* Retrieves the UTF-8 encoded description
  * The size should include the end of string character
- * The description is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -459,7 +457,6 @@ int liblnk_file_get_utf8_description(
 
 /* Retrieves the size of the UTF-16 encoded description
  * The size includes the end of string character
- * The description is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -470,7 +467,6 @@ int liblnk_file_get_utf16_description_size(
 
 /* Retrieves the UTF-16 encoded description
  * The size should include the end of string character
- * The description is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -482,7 +478,6 @@ int liblnk_file_get_utf16_description(
 
 /* Retrieves the size of the UTF-8 encoded relative path
  * The size includes the end of string character
- * The relative path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -493,7 +488,6 @@ int liblnk_file_get_utf8_relative_path_size(
 
 /* Retrieves the UTF-8 encoded relative path
  * The size should include the end of string character
- * The relative path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -505,7 +499,6 @@ int liblnk_file_get_utf8_relative_path(
 
 /* Retrieves the size of the UTF-16 encoded relative path
  * The size includes the end of string character
- * The relative path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -516,7 +509,6 @@ int liblnk_file_get_utf16_relative_path_size(
 
 /* Retrieves the UTF-16 encoded relative path
  * The size should include the end of string character
- * The relative path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -528,7 +520,6 @@ int liblnk_file_get_utf16_relative_path(
 
 /* Retrieves the size of the UTF-8 encoded working directory
  * The size includes the end of string character
- * The working directory is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -539,7 +530,6 @@ int liblnk_file_get_utf8_working_directory_size(
 
 /* Retrieves the UTF-8 encoded working directory
  * The size should include the end of string character
- * The working directory is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -551,7 +541,6 @@ int liblnk_file_get_utf8_working_directory(
 
 /* Retrieves the size of the UTF-16 encoded working directory
  * The size includes the end of string character
- * The working directory is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -562,7 +551,6 @@ int liblnk_file_get_utf16_working_directory_size(
 
 /* Retrieves the UTF-16 encoded working directory
  * The size should include the end of string character
- * The working directory is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -574,7 +562,6 @@ int liblnk_file_get_utf16_working_directory(
 
 /* Retrieves the size of the UTF-8 encoded command line arguments
  * The size includes the end of string character
- * The command line arguments is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -585,7 +572,6 @@ int liblnk_file_get_utf8_command_line_arguments_size(
 
 /* Retrieves the UTF-8 encoded command line arguments
  * The size should include the end of string character
- * The command line arguments is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -597,7 +583,6 @@ int liblnk_file_get_utf8_command_line_arguments(
 
 /* Retrieves the size of the UTF-16 encoded command line arguments
  * The size includes the end of string character
- * The command line arguments is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -608,7 +593,6 @@ int liblnk_file_get_utf16_command_line_arguments_size(
 
 /* Retrieves the UTF-16 encoded command line arguments
  * The size should include the end of string character
- * The command line arguments is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -620,7 +604,6 @@ int liblnk_file_get_utf16_command_line_arguments(
 
 /* Retrieves the size of the UTF-8 encoded icon location
  * The size includes the end of string character
- * The icon location is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -631,7 +614,6 @@ int liblnk_file_get_utf8_icon_location_size(
 
 /* Retrieves the UTF-8 encoded icon location
  * The size should include the end of string character
- * The icon location is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -643,7 +625,6 @@ int liblnk_file_get_utf8_icon_location(
 
 /* Retrieves the size of the UTF-16 encoded icon location
  * The size includes the end of string character
- * The icon location is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -654,7 +635,6 @@ int liblnk_file_get_utf16_icon_location_size(
 
 /* Retrieves the UTF-16 encoded icon location
  * The size should include the end of string character
- * The icon location is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
@@ -662,6 +642,142 @@ int liblnk_file_get_utf16_icon_location(
      liblnk_file_t *file,
      uint16_t *utf16_string,
      size_t utf16_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the size of the UTF-8 encoded environment variables location
+ * The size includes the end of string character
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_utf8_environment_variables_location_size(
+     liblnk_file_t *file,
+     size_t *utf8_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the UTF-8 encoded environment variables location
+ * The size should include the end of string character
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_utf8_environment_variables_location(
+     liblnk_file_t *file,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the size of the UTF-16 encoded environment variables location
+ * The size includes the end of string character
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_utf16_environment_variables_location_size(
+     liblnk_file_t *file,
+     size_t *utf16_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the UTF-16 encoded environment variables location
+ * The size should include the end of string character
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_utf16_environment_variables_location(
+     liblnk_file_t *file,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liblnk_error_t **error );
+
+/* -------------------------------------------------------------------------
+ * Distributed link tracking data functions
+ * ------------------------------------------------------------------------- */
+
+/* Determines if the file contains distributed link tracking data
+ * Returns 1 if the file contains such data, 0 if not or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_has_distributed_link_tracking_data(
+     liblnk_file_t *file,
+     liblnk_error_t **error );
+
+/* Retrieves the size of the UTF-8 encoded local path
+ * The size includes the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_utf8_machine_identifier_size(
+     liblnk_file_t *file,
+     size_t *utf8_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the UTF-8 encoded local path
+ * The size should include the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_utf8_machine_identifier(
+     liblnk_file_t *file,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the size of the UTF-16 encoded local path
+ * The size includes the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_utf16_machine_identifier_size(
+     liblnk_file_t *file,
+     size_t *utf16_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the UTF-16 encoded local path
+ * The size should include the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_utf16_machine_identifier(
+     liblnk_file_t *file,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the droid volume identifier
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_droid_volume_identifier(
+     liblnk_file_t *file,
+     uint8_t *guid,
+     size_t size,
+     liblnk_error_t **error );
+
+/* Retrieves the droid file identifier
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_droid_file_identifier(
+     liblnk_file_t *file,
+     uint8_t *guid,
+     size_t size,
+     liblnk_error_t **error );
+
+/* Retrieves the birth droid volume identifier
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_birth_droid_volume_identifier(
+     liblnk_file_t *file,
+     uint8_t *guid,
+     size_t size,
+     liblnk_error_t **error );
+
+/* Retrieves the birth droid file identifier
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_birth_droid_file_identifier(
+     liblnk_file_t *file,
+     uint8_t *guid,
+     size_t size,
      liblnk_error_t **error );
 
 #if defined( __cplusplus )

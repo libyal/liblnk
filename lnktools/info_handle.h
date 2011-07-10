@@ -82,13 +82,36 @@ int info_handle_close(
      info_handle_t *info_handle,
      liberror_error_t **error );
 
+int info_handle_data_flags_fprint(
+     info_handle_t *info_handle,
+     liberror_error_t **error );
+
 int info_handle_link_target_identifier_fprint(
      info_handle_t *info_handle,
      liberror_error_t **error );
 
 int info_handle_description_fprint(
      info_handle_t *info_handle,
-     uint32_t data_flags,
+     liberror_error_t **error );
+
+int info_handle_relative_path_fprint(
+     info_handle_t *info_handle,
+     liberror_error_t **error );
+
+int info_handle_working_directory_fprint(
+     info_handle_t *info_handle,
+     liberror_error_t **error );
+
+int info_handle_command_line_arguments_fprint(
+     info_handle_t *info_handle,
+     liberror_error_t **error );
+
+int info_handle_icon_location_fprint(
+     info_handle_t *info_handle,
+     liberror_error_t **error );
+
+int info_handle_distributed_link_tracking_fprint(
+     info_handle_t *info_handle,
      liberror_error_t **error );
 
 int info_handle_file_fprint(

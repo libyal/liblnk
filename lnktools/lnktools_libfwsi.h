@@ -1,5 +1,5 @@
 /*
- * The internal libfdatetime header
+ * The libfwsi header wrapper
  *
  * Copyright (c) 2009-2011, Joachim Metz <jbmetz@users.sourceforge.net>
  *
@@ -19,35 +19,33 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LNKTOOLS_LIBFDATETIME_H )
-#define _LNKTOOLS_LIBFDATETIME_H
+#if !defined( _LNKTOOLS_LIBFWSI_H )
+#define _LNKTOOLS_LIBFWSI_H
 
 #include <common.h>
 
-/* Define HAVE_LOCAL_LIBFDATETIME for local use of libfdatetime
+/* Define HAVE_LOCAL_LIBFWSI for local use of libfwsi
  */
-#if defined( HAVE_LOCAL_LIBFDATETIME )
+#if defined( HAVE_LOCAL_LIBFWSI )
 
-#include <libfdatetime_date_time_values.h>
-#include <libfdatetime_definitions.h>
-#include <libfdatetime_fat_date_time.h>
-#include <libfdatetime_filetime.h>
-#include <libfdatetime_nsf_timedate.h>
-#include <libfdatetime_types.h>
+#include <libfwsi_definitions.h>
+#include <libfwsi_folder_identifier.h>
+#include <libfwsi_item.h>
+#include <libfwsi_types.h>
 
-#elif defined( HAVE_LIBFDATETIME_H )
+#elif defined( HAVE_LIBFWSI_H )
 
-/* If libtool DLL support is enabled set LIBFDATETIME_DLL_IMPORT
- * before including libfdatetime.h
+/* If libtool DLL support is enabled set LIBFWSI_DLL_IMPORT
+ * before including libfwsi.h
  */
 #if defined( _WIN32 ) && defined( DLL_IMPORT )
-#define LIBFDATETIME_DLL_IMPORT
+#define LIBFWSI_DLL_IMPORT
 #endif
 
-#include <libfdatetime.h>
+#include <libfwsi.h>
 
 #else
-#error Missing libfdatetime.h
+#error Missing libfwsi.h
 #endif
 
 #endif

@@ -1,5 +1,5 @@
 /*
- * Input/Output (IO) handle
+ * Data block functions
  *
  * Copyright (c) 2009-2011, Joachim Metz <jbmetz@users.sourceforge.net>
  *
@@ -19,58 +19,51 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_IO_HANDLE_H )
-#define _LIBLNK_IO_HANDLE_H
+#if !defined( _LIBLNK_DATA_BLOCK_H )
+#define _LIBLNK_DATA_BLOCK_H
 
 #include <common.h>
 #include <types.h>
 
 #include <liberror.h>
 
-#include "liblnk_file_information.h"
+#include "liblnk_io_handle.h"
 #include "liblnk_libbfio.h"
 
 #if defined( __cplusplus )
 extern "C" {
 #endif
 
-extern const uint8_t lnk_file_class_identifier[ 16 ];
+typedef struct liblnk_data_block liblnk_data_block_t;
 
-typedef struct liblnk_io_handle liblnk_io_handle_t;
-
-struct liblnk_io_handle
+struct liblnk_data_block
 {
-	/* The file size
+	/* The signature
 	 */
-	size64_t file_size;
+	uint32_t signature;
 
-	/* The data flags
+	/* The data
 	 */
-	uint32_t data_flags;
+	uint8_t *data;
 
-	/* The codepage of the extended ASCII strings
+	/* The data size
 	 */
-	int ascii_codepage;
-
-	/* Value to indicate if abort was signalled
-	 */
-	int abort;
+	size_t data_size;
 };
 
-int liblnk_io_handle_initialize(
-     liblnk_io_handle_t **io_handle,
+int liblnk_data_block_initialize(
+     liblnk_data_block_t **data_block,
      liberror_error_t **error );
 
-int liblnk_io_handle_free(
-     liblnk_io_handle_t **io_handle,
+int liblnk_data_block_free(
+     liblnk_data_block_t **data_block,
      liberror_error_t **error );
 
-ssize_t liblnk_io_handle_read_file_header(
+ssize_t liblnk_data_block_read(
+         liblnk_data_block_t *data_block,
          liblnk_io_handle_t *io_handle,
-         libbfio_handle_t *file_io_handle,
-         uint8_t *class_identifier,
-         size_t class_identifier_size,
-         liblnk_file_information_t *file_information,
+         libbfio_handle_t *data_block_io_handle,
+         off64_t data_block_offset,
          liberror_error_t **error );
 
 #if defined( __cplusplus )

@@ -220,6 +220,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lnktools\lnktools_libfguid.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lnktools\lnktools_libfwsi.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lnktools\lnktools_liblnk.h"
 				>
 			</File>

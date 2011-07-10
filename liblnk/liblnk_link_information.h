@@ -258,6 +258,32 @@ int liblnk_file_get_utf16_icon_location(
      size_t utf16_string_size,
      liberror_error_t **error );
 
+LIBLNK_EXTERN \
+int liblnk_file_get_utf8_environment_variables_location_size(
+     liblnk_file_t *file,
+     size_t *utf8_string_size,
+     liberror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_file_get_utf8_environment_variables_location(
+     liblnk_file_t *file,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liberror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_file_get_utf16_environment_variables_location_size(
+     liblnk_file_t *file,
+     size_t *utf16_string_size,
+     liberror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_file_get_utf16_environment_variables_location(
+     liblnk_file_t *file,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liberror_error_t **error );
+
 #if defined( __cplusplus )
 }
 #endif

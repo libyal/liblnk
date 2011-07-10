@@ -24,14 +24,12 @@
 #include <types.h>
 
 #include <liberror.h>
-#include <libnotify.h>
 
 #include "liblnk_definitions.h"
 #include "liblnk_file.h"
 #include "liblnk_file_information.h"
 #include "liblnk_libuna.h"
 #include "liblnk_location_information.h"
-#include "liblnk_shell_item_identifiers_list.h"
 
 /* Retrieves the data flags
  * The data flags contain information about the available link information
@@ -1578,7 +1576,6 @@ int liblnk_file_get_utf16_network_path(
 
 /* Retrieves the size of the UTF-8 encoded description
  * The size includes the end of string character
- * The description is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf8_description_size(
@@ -1613,7 +1610,7 @@ int liblnk_file_get_utf8_description_size(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) == 0 )
+	if( internal_file->description == NULL )
 	{
 		return( 0 );
 	}
@@ -1637,7 +1634,6 @@ int liblnk_file_get_utf8_description_size(
 
 /* Retrieves the UTF-8 encoded description
  * The size should include the end of string character
- * The description is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf8_description(
@@ -1673,7 +1669,7 @@ int liblnk_file_get_utf8_description(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) == 0 )
+	if( internal_file->description == NULL )
 	{
 		return( 0 );
 	}
@@ -1698,7 +1694,6 @@ int liblnk_file_get_utf8_description(
 
 /* Retrieves the size of the UTF-16 encoded description
  * The size includes the end of string character
- * The description is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf16_description_size(
@@ -1733,7 +1728,7 @@ int liblnk_file_get_utf16_description_size(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) == 0 )
+	if( internal_file->description == NULL )
 	{
 		return( 0 );
 	}
@@ -1757,7 +1752,6 @@ int liblnk_file_get_utf16_description_size(
 
 /* Retrieves the UTF-16 encoded description
  * The size should include the end of string character
- * The description is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf16_description(
@@ -1793,7 +1787,7 @@ int liblnk_file_get_utf16_description(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) == 0 )
+	if( internal_file->description == NULL )
 	{
 		return( 0 );
 	}
@@ -1818,7 +1812,6 @@ int liblnk_file_get_utf16_description(
 
 /* Retrieves the size of the UTF-8 encoded relative path
  * The size includes the end of string character
- * The relative path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf8_relative_path_size(
@@ -1853,7 +1846,7 @@ int liblnk_file_get_utf8_relative_path_size(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) == 0 )
+	if( internal_file->relative_path == NULL )
 	{
 		return( 0 );
 	}
@@ -1877,7 +1870,6 @@ int liblnk_file_get_utf8_relative_path_size(
 
 /* Retrieves the UTF-8 encoded relative path
  * The size should include the end of string character
- * The relative path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf8_relative_path(
@@ -1913,7 +1905,7 @@ int liblnk_file_get_utf8_relative_path(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) == 0 )
+	if( internal_file->relative_path == NULL )
 	{
 		return( 0 );
 	}
@@ -1938,7 +1930,6 @@ int liblnk_file_get_utf8_relative_path(
 
 /* Retrieves the size of the UTF-16 encoded relative path
  * The size includes the end of string character
- * The relative path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf16_relative_path_size(
@@ -1973,7 +1964,7 @@ int liblnk_file_get_utf16_relative_path_size(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) == 0 )
+	if( internal_file->relative_path == NULL )
 	{
 		return( 0 );
 	}
@@ -1997,7 +1988,6 @@ int liblnk_file_get_utf16_relative_path_size(
 
 /* Retrieves the UTF-16 encoded relative path
  * The size should include the end of string character
- * The relative path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf16_relative_path(
@@ -2033,7 +2023,7 @@ int liblnk_file_get_utf16_relative_path(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) == 0 )
+	if( internal_file->relative_path == NULL )
 	{
 		return( 0 );
 	}
@@ -2058,7 +2048,6 @@ int liblnk_file_get_utf16_relative_path(
 
 /* Retrieves the size of the UTF-8 encoded working directory
  * The size includes the end of string character
- * The working directory is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf8_working_directory_size(
@@ -2093,7 +2082,7 @@ int liblnk_file_get_utf8_working_directory_size(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) == 0 )
+	if( internal_file->working_directory == NULL )
 	{
 		return( 0 );
 	}
@@ -2117,7 +2106,6 @@ int liblnk_file_get_utf8_working_directory_size(
 
 /* Retrieves the UTF-8 encoded working directory
  * The size should include the end of string character
- * The working directory is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf8_working_directory(
@@ -2153,7 +2141,7 @@ int liblnk_file_get_utf8_working_directory(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) == 0 )
+	if( internal_file->working_directory == NULL )
 	{
 		return( 0 );
 	}
@@ -2178,7 +2166,6 @@ int liblnk_file_get_utf8_working_directory(
 
 /* Retrieves the size of the UTF-16 encoded working directory
  * The size includes the end of string character
- * The working directory is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf16_working_directory_size(
@@ -2213,7 +2200,7 @@ int liblnk_file_get_utf16_working_directory_size(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) == 0 )
+	if( internal_file->working_directory == NULL )
 	{
 		return( 0 );
 	}
@@ -2237,7 +2224,6 @@ int liblnk_file_get_utf16_working_directory_size(
 
 /* Retrieves the UTF-16 encoded working directory
  * The size should include the end of string character
- * The working directory is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf16_working_directory(
@@ -2273,7 +2259,7 @@ int liblnk_file_get_utf16_working_directory(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) == 0 )
+	if( internal_file->working_directory == NULL )
 	{
 		return( 0 );
 	}
@@ -2298,7 +2284,6 @@ int liblnk_file_get_utf16_working_directory(
 
 /* Retrieves the size of the UTF-8 encoded command line arguments
  * The size includes the end of string character
- * The command line arguments is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf8_command_line_arguments_size(
@@ -2333,7 +2318,7 @@ int liblnk_file_get_utf8_command_line_arguments_size(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) == 0 )
+	if( internal_file->command_line_arguments == NULL )
 	{
 		return( 0 );
 	}
@@ -2357,7 +2342,6 @@ int liblnk_file_get_utf8_command_line_arguments_size(
 
 /* Retrieves the UTF-8 encoded command line arguments
  * The size should include the end of string character
- * The command line arguments is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf8_command_line_arguments(
@@ -2393,7 +2377,7 @@ int liblnk_file_get_utf8_command_line_arguments(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) == 0 )
+	if( internal_file->command_line_arguments == NULL )
 	{
 		return( 0 );
 	}
@@ -2418,7 +2402,6 @@ int liblnk_file_get_utf8_command_line_arguments(
 
 /* Retrieves the size of the UTF-16 encoded command line arguments
  * The size includes the end of string character
- * The command line arguments is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf16_command_line_arguments_size(
@@ -2453,7 +2436,7 @@ int liblnk_file_get_utf16_command_line_arguments_size(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) == 0 )
+	if( internal_file->command_line_arguments == NULL )
 	{
 		return( 0 );
 	}
@@ -2477,7 +2460,6 @@ int liblnk_file_get_utf16_command_line_arguments_size(
 
 /* Retrieves the UTF-16 encoded command line arguments
  * The size should include the end of string character
- * The command line arguments is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf16_command_line_arguments(
@@ -2513,7 +2495,7 @@ int liblnk_file_get_utf16_command_line_arguments(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) == 0 )
+	if( internal_file->command_line_arguments == NULL )
 	{
 		return( 0 );
 	}
@@ -2538,7 +2520,6 @@ int liblnk_file_get_utf16_command_line_arguments(
 
 /* Retrieves the size of the UTF-8 encoded icon location
  * The size includes the end of string character
- * The icon location is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf8_icon_location_size(
@@ -2573,7 +2554,7 @@ int liblnk_file_get_utf8_icon_location_size(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) == 0 )
+	if( internal_file->icon_location == NULL )
 	{
 		return( 0 );
 	}
@@ -2597,7 +2578,6 @@ int liblnk_file_get_utf8_icon_location_size(
 
 /* Retrieves the UTF-8 encoded icon location
  * The size should include the end of string character
- * The icon location is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf8_icon_location(
@@ -2633,7 +2613,7 @@ int liblnk_file_get_utf8_icon_location(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) == 0 )
+	if( internal_file->icon_location == NULL )
 	{
 		return( 0 );
 	}
@@ -2658,7 +2638,6 @@ int liblnk_file_get_utf8_icon_location(
 
 /* Retrieves the size of the UTF-16 encoded icon location
  * The size includes the end of string character
- * The icon location is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf16_icon_location_size(
@@ -2693,7 +2672,7 @@ int liblnk_file_get_utf16_icon_location_size(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) == 0 )
+	if( internal_file->icon_location == NULL )
 	{
 		return( 0 );
 	}
@@ -2717,7 +2696,6 @@ int liblnk_file_get_utf16_icon_location_size(
 
 /* Retrieves the UTF-16 encoded icon location
  * The size should include the end of string character
- * The icon location is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_utf16_icon_location(
@@ -2753,12 +2731,248 @@ int liblnk_file_get_utf16_icon_location(
 
 		return( -1 );
 	}
-	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) == 0 )
+	if( internal_file->icon_location == NULL )
 	{
 		return( 0 );
 	}
 	if( liblnk_data_string_get_utf16_string(
 	     internal_file->icon_location,
+	     internal_file->io_handle->ascii_codepage,
+	     utf16_string,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-16 data string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-8 encoded environment variables location
+ * The size includes the end of string character
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf8_environment_variables_location_size(
+     liblnk_file_t *file,
+     size_t *utf8_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf8_environment_variables_location_size";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->environment_variables_location == NULL )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf8_string_size(
+	     internal_file->environment_variables_location,
+	     internal_file->io_handle->ascii_codepage,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-8 data string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-8 encoded environment variables location
+ * The size should include the end of string character
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf8_environment_variables_location(
+     liblnk_file_t *file,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf8_environment_variables_location";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->environment_variables_location == NULL )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf8_string(
+	     internal_file->environment_variables_location,
+	     internal_file->io_handle->ascii_codepage,
+	     utf8_string,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-8 data string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-16 encoded environment variables location
+ * The size includes the end of string character
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf16_environment_variables_location_size(
+     liblnk_file_t *file,
+     size_t *utf16_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf16_environment_variables_location_size";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->environment_variables_location == NULL )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf16_string_size(
+	     internal_file->environment_variables_location,
+	     internal_file->io_handle->ascii_codepage,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-16 data string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-16 encoded environment variables location
+ * The size should include the end of string character
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_utf16_environment_variables_location(
+     liblnk_file_t *file,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_utf16_environment_variables_location";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->environment_variables_location == NULL )
+	{
+		return( 0 );
+	}
+	if( liblnk_data_string_get_utf16_string(
+	     internal_file->environment_variables_location,
 	     internal_file->io_handle->ascii_codepage,
 	     utf16_string,
 	     utf16_string_size,

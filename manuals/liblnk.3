@@ -1,4 +1,4 @@
-.Dd July 7, 2011
+.Dd July 10, 2011
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -144,6 +144,34 @@ Link information functions
 .Fn liblnk_file_get_utf16_icon_location_size "liblnk_file_t *file, size_t *utf16_string_size, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_get_utf16_icon_location "liblnk_file_t *file, uint16_t *utf16_string, size_t utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_environment_variables_location_size "liblnk_file_t *file, size_t *utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_environment_variables_location "liblnk_file_t *file, uint8_t *utf8_string, size_t utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_environment_variables_location_size "liblnk_file_t *file, size_t *utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_environment_variables_location "liblnk_file_t *file, uint16_t *utf16_string, size_t utf16_string_size, liblnk_error_t **error"
+.Pp
+Distributed link tracking data functions
+.Ft int
+.Fn liblnk_file_has_distributed_link_tracking_data "liblnk_file_t *file, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_machine_identifier_size "liblnk_file_t *file, size_t *utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_machine_identifier "liblnk_file_t *file, uint8_t *utf8_string, size_t utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_machine_identifier_size "liblnk_file_t *file, size_t *utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_machine_identifier "liblnk_file_t *file, uint16_t *utf16_string, size_t utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_droid_volume_identifier "liblnk_file_t *file, uint8_t *guid, size_t size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_droid_file_identifier "liblnk_file_t *file, uint8_t *guid, size_t size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_birth_droid_volume_identifier "liblnk_file_t *file, uint8_t *guid, size_t size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_birth_droid_file_identifier "liblnk_file_t *file, uint8_t *guid, size_t size, liblnk_error_t **error"
 .Sh DESCRIPTION
 The
 .Fn liblnk_get_version
@@ -155,27 +183,26 @@ None
 .Sh FILES
 None
 .Sh NOTES
-liblnk uses UTF-8 encoded strings except for filenames.
-
-ASCII strings in a LNK file contain an extended ASCII string using the codepage of the system it was created on. The function
+Internally liblnk uses both ASCII and Unicode (UTF-16 little-endian) strings, as stored in the LNK file. ASCII strings in a LNK file contain an extended ASCII string using the codepage of the system it was created on. The function
 .Ar liblnk_set_ascii_codepage
- allows to set the required codepage for reading and writing. The default codepage is ASCII and replaces all extended characters to the Unicode replacement character (U+fffd) when reading and the ASCII substitude character (0x1a) when writing.
+ allows to set the required codepage for reading and writing. The default codepage is Windows 1252. Unsupported extended characters are replaced to the Unicode replacement character (U+fffd) when reading and the ASCII substitude character (0x1a) when writing.
 
-liblnk allows to be compiled with wide character support.
+Liblnk uses either the system specific narrow or wide character strings for filenames.
 To compile liblnk with wide character support use
 .Ar ./configure --enable-wide-character-type=yes
-or pass the definition
+ or on Windows define
+.Ar WINAPI
+ and either
 .Ar _UNICODE
  or
 .Ar UNICODE
- to the compiler (i.e. in case of Microsoft Visual Studio (MSVS) C++).
 
 To have other code to determine if liblnk was compiled with wide character support it defines
 .Ar LIBLNK_HAVE_WIDE_CHARACTER_TYPE
  in liblnk/features.h.
 
 liblnk allows to be compiled with chained IO support using libbfio.
-liblnk will automatically detect if a compatible version of libbfio is available.
+The liblnk configure script will automatically detect if a compatible version of libbfio is available.
 
 To have other code to determine if liblnk was compiled with libbfio support it defines
 .Ar LIBLNK_HAVE_BFIO

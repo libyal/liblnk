@@ -163,6 +163,17 @@ ssize_t liblnk_data_string_read(
 
 		return( -1 );
 	}
+	if( data_string->data != NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid data string - data already set.",
+		 function );
+
+		return( -1 );
+	}
 	if( io_handle == NULL )
 	{
 		liberror_error_set(
@@ -235,7 +246,7 @@ ssize_t liblnk_data_string_read(
 	if( libnotify_verbose != 0 )
 	{
 		libnotify_printf(
-		 "%s: data string size\t: %" PRIzd "\n",
+		 "%s: data string size\t\t\t\t: %" PRIzd "\n",
 		 function,
 		 data_string->data_size );
 	}
@@ -419,7 +430,7 @@ ssize_t liblnk_data_string_read(
 			goto on_error;
 		}
 		libnotify_printf(
-		 "%s: data string\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "%s: data string\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
 		 function,
 		 value_string );
 

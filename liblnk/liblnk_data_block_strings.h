@@ -1,5 +1,5 @@
 /*
- * The internal libfdatetime header
+ * Data block strings functions
  *
  * Copyright (c) 2009-2011, Joachim Metz <jbmetz@users.sourceforge.net>
  *
@@ -9,45 +9,40 @@
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public License
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LNKTOOLS_LIBFDATETIME_H )
-#define _LNKTOOLS_LIBFDATETIME_H
+#if !defined( _LIBLNK_DATA_BLOCK_STRINGS_H )
+#define _LIBLNK_DATA_BLOCK_STRINGS_H
 
 #include <common.h>
+#include <types.h>
 
-/* Define HAVE_LOCAL_LIBFDATETIME for local use of libfdatetime
- */
-#if defined( HAVE_LOCAL_LIBFDATETIME )
+#include <liberror.h>
 
-#include <libfdatetime_date_time_values.h>
-#include <libfdatetime_definitions.h>
-#include <libfdatetime_fat_date_time.h>
-#include <libfdatetime_filetime.h>
-#include <libfdatetime_nsf_timedate.h>
-#include <libfdatetime_types.h>
+#include "liblnk_data_block.h"
+#include "liblnk_data_string.h"
+#include "liblnk_io_handle.h"
 
-#elif defined( HAVE_LIBFDATETIME_H )
-
-/* If libtool DLL support is enabled set LIBFDATETIME_DLL_IMPORT
- * before including libfdatetime.h
- */
-#if defined( _WIN32 ) && defined( DLL_IMPORT )
-#define LIBFDATETIME_DLL_IMPORT
+#if defined( __cplusplus )
+extern "C" {
 #endif
 
-#include <libfdatetime.h>
+int liblnk_data_block_strings_read(
+     liblnk_data_string_t *data_string,
+     liblnk_data_block_t *data_block,
+     liblnk_io_handle_t *io_handle,
+     liberror_error_t **error );
 
-#else
-#error Missing libfdatetime.h
+#if defined( __cplusplus )
+}
 #endif
 
 #endif

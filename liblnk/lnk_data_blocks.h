@@ -29,25 +29,27 @@
 extern "C" {
 #endif
 
-typedef struct lnk_data_block_environment_variables_location lnk_data_block_environment_variables_location_t;
+typedef struct lnk_data_block_strings lnk_data_block_strings_t;
 
-struct lnk_data_block_environment_variables_location
+struct lnk_data_block_strings
 {
 	/* The signature
 	 * Consists of 4 bytes
-	 * Contains: 0xa0000001
+	 * Contains: 0xa0000001 (for the environment variables properties)
+	 *           0xa0000006 (for the darwin properties)
+	 *           0xa0000007 (for the icon location)
 	 */
 	uint8_t signature[ 4 ];
 
-	/* The environment variables location
+	/* The string
 	 * Consists of 260 bytes
 	 */
-	uint8_t environment_variables_location[ 260 ];
+	uint8_t string[ 260 ];
 
-	/* The Unicode environment variables location
+	/* The Unicode string
 	 * Consists of 520 bytes
 	 */
-	uint8_t unicode_environment_variables_location[ 520 ];
+	uint8_t unicode_string[ 520 ];
 };
 
 typedef struct lnk_data_block_console_properties lnk_data_block_console_properties_t;
@@ -123,57 +125,15 @@ struct lnk_data_block_special_folder_location
 	 */
 	uint8_t signature[ 4 ];
 
-	/* The special folder identifier
+	/* The folder identifier
 	 * Consists of 4 bytes
 	 */
-	uint8_t special_folder_identifier[ 4 ];
+	uint8_t folder_identifier[ 4 ];
 
 	/* The first child segment offset
 	 * Consists of 4 bytes
 	 */
 	uint8_t first_child_segment_offset[ 4 ];
-};
-
-typedef struct lnk_data_block_darwin_properties lnk_data_block_darwin_properties_t;
-
-struct lnk_data_block_darwin_properties
-{
-	/* The signature
-	 * Consists of 4 bytes
-	 * Contains: 0xa0000006
-	 */
-	uint8_t signature[ 4 ];
-
-	/* The Darwin application identifier
-	 * Consists of 260 bytes
-	 */
-	uint8_t darwin_applicaton_identifier[ 260 ];
-
-	/* The Unicode application identifier
-	 * Consists of 520 bytes
-	 */
-	uint8_t unicode_darwin_applicaton_identifier[ 520 ];
-};
-
-typedef struct lnk_data_block_icon_location lnk_data_block_icon_location_t;
-
-struct lnk_data_block_icon_location
-{
-	/* The signature
-	 * Consists of 4 bytes
-	 * Contains: 0xa0000007
-	 */
-	uint8_t signature[ 4 ];
-
-	/* The icon location
-	 * Consists of 260 bytes
-	 */
-	uint8_t icon_location[ 260 ];
-
-	/* The Unicode icon location
-	 * Consists of 520 bytes
-	 */
-	uint8_t unicode_icon_location[ 520 ];
 };
 
 typedef struct lnk_data_block_known_folder_location lnk_data_block_known_folder_location_t;
@@ -182,15 +142,15 @@ struct lnk_data_block_known_folder_location
 {
 	/* The signature
 	 * Consists of 4 bytes
-	 * Contains: 0xa0000005
+	 * Contains: 0xa000000b
 	 */
 	uint8_t signature[ 4 ];
 
-	/* The known folder identifier
+	/* The folder identifier
 	 * Consists of 16 bytes
 	 * Contains a GUID
 	 */
-	uint8_t known_folder_identifier[ 16 ];
+	uint8_t folder_identifier[ 16 ];
 
 	/* The first child segment offset
 	 * Consists of 4 bytes

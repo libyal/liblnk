@@ -168,11 +168,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\liblnk\liblnk_data_block.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\liblnk\liblnk_data_block_strings.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\liblnk\liblnk_data_string.c"
 				>
 			</File>
 			<File
 				RelativePath="..\..\liblnk\liblnk_debug.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\liblnk\liblnk_distributed_link_tracker.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\liblnk\liblnk_distributed_link_tracker_properties.c"
 				>
 			</File>
 			<File
@@ -208,6 +224,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\liblnk\liblnk_special_folder_location.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\liblnk\liblnk_support.c"
 				>
 			</File>
@@ -222,6 +242,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\liblnk\liblnk_data_block.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\liblnk\liblnk_data_block_strings.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\liblnk\liblnk_data_string.h"
 				>
 			</File>
@@ -231,6 +259,14 @@
 			</File>
 			<File
 				RelativePath="..\..\liblnk\liblnk_definitions.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\liblnk\liblnk_distributed_link_tracker.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\liblnk\liblnk_distributed_link_tracker_properties.h"
 				>
 			</File>
 			<File
@@ -287,6 +323,10 @@
 			</File>
 			<File
 				RelativePath="..\..\liblnk\liblnk_shell_item_identifiers_list.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\liblnk\liblnk_special_folder_location.h"
 				>
 			</File>
 			<File

@@ -1,6 +1,11 @@
 TODO
 * what about trailing data in xp lnk files ?
 
+Checks
+* compare environment variables string and unicode string
+* compare icon location data string, string and unicode string
+  - data string not necessary equal to string in data block, due to expansion of %VAR%
+
 Refactor
 * volume information read into separate subfunction
 * network share information read into separate subfunction
@@ -25,10 +30,8 @@ Library
 API
 * add functions
   - for shell item
-  - for description, relative path, working directory, command_line_arguments,
-  icon location
-  - for environment variables
-  - for distributed link tracker
+  - for icon location block ?
+  - for special and/or known folder identifier
 
 Release:
 * check TODOs
@@ -43,10 +46,15 @@ Bindings:
 * .net
 * java
 
+20110710
+* worked on more API functions
+* refactored data blocks to separate files
+
 20110707
 * added detailed version information
 * updated msvscpp files, added VSDebug
 * code clean up
+* worked on more API functions
 
 20110706
 * updated README.mingw

@@ -1,5 +1,5 @@
 /*
- * Input/Output (IO) handle
+ * Known folder location functions
  *
  * Copyright (c) 2009-2011, Joachim Metz <jbmetz@users.sourceforge.net>
  *
@@ -19,59 +19,45 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_IO_HANDLE_H )
-#define _LIBLNK_IO_HANDLE_H
+#if !defined( _LIBLNK_KNOWN_FOLDER_LOCATION_H )
+#define _LIBLNK_KNOWN_FOLDER_LOCATION_H
 
 #include <common.h>
 #include <types.h>
 
 #include <liberror.h>
 
-#include "liblnk_file_information.h"
-#include "liblnk_libbfio.h"
+#include "liblnk_data_block.h"
 
 #if defined( __cplusplus )
 extern "C" {
 #endif
 
-extern const uint8_t lnk_file_class_identifier[ 16 ];
+typedef struct liblnk_known_folder_location liblnk_known_folder_location_t;
 
-typedef struct liblnk_io_handle liblnk_io_handle_t;
-
-struct liblnk_io_handle
+struct liblnk_known_folder_location
 {
-	/* The file size
+	/* The folder identifier
 	 */
-	size64_t file_size;
+	uint8_t folder_identifier[ 16 ];
 
-	/* The data flags
+	/* The first child segment offset
 	 */
-	uint32_t data_flags;
-
-	/* The codepage of the extended ASCII strings
-	 */
-	int ascii_codepage;
-
-	/* Value to indicate if abort was signalled
-	 */
-	int abort;
+	uint32_t first_child_segment_offset;
 };
 
-int liblnk_io_handle_initialize(
-     liblnk_io_handle_t **io_handle,
+int liblnk_known_folder_location_initialize(
+     liblnk_known_folder_location_t **known_folder_location,
      liberror_error_t **error );
 
-int liblnk_io_handle_free(
-     liblnk_io_handle_t **io_handle,
+int liblnk_known_folder_location_free(
+     liblnk_known_folder_location_t **known_folder_location,
      liberror_error_t **error );
 
-ssize_t liblnk_io_handle_read_file_header(
-         liblnk_io_handle_t *io_handle,
-         libbfio_handle_t *file_io_handle,
-         uint8_t *class_identifier,
-         size_t class_identifier_size,
-         liblnk_file_information_t *file_information,
-         liberror_error_t **error );
+int liblnk_known_folder_location_read(
+     liblnk_known_folder_location_t *known_folder_location,
+     liblnk_data_block_t *data_block,
+     liberror_error_t **error );
 
 #if defined( __cplusplus )
 }

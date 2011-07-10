@@ -23,6 +23,8 @@ lnkinfo_SOURCES = \
 	lnkinput.c lnkinput.h \
 	lnkoutput.c lnkoutput.h \
 	lnktools_libfdatetime.h \
+	lnktools_libfguid.h \
+	lnktools_libfwsi.h \
 	lnktools_liblnk.h
 
 lnkinfo_LDADD  = \
@@ -30,6 +32,8 @@ lnkinfo_LDADD  = \
 	../liblnk/liblnk.la \
 	../libsystem/libsystem.la \
 	@LIBFDATETIME_LIBADD@ \
+	@LIBFGUID_LIBADD@ \
+	@LIBFWSI_LIBADD@ \
 	@LIBINTL@ \
 	@MEMWATCH_LIBADD@
 

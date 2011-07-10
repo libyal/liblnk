@@ -28,18 +28,22 @@
 #include <liberror.h>
 
 #include "liblnk_data_string.h"
+#include "liblnk_distributed_link_tracker_properties.h"
 #include "liblnk_extern.h"
 #include "liblnk_file_information.h"
 #include "liblnk_io_handle.h"
+#include "liblnk_known_folder_location.h"
 #include "liblnk_libbfio.h"
 #include "liblnk_location_information.h"
 #include "liblnk_shell_item_identifiers_list.h"
+#include "liblnk_special_folder_location.h"
 
 #if defined( _MSC_VER ) || defined( __BORLANDC__ ) || defined( __MINGW32_VERSION ) || defined( __MINGW64_VERSION_MAJOR )
 
 /* This inclusion is needed otherwise some linkers
  * mess up exporting all functions
  */
+#include "liblnk_distributed_link_tracker.h"
 #include "liblnk_link_information.h"
 #endif
 
@@ -99,6 +103,26 @@ struct liblnk_internal_file
 	/* The icon location
 	 */
 	liblnk_data_string_t *icon_location;
+
+	/* The environment variables location
+	 */
+	liblnk_data_string_t *environment_variables_location;
+
+	/* The darwin application identifier
+	 */
+	liblnk_data_string_t *darwin_application_identifier;
+
+	/* The special folder location
+	 */
+	liblnk_special_folder_location_t *special_folder_location;
+
+	/* The known folder location
+	 */
+	liblnk_known_folder_location_t *known_folder_location;
+
+	/* The distributed link tracker properties
+	 */
+	liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties;
 };
 
 LIBLNK_EXTERN \
