@@ -208,6 +208,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\liblnk\liblnk_known_folder_location.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\liblnk\liblnk_link_information.c"
 				>
 			</File>
@@ -287,6 +291,10 @@
 			</File>
 			<File
 				RelativePath="..\..\liblnk\liblnk_io_handle.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\liblnk\liblnk_known_folder_location.h"
 				>
 			</File>
 			<File

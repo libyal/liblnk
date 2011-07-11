@@ -19,8 +19,8 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_DISTRIBUTED_LINK_TRACKER_H )
-#define _LIBLNK_DISTRIBUTED_LINK_TRACKER_H
+#if !defined( _LIBLNK_DISTRIBUTED_LINK_TRACKER_PROPERTIES_H )
+#define _LIBLNK_DISTRIBUTED_LINK_TRACKER_PROPERTIES_H
 
 #include <common.h>
 #include <types.h>

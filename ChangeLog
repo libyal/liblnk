@@ -1,5 +1,7 @@
 TODO
 * what about trailing data in xp lnk files ?
+* what about shell items
+* what about ole properties
 
 Checks
 * compare environment variables string and unicode string
@@ -45,6 +47,11 @@ Bindings:
 * python
 * .net
 * java
+
+20110711
+* bug fix for WINAPI compilation, due to recent changes
+* updated msvscpp files
+* updated manuals
 
 20110710
 * worked on more API functions
