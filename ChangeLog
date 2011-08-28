@@ -48,6 +48,9 @@ Bindings:
 * .net
 * java
 
+20110828
+* updated configure.ac, common, libsystem, libbfio, 
+
 20110711
 * bug fix for WINAPI compilation, due to recent changes
 * updated msvscpp files
