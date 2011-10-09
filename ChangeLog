@@ -48,6 +48,12 @@ Bindings:
 * .net
 * java
 
+20111009
+* updated configure.ac and m4 files
+* updated common
+* updated libsystem, libuna, libbfio, libfdatetime
+* updated pc and spec file
+
 20110828
 * updated configure.ac, common, libsystem, libbfio, 
 

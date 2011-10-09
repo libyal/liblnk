@@ -1,10 +1,12 @@
 dnl Functions for libbfio
+dnl
+dnl Version: 20111004
 
 dnl Function to detect if libbfio is available
-AC_DEFUN([AC_CHECK_LIBBFIO],
+AC_DEFUN([AX_LIBBFIO_CHECK_LIB],
  [dnl Check if parameters were provided
  AS_IF(
-  [test x"$ac_cv_with_libbfio" != x && test "x$ac_cv_with_libbfio" != xno && test "x$ac_cv_with_libbfio" != xauto-detect],
+  [test "x$ac_cv_with_libbfio" != x && test "x$ac_cv_with_libbfio" != xno && test "x$ac_cv_with_libbfio" != xauto-detect],
   [AS_IF(
    [test -d "$ac_cv_with_libbfio"],
    [CFLAGS="$CFLAGS -I${ac_cv_with_libbfio}/include"
@@ -14,7 +16,7 @@ AC_DEFUN([AC_CHECK_LIBBFIO],
   ])
 
  AS_IF(
-  [test x"$ac_cv_with_libbfio" != xno],
+  [test "x$ac_cv_with_libbfio" != xno],
   [dnl Check for headers
   AC_CHECK_HEADERS([libbfio.h])
  
@@ -25,7 +27,7 @@ AC_DEFUN([AC_CHECK_LIBBFIO],
    AC_CHECK_LIB(
     bfio,
     libbfio_get_version,
-    [],
+    [ac_cv_libbfio_dummy=yes],
     [ac_cv_libbfio=no])
   
    dnl Handle functions
@@ -229,6 +231,15 @@ AC_DEFUN([AC_CHECK_LIBBFIO],
 
  AS_IF(
   [test "x$ac_cv_libbfio" = xyes],
+  [AC_DEFINE(
+   [HAVE_LIBBFIO],
+   [1],
+   [Define to 1 if you have the `bfio' library (-lbfio).])
+  LIBS="-lbfio $LIBS"
+  ])
+
+ AS_IF(
+  [test "x$ac_cv_libbfio" = xyes],
   [AC_SUBST(
    [HAVE_LIBBFIO],
    [1]) ],
@@ -239,70 +250,64 @@ AC_DEFUN([AC_CHECK_LIBBFIO],
  ])
 
 dnl Function to detect if libbfio dependencies are available
-AC_DEFUN([AC_CHECK_LOCAL_LIBBFIO],
+AC_DEFUN([AX_LIBBFIO_CHECK_LOCAL],
  [dnl Headers included in libbfio/libbfio_file.c
  AC_CHECK_HEADERS([errno.h fcntl.h sys/stat.h unistd.h])
 
  dnl File input/output functions used in libbfio/libbfio_file.h
- AC_CHECK_FUNCS(
-  [close],
-  [],
+ AC_CHECK_FUNCS([close fstat ftruncate lseek open read stat write])
+
+ AS_IF(
+  [test "x$ac_cv_func_close" != xyes],
   [AC_MSG_FAILURE(
    [Missing function: close],
    [1])
   ])
  
- AC_CHECK_FUNCS(
-  [fstat],
-  [],
+ AS_IF(
+  [test "x$ac_cv_func_fstat" != xyes],
   [AC_MSG_FAILURE(
    [Missing function: fstat],
    [1])
   ])
  
- AC_CHECK_FUNCS(
-  [ftruncate],
-  [],
+ AS_IF(
+  [test "x$ac_cv_func_ftruncate" != xyes],
   [AC_MSG_FAILURE(
    [Missing function: ftruncate],
    [1])
   ])
  
- AC_CHECK_FUNCS(
-  [lseek],
-  [],
+ AS_IF(
+  [test "x$ac_cv_func_lseek" != xyes],
   [AC_MSG_FAILURE(
    [Missing function: lseek],
    [1])
   ])
  
- AC_CHECK_FUNCS(
-  [open],
-  [],
+ AS_IF(
+  [test "x$ac_cv_func_open" != xyes],
   [AC_MSG_FAILURE(
    [Missing function: open],
    [1])
   ])
  
- AC_CHECK_FUNCS(
-  [read],
-  [],
+ AS_IF(
+  [test "x$ac_cv_func_read" != xyes],
   [AC_MSG_FAILURE(
    [Missing function: read],
    [1])
   ])
  
- AC_CHECK_FUNCS(
-  [stat],
-  [],
+ AS_IF(
+  [test "x$ac_cv_func_stat" != xyes],
   [AC_MSG_FAILURE(
    [Missing function: stat],
    [1])
   ])
  
- AC_CHECK_FUNCS(
-  [write],
-  [],
+ AS_IF(
+  [test "x$ac_cv_func_write" != xyes],
   [AC_MSG_FAILURE(
    [Missing function: write],
    [1])
@@ -313,13 +318,68 @@ AC_DEFUN([AC_CHECK_LOCAL_LIBBFIO],
 
  AS_IF(
   [test "x$ac_cv_have_decl_strerror_r" = xno],
-  [AC_CHECK_FUNCS(
-   [strerror],
-   [],
+  [AC_CHECK_FUNCS([strerror])
+
+  AS_IF(
+   [test "x$ac_cv_func_strerror" != xyes],
    [AC_MSG_FAILURE(
-    [Missing functions: strerror_r and strerror],
+    [Missing functions: strerror and strerror_r],
     [1])
    ])
+  ])
+ ])
+
+dnl Function to detect how to enable libbfio
+AC_DEFUN([AX_LIBBFIO_CHECK_ENABLE],
+ [AX_COMMON_ARG_WITH(
+  [libbfio],
+  [libbfio],
+  [search for libbfio in includedir and libdir or in the specified DIR, or no if to use local version],
+  [auto-detect],
+  [DIR])
+
+ AX_LIBBFIO_CHECK_LIB
+
+ AS_IF(
+  [test "x$ac_cv_libbfio" != xyes],
+  [AX_LIBBFIO_CHECK_LOCAL
+
+  AC_DEFINE(
+   [HAVE_LOCAL_LIBBFIO],
+   [1],
+   [Define to 1 if the local version of libbfio is used.])
+  AC_SUBST(
+   [HAVE_LOCAL_LIBBFIO],
+   [1])
+  AC_SUBST(
+   [LIBBFIO_CPPFLAGS],
+   [-I../libbfio])
+  AC_SUBST(
+   [LIBBFIO_LIBADD],
+   [../libbfio/libbfio.la])
+
+  ac_cv_libbfio=local
+  ])
+
+ AM_CONDITIONAL(
+  [HAVE_LOCAL_LIBBFIO],
+  [test "x$ac_cv_libbfio" = xlocal])
+
+ AS_IF(
+  [test "x$ac_cv_libbfio" = xyes],
+  [AC_SUBST(
+   [ax_libbfio_pc_libs_private],
+   [-lbfio])
+  ])
+
+ AS_IF(
+  [test "x$ac_cv_libbfio" = xyes],
+  [AC_SUBST(
+   [ax_libbfio_spec_requires],
+   [libbfio])
+  AC_SUBST(
+   [ax_libbfio_spec_build_requires],
+   [libbfio-devel])
   ])
  ])
 

@@ -7,8 +7,8 @@ License: LGPL
 Source: %{name}-%{version}.tar.gz
 URL: http://liblnk.sourceforge.net
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-@liblnk_spec_requires@ @liblnk_spec_requires_libbfio@ @liblnk_spec_requires_libfdatetime@ @liblnk_spec_requires_libfguid@ @liblnk_spec_requires_libfwsi@ @liblnk_spec_requires_libuna@
-@liblnk_spec_build_requires@ @liblnk_spec_build_requires_libbfio@ @liblnk_spec_build_requires_libfdatetime@ @liblnk_spec_build_requires_libfguid@ @liblnk_spec_build_requires_libfwsi@ @liblnk_spec_build_requires_libuna@
+@liblnk_spec_requires@ @ax_libbfio_spec_requires@ @ax_libfdatetime_spec_requires@ @ax_libfguid_spec_requires@ @ax_libfwsi_spec_requires@ @ax_libuna_spec_requires@
+@liblnk_spec_build_requires@ @ax_libbfio_spec_build_requires@ @ax_libfdatetime_spec_build_requires@ @ax_libfguid_spec_build_requires@ @ax_libfwsi_spec_build_requires@ @ax_libuna_spec_build_requires@
 
 %description
 liblnk is a library to support the Windows Shortcut File (LNK) format 
@@ -54,7 +54,7 @@ rm -rf ${RPM_BUILD_ROOT}
 
 %files devel
 %defattr(644,root,root,755)
-%doc AUTHORS COPYING NEWS README ChangeLog
+%doc AUTHORS COPYING NEWS README README.dll README.macosx README.mingw README.static ChangeLog
 %{_libdir}/*.a
 %{_libdir}/*.la
 %{_libdir}/*.so
@@ -69,6 +69,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_mandir}/man1/*
 
 %changelog
+* Sun Oct  9 2011 Joachim Metz <jbmetz@users.sourceforge.net> 20111009-1
+- Changes for configure update and README files
+
 * Sat Jul 17 2010 Joachim Metz <jbmetz@users.sourceforge.net> 20100717-1
 - Added libfguid and libfwsi support
 
