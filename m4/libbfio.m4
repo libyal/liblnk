@@ -1,6 +1,6 @@
 dnl Functions for libbfio
 dnl
-dnl Version: 20111004
+dnl Version: 20111025
 
 dnl Function to detect if libbfio is available
 AC_DEFUN([AX_LIBBFIO_CHECK_LIB],
@@ -16,7 +16,8 @@ AC_DEFUN([AX_LIBBFIO_CHECK_LIB],
   ])
 
  AS_IF(
-  [test "x$ac_cv_with_libbfio" != xno],
+  [test "x$ac_cv_with_libbfio" = xno],
+  [ac_cv_libbfio=no],
   [dnl Check for headers
   AC_CHECK_HEADERS([libbfio.h])
  

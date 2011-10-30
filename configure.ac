@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
- [20111009],
+ [20111030],
  [jbmetz@users.sourceforge.net])
 
 AC_CONFIG_SRCDIR(
@@ -111,7 +111,7 @@ CFLAGS="$CFLAGS -Wall";
 
 dnl Check if DLL support is needed in lnktools
 AS_IF(
- [test x"$enable_shared" = xyes],
+ [test "x$enable_shared" = xyes && test "x$ac_cv_enable_static_executables" = xno],
  [AS_CASE(
   [$host],
   [*cygwin* | *mingw*],

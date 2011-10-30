@@ -1,6 +1,6 @@
 dnl Functions for libfwsi
 dnl
-dnl Version: 20111009
+dnl Version: 20111030
 
 dnl Function to detect if libfwsi is available
 AC_DEFUN([AX_LIBFWSI_CHECK_LIB],
@@ -16,7 +16,8 @@ AC_DEFUN([AX_LIBFWSI_CHECK_LIB],
   ])
 
  AS_IF(
-  [test x"$ac_cv_with_libfwsi" != xno],
+  [test x"$ac_cv_with_libfwsi" = xno],
+  [ac_cv_libfwsi=no],
   [dnl Check for headers
   AC_CHECK_HEADERS([libfwsi.h])
  
