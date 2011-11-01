@@ -48,6 +48,11 @@ Bindings:
 * .net
 * java
 
+20111101
+* updated libcstring, libsystem, libuna, libbfio, libfdatetime
+* added windows codepage 932 and 936 support
+* updated lnkinput
+
 20111030
 * updated configure.ac and m4 files
 

@@ -1845,6 +1845,8 @@ int liblnk_file_set_ascii_codepage(
 	}
 	if( ( ascii_codepage != LIBLNK_CODEPAGE_ASCII )
 	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_874 )
+	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_932 )
+	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_936 )
 	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1250 )
 	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1251 )
 	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1252 )

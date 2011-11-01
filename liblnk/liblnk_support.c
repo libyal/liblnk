@@ -105,6 +105,8 @@ int liblnk_set_codepage(
 	 && ( codepage != LIBLNK_CODEPAGE_KOI8_R )
 	 && ( codepage != LIBLNK_CODEPAGE_KOI8_U )
 	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_874 )
+	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_932 )
+	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_936 )
 	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_1250 )
 	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_1251 )
 	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_1252 )
