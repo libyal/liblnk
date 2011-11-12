@@ -54,36 +54,44 @@ int liblnk_known_folder_location_initialize(
 
 		return( -1 );
 	}
+	if( *known_folder_location != NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid known folder location value already set.",
+		 function );
+
+		return( -1 );
+	}
+	*known_folder_location = memory_allocate_structure(
+	                          liblnk_known_folder_location_t );
+
 	if( *known_folder_location == NULL )
 	{
-		*known_folder_location = memory_allocate_structure(
-		                          liblnk_known_folder_location_t );
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_MEMORY,
+		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 "%s: unable to create known folder location.",
+		 function );
 
-		if( *known_folder_location == NULL )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create known folder location.",
-			 function );
+		goto on_error;
+	}
+	if( memory_set(
+	     *known_folder_location,
+	     0,
+	     sizeof( liblnk_known_folder_location_t ) ) == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_MEMORY,
+		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 "%s: unable to clear known folder location.",
+		 function );
 
-			goto on_error;
-		}
-		if( memory_set(
-		     *known_folder_location,
-		     0,
-		     sizeof( liblnk_known_folder_location_t ) ) == NULL )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_SET_FAILED,
-			 "%s: unable to clear known folder location.",
-			 function );
-
-			goto on_error;
-		}
+		goto on_error;
 	}
 	return( 1 );
 

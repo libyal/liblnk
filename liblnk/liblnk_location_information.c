@@ -56,36 +56,44 @@ int liblnk_location_information_initialize(
 
 		return( -1 );
 	}
+	if( *location_information != NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid location information value already set.",
+		 function );
+
+		return( -1 );
+	}
+	*location_information = memory_allocate_structure(
+				 liblnk_location_information_t );
+
 	if( *location_information == NULL )
 	{
-		*location_information = memory_allocate_structure(
-		                         liblnk_location_information_t );
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_MEMORY,
+		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 "%s: unable to create location information.",
+		 function );
 
-		if( *location_information == NULL )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create location information.",
-			 function );
+		goto on_error;
+	}
+	if( memory_set(
+	     *location_information,
+	     0,
+	     sizeof( liblnk_location_information_t ) ) == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_MEMORY,
+		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 "%s: unable to clear location information.",
+		 function );
 
-			goto on_error;
-		}
-		if( memory_set(
-		     *location_information,
-		     0,
-		     sizeof( liblnk_location_information_t ) ) == NULL )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_SET_FAILED,
-			 "%s: unable to clear location information.",
-			 function );
-
-			goto on_error;
-		}
+		goto on_error;
 	}
 	return( 1 );
 

@@ -52,36 +52,44 @@ int liblnk_data_block_initialize(
 
 		return( -1 );
 	}
+	if( *data_block != NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid data block value already set.",
+		 function );
+
+		return( -1 );
+	}
+	*data_block = memory_allocate_structure(
+	               liblnk_data_block_t );
+
 	if( *data_block == NULL )
 	{
-		*data_block = memory_allocate_structure(
-		               liblnk_data_block_t );
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_MEMORY,
+		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 "%s: unable to create data block.",
+		 function );
 
-		if( *data_block == NULL )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create data block.",
-			 function );
+		goto on_error;
+	}
+	if( memory_set(
+	     *data_block,
+	     0,
+	     sizeof( liblnk_data_block_t ) ) == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_MEMORY,
+		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 "%s: unable to clear data block.",
+		 function );
 
-			goto on_error;
-		}
-		if( memory_set(
-		     *data_block,
-		     0,
-		     sizeof( liblnk_data_block_t ) ) == NULL )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_SET_FAILED,
-			 "%s: unable to clear data block.",
-			 function );
-
-			goto on_error;
-		}
+		goto on_error;
 	}
 	return( 1 );
 

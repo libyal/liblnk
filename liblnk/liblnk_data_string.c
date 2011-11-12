@@ -52,36 +52,44 @@ int liblnk_data_string_initialize(
 
 		return( -1 );
 	}
+	if( *data_string != NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid data string value already set.",
+		 function );
+
+		return( -1 );
+	}
+	*data_string = memory_allocate_structure(
+	                liblnk_data_string_t );
+
 	if( *data_string == NULL )
 	{
-		*data_string = memory_allocate_structure(
-		                liblnk_data_string_t );
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_MEMORY,
+		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 "%s: unable to create data string.",
+		 function );
 
-		if( *data_string == NULL )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create data string.",
-			 function );
+		goto on_error;
+	}
+	if( memory_set(
+	     *data_string,
+	     0,
+	     sizeof( liblnk_data_string_t ) ) == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_MEMORY,
+		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 "%s: unable to clear data string.",
+		 function );
 
-			goto on_error;
-		}
-		if( memory_set(
-		     *data_string,
-		     0,
-		     sizeof( liblnk_data_string_t ) ) == NULL )
-		{
-			liberror_error_set(
-			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_SET_FAILED,
-			 "%s: unable to clear data string.",
-			 function );
-
-			goto on_error;
-		}
+		goto on_error;
 	}
 	return( 1 );
 
