@@ -1,7 +1,7 @@
 /*
  * File functions
  *
- * Copyright (c) 2009-2011, Joachim Metz <jbmetz@users.sourceforge.net>
+ * Copyright (c) 2009-2012, Joachim Metz <jbmetz@users.sourceforge.net>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -608,7 +608,7 @@ int liblnk_file_open_file_io_handle(
 	}
 	if( ( access_flags & LIBLNK_ACCESS_FLAG_READ ) != 0 )
 	{
-		bfio_access_flags = LIBBFIO_FLAG_READ;
+		bfio_access_flags = LIBBFIO_ACCESS_FLAG_READ;
 	}
 	internal_file->file_io_handle = file_io_handle;
 
