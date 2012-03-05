@@ -337,7 +337,8 @@ int liblnk_distributed_link_tracker_properties_read(
 		 function );
 		libnotify_print_data(
 		 distributed_link_tracker_properties_data->machine_identifier_string,
-		 16 );
+		 16,
+		 0 );
 
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libuna_utf16_string_size_from_byte_stream(
@@ -361,6 +362,18 @@ int liblnk_distributed_link_tracker_properties_read(
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to determine size of machine identifier string.",
+			 function );
+
+			goto on_error;
+		}
+		if( ( value_string_size > (size_t) SSIZE_MAX )
+		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 "%s: invalid machine identifier string size value exceeds maximum.",
 			 function );
 
 			goto on_error;
@@ -638,7 +651,8 @@ int liblnk_distributed_link_tracker_properties_read(
 			 function );
 			libnotify_print_data(
 			 &( data_block->data[ sizeof( lnk_data_block_distributed_link_tracker_properties_t ) ] ),
-			 data_block->data_size - sizeof( lnk_data_block_distributed_link_tracker_properties_t ) );
+			 data_block->data_size - sizeof( lnk_data_block_distributed_link_tracker_properties_t ),
+			 0 );
 		}
 	}
 #endif

@@ -294,7 +294,8 @@ ssize_t liblnk_io_handle_read_file_header(
 		 function );
 		libnotify_print_data(
 		 (uint8_t *) &file_header,
-		 sizeof( lnk_file_header_t ) );
+		 sizeof( lnk_file_header_t ),
+		 0 );
 	}
 #endif
 	byte_stream_copy_to_uint32_little_endian(
@@ -667,7 +668,8 @@ ssize_t liblnk_io_handle_read_file_header(
 		 function );
 		libnotify_print_data(
 		 (uint8_t *) file_header.reserved,
-		 10 );
+		 10,
+		 0 );
 
 		libnotify_printf(
 		 "\n" );

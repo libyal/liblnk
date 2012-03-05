@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
- [20120102],
+ [20120305],
  [jbmetz@users.sourceforge.net])
 
 AC_CONFIG_SRCDIR(
@@ -79,6 +79,9 @@ AX_COMMON_CHECK_ENABLE_VERBOSE_OUTPUT
 dnl Check if liblnk should be build with debug output
 AX_COMMON_CHECK_ENABLE_DEBUG_OUTPUT
 
+dnl Check if liblnk python bindings (pylnk) should be build
+AX_PYTHON_CHECK_ENABLE
+
 dnl Check if requires and build requires should be set in spec file
 AS_IF(
  [test "x$ac_cv_libuna" = xyes || test "x$ac_cv_libbfio" = xyes || test "x$ac_cv_libfdatetime" = xyes || test "x$ac_cv_libfguid" = xyes || test "x$ac_cv_libfwsi" = xyes],
@@ -121,6 +124,11 @@ AS_IF(
   ])
  ])
 
+dnl Set the date for dpkg files
+AC_SUBST(
+ [DATE],
+ [`date -R 2> /dev/null`])
+
 dnl Have configure make the Makefiles
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([include/Makefile])
@@ -136,6 +144,7 @@ AC_CONFIG_FILES([libfwsi/Makefile])
 AC_CONFIG_FILES([liblnk/Makefile])
 AC_CONFIG_FILES([libsystem/Makefile])
 AC_CONFIG_FILES([lnktools/Makefile])
+AC_CONFIG_FILES([pylnk/Makefile])
 AC_CONFIG_FILES([po/Makefile.in])
 AC_CONFIG_FILES([po/Makevars])
 AC_CONFIG_FILES([manuals/Makefile])
@@ -150,6 +159,9 @@ AC_CONFIG_FILES([include/liblnk/types.h])
 AC_CONFIG_FILES([liblnk/liblnk_definitions.h])
 dnl Have configure make distribution specific files
 AC_CONFIG_FILES([common/types.h])
+AC_CONFIG_FILES([dpkg/changelog])
+AC_CONFIG_FILES([dpkg/copyright])
+AC_CONFIG_FILES([liblnk/liblnk.rc])
 AC_CONFIG_FILES([liblnk.pc])
 AC_CONFIG_FILES([liblnk.spec])
 dnl Have configure write its configuration
@@ -169,6 +181,7 @@ Building:
 Features:
    Wide character type support:              $ac_cv_enable_wide_character_type
    lnktools are build as static executables: $ac_cv_enable_static_executables
+   Python (pylnk) support:                   $ac_cv_enable_python
    Verbose output:                           $ac_cv_enable_verbose_output
    Debug output:                             $ac_cv_enable_debug_output
 ]);

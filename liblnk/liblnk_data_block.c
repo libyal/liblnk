@@ -314,7 +314,8 @@ ssize_t liblnk_data_block_read(
 				 function );
 				libnotify_print_data(
 				 &( data_block->data[ 4 ] ),
-				 data_block->data_size - 4 );
+				 data_block->data_size - 4,
+				 0 );
 			}
 		}
 #endif

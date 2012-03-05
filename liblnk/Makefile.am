@@ -59,7 +59,9 @@ liblnk_la_LIBADD = \
 liblnk_la_LDFLAGS = -no-undefined -version-info 1:0:0
 
 EXTRA_DIST = \
-	liblnk_definitions.h.in
+	liblnk_definitions.h.in \
+	liblnk.rc \
+	liblnk.rc.in
 
 MAINTAINERCLEANFILES = \
 	Makefile.in

@@ -318,7 +318,8 @@ ssize_t liblnk_data_string_read(
 		 function );
 		libnotify_print_data(
 		 data_string->data,
-		 data_string->data_size );
+		 data_string->data_size,
+		 0 );
 	}
 #endif
 
@@ -368,6 +369,18 @@ ssize_t liblnk_data_string_read(
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to determine size of data string.",
+			 function );
+
+			goto on_error;
+		}
+		if( ( value_string_size > (size_t) SSIZE_MAX )
+		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 "%s: invalid data string size value exceeds maximum.",
 			 function );
 
 			goto on_error;

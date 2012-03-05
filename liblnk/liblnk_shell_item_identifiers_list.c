@@ -273,10 +273,10 @@ ssize_t liblnk_shell_item_identifiers_list_read(
 		 function );
 		libnotify_print_data(
 		 shell_item_identifiers_list_data,
-		 shell_item_identifiers_list_size );
+		 shell_item_identifiers_list_size,
+		 0 );
 	}
 #endif
-
 	shell_item_identifier_data = shell_item_identifiers_list_data;
 
 	if( libfwsi_item_initialize(

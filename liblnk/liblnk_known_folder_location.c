@@ -318,7 +318,8 @@ int liblnk_known_folder_location_read(
 			 function );
 			libnotify_print_data(
 			 &( data_block->data[ sizeof( lnk_data_block_known_folder_location_t ) ] ),
-			 data_block->data_size - sizeof( lnk_data_block_known_folder_location_t ) );
+			 data_block->data_size - sizeof( lnk_data_block_known_folder_location_t ),
+			 0 );
 		}
 	}
 #endif

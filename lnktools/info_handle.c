@@ -731,13 +731,25 @@ int info_handle_link_target_identifier_fprint(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve local path size.",
+			 "%s: unable to retrieve local path string size.",
 			 function );
 
 			goto on_error;
 		}
 		else if( result != 0 )
 		{
+			if( ( value_string_size > (size_t) SSIZE_MAX )
+			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 "%s: invalid local path string size value exceeds maximum.",
+				 function );
+
+				goto on_error;
+			}
 			value_string = libcstring_system_string_allocate(
 			                value_string_size );
 
@@ -747,7 +759,7 @@ int info_handle_link_target_identifier_fprint(
 				 error,
 				 LIBERROR_ERROR_DOMAIN_MEMORY,
 				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-				 "%s: unable to create local path value string.",
+				 "%s: unable to create local path string.",
 				 function );
 
 				goto on_error;
@@ -803,13 +815,25 @@ int info_handle_link_target_identifier_fprint(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve local path size.",
+			 "%s: unable to retrieve network path string size.",
 			 function );
 
 			goto on_error;
 		}
 		else if( result != 0 )
 		{
+			if( ( value_string_size > (size_t) SSIZE_MAX )
+			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 "%s: invalid network path string size value exceeds maximum.",
+				 function );
+
+				goto on_error;
+			}
 			value_string = libcstring_system_string_allocate(
 			                value_string_size );
 
@@ -819,7 +843,7 @@ int info_handle_link_target_identifier_fprint(
 				 error,
 				 LIBERROR_ERROR_DOMAIN_MEMORY,
 				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-				 "%s: unable to create local path value string.",
+				 "%s: unable to create network path string.",
 				 function );
 
 				goto on_error;
@@ -916,13 +940,25 @@ int info_handle_description_fprint(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve description size.",
+		 "%s: unable to retrieve description string size.",
 		 function );
 
 		goto on_error;
 	}
 	else if( result != 0 )
 	{
+		if( ( value_string_size > (size_t) SSIZE_MAX )
+		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 "%s: invalid description string size value exceeds maximum.",
+			 function );
+
+			goto on_error;
+		}
 		value_string = libcstring_system_string_allocate(
 				value_string_size );
 
@@ -932,7 +968,7 @@ int info_handle_description_fprint(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_MEMORY,
 			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create local path value string.",
+			 "%s: unable to create description string.",
 			 function );
 
 			goto on_error;
@@ -1022,13 +1058,25 @@ int info_handle_relative_path_fprint(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve relative path size.",
+		 "%s: unable to retrieve relative path string size.",
 		 function );
 
 		goto on_error;
 	}
 	else if( result != 0 )
 	{
+		if( ( value_string_size > (size_t) SSIZE_MAX )
+		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 "%s: invalid relative path string size value exceeds maximum.",
+			 function );
+
+			goto on_error;
+		}
 		value_string = libcstring_system_string_allocate(
 				value_string_size );
 
@@ -1038,7 +1086,7 @@ int info_handle_relative_path_fprint(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_MEMORY,
 			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create local path value string.",
+			 "%s: unable to create relative path string.",
 			 function );
 
 			goto on_error;
@@ -1128,13 +1176,25 @@ int info_handle_working_directory_fprint(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve working directory size.",
+		 "%s: unable to retrieve working directory string size.",
 		 function );
 
 		goto on_error;
 	}
 	else if( result != 0 )
 	{
+		if( ( value_string_size > (size_t) SSIZE_MAX )
+		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 "%s: invalid working directory string size value exceeds maximum.",
+			 function );
+
+			goto on_error;
+		}
 		value_string = libcstring_system_string_allocate(
 				value_string_size );
 
@@ -1144,7 +1204,7 @@ int info_handle_working_directory_fprint(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_MEMORY,
 			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create local path value string.",
+			 "%s: unable to create working directory string.",
 			 function );
 
 			goto on_error;
@@ -1234,13 +1294,25 @@ int info_handle_command_line_arguments_fprint(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve command line arguments size.",
+		 "%s: unable to retrieve command line arguments string size.",
 		 function );
 
 		goto on_error;
 	}
 	else if( result != 0 )
 	{
+		if( ( value_string_size > (size_t) SSIZE_MAX )
+		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 "%s: invalid command line arguments string size value exceeds maximum.",
+			 function );
+
+			goto on_error;
+		}
 		value_string = libcstring_system_string_allocate(
 				value_string_size );
 
@@ -1250,7 +1322,7 @@ int info_handle_command_line_arguments_fprint(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_MEMORY,
 			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create local path value string.",
+			 "%s: unable to create command line arguments string.",
 			 function );
 
 			goto on_error;
@@ -1340,13 +1412,25 @@ int info_handle_icon_location_fprint(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve icon location size.",
+		 "%s: unable to retrieve icon location string size.",
 		 function );
 
 		goto on_error;
 	}
 	else if( result != 0 )
 	{
+		if( ( value_string_size > (size_t) SSIZE_MAX )
+		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 "%s: invalid icon location string size value exceeds maximum.",
+			 function );
+
+			goto on_error;
+		}
 		value_string = libcstring_system_string_allocate(
 				value_string_size );
 
@@ -1356,7 +1440,7 @@ int info_handle_icon_location_fprint(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_MEMORY,
 			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create local path value string.",
+			 "%s: unable to create icon location string.",
 			 function );
 
 			goto on_error;
@@ -1446,13 +1530,25 @@ int info_handle_environment_variables_location_fprint(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve environment variables location size.",
+		 "%s: unable to retrieve environment variables location string size.",
 		 function );
 
 		goto on_error;
 	}
 	else if( result != 0 )
 	{
+		if( ( value_string_size > (size_t) SSIZE_MAX )
+		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 "%s: invalid environment variables location string size value exceeds maximum.",
+			 function );
+
+			goto on_error;
+		}
 		value_string = libcstring_system_string_allocate(
 				value_string_size );
 
@@ -1462,7 +1558,7 @@ int info_handle_environment_variables_location_fprint(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_MEMORY,
 			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create local path value string.",
+			 "%s: unable to create environment variables location string.",
 			 function );
 
 			goto on_error;
@@ -1578,7 +1674,19 @@ int info_handle_distributed_link_tracking_fprint(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve machine identifier size.",
+			 "%s: unable to retrieve machine identifier string size.",
+			 function );
+
+			goto on_error;
+		}
+		if( ( value_string_size > (size_t) SSIZE_MAX )
+		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 "%s: invalid machine identifier size value exceeds maximum.",
 			 function );
 
 			goto on_error;
@@ -1592,7 +1700,7 @@ int info_handle_distributed_link_tracking_fprint(
 			 error,
 			 LIBERROR_ERROR_DOMAIN_MEMORY,
 			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create machine identifier value string.",
+			 "%s: unable to create machine identifier string.",
 			 function );
 
 			goto on_error;

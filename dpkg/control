@@ -1,0 +1,29 @@
+Source: liblnk
+Section: unknown
+Priority: extra
+Maintainer: Joachim Metz <jbmetz@users.sourceforge.net>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.8.3
+Homepage: https://sourceforge.net/projects/liblnk/
+
+Package: liblnk
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Library to support the Windows Shortcut File (LNK) format
+ liblnk is a library to support the Windows Shortcut File (LNK) format.
+
+Package: liblnk-dev
+Section: libdevel
+Architecture: any
+Depends: liblnk (= ${Source-Version})
+Description: Header files and libraries for developing applications for liblnk
+ Header files and libraries for developing applications for liblnk.
+
+Package: liblnk-tools
+Section: utils
+Architecture: any
+Depends: liblnk (= ${Source-Version}), ${shlibs:Depends}
+Description: Several tools for reading Windows Shortcut Files (LNK)
+ Several tools for reading Windows Shortcut Files (LNK).
+

@@ -48,6 +48,12 @@ Bindings:
 * .net
 * java
 
+20120305
+* worked on Python bindings (pylnk)
+* updated libnotify, libsystem, libbfio, libfwsi
+* added dpkg files
+* added liblnk.rc
+
 20120102
 * 2012 update
 

@@ -348,7 +348,8 @@ ssize_t liblnk_location_information_read(
 		 function );
 		libnotify_print_data(
 		 location_information_data,
-		 location_information_size );
+		 location_information_size,
+		 0 );
 	}
 #endif
 	byte_stream_copy_to_uint32_little_endian(
@@ -495,10 +496,10 @@ ssize_t liblnk_location_information_read(
 			 function );
 			libnotify_print_data(
 			 location_information_value_data,
-			 location_information_value_size );
+			 location_information_value_size,
+			 0 );
 		}
 #endif
-
 		byte_stream_copy_to_uint32_little_endian(
 		 ( (lnk_volume_information_t *) location_information_value_data )->volume_label_offset,
 		 volume_label_offset );
@@ -590,7 +591,8 @@ ssize_t liblnk_location_information_read(
 				 function );
 				libnotify_print_data(
 				 location_information_value_data,
-				 value_size );
+				 value_size,
+				 0 );
 			}
 #endif
 		}
@@ -633,7 +635,8 @@ ssize_t liblnk_location_information_read(
 				 function );
 				libnotify_print_data(
 				 location_information_unicode_value_data,
-				 unicode_value_size );
+				 unicode_value_size,
+				 0 );
 			}
 #endif
 			location_information->volume_label = (uint8_t *) memory_allocate(
@@ -745,6 +748,18 @@ ssize_t liblnk_location_information_read(
 				 LIBERROR_ERROR_DOMAIN_RUNTIME,
 				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
 				 "%s: unable to determine size of volume label string.",
+				 function );
+
+				goto on_error;
+			}
+			if( ( value_string_size > (size_t) SSIZE_MAX )
+			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 "%s: invalid volume label string size value exceeds maximum.",
 				 function );
 
 				goto on_error;
@@ -879,7 +894,8 @@ ssize_t liblnk_location_information_read(
 			 function );
 			libnotify_print_data(
 			 location_information_value_data,
-			 value_size );
+			 value_size,
+			 0 );
 		}
 #endif
 	}
@@ -935,7 +951,8 @@ ssize_t liblnk_location_information_read(
 			 function );
 			libnotify_print_data(
 			 location_information_unicode_value_data,
-			 unicode_value_size );
+			 unicode_value_size,
+			 0 );
 		}
 #endif
 		location_information->local_path = (uint8_t *) memory_allocate(
@@ -1050,6 +1067,18 @@ ssize_t liblnk_location_information_read(
 				 LIBERROR_ERROR_DOMAIN_RUNTIME,
 				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
 				 "%s: unable to determine size of local path string.",
+				 function );
+
+				goto on_error;
+			}
+			if( ( value_string_size > (size_t) SSIZE_MAX )
+			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 "%s: invalid local path string size value exceeds maximum.",
 				 function );
 
 				goto on_error;
@@ -1173,10 +1202,10 @@ ssize_t liblnk_location_information_read(
 			 function );
 			libnotify_print_data(
 			 location_information_value_data,
-			 location_information_value_size );
+			 location_information_value_size,
+			 0 );
 		}
 #endif
-
 		byte_stream_copy_to_uint32_little_endian(
 		 ( (lnk_network_share_information_t *) location_information_value_data )->network_share_name_offset,
 		 network_share_name_offset );
@@ -1283,7 +1312,8 @@ ssize_t liblnk_location_information_read(
 				 function );
 				libnotify_print_data(
 				 location_information_value_data,
-				 value_size );
+				 value_size,
+				 0 );
 			}
 #endif
 		}
@@ -1326,7 +1356,8 @@ ssize_t liblnk_location_information_read(
 				 function );
 				libnotify_print_data(
 				 location_information_unicode_value_data,
-				 unicode_value_size );
+				 unicode_value_size,
+				 0 );
 			}
 #endif
 			location_information->network_share_name = (uint8_t *) memory_allocate(
@@ -1438,6 +1469,18 @@ ssize_t liblnk_location_information_read(
 				 LIBERROR_ERROR_DOMAIN_RUNTIME,
 				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
 				 "%s: unable to determine size of network share name string.",
+				 function );
+
+				goto on_error;
+			}
+			if( ( value_string_size > (size_t) SSIZE_MAX )
+			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 "%s: invalid network share string size value exceeds maximum.",
 				 function );
 
 				goto on_error;
@@ -1556,7 +1599,8 @@ ssize_t liblnk_location_information_read(
 				 function );
 				libnotify_print_data(
 				 location_information_value_data,
-				 value_size );
+				 value_size,
+				 0 );
 			}
 #endif
 		}
@@ -1599,7 +1643,8 @@ ssize_t liblnk_location_information_read(
 				 function );
 				libnotify_print_data(
 				 location_information_unicode_value_data,
-				 unicode_value_size );
+				 unicode_value_size,
+				 0 );
 			}
 #endif
 			location_information->device_name = (uint8_t *) memory_allocate(
@@ -1711,6 +1756,18 @@ ssize_t liblnk_location_information_read(
 				 LIBERROR_ERROR_DOMAIN_RUNTIME,
 				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
 				 "%s: unable to determine size of device name string.",
+				 function );
+
+				goto on_error;
+			}
+			if( ( value_string_size > (size_t) SSIZE_MAX )
+			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 "%s: invalid device name string size value exceeds maximum.",
 				 function );
 
 				goto on_error;
@@ -1845,7 +1902,8 @@ ssize_t liblnk_location_information_read(
 			 function );
 			libnotify_print_data(
 			 location_information_value_data,
-			 value_size );
+			 value_size,
+			 0 );
 		}
 #endif
 	}
@@ -1901,7 +1959,8 @@ ssize_t liblnk_location_information_read(
 			 function );
 			libnotify_print_data(
 			 location_information_unicode_value_data,
-			 unicode_value_size );
+			 unicode_value_size,
+			 0 );
 		}
 #endif
 		location_information->common_path = (uint8_t *) memory_allocate(
@@ -2016,6 +2075,18 @@ ssize_t liblnk_location_information_read(
 				 LIBERROR_ERROR_DOMAIN_RUNTIME,
 				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
 				 "%s: unable to determine size of common path string.",
+				 function );
+
+				goto on_error;
+			}
+			if( ( value_string_size > (size_t) SSIZE_MAX )
+			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+			{
+				liberror_error_set(
+				 error,
+				 LIBERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 "%s: invalid common path string size value exceeds maximum.",
 				 function );
 
 				goto on_error;

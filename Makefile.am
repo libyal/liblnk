@@ -14,11 +14,24 @@ SUBDIRS = \
 	liblnk \
 	libsystem \
 	lnktools \
+	pylnk \
 	po \
 	manuals \
 	tests \
 	examples \
 	msvscpp
+
+DPKG_FILES = \
+	dpkg/changelog \
+	dpkg/changelog.in \
+       	dpkg/compat \
+       	dpkg/control \
+       	dpkg/copyright \
+       	dpkg/copyright.in \
+       	dpkg/rules \
+       	dpkg/liblnk-dev.docs \
+       	dpkg/liblnk.docs \
+       	dpkg/liblnk-tools.docs
 
 GETTEXT_FILES = \
 	config.rpath \
@@ -36,6 +49,7 @@ EXTRA_DIST = \
 	README.macosx \
 	README.mingw \
 	README.static \
+	$(DPKG_FILES) \
 	$(GETTEXT_FILES) \
 	$(PKGCONFIG_FILES) \
         $(SPEC_FILES)

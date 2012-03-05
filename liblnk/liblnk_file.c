@@ -1738,7 +1738,8 @@ int liblnk_file_open_read(
 			 function );
 			libnotify_print_data(
 			 trailing_data,
-			 trailing_data_size );
+			 trailing_data_size,
+			 0 );
 
 			memory_free(
 			 trailing_data );
