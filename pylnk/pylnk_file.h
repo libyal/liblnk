@@ -72,6 +72,11 @@ PyObject *pylnk_file_open(
            PyObject *arguments,
            PyObject *keywords );
 
+PyObject *pylnk_file_open_file_object(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments,
+           PyObject *keywords );
+
 PyObject *pylnk_file_close(
            pylnk_file_t *pylnk_file );
 

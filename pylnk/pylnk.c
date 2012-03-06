@@ -178,6 +178,11 @@ PyMODINIT_FUNC initpylnk(
 {
 	PyObject *module               = NULL;
 	PyTypeObject *file_type_object = NULL;
+	PyGILState_STATE gil_state     = 0;
+
+	PyEval_InitThreads();
+
+	gil_state = PyGILState_Ensure();
 
 	/* Create the module
 	 */
@@ -204,5 +209,8 @@ PyMODINIT_FUNC initpylnk(
 	 module,
 	"pylnk_file",
 	(PyObject *) file_type_object );
+
+	PyGILState_Release(
+	 gil_state );
 }
 

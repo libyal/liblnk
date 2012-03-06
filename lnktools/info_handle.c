@@ -1353,7 +1353,7 @@ int info_handle_command_line_arguments_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tCommand line arguments\t: %s\n",
+		 "\tCommand line arguments\t\t: %s\n",
 		 value_string );
 
 		memory_free(

@@ -33,8 +33,19 @@
 #include "pylnk.h"
 #include "pylnk_datetime.h"
 #include "pylnk_file.h"
+#include "pylnk_file_object_io_handle.h"
+#include "pylnk_libbfio.h"
 #include "pylnk_liblnk.h"
 #include "pylnk_python.h"
+
+#if !defined( LIBLNK_HAVE_BFIO )
+LIBLNK_EXTERN \
+int liblnk_file_open_file_io_handle(
+     liblnk_file_t *file,
+     libbfio_handle_t *file_io_handle,
+     int access_flags,
+     liblnk_error_t **error );
+#endif
 
 PyMethodDef pylnk_file_object_methods[] = {
 
@@ -49,6 +60,11 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  (PyCFunction) pylnk_file_open,
 	  METH_VARARGS | METH_KEYWORDS,
 	  "Opens a file" },
+
+	{ "open_file_object",
+	  (PyCFunction) pylnk_file_open_file_object,
+	  METH_VARARGS | METH_KEYWORDS,
+	  "Opens a file using a file-like object" },
 
 	{ "close",
 	  (PyCFunction) pylnk_file_close,
@@ -494,10 +510,16 @@ PyObject *pylnk_file_open(
         {
                 return( NULL );
         }
+	/* Default to read-only if no access flags were provided
+	 */
+	if( access_flags == 0 )
+	{
+		access_flags = liblnk_get_access_flags_read();
+	}
 	if( liblnk_file_open(
 	     pylnk_file->file,
              filename,
-             (uint8_t) access_flags,
+             access_flags,
 	     &error ) != 1 )
 	{
 		if( liberror_error_backtrace_sprint(
@@ -527,6 +549,128 @@ PyObject *pylnk_file_open(
 	 Py_None );
 
 	return( Py_None );
+}
+
+/* Opens a file using a file-like object
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_open_file_object(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments,
+           PyObject *keywords )
+{
+	char error_string[ PYLNK_ERROR_STRING_SIZE ];
+
+	PyObject *file_object            = NULL;
+	libbfio_handle_t *file_io_handle = NULL;
+	liberror_error_t *error          = NULL;
+	static char *keyword_list[]      = { "file_object", "access_flags", NULL };
+	static char *function            = "pylnk_file_open_file_object";
+	int access_flags                 = 0;
+	int result                       = 0;
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_TypeError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	if( PyArg_ParseTupleAndKeywords(
+	     arguments,
+	     keywords,
+	     "O|i",
+	     keyword_list,
+	     &file_object,
+	     &access_flags ) == 0 )
+        {
+                return( NULL );
+        }
+	/* Default to read-only if no access flags were provided
+	 */
+	if( access_flags == 0 )
+	{
+		access_flags = liblnk_get_access_flags_read();
+	}
+	if( pylnk_file_object_initialize(
+	     &file_io_handle,
+	     file_object,
+	     &error ) != 1 )
+	{
+		if( liberror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+                {
+			PyErr_Format(
+			 PyExc_MemoryError,
+			 "%s: unable to initialize file IO handle.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_MemoryError,
+			 "%s: unable to initialize file IO handle.\n%s",
+			 function,
+			 error_string );
+		}
+		liberror_error_free(
+		 &error );
+
+		goto on_error;
+	}
+
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_open_file_io_handle(
+	          pylnk_file->file,
+                  file_io_handle,
+                  access_flags,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		if( liberror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+                {
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to open file.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to open file.\n%s",
+			 function,
+			 error_string );
+		}
+		liberror_error_free(
+		 &error );
+
+		goto on_error;
+	}
+	Py_IncRef(
+	 Py_None );
+
+	return( Py_None );
+
+on_error:
+	if( file_io_handle != NULL )
+	{
+		libbfio_handle_free(
+		 &file_io_handle,
+		 NULL );
+	}
+	return( NULL );
 }
 
 /* Closes a file
