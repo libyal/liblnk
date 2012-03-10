@@ -48,6 +48,10 @@ Bindings:
 * .net
 * java
 
+20120309
+* worked on Python bindings (pylnk)
+  - worked on get/set attribute functions
+
 20120307
 * worked on Python bindings (pylnk)
   - added parsing of codepage string
