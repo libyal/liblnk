@@ -76,9 +76,21 @@ int pylnk_file_object_io_handle_close(
      pylnk_file_object_io_handle_t *file_object_io_handle,
      liberror_error_t **error );
 
+ssize_t pylnk_file_object_read_buffer(
+         PyObject *file_object,
+         uint8_t *buffer,
+         size_t size,
+         liberror_error_t **error );
+
 ssize_t pylnk_file_object_io_handle_read(
          pylnk_file_object_io_handle_t *file_object_io_handle,
          uint8_t *buffer,
+         size_t size,
+         liberror_error_t **error );
+
+ssize_t pylnk_file_object_write_buffer(
+         PyObject *file_object,
+         const uint8_t *buffer,
          size_t size,
          liberror_error_t **error );
 
@@ -87,6 +99,17 @@ ssize_t pylnk_file_object_io_handle_write(
          const uint8_t *buffer,
          size_t size,
          liberror_error_t **error );
+
+int pylnk_file_object_seek_offset(
+     PyObject *file_object,
+     off64_t offset,
+     int whence,
+     liberror_error_t **error );
+
+int pylnk_file_object_get_offset(
+     PyObject *file_object,
+     off64_t *offset,
+     liberror_error_t **error );
 
 off64_t pylnk_file_object_io_handle_seek_offset(
          pylnk_file_object_io_handle_t *file_object_io_handle,
@@ -100,6 +123,11 @@ int pylnk_file_object_io_handle_exists(
 
 int pylnk_file_object_io_handle_is_open(
      pylnk_file_object_io_handle_t *file_object_io_handle,
+     liberror_error_t **error );
+
+int pylnk_file_object_get_size(
+     PyObject *file_object,
+     size64_t *size,
      liberror_error_t **error );
 
 int pylnk_file_object_io_handle_get_size(

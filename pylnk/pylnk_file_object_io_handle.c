@@ -402,11 +402,12 @@ int pylnk_file_object_io_handle_close(
 	return( 0 );
 }
 
-/* Reads a buffer from the file object IO handle
+/* Reads a buffer from the file object
+ * Make sure to hold the GIL state before calling this function
  * Returns the number of bytes read if successful, or -1 on error
  */
-ssize_t pylnk_file_object_io_handle_read(
-         pylnk_file_object_io_handle_t *file_object_io_handle,
+ssize_t pylnk_file_object_read_buffer(
+         PyObject *file_object,
          uint8_t *buffer,
          size_t size,
          liberror_error_t **error )
@@ -420,30 +421,18 @@ ssize_t pylnk_file_object_io_handle_read(
 	PyObject *method_result       = NULL;
 	char *error_string            = NULL;
 	char *safe_buffer             = NULL;
-	static char *function         = "pylnk_file_object_io_handle_read";
-	PyGILState_STATE gil_state    = 0;
+	static char *function         = "pylnk_file_object_read_buffer";
 	Py_ssize_t safe_read_count    = 0;
 	ssize_t read_count            = 0;
 	int result                    = 0;
 
-	if( file_object_io_handle == NULL )
+	if( file_object == NULL )
 	{
 		liberror_error_set(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid file object IO handle.",
-		 function );
-
-		return( -1 );
-	}
-	if( file_object_io_handle->file_object == NULL )
-	{
-		liberror_error_set(
-		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid file object IO handle - missing file object.",
+		 "%s: invalid file object.",
 		 function );
 
 		return( -1 );
@@ -472,8 +461,6 @@ ssize_t pylnk_file_object_io_handle_read(
 	}
 	if( size > 0 )
 	{
-		gil_state = PyGILState_Ensure();
-
 		method_name = PyString_FromString(
 			       "read" );
 
@@ -483,7 +470,7 @@ ssize_t pylnk_file_object_io_handle_read(
 		PyErr_Clear();
 
 		method_result = PyObject_CallMethodObjArgs(
-				 file_object_io_handle->file_object,
+				 file_object,
 				 method_name,
 				 argument_size,
 				 NULL );
@@ -602,9 +589,6 @@ ssize_t pylnk_file_object_io_handle_read(
 
 		Py_DecRef(
 		 method_name );
-
-		PyGILState_Release(
-		 gil_state );
 	}
 	return( read_count );
 
@@ -624,32 +608,21 @@ on_error:
 		Py_DecRef(
 		 method_name );
 	}
-	PyGILState_Release(
-	 gil_state );
-
 	return( -1 );
 }
 
-/* Writes a buffer to the file object IO handle
- * Returns the number of bytes written if successful, or -1 on error
+/* Reads a buffer from the file object IO handle
+ * Returns the number of bytes read if successful, or -1 on error
  */
-ssize_t pylnk_file_object_io_handle_write(
+ssize_t pylnk_file_object_io_handle_read(
          pylnk_file_object_io_handle_t *file_object_io_handle,
-         const uint8_t *buffer,
+         uint8_t *buffer,
          size_t size,
          liberror_error_t **error )
 {
-	PyObject *argument_string     = NULL;
-	PyObject *exception_string    = NULL;
-	PyObject *exception_traceback = NULL;
-	PyObject *exception_type      = NULL;
-	PyObject *exception_value     = NULL;
-	PyObject *method_name         = NULL;
-	PyObject *method_result       = NULL;
-	char *error_string            = NULL;
-	static char *function         = "pylnk_file_object_io_handle_write";
-	PyGILState_STATE gil_state    = 0;
-	ssize_t write_count           = 0;
+	static char *function      = "pylnk_file_object_io_handle_read";
+	PyGILState_STATE gil_state = 0;
+	ssize_t read_count         = 0;
 
 	if( file_object_io_handle == NULL )
 	{
@@ -662,13 +635,65 @@ ssize_t pylnk_file_object_io_handle_write(
 
 		return( -1 );
 	}
-	if( file_object_io_handle->file_object == NULL )
+	gil_state = PyGILState_Ensure();
+
+	read_count = pylnk_file_object_read_buffer(
+	              file_object_io_handle->file_object,
+	              buffer,
+	              size,
+	              error );
+
+	if( read_count == -1 )
 	{
 		liberror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid file object IO handle - missing file object.",
+		 LIBERROR_ERROR_DOMAIN_IO,
+		 LIBERROR_IO_ERROR_READ_FAILED,
+		 "%s: unable to read from file object.",
+		 function );
+
+		goto on_error;
+	}
+	PyGILState_Release(
+	 gil_state );
+
+	return( read_count );
+
+on_error:
+	PyGILState_Release(
+	 gil_state );
+
+	return( -1 );
+}
+
+/* Writes a buffer to the file object
+ * Make sure to hold the GIL state before calling this function
+ * Returns the number of bytes written if successful, or -1 on error
+ */
+ssize_t pylnk_file_object_write_buffer(
+         PyObject *file_object,
+         const uint8_t *buffer,
+         size_t size,
+         liberror_error_t **error )
+{
+	PyObject *argument_string     = NULL;
+	PyObject *exception_string    = NULL;
+	PyObject *exception_traceback = NULL;
+	PyObject *exception_type      = NULL;
+	PyObject *exception_value     = NULL;
+	PyObject *method_name         = NULL;
+	PyObject *method_result       = NULL;
+	char *error_string            = NULL;
+	static char *function         = "pylnk_file_object_write_buffer";
+	ssize_t write_count           = 0;
+
+	if( file_object == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file object.",
 		 function );
 
 		return( -1 );
@@ -697,8 +722,6 @@ ssize_t pylnk_file_object_io_handle_write(
 	}
 	if( size > 0 )
 	{
-		gil_state = PyGILState_Ensure();
-
 		method_name = PyString_FromString(
 			       "write" );
 
@@ -709,7 +732,7 @@ ssize_t pylnk_file_object_io_handle_write(
 		PyErr_Clear();
 
 		method_result = PyObject_CallMethodObjArgs(
-				 file_object_io_handle->file_object,
+				 file_object,
 				 method_name,
 				 argument_string,
 				 NULL );
@@ -759,9 +782,6 @@ ssize_t pylnk_file_object_io_handle_write(
 
 		Py_DecRef(
 		 method_name );
-
-		PyGILState_Release(
-		 gil_state );
 	}
 	return( write_count );
 
@@ -781,32 +801,21 @@ on_error:
 		Py_DecRef(
 		 method_name );
 	}
-	PyGILState_Release(
-	 gil_state );
-
 	return( -1 );
 }
 
-/* Seeks a certain offset within the file object IO handle
- * Returns the offset if the seek is successful or -1 on error
+/* Writes a buffer to the file object IO handle
+ * Returns the number of bytes written if successful, or -1 on error
  */
-off64_t pylnk_file_object_io_handle_seek_offset(
+ssize_t pylnk_file_object_io_handle_write(
          pylnk_file_object_io_handle_t *file_object_io_handle,
-         off64_t offset,
-         int whence,
+         const uint8_t *buffer,
+         size_t size,
          liberror_error_t **error )
 {
-	PyObject *argument_offset     = NULL;
-	PyObject *argument_whence     = NULL;
-	PyObject *exception_string    = NULL;
-	PyObject *exception_traceback = NULL;
-	PyObject *exception_type      = NULL;
-	PyObject *exception_value     = NULL;
-	PyObject *method_name         = NULL;
-	PyObject *method_result       = NULL;
-	char *error_string            = NULL;
-	static char *function         = "pylnk_file_object_io_handle_seek_offset";
-	PyGILState_STATE gil_state    = 0;
+	static char *function      = "pylnk_file_object_io_handle_write";
+	PyGILState_STATE gil_state = 0;
+	ssize_t write_count        = 0;
 
 	if( file_object_io_handle == NULL )
 	{
@@ -819,13 +828,65 @@ off64_t pylnk_file_object_io_handle_seek_offset(
 
 		return( -1 );
 	}
-	if( file_object_io_handle->file_object == NULL )
+	gil_state = PyGILState_Ensure();
+
+	write_count = pylnk_file_object_write_buffer(
+	               file_object_io_handle->file_object,
+	               buffer,
+	               size,
+	               error );
+
+	if( write_count == -1 )
 	{
 		liberror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid file object IO handle - missing file object.",
+		 LIBERROR_ERROR_DOMAIN_IO,
+		 LIBERROR_IO_ERROR_WRITE_FAILED,
+		 "%s: unable to write from file object.",
+		 function );
+
+		goto on_error;
+	}
+	PyGILState_Release(
+	 gil_state );
+
+	return( write_count );
+
+on_error:
+	PyGILState_Release(
+	 gil_state );
+
+	return( -1 );
+}
+
+/* Seeks a certain offset within the file object
+ * Make sure to hold the GIL state before calling this function
+ * Returns 1 if successful or -1 on error
+ */
+int pylnk_file_object_seek_offset(
+     PyObject *file_object,
+     off64_t offset,
+     int whence,
+     liberror_error_t **error )
+{
+	PyObject *argument_offset     = NULL;
+	PyObject *argument_whence     = NULL;
+	PyObject *exception_string    = NULL;
+	PyObject *exception_traceback = NULL;
+	PyObject *exception_type      = NULL;
+	PyObject *exception_value     = NULL;
+	PyObject *method_name         = NULL;
+	PyObject *method_result       = NULL;
+	char *error_string            = NULL;
+	static char *function         = "pylnk_file_object_seek_offset";
+
+	if( file_object == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file object.",
 		 function );
 
 		return( -1 );
@@ -854,8 +915,6 @@ off64_t pylnk_file_object_io_handle_seek_offset(
 
 		return( -1 );
 	}
-	gil_state = PyGILState_Ensure();
-
 	method_name = PyString_FromString(
 	               "seek" );
 
@@ -868,7 +927,7 @@ off64_t pylnk_file_object_io_handle_seek_offset(
 	PyErr_Clear();
 
 	method_result = PyObject_CallMethodObjArgs(
-	                 file_object_io_handle->file_object,
+	                 file_object,
 	                 method_name,
 	                 argument_offset,
 	                 argument_whence,
@@ -923,12 +982,7 @@ off64_t pylnk_file_object_io_handle_seek_offset(
 	Py_DecRef(
 	 method_name );
 
-	PyGILState_Release(
-	 gil_state );
-
-/* TODO make sure the offset is returned correctly */
-
-	return( offset );
+	return( 1 );
 
 on_error:
 	if( method_result != NULL )
@@ -951,6 +1005,253 @@ on_error:
 		Py_DecRef(
 		 method_name );
 	}
+	return( -1 );
+}
+
+/* Retrieves the current offset within the file object
+ * Make sure to hold the GIL state before calling this function
+ * Returns 1 if successful or -1 on error
+ */
+int pylnk_file_object_get_offset(
+     PyObject *file_object,
+     off64_t *offset,
+     liberror_error_t **error )
+{
+	PyObject *exception_string    = NULL;
+	PyObject *exception_traceback = NULL;
+	PyObject *exception_type      = NULL;
+	PyObject *exception_value     = NULL;
+	PyObject *method_name         = NULL;
+	PyObject *method_result       = NULL;
+	char *error_string            = NULL;
+	static char *function         = "pylnk_file_object_get_offset";
+	PY_LONG_LONG safe_offset      = 0;
+	int result                    = 0;
+
+	if( file_object == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file object.",
+		 function );
+
+		return( -1 );
+	}
+	if( offset == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid offset.",
+		 function );
+
+		return( -1 );
+	}
+	method_name = PyString_FromString(
+	               "get_offset" );
+
+	PyErr_Clear();
+
+	/* Determine if the file object has the get_offset method
+	 */
+	result = PyObject_HasAttr(
+	          file_object,
+	          method_name );
+
+	if( result == 0 )
+	{
+		Py_DecRef(
+		 method_name );
+
+		/* Fall back to the tell method
+		 */
+		method_name = PyString_FromString(
+		               "tell" );
+	}
+	PyErr_Clear();
+
+	method_result = PyObject_CallMethodObjArgs(
+	                 file_object,
+	                 method_name,
+	                 NULL );
+
+	if( PyErr_Occurred() )
+	{
+		PyErr_Fetch(
+		 &exception_type,
+		 &exception_value,
+		 &exception_traceback );
+
+		exception_string = PyObject_Repr(
+		                    exception_value );
+
+		error_string = PyString_AsString(
+		                exception_string );
+
+		if( error_string != NULL )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve current offset in file object with error: %s.",
+			 function,
+			 error_string );
+		}
+		else
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve current offset in file object.",
+			 function );
+		}
+		Py_DecRef(
+		 exception_string );
+
+		goto on_error;
+	}
+	PyErr_Clear();
+
+	safe_offset = PyLong_AsLong(
+	               method_result );
+
+	if( safe_offset == -1 )
+	{
+		PyErr_Fetch(
+		 &exception_type,
+		 &exception_value,
+		 &exception_traceback );
+
+		exception_string = PyObject_Repr(
+		                    exception_value );
+
+		error_string = PyString_AsString(
+		                exception_string );
+
+		if( error_string != NULL )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve current offset in file object with error: %s.",
+			 function,
+			 error_string );
+		}
+		else
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve current offset in file object.",
+			 function );
+		}
+		Py_DecRef(
+		 exception_string );
+
+		goto on_error;
+	}
+	if( safe_offset > (PY_LONG_LONG) INT64_MAX )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid offset value exceeds maximum.",
+		 function );
+
+		goto on_error;
+	}
+	*offset = (off64_t) safe_offset;
+
+	Py_DecRef(
+	 method_result );
+
+	Py_DecRef(
+	 method_name );
+
+	return( 1 );
+
+on_error:
+	if( method_result != NULL )
+	{
+		Py_DecRef(
+		 method_result );
+	}
+	if( method_name != NULL )
+	{
+		Py_DecRef(
+		 method_name );
+	}
+	return( -1 );
+}
+
+/* Seeks a certain offset within the file object IO handle
+ * Returns the offset if the seek is successful or -1 on error
+ */
+off64_t pylnk_file_object_io_handle_seek_offset(
+         pylnk_file_object_io_handle_t *file_object_io_handle,
+         off64_t offset,
+         int whence,
+         liberror_error_t **error )
+{
+	static char *function      = "pylnk_file_object_io_handle_seek_offset";
+	PyGILState_STATE gil_state = 0;
+
+	if( file_object_io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file object IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	gil_state = PyGILState_Ensure();
+
+	if( pylnk_file_object_seek_offset(
+	     file_object_io_handle->file_object,
+	     offset,
+	     whence,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_IO,
+		 LIBERROR_IO_ERROR_SEEK_FAILED,
+		 "%s: unable to seek in file object.",
+		 function );
+
+		goto on_error;
+	}
+	if( pylnk_file_object_get_offset(
+	     file_object_io_handle->file_object,
+	     &offset,
+	     error ) != 1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_IO,
+		 LIBERROR_IO_ERROR_SEEK_FAILED,
+		 "%s: unable to retrieve current offset in file object.",
+		 function );
+
+		goto on_error;
+	}
+	PyGILState_Release(
+	 gil_state );
+
+	return( offset );
+
+on_error:
 	PyGILState_Release(
 	 gil_state );
 
@@ -1020,11 +1321,12 @@ int pylnk_file_object_io_handle_is_open(
 	return( 1 );
 }
 
-/* Retrieves the file size
+/* Retrieves the size of the file object
+ * Make sure to hold the GIL state before calling this function
  * Returns 1 if successful or -1 on error
  */
-int pylnk_file_object_io_handle_get_size(
-     pylnk_file_object_io_handle_t *file_object_io_handle,
+int pylnk_file_object_get_size(
+     PyObject *file_object,
      size64_t *size,
      liberror_error_t **error )
 {
@@ -1035,9 +1337,168 @@ int pylnk_file_object_io_handle_get_size(
 	PyObject *method_name         = NULL;
 	PyObject *method_result       = NULL;
 	char *error_string            = NULL;
-	static char *function         = "pylnk_file_object_io_handle_get_size";
-	PyGILState_STATE gil_state    = 0;
-	int result                    = 0;
+	static char *function         = "pylnk_file_object_get_size";
+	PY_LONG_LONG safe_size        = 0;
+
+	if( file_object == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file object.",
+		 function );
+
+		return( -1 );
+	}
+	if( size == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid size.",
+		 function );
+
+		return( -1 );
+	}
+	method_name = PyString_FromString(
+	               "get_size" );
+
+	PyErr_Clear();
+
+	method_result = PyObject_CallMethodObjArgs(
+	                 file_object,
+	                 method_name,
+	                 NULL );
+
+	if( PyErr_Occurred() )
+	{
+		PyErr_Fetch(
+		 &exception_type,
+		 &exception_value,
+		 &exception_traceback );
+
+		exception_string = PyObject_Repr(
+		                    exception_value );
+
+		error_string = PyString_AsString(
+		                exception_string );
+
+		if( error_string != NULL )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve size of file object with error: %s.",
+			 function,
+			 error_string );
+		}
+		else
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve size of file object.",
+			 function );
+		}
+		Py_DecRef(
+		 exception_string );
+
+		goto on_error;
+	}
+	PyErr_Clear();
+
+	safe_size = PyLong_AsUnsignedLong(
+	             method_result );
+
+	if( safe_size == -1 )
+	{
+		PyErr_Fetch(
+		 &exception_type,
+		 &exception_value,
+		 &exception_traceback );
+
+		exception_string = PyObject_Repr(
+		                    exception_value );
+
+		error_string = PyString_AsString(
+		                exception_string );
+
+		if( error_string != NULL )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve size of file object with error: %s.",
+			 function,
+			 error_string );
+		}
+		else
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve size of in file object.",
+			 function );
+		}
+		Py_DecRef(
+		 exception_string );
+
+		goto on_error;
+	}
+	if( safe_size > (PY_LONG_LONG) INT64_MAX )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid size value exceeds maximum.",
+		 function );
+
+		goto on_error;
+	}
+	*size = (size64_t) safe_size;
+
+	Py_DecRef(
+	 method_result );
+
+	Py_DecRef(
+	 method_name );
+
+	return( 1 );
+
+on_error:
+	if( method_result != NULL )
+	{
+		Py_DecRef(
+		 method_result );
+	}
+	if( method_name != NULL )
+	{
+		Py_DecRef(
+		 method_name );
+	}
+	return( -1 );
+}
+
+/* Retrieves the file size
+ * Returns 1 if successful or -1 on error
+ */
+int pylnk_file_object_io_handle_get_size(
+     pylnk_file_object_io_handle_t *file_object_io_handle,
+     size64_t *size,
+     liberror_error_t **error )
+{
+	PyObject *method_name      = NULL;
+	static char *function      = "pylnk_file_object_io_handle_get_size";
+	off64_t current_offset     = 0;
+	PyGILState_STATE gil_state = 0;
+	int result                 = 0;
 
 	if( file_object_io_handle == NULL )
 	{
@@ -1074,16 +1535,103 @@ int pylnk_file_object_io_handle_get_size(
 	          file_object_io_handle->file_object,
 	          method_name );
 
-	Py_DecRef(
-	 method_name );
-
 	if( result != 0 )
 	{
-/* TODO try calling get_size */
+		if( pylnk_file_object_get_size(
+		     file_object_io_handle->file_object,
+		     size,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve size of file object.",
+			 function );
+
+			goto on_error;
+		}
 	}
 	else
 	{
-/* TODO try tell the current offset, seek to the end, tell the offset and seek back to the current offset */
+		if( pylnk_file_object_get_offset(
+		     file_object_io_handle->file_object,
+		     &current_offset,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve current offset in file object.",
+			 function );
+
+			goto on_error;
+		}
+		if( pylnk_file_object_seek_offset(
+		     file_object_io_handle->file_object,
+		     0,
+		     SEEK_END,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_SEEK_FAILED,
+			 "%s: unable to seek end of file object.",
+			 function );
+
+			goto on_error;
+		}
+		if( pylnk_file_object_get_offset(
+		     file_object_io_handle->file_object,
+		     (off64_t *) size,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve end offset in file object.",
+			 function );
+
+			pylnk_file_object_seek_offset(
+			 file_object_io_handle->file_object,
+			 current_offset,
+			 SEEK_SET,
+			 NULL );
+
+			goto on_error;
+		}
+		if( pylnk_file_object_seek_offset(
+		     file_object_io_handle->file_object,
+		     current_offset,
+		     SEEK_SET,
+		     error ) != 1 )
+		{
+			liberror_error_set(
+			 error,
+			 LIBERROR_ERROR_DOMAIN_IO,
+			 LIBERROR_IO_ERROR_SEEK_FAILED,
+			 "%s: unable to seek current offset in file object.",
+			 function );
+
+			goto on_error;
+		}
+	}
+	Py_DecRef(
+	 method_name );
+
+	PyGILState_Release(
+	 gil_state );
+
+	return( 1 );
+
+on_error:
+	if( method_name != NULL )
+	{
+		Py_DecRef(
+		 method_name );
 	}
 	PyGILState_Release(
 	 gil_state );

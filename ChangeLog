@@ -48,6 +48,14 @@ Bindings:
 * .net
 * java
 
+20120307
+* worked on Python bindings (pylnk)
+  - added parsing of codepage string
+
+20120306
+* worked on Python bindings (pylnk)
+  - added passing of file object
+
 20120305
 * worked on Python bindings (pylnk)
 * updated libnotify, libsystem, libbfio, libfwsi

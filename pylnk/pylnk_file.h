@@ -80,6 +80,14 @@ PyObject *pylnk_file_open_file_object(
 PyObject *pylnk_file_close(
            pylnk_file_t *pylnk_file );
 
+PyObject *pylnk_file_get_ascii_codepage(
+           pylnk_file_t *pylnk_file );
+
+PyObject *pylnk_file_set_ascii_codepage(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments,
+           PyObject *keywords );
+
 PyObject *pylnk_file_get_file_creation_time(
            pylnk_file_t *pylnk_file );
 

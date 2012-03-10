@@ -31,6 +31,7 @@
 #endif
 
 #include "pylnk.h"
+#include "pylnk_codepage.h"
 #include "pylnk_datetime.h"
 #include "pylnk_file.h"
 #include "pylnk_file_object_io_handle.h"
@@ -52,6 +53,8 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "signal_abort",
 	  (PyCFunction) pylnk_file_signal_abort,
 	  METH_NOARGS,
+	  "signal_abort() -> None\n"
+	  "\n"
 	  "Signals the file to abort the current activity" },
 
 	/* Functions to access the file */
@@ -59,73 +62,116 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "open",
 	  (PyCFunction) pylnk_file_open,
 	  METH_VARARGS | METH_KEYWORDS,
+	  "open(filename, access_flags) -> None\n"
+	  "\n"
 	  "Opens a file" },
 
 	{ "open_file_object",
 	  (PyCFunction) pylnk_file_open_file_object,
 	  METH_VARARGS | METH_KEYWORDS,
+	  "open(file_object, access_flags) -> None\n"
+	  "\n"
 	  "Opens a file using a file-like object" },
 
 	{ "close",
 	  (PyCFunction) pylnk_file_close,
 	  METH_NOARGS,
+	  "close() -> None\n"
+	  "\n"
 	  "Closes a file" },
+
+	{ "get_ascii_codepage",
+	  (PyCFunction) pylnk_file_get_ascii_codepage,
+	  METH_NOARGS,
+	  "get_ascii_codepage() -> String\n"
+	  "\n"
+	  "Returns the codepage used for ASCII strings in the file" },
+
+	{ "set_ascii_codepage",
+	  (PyCFunction) pylnk_file_set_ascii_codepage,
+	  METH_VARARGS | METH_KEYWORDS,
+	  "set_ascii_codepage(codepage) -> None\n"
+	  "\n"
+	  "Set the codepage used for ASCII strings in the file\n"
+	  "Expects the codepage to be a String containing a Python codec definition" },
 
 	/* Functions to access the metadata */
 
 	{ "get_file_creation_time",
 	  (PyCFunction) pylnk_file_get_file_creation_time,
 	  METH_NOARGS,
+	  "get_file_creation_time() -> Datetime\n"
+	  "\n"
 	  "Returns the creation date and time of the linked file" },
 
 	{ "get_file_modification_time",
 	  (PyCFunction) pylnk_file_get_file_modification_time,
 	  METH_NOARGS,
+	  "get_file_modification_time() -> Datetime\n"
+	  "\n"
 	  "Returns the modification date and time of the linked file" },
 
 	{ "get_file_access_time",
 	  (PyCFunction) pylnk_file_get_file_access_time,
 	  METH_NOARGS,
+	  "get_file_access_time() -> Datetime\n"
+	  "\n"
 	  "Returns the access date and time of the linked file" },
 
 	{ "get_local_path",
 	  (PyCFunction) pylnk_file_get_local_path,
 	  METH_NOARGS,
+	  "get_local_path() -> Unicode string or None\n"
+	  "\n"
 	  "Returns the local path of the linked file" },
 
 	{ "get_network_path",
 	  (PyCFunction) pylnk_file_get_network_path,
 	  METH_NOARGS,
+	  "get_network_path() -> Unicode string or None\n"
+	  "\n"
 	  "Returns the network path of the linked file" },
 
 	{ "get_description",
 	  (PyCFunction) pylnk_file_get_description,
 	  METH_NOARGS,
+	  "get_description() -> Unicode string or None\n"
+	  "\n"
 	  "Returns the description of the linked file" },
 
 	{ "get_relative_path",
 	  (PyCFunction) pylnk_file_get_relative_path,
 	  METH_NOARGS,
+	  "get_relative_path() -> Unicode string or None\n"
+	  "\n"
 	  "Returns the relative path of the linked file" },
 
 	{ "get_working_directory",
 	  (PyCFunction) pylnk_file_get_working_directory,
 	  METH_NOARGS,
+	  "get_working_directory() -> Unicode string or None\n"
+	  "\n"
 	  "Returns the working directory of the linked file" },
 
 	{ "get_command_line_arguments",
 	  (PyCFunction) pylnk_file_get_command_line_arguments,
 	  METH_NOARGS,
+	  "get_command_line_arguments() -> Unicode string or None\n"
+	  "\n"
 	  "Returns the command line arguments of the linked file" },
 
 	{ "get_icon_location",
 	  (PyCFunction) pylnk_file_get_icon_location,
 	  METH_NOARGS,
+	  "get_icon_location() -> Unicode string or None\n"
+	  "\n"
 	  "Returns the icon location of the linked file" },
 
 	{ "get_environment_variables_location",
 	  (PyCFunction) pylnk_file_get_environment_variables_location,
 	  METH_NOARGS,
+	  "get_environment_variables_location() -> Unicode string or None\n"
+	  "\n"
 	  "Returns the environment variables location of the linked file" },
 
 	/* Sentinel */
@@ -307,7 +353,7 @@ int pylnk_file_init(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 
@@ -360,7 +406,7 @@ void pylnk_file_free(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 
@@ -369,7 +415,7 @@ void pylnk_file_free(
 	if( pylnk_file->ob_type == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file - missing ob_type.",
 		 function );
 
@@ -378,7 +424,7 @@ void pylnk_file_free(
 	if( pylnk_file->ob_type->tp_free == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file - invalid ob_type - missing tp_free.",
 		 function );
 
@@ -387,7 +433,7 @@ void pylnk_file_free(
 	if( pylnk_file->file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file - missing liblnk file.",
 		 function );
 
@@ -403,14 +449,14 @@ void pylnk_file_free(
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
                 {
 			PyErr_Format(
-			 PyExc_IOError,
+			 PyExc_MemoryError,
 			 "%s: unable to free liblnk file.",
 			 function );
 		}
 		else
 		{
 			PyErr_Format(
-			 PyExc_IOError,
+			 PyExc_MemoryError,
 			 "%s: unable to free liblnk file.\n%s",
 			 function,
 			 error_string );
@@ -436,7 +482,7 @@ PyObject *pylnk_file_signal_abort(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 
@@ -494,7 +540,7 @@ PyObject *pylnk_file_open(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 
@@ -572,7 +618,7 @@ PyObject *pylnk_file_open_file_object(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 
@@ -687,7 +733,7 @@ PyObject *pylnk_file_close(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 
@@ -726,6 +772,200 @@ PyObject *pylnk_file_close(
 	return( Py_None );
 }
 
+/* Retrieves the codepage used for ASCII strings in the file
+ * Returns a Python object holding the offset if successful or NULL on error
+ */
+PyObject *pylnk_file_get_ascii_codepage(
+           pylnk_file_t *pylnk_file )
+{
+	char error_string[ PYLNK_ERROR_STRING_SIZE ];
+
+	liberror_error_t *error     = NULL;
+	PyObject *string_object     = NULL;
+	const char *codepage_string = NULL;
+	static char *function       = "pylnk_file_get_ascii_codepage";
+	int ascii_codepage          = 0;
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	if( liblnk_file_get_ascii_codepage(
+	     pylnk_file->file,
+	     &ascii_codepage,
+	     &error ) != 1 )
+	{
+		if( liberror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve ASCII codepage.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve ASCII codepage.\n%s",
+			 function,
+			 error_string );
+		}
+		liberror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	codepage_string = pylnk_codepage_to_string(
+	                   ascii_codepage );
+
+	if( codepage_string == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: unsupported ASCII codepage: %d.",
+		 function,
+		 ascii_codepage );
+
+		return( NULL );
+	}
+	string_object = PyString_FromString(
+	                 codepage_string );
+
+	if( string_object == NULL )
+	{
+		PyErr_Format(
+		 PyExc_IOError,
+		 "%s: unable to convert codepage string into string object.",
+		 function );
+
+		return( NULL );
+	}
+	return( string_object );
+}
+
+/* Sets the codepage used for ASCII strings in the file
+ * Returns a Python object holding the offset if successful or NULL on error
+ */
+PyObject *pylnk_file_set_ascii_codepage(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments,
+           PyObject *keywords )
+{
+	char error_string[ PYLNK_ERROR_STRING_SIZE ];
+
+	liberror_error_t *error       = NULL;
+	char *codepage_string         = NULL;
+	static char *keyword_list[]   = { "codepage", NULL };
+	static char *function         = "pylnk_file_set_ascii_codepage";
+	size_t codepage_string_length = 0;
+	uint32_t feature_flags        = 0;
+	int ascii_codepage            = 0;
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	if( PyArg_ParseTupleAndKeywords(
+	     arguments,
+	     keywords,
+	     "s",
+	     keyword_list,
+	     &codepage_string ) == 0 )
+        {
+                return( NULL );
+        }
+	if( codepage_string == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid codepage string.",
+		 function );
+
+		return( NULL );
+	}
+	codepage_string_length = libcstring_narrow_string_length(
+	                          codepage_string );
+
+	feature_flags = PYLNK_CODEPAGE_FEATURE_FLAG_HAVE_KOI8_CODEPAGES
+	              | PYLNK_CODEPAGE_FEATURE_FLAG_HAVE_WINDOWS_CODEPAGES;
+
+	if( pylnk_codepage_from_string(
+	     &ascii_codepage,
+	     codepage_string,
+	     codepage_string_length,
+	     feature_flags,
+	     &error ) != 1 )
+	{
+		if( liberror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+		{
+			PyErr_Format(
+			 PyExc_RuntimeError,
+			 "%s: unable to determine ASCII codepage.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_RuntimeError,
+			 "%s: unable to determine ASCII codepage.\n%s",
+			 function,
+			 error_string );
+		}
+		liberror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	if( liblnk_file_set_ascii_codepage(
+	     pylnk_file->file,
+	     ascii_codepage,
+	     &error ) != 1 )
+	{
+		if( liberror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to set ASCII codepage.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to set ASCII codepage.\n%s",
+			 function,
+			 error_string );
+		}
+		liberror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	Py_IncRef(
+	 Py_None );
+
+	return( Py_None );
+}
+
 /* Retrieves the creation date and time of the linked file
  * Returns a Python object holding the offset if successful or NULL on error
  */
@@ -739,6 +979,15 @@ PyObject *pylnk_file_get_file_creation_time(
 	static char *function      = "pylnk_file_get_file_creation_time";
 	uint64_t filetime          = 0;
 
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
 	if( liblnk_file_get_file_creation_time(
 	     pylnk_file->file,
 	     &filetime,
@@ -786,6 +1035,15 @@ PyObject *pylnk_file_get_file_modification_time(
 	static char *function      = "pylnk_file_get_file_modification_time";
 	uint64_t filetime          = 0;
 
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
 	if( liblnk_file_get_file_modification_time(
 	     pylnk_file->file,
 	     &filetime,
@@ -833,6 +1091,15 @@ PyObject *pylnk_file_get_file_access_time(
 	static char *function      = "pylnk_file_get_file_access_time";
 	uint64_t filetime          = 0;
 
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
 	if( liblnk_file_get_file_access_time(
 	     pylnk_file->file,
 	     &filetime,
@@ -883,6 +1150,15 @@ PyObject *pylnk_file_get_local_path(
 	size_t local_path_size  = 0;
 	int result              = 0;
 
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
 	result = liblnk_file_get_utf8_local_path_size(
 	          pylnk_file->file,
 	          &local_path_size,
@@ -1016,6 +1292,15 @@ PyObject *pylnk_file_get_network_path(
 	size_t network_path_size = 0;
 	int result               = 0;
 
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
 	result = liblnk_file_get_utf8_network_path_size(
 	          pylnk_file->file,
 	          &network_path_size,
@@ -1149,6 +1434,15 @@ PyObject *pylnk_file_get_description(
 	size_t description_size  = 0;
 	int result               = 0;
 
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
 	result = liblnk_file_get_utf8_description_size(
 	          pylnk_file->file,
 	          &description_size,
@@ -1282,6 +1576,15 @@ PyObject *pylnk_file_get_relative_path(
 	size_t relative_path_size = 0;
 	int result                = 0;
 
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
 	result = liblnk_file_get_utf8_relative_path_size(
 	          pylnk_file->file,
 	          &relative_path_size,
@@ -1415,6 +1718,15 @@ PyObject *pylnk_file_get_working_directory(
 	size_t working_directory_size = 0;
 	int result                    = 0;
 
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
 	result = liblnk_file_get_utf8_working_directory_size(
 	          pylnk_file->file,
 	          &working_directory_size,
@@ -1548,6 +1860,15 @@ PyObject *pylnk_file_get_command_line_arguments(
 	size_t command_line_arguments_size = 0;
 	int result                         = 0;
 
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
 	result = liblnk_file_get_utf8_command_line_arguments_size(
 	          pylnk_file->file,
 	          &command_line_arguments_size,
@@ -1681,6 +2002,15 @@ PyObject *pylnk_file_get_icon_location(
 	size_t icon_location_size = 0;
 	int result                = 0;
 
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
 	result = liblnk_file_get_utf8_icon_location_size(
 	          pylnk_file->file,
 	          &icon_location_size,
@@ -1814,6 +2144,15 @@ PyObject *pylnk_file_get_environment_variables_location(
 	size_t environment_variables_location_size = 0;
 	int result                                 = 0;
 
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
 	result = liblnk_file_get_utf8_environment_variables_location_size(
 	          pylnk_file->file,
 	          &environment_variables_location_size,
