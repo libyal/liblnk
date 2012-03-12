@@ -67,19 +67,6 @@ void pylnk_file_free(
 PyObject *pylnk_file_signal_abort(
            pylnk_file_t *pylnk_file );
 
-PyObject *pylnk_file_get_attibute(
-           pylnk_file_t *pylnk_file,
-           const char *attribute_name,
-           size_t attribute_name_length );
-
-PyObject *pylnk_file_get_attibute_by_string(
-           pylnk_file_t *pylnk_file,
-           const char *attribute_name );
-
-PyObject *pylnk_file_get_attibute_by_object(
-           pylnk_file_t *pylnk_file,
-           PyObject *attribute_name );
-
 PyObject *pylnk_file_open(
            pylnk_file_t *pylnk_file,
            PyObject *arguments,

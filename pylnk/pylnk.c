@@ -50,12 +50,7 @@ PyMethodDef pylnk_module_methods[] = {
 	{ "check_file_signature",
 	  (PyCFunction) pylnk_check_file_signature,
 	  METH_VARARGS | METH_KEYWORDS,
-	  "Checks if a file has a Windows NT Registry File (LNK) signature" },
-
-	{ "new_file",
-	  (PyCFunction) pylnk_file_new,
-	  METH_NOARGS,
-	  "Creates a new file" },
+	  "Checks if a file has a Windows Shortcut File (LNK) signature" },
 
 	{ "open",
 	  (PyCFunction) pylnk_file_new_open,
@@ -63,10 +58,7 @@ PyMethodDef pylnk_module_methods[] = {
 	  "Creates a new file and opens it" },
 
 	/* Sentinel */
-	{ NULL,
-	  NULL,
-	  0,
-	  NULL}
+	{ NULL, NULL, 0, NULL }
 };
 
 /* Retrieves the pylnk/liblnk version
@@ -207,7 +199,7 @@ PyMODINIT_FUNC initpylnk(
 
 	PyModule_AddObject(
 	 module,
-	"pylnk_file",
+	"file",
 	(PyObject *) file_type_object );
 
 	PyGILState_Release(

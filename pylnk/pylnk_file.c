@@ -178,6 +178,84 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ NULL, NULL, 0, NULL }
 };
 
+PyGetSetDef pylnk_file_object_get_set_definitions[] = {
+
+	{ "ascii_codepage",
+	  (getter) pylnk_file_get_ascii_codepage,
+	  (setter) 0,
+	  "The codepage used for ASCII strings in the file",
+	  NULL },
+
+	{ "file_creation_time",
+	  (getter) pylnk_file_get_file_creation_time,
+	  (setter) 0,
+	  "The creation date and time of the linked file",
+	  NULL },
+
+	{ "file_modification_time",
+	  (getter) pylnk_file_get_file_modification_time,
+	  (setter) 0,
+	  "The modification date and time of the linked file",
+	  NULL },
+
+	{ "file_access_time",
+	  (getter) pylnk_file_get_file_access_time,
+	  (setter) 0,
+	  "The access date and time of the linked file",
+	  NULL },
+
+	{ "local_path",
+	  (getter) pylnk_file_get_local_path,
+	  (setter) 0,
+	  "The local path of the linked file",
+	  NULL },
+
+	{ "network_path",
+	  (getter) pylnk_file_get_network_path,
+	  (setter) 0,
+	  "The network path of the linked file",
+	  NULL },
+
+	{ "description",
+	  (getter) pylnk_file_get_description,
+	  (setter) 0,
+	  "The descriptioni of the linked file",
+	  NULL },
+
+	{ "relative_path",
+	  (getter) pylnk_file_get_relative_path,
+	  (setter) 0,
+	  "The relative path of the linked file",
+	  NULL },
+
+	{ "working_directory",
+	  (getter) pylnk_file_get_working_directory,
+	  (setter) 0,
+	  "The working directory of the linked file",
+	  NULL },
+
+	{ "command_line_arguments",
+	  (getter) pylnk_file_get_command_line_arguments,
+	  (setter) 0,
+	  "The command line arguments of the linked file",
+	  NULL },
+
+	{ "icon_location",
+	  (getter) pylnk_file_get_icon_location,
+	  (setter) 0,
+	  "The icon location of the linked file",
+	  NULL },
+
+	{ "environment_variables",
+	  (getter) pylnk_file_get_environment_variables_location,
+	  (setter) 0,
+	  "The environment variables location of the linked file",
+	  NULL },
+
+	/* Sentinel */
+	{ NULL, NULL, NULL, NULL, NULL }
+};
+
 PyTypeObject pylnk_file_type_object = {
 	PyObject_HEAD_INIT( NULL )
 
@@ -194,7 +272,7 @@ PyTypeObject pylnk_file_type_object = {
 	/* tp_print */
 	0,
 	/* tp_getattr */
-	(getattrfunc) pylnk_file_get_attibute_by_string,
+	0,
 	/* tp_setattr */
 	0,
 	/* tp_compare */
@@ -214,7 +292,7 @@ PyTypeObject pylnk_file_type_object = {
 	/* tp_str */
 	0,
 	/* tp_getattro */
-	(getattrofunc) pylnk_file_get_attibute_by_object,
+	0,
 	/* tp_setattro */
 	0,
 	/* tp_as_buffer */
@@ -240,7 +318,7 @@ PyTypeObject pylnk_file_type_object = {
 	/* tp_members */
 	0,
 	/* tp_getset */
-	0,
+	pylnk_file_object_get_set_definitions,
 	/* tp_base */
 	0,
 	/* tp_dict */
@@ -519,209 +597,6 @@ PyObject *pylnk_file_signal_abort(
 	 Py_None );
 
 	return( Py_None );
-}
-
-/* Retrieves the value of a specific attribute
- * Returns a Python object if successful or NULL on error
- */
-PyObject *pylnk_file_get_attibute( 
-           pylnk_file_t *pylnk_file,
-           const char *attribute_name,
-           size_t attribute_name_length )
-{
-	PyObject *attribute_value = NULL;
-	PyObject *list_object     = NULL;
-	PyObject *string_object   = NULL;
-	static char *function     = "pylnk_file_get_attibute";
-
-	if( pylnk_file == NULL )
-	{
-		PyErr_Format(
-		 PyExc_ValueError,
-		 "%s: invalid file.",
-		 function );
-
-		return( NULL );
-	}
-	if( attribute_name == NULL )
-	{
-		PyErr_Format(
-		 PyExc_ValueError,
-		 "%s: invalid attribute name.",
-		 function );
-
-		return( NULL );
-	}
-	if( attribute_name_length > (size_t) SSIZE_MAX )
-	{
-		PyErr_Format(
-		 PyExc_ValueError,
-		 "%s: invalid attribute name length value exceeds maximum.",
-		 function );
-
-		return( NULL );
-	}
-	if( attribute_name_length == 11 )
-	{
-		if( libcstring_narrow_string_compare(
-		      attribute_name,
-		      "__members__",
-		      11 ) == 0 )
-		{
-			list_object = PyList_New(
-			               0 );
-
-			string_object = PyString_FromString(
-					 "local_path" );
-
-			if( PyList_Append(
-			     list_object,
-			     string_object ) != 0 )
-			{
-				PyErr_Format(
-				 PyExc_ValueError,
-				 "%s: unable to append string to list.",
-				 function );
-
-				goto on_error;
-			}
-			Py_DecRef(
-			 string_object );
-		}
-		attribute_value = list_object;
-	}
-	else
-	{
-		attribute_value = Py_None;
-
-		Py_IncRef(
-		 attribute_value );
-	}
-	return( attribute_value );
-
-on_error:
-	if( string_object != NULL )
-	{
-		Py_DecRef(
-		 string_object );
-	}
-	if( list_object != NULL )
-	{
-		Py_DecRef(
-		 list_object );
-	}
-	return( NULL );
-}
-
-/* Retrieves the value of a specific attribute, where the attribute name
- * is provided as a string
- * Returns a Python object if successful or NULL on error
- */
-PyObject *pylnk_file_get_attibute_by_string( 
-           pylnk_file_t *pylnk_file,
-           const char *attribute_name )
-{
-	PyObject *attribute_value    = NULL;
-	static char *function        = "pylnk_file_get_attibute_by_string";
-	size_t attribute_name_length = 0;
-
-	if( pylnk_file == NULL )
-	{
-		PyErr_Format(
-		 PyExc_ValueError,
-		 "%s: invalid file.",
-		 function );
-
-		return( NULL );
-	}
-	if( attribute_name == NULL )
-	{
-		PyErr_Format(
-		 PyExc_ValueError,
-		 "%s: invalid attribute name.",
-		 function );
-
-		return( NULL );
-	}
-	/* Try the native handler first
-	 */
-	attribute_value = PyObject_GetAttrString(
-	                   (PyObject*) pylnk_file,
-	                   attribute_name );
-
-	if( attribute_value == NULL )
-	{
-		attribute_name_length = libcstring_narrow_string_length(
-		                         attribute_name );
-
-		attribute_value = pylnk_file_get_attibute(
-		                   pylnk_file,
-		                   attribute_name,
-		                   attribute_name_length );
-	}
-	return( attribute_value );
-}
-
-/* Retrieves the value of a specific attribute, where the attribute name
- * is provided as an object
- * Returns a Python object if successful or NULL on error
- */
-PyObject *pylnk_file_get_attibute_by_object( 
-           pylnk_file_t *pylnk_file,
-           PyObject *attribute_name )
-{
-	PyObject *attribute_value = NULL;
-	char *name                = NULL;
-	static char *function     = "pylnk_file_get_attibute_by_object";
-	Py_ssize_t name_length    = 0;
-	int result                = 0;
-
-	if( pylnk_file == NULL )
-	{
-		PyErr_Format(
-		 PyExc_ValueError,
-		 "%s: invalid file.",
-		 function );
-
-		return( NULL );
-	}
-	if( attribute_name == NULL )
-	{
-		PyErr_Format(
-		 PyExc_ValueError,
-		 "%s: invalid attribute name.",
-		 function );
-
-		return( NULL );
-	}
-	/* Try the native handler first
-	 */
-	attribute_value = PyObject_GenericGetAttr(
-	                   (PyObject*) pylnk_file,
-	                   attribute_name );
-
-	if( attribute_value == NULL )
-	{
-		result = PyString_AsStringAndSize(
-		          attribute_name,
-		          &name,
-		          &name_length );
-
-		if( result == -1 )
-		{
-			PyErr_Format(
-			 PyExc_ValueError,
-			 "%s: unable to retrieve name string.",
-			 function );
-
-			return( NULL );
-		}
-		attribute_value = pylnk_file_get_attibute(
-		                   pylnk_file,
-		                   name,
-		                   (size_t) name_length );
-	}
-	return( attribute_value );
 }
 
 /* Opens a file

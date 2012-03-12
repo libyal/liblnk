@@ -5,12 +5,12 @@
 #
 # Author:            Joachim Metz
 # Creation date:     March 7, 2012
-# Modification date: March 7, 2012
+# Modification date: March 12, 2012
 #
 
 __author__    = "Joachim Metz"
-__version__   = "20120307"
-__date__      = "Mar 7, 2012"
+__version__   = "20120312"
+__date__      = "Mar 12, 2012"
 __copyright__ = "Copyright (c) 2009-2012, Joachim Metz <jbmetz@users.sourceforge.net>"
 __license__   = "GNU LGPL version 3"
 
@@ -30,7 +30,7 @@ if argc < 2:
 
 	sys.exit( 1 )
 
-lnk_file = pylnk.new_file();
+lnk_file = pylnk.file();
 
 if lnk_file == None:
 	print "Missing LNK file object\n"
