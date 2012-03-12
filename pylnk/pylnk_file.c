@@ -427,6 +427,7 @@ int pylnk_file_init(
 
 	static char *function   = "pylnk_file_init";
 	liberror_error_t *error = NULL;
+	int result              = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -441,9 +442,15 @@ int pylnk_file_init(
 	 */
 	pylnk_file->file = NULL;
 
-	if( liblnk_file_initialize(
-	     &( pylnk_file->file ),
-	     &error ) != 1 )
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_initialize(
+	          &( pylnk_file->file ),
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
 	{
 		if( liberror_error_backtrace_sprint(
 		     error,
@@ -480,6 +487,7 @@ void pylnk_file_free(
 
 	liberror_error_t *error = NULL;
 	static char *function   = "pylnk_file_free";
+	int result              = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -517,9 +525,15 @@ void pylnk_file_free(
 
 		return;
 	}
-	if( liblnk_file_free(
-	     &( pylnk_file->file ),
-	     &error ) != 1 )
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_free(
+	          &( pylnk_file->file ),
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
 	{
 		if( liberror_error_backtrace_sprint(
 		     error,
@@ -556,6 +570,7 @@ PyObject *pylnk_file_signal_abort(
 
 	liberror_error_t *error = NULL;
 	static char *function   = "pylnk_file_signal_abort";
+	int result              = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -566,9 +581,15 @@ PyObject *pylnk_file_signal_abort(
 
 		return( NULL );
 	}
-	if( liblnk_file_signal_abort(
-	     pylnk_file->file,
-	     &error ) != 1 )
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_signal_abort(
+	          pylnk_file->file,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
 	{
 		if( liberror_error_backtrace_sprint(
 		     error,
@@ -614,6 +635,7 @@ PyObject *pylnk_file_open(
 	static char *keyword_list[] = { "filename", "access_flags", NULL };
 	static char *function       = "pylnk_file_open";
 	int access_flags            = 0;
+	int result                  = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -640,11 +662,17 @@ PyObject *pylnk_file_open(
 	{
 		access_flags = liblnk_get_access_flags_read();
 	}
-	if( liblnk_file_open(
-	     pylnk_file->file,
-             filename,
-             access_flags,
-	     &error ) != 1 )
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_open(
+	          pylnk_file->file,
+                  filename,
+                  access_flags,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
 	{
 		if( liberror_error_backtrace_sprint(
 		     error,
@@ -746,7 +774,6 @@ PyObject *pylnk_file_open_file_object(
 
 		goto on_error;
 	}
-
 	Py_BEGIN_ALLOW_THREADS
 
 	result = liblnk_file_open_file_io_handle(
@@ -807,6 +834,7 @@ PyObject *pylnk_file_close(
 
 	liberror_error_t *error = NULL;
 	static char *function   = "pylnk_file_close";
+	int result              = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -817,9 +845,15 @@ PyObject *pylnk_file_close(
 
 		return( NULL );
 	}
-	if( liblnk_file_close(
-	     pylnk_file->file,
-	     &error ) != 0 )
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_close(
+	          pylnk_file->file,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 0 )
 	{
 		if( liberror_error_backtrace_sprint(
 		     error,

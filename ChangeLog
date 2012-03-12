@@ -1,4 +1,7 @@
 TODO
+* pylnk
+  - protect all liblnk functions
+  - change open to ("r")
 * what about trailing data in xp lnk files ?
 * what about shell items
 * what about ole properties
