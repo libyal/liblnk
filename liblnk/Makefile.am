@@ -35,9 +35,9 @@ liblnk_la_SOURCES = \
 	liblnk_libfwsi.h \
 	liblnk_libuna.h \
 	liblnk_link_information.c liblnk_link_information.h \
+	liblnk_link_target_identifier.c liblnk_link_target_identifier.h \
 	liblnk_location_information.c liblnk_location_information.h \
 	liblnk_notify.c liblnk_notify.h \
-	liblnk_shell_item_identifiers_list.c liblnk_shell_item_identifiers_list.h \
 	liblnk_special_folder_location.c liblnk_special_folder_location.h \
 	liblnk_support.c liblnk_support.h \
 	liblnk_types.h \
@@ -67,6 +67,8 @@ MAINTAINERCLEANFILES = \
 	Makefile.in
 
 distclean: clean
+	/bin/rm -f liblnk_definitions.h
+	/bin/rm -f liblnk.rc
 	/bin/rm -f Makefile
 
 splint:

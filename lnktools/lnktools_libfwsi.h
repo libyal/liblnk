@@ -31,6 +31,7 @@
 #include <libfwsi_definitions.h>
 #include <libfwsi_folder_identifier.h>
 #include <libfwsi_item.h>
+#include <libfwsi_item_list.h>
 #include <libfwsi_types.h>
 
 #elif defined( HAVE_LIBFWSI_H )

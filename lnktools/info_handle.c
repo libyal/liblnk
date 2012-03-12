@@ -31,6 +31,7 @@
 #include "lnkinput.h"
 #include "lnktools_libfdatetime.h"
 #include "lnktools_libfguid.h"
+#include "lnktools_libfwsi.h"
 #include "lnktools_liblnk.h"
 
 #define INFO_HANDLE_NOTIFY_STREAM	stdout
@@ -436,10 +437,10 @@ int info_handle_data_flags_fprint(
 	return( 1 );
 }
 
-/* Prints the link target identifier information
+/* Prints the link information
  * Returns 1 if successful or -1 on error
  */
-int info_handle_link_target_identifier_fprint(
+int info_handle_link_information_fprint(
      info_handle_t *info_handle,
      liberror_error_t **error )
 {
@@ -447,7 +448,7 @@ int info_handle_link_target_identifier_fprint(
 
 	libfdatetime_filetime_t *filetime           = NULL;
 	libcstring_system_character_t *value_string = NULL;
-	static char *function                       = "info_handle_link_target_identifier_fprint";
+	static char *function                       = "info_handle_link_information_fprint";
 	size_t value_string_size                    = 0;
 	uint64_t value_64bit                        = 0;
 	uint32_t file_attribute_flags               = 0;
@@ -1608,6 +1609,57 @@ on_error:
 	return( -1 );
 }
 
+/* Prints the link target identifier
+ * Returns 1 if successful or -1 on error
+ */
+int info_handle_link_target_identifier_fprint(
+     info_handle_t *info_handle,
+     liberror_error_t **error )
+{
+	uint8_t *link_target_identifier_data    = NULL;
+	static char *function                   = "info_handle_link_target_identifier_fprint";
+	size_t link_target_identifier_data_size = 0;
+	int result                              = 0;
+
+	if( info_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid info handle.",
+		 function );
+
+		return( -1 );
+	}
+	result = liblnk_file_get_link_target_identifier_data(
+	          info_handle->input_file,
+	          &link_target_identifier_data,
+	          &link_target_identifier_data_size,
+	          error );
+
+	if( result == -1 )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve link target identifier data.",
+		 function );
+
+		return( -1 );
+	}
+	else if( result != 0 )
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "Link target identifier:\n" );
+
+/* TODO */
+	}
+	return( 1 );
+}
+
 /* Prints the distributed link tracking data
  * Returns 1 if successful or -1 on error
  */
@@ -2059,7 +2111,7 @@ int info_handle_file_fprint(
 
 		return( -1 );
 	}
-	if( info_handle_link_target_identifier_fprint(
+	if( info_handle_link_information_fprint(
 	     info_handle,
 	     error ) != 1 )
 	{
@@ -2067,7 +2119,7 @@ int info_handle_file_fprint(
 		 error,
 		 LIBERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
-		 "%s: unable to print link target identifier.",
+		 "%s: unable to print link information.",
 		 function );
 
 		return( -1 );

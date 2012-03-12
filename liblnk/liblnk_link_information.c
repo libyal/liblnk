@@ -29,6 +29,8 @@
 #include "liblnk_file.h"
 #include "liblnk_file_information.h"
 #include "liblnk_libuna.h"
+#include "liblnk_link_information.h"
+#include "liblnk_link_target_identifier.h"
 #include "liblnk_location_information.h"
 
 /* Retrieves the data flags
@@ -2987,6 +2989,75 @@ int liblnk_file_get_utf16_environment_variables_location(
 
 		return( -1 );
 	}
+	return( 1 );
+}
+
+/* Retrieves the link target identifier data
+ * The data contains a shell item (identifier) list
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_link_target_identifier_data(
+     liblnk_file_t *file,
+     uint8_t **data,
+     size_t *data_size,
+     liberror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_link_target_identifier_data";
+
+	if( file == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( data == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_size == NULL )
+	{
+		liberror_error_set(
+		 error,
+		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data size.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->link_target_identifier == NULL )
+	{
+		return( 0 );
+	}
+	*data      = internal_file->link_target_identifier->data;
+	*data_size = internal_file->link_target_identifier->data_size;
+
 	return( 1 );
 }
 

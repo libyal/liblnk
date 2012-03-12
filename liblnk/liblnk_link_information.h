@@ -284,6 +284,13 @@ int liblnk_file_get_utf16_environment_variables_location(
      size_t utf16_string_size,
      liberror_error_t **error );
 
+LIBLNK_EXTERN \
+int liblnk_file_get_target_link_identifier_data(
+     liblnk_file_t *file,
+     uint8_t **data,
+     size_t *data_size,
+     liberror_error_t **error );
+
 #if defined( __cplusplus )
 }
 #endif

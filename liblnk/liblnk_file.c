@@ -39,8 +39,8 @@
 #include "liblnk_io_handle.h"
 #include "liblnk_known_folder_location.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_link_target_identifier.h"
 #include "liblnk_location_information.h"
-#include "liblnk_shell_item_identifiers_list.h"
 #include "liblnk_special_folder_location.h"
 
 /* Initialize a file
@@ -763,7 +763,7 @@ int liblnk_file_close(
 	}
 	if( internal_file->link_target_identifier != NULL )
 	{
-		if( liblnk_shell_item_identifiers_list_free(
+		if( liblnk_link_target_identifier_free(
 		     &( internal_file->link_target_identifier ),
 		     error ) != 1 )
 		{
@@ -1026,7 +1026,7 @@ int liblnk_file_open_read(
 
 	if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) != 0 )
 	{
-		if( liblnk_shell_item_identifiers_list_initialize(
+		if( liblnk_link_target_identifier_initialize(
 		     &( internal_file->link_target_identifier ),
 		     error ) != 1 )
 		{
@@ -1043,10 +1043,10 @@ int liblnk_file_open_read(
 		if( libnotify_verbose != 0 )
 		{
 			libnotify_printf(
-			 "Reading shell items:\n" );
+			 "Reading link target identifier:\n" );
 		}
 #endif
-		read_count = liblnk_shell_item_identifiers_list_read(
+		read_count = liblnk_link_target_identifier_read(
 		              internal_file->link_target_identifier,
 		              internal_file->file_io_handle,
 		              file_offset,

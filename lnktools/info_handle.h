@@ -86,7 +86,7 @@ int info_handle_data_flags_fprint(
      info_handle_t *info_handle,
      liberror_error_t **error );
 
-int info_handle_link_target_identifier_fprint(
+int info_handle_link_information_fprint(
      info_handle_t *info_handle,
      liberror_error_t **error );
 
@@ -107,6 +107,10 @@ int info_handle_command_line_arguments_fprint(
      liberror_error_t **error );
 
 int info_handle_icon_location_fprint(
+     info_handle_t *info_handle,
+     liberror_error_t **error );
+
+int info_handle_link_target_identifier_fprint(
      info_handle_t *info_handle,
      liberror_error_t **error );
 

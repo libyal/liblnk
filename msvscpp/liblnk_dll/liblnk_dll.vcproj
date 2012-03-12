@@ -216,15 +216,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\liblnk\liblnk_link_target_identifier.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\liblnk\liblnk_location_information.c"
 				>
 			</File>
 			<File
 				RelativePath="..\..\liblnk\liblnk_notify.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\liblnk\liblnk_shell_item_identifiers_list.c"
 				>
 			</File>
 			<File
@@ -322,15 +322,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\liblnk\liblnk_link_target_identifier.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\liblnk\liblnk_location_information.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\liblnk\liblnk_notify.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\liblnk\liblnk_shell_item_identifiers_list.h"
 				>
 			</File>
 			<File

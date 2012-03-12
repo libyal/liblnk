@@ -34,8 +34,8 @@
 #include "liblnk_io_handle.h"
 #include "liblnk_known_folder_location.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_link_target_identifier.h"
 #include "liblnk_location_information.h"
-#include "liblnk_shell_item_identifiers_list.h"
 #include "liblnk_special_folder_location.h"
 
 #if defined( _MSC_VER ) || defined( __BORLANDC__ ) || defined( __MINGW32_VERSION ) || defined( __MINGW64_VERSION_MAJOR )
@@ -76,9 +76,9 @@ struct liblnk_internal_file
 	liblnk_file_information_t *file_information;
 
 	/* The link target identifier
-	 * Consists of a shell item identifiers list
+	 * Consists of a shell item (identifiers) list
 	 */
-	liblnk_shell_item_identifiers_list_t *link_target_identifier;
+	liblnk_link_target_identifier_t *link_target_identifier;
 
 	/* The location information
 	 */

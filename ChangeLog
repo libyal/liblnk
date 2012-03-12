@@ -51,6 +51,7 @@ Bindings:
 20120312
 * worked on Python bindings (pylnk)
   - worked on get/set attribute functions
+* libfwsi code clean up
 
 20120309
 * worked on Python bindings (pylnk)
