@@ -150,9 +150,12 @@ ssize_t liblnk_link_target_identifier_read(
 {
 	uint8_t size_data[ 2 ];
 
-	libfwsi_item_list_t *shell_item_list = NULL;
 	static char *function                = "liblnk_link_target_identifier_read";
 	ssize_t read_count                   = 0;
+
+#if defined( HAVE_DEBUG_OUTPUT )
+	libfwsi_item_list_t *shell_item_list = NULL;
+#endif
 
 	if( link_target_identifier == NULL )
 	{
