@@ -427,7 +427,6 @@ int pylnk_file_init(
 
 	static char *function   = "pylnk_file_init";
 	liberror_error_t *error = NULL;
-	int result              = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -442,15 +441,9 @@ int pylnk_file_init(
 	 */
 	pylnk_file->file = NULL;
 
-	Py_BEGIN_ALLOW_THREADS
-
-	result = liblnk_file_initialize(
-	          &( pylnk_file->file ),
-	          &error );
-
-	Py_END_ALLOW_THREADS
-
-	if( result != 1 )
+	if( liblnk_file_initialize(
+	     &( pylnk_file->file ),
+	     &error ) != 1 )
 	{
 		if( liberror_error_backtrace_sprint(
 		     error,
@@ -487,7 +480,6 @@ void pylnk_file_free(
 
 	liberror_error_t *error = NULL;
 	static char *function   = "pylnk_file_free";
-	int result              = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -525,15 +517,9 @@ void pylnk_file_free(
 
 		return;
 	}
-	Py_BEGIN_ALLOW_THREADS
-
-	result = liblnk_file_free(
-	          &( pylnk_file->file ),
-	          &error );
-
-	Py_END_ALLOW_THREADS
-
-	if( result != 1 )
+	if( liblnk_file_free(
+	     &( pylnk_file->file ),
+	     &error ) != 1 )
 	{
 		if( liberror_error_backtrace_sprint(
 		     error,
@@ -1090,6 +1076,7 @@ PyObject *pylnk_file_get_file_creation_time(
 	PyObject *date_time_object = NULL;
 	static char *function      = "pylnk_file_get_file_creation_time";
 	uint64_t filetime          = 0;
+	int result                 = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -1100,10 +1087,16 @@ PyObject *pylnk_file_get_file_creation_time(
 
 		return( NULL );
 	}
-	if( liblnk_file_get_file_creation_time(
-	     pylnk_file->file,
-	     &filetime,
-	     &error ) != 1 )
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_file_creation_time(
+	          pylnk_file->file,
+	          &filetime,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
 	{
 		if( liberror_error_backtrace_sprint(
 		     error,
@@ -1146,6 +1139,7 @@ PyObject *pylnk_file_get_file_modification_time(
 	PyObject *date_time_object = NULL;
 	static char *function      = "pylnk_file_get_file_modification_time";
 	uint64_t filetime          = 0;
+	int result                 = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -1156,10 +1150,16 @@ PyObject *pylnk_file_get_file_modification_time(
 
 		return( NULL );
 	}
-	if( liblnk_file_get_file_modification_time(
-	     pylnk_file->file,
-	     &filetime,
-	     &error ) != 1 )
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_file_modification_time(
+	          pylnk_file->file,
+	          &filetime,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
 	{
 		if( liberror_error_backtrace_sprint(
 		     error,
@@ -1202,6 +1202,7 @@ PyObject *pylnk_file_get_file_access_time(
 	PyObject *date_time_object = NULL;
 	static char *function      = "pylnk_file_get_file_access_time";
 	uint64_t filetime          = 0;
+	int result                 = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -1212,10 +1213,16 @@ PyObject *pylnk_file_get_file_access_time(
 
 		return( NULL );
 	}
-	if( liblnk_file_get_file_access_time(
-	     pylnk_file->file,
-	     &filetime,
-	     &error ) != 1 )
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_file_access_time(
+	          pylnk_file->file,
+	          &filetime,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
 	{
 		if( liberror_error_backtrace_sprint(
 		     error,
@@ -1271,10 +1278,14 @@ PyObject *pylnk_file_get_local_path(
 
 		return( NULL );
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_local_path_size(
 	          pylnk_file->file,
 	          &local_path_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -1318,13 +1329,17 @@ PyObject *pylnk_file_get_local_path(
 		 "%s: unable to create local path.",
 		 function );
 
-		return( NULL );
+		goto on_error;
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_local_path(
 	          pylnk_file->file,
 	          (uint8_t *) local_path,
 	          local_path_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -1413,10 +1428,14 @@ PyObject *pylnk_file_get_network_path(
 
 		return( NULL );
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_network_path_size(
 	          pylnk_file->file,
 	          &network_path_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -1460,13 +1479,17 @@ PyObject *pylnk_file_get_network_path(
 		 "%s: unable to create network path.",
 		 function );
 
-		return( NULL );
+		goto on_error;
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_network_path(
 	          pylnk_file->file,
 	          (uint8_t *) network_path,
 	          network_path_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -1555,10 +1578,14 @@ PyObject *pylnk_file_get_description(
 
 		return( NULL );
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_description_size(
 	          pylnk_file->file,
 	          &description_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -1602,13 +1629,17 @@ PyObject *pylnk_file_get_description(
 		 "%s: unable to create description.",
 		 function );
 
-		return( NULL );
+		goto on_error;
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_description(
 	          pylnk_file->file,
 	          (uint8_t *) description,
 	          description_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -1697,10 +1728,14 @@ PyObject *pylnk_file_get_relative_path(
 
 		return( NULL );
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_relative_path_size(
 	          pylnk_file->file,
 	          &relative_path_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -1744,13 +1779,17 @@ PyObject *pylnk_file_get_relative_path(
 		 "%s: unable to create relative path.",
 		 function );
 
-		return( NULL );
+		goto on_error;
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_relative_path(
 	          pylnk_file->file,
 	          (uint8_t *) relative_path,
 	          relative_path_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -1839,10 +1878,14 @@ PyObject *pylnk_file_get_working_directory(
 
 		return( NULL );
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_working_directory_size(
 	          pylnk_file->file,
 	          &working_directory_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -1886,13 +1929,17 @@ PyObject *pylnk_file_get_working_directory(
 		 "%s: unable to create working directory.",
 		 function );
 
-		return( NULL );
+		goto on_error;
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_working_directory(
 	          pylnk_file->file,
 	          (uint8_t *) working_directory,
 	          working_directory_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -1981,10 +2028,14 @@ PyObject *pylnk_file_get_command_line_arguments(
 
 		return( NULL );
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_command_line_arguments_size(
 	          pylnk_file->file,
 	          &command_line_arguments_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -2028,13 +2079,17 @@ PyObject *pylnk_file_get_command_line_arguments(
 		 "%s: unable to create command line arguments.",
 		 function );
 
-		return( NULL );
+		goto on_error;
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_command_line_arguments(
 	          pylnk_file->file,
 	          (uint8_t *) command_line_arguments,
 	          command_line_arguments_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -2123,10 +2178,14 @@ PyObject *pylnk_file_get_icon_location(
 
 		return( NULL );
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_icon_location_size(
 	          pylnk_file->file,
 	          &icon_location_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -2170,13 +2229,17 @@ PyObject *pylnk_file_get_icon_location(
 		 "%s: unable to create icon location.",
 		 function );
 
-		return( NULL );
+		goto on_error;
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_icon_location(
 	          pylnk_file->file,
 	          (uint8_t *) icon_location,
 	          icon_location_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -2265,10 +2328,14 @@ PyObject *pylnk_file_get_environment_variables_location(
 
 		return( NULL );
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_environment_variables_location_size(
 	          pylnk_file->file,
 	          &environment_variables_location_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{
@@ -2312,13 +2379,17 @@ PyObject *pylnk_file_get_environment_variables_location(
 		 "%s: unable to create environment variables location.",
 		 function );
 
-		return( NULL );
+		goto on_error;
 	}
+	Py_BEGIN_ALLOW_THREADS
+
 	result = liblnk_file_get_utf8_environment_variables_location(
 	          pylnk_file->file,
 	          (uint8_t *) environment_variables_location,
 	          environment_variables_location_size,
 	          &error );
+
+	Py_END_ALLOW_THREADS
 
 	if( result == -1 )
 	{

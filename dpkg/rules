@@ -14,7 +14,7 @@ export DH_OPTIONS
 install_liblnk:
 	# Set up liblnk package directories and files
 	mkdir -p debian/liblnk/usr/lib
-	install -p -m755 debian/tmp/usr/lib/lib*.so.* debian/liblnk/usr/lib
+	install -p -m755 debian/tmp/usr/lib/lib*.so.*.*.* debian/liblnk/usr/lib
 
 install_liblnk_dev:
 	# Set up liblnk-dev package directories and files

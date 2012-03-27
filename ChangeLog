@@ -1,7 +1,4 @@
 TODO
-* pylnk
-  - protect all liblnk functions
-  - change open to ("r")
 * what about trailing data in xp lnk files ?
 * what about shell items
 * what about ole properties
@@ -50,6 +47,9 @@ Bindings:
 * python
 * .net
 * java
+
+20120319
+* worked on Python bindings (pylnk)
 
 20120312
 * worked on Python bindings (pylnk)
