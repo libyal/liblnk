@@ -25,10 +25,9 @@
 #include <common.h>
 #include <types.h>
 
-#include <liberror.h>
-
 #include "liblnk_io_handle.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_libcerror.h"
 
 #if defined( __cplusplus )
 extern "C" {
@@ -53,44 +52,44 @@ struct liblnk_data_string
 
 int liblnk_data_string_initialize(
      liblnk_data_string_t **data_string,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int liblnk_data_string_free(
      liblnk_data_string_t **data_string,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 ssize_t liblnk_data_string_read(
          liblnk_data_string_t *data_string,
          liblnk_io_handle_t *io_handle,
          libbfio_handle_t *data_string_io_handle,
          off64_t data_string_offset,
-         liberror_error_t **error );
+         libcerror_error_t **error );
 
 int liblnk_data_string_get_utf8_string_size(
      liblnk_data_string_t *data_string,
      int ascii_codepage,
      size_t *utf8_string_size,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int liblnk_data_string_get_utf8_string(
      liblnk_data_string_t *data_string,
      int ascii_codepage,
      uint8_t *utf8_string,
      size_t utf8_string_size,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int liblnk_data_string_get_utf16_string_size(
      liblnk_data_string_t *data_string,
      int ascii_codepage,
      size_t *utf16_string_size,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int liblnk_data_string_get_utf16_string(
      liblnk_data_string_t *data_string,
      int ascii_codepage,
      uint16_t *utf16_string,
      size_t utf16_string_size,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }

@@ -25,9 +25,8 @@
 #include <common.h>
 #include <types.h>
 
-#include <liberror.h>
-
 #include "liblnk_extern.h"
+#include "liblnk_libcerror.h"
 
 #if defined( __cplusplus )
 extern "C" {
@@ -36,61 +35,61 @@ extern "C" {
 LIBLNK_EXTERN \
 int liblnk_file_has_distributed_link_tracking_data(
      liblnk_file_t *file,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_get_utf8_machine_identifier_size(
      liblnk_file_t *file,
      size_t *utf8_string_size,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_get_utf8_machine_identifier(
      liblnk_file_t *file,
      uint8_t *utf8_string,
      size_t utf8_string_size,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_get_utf16_machine_identifier_size(
      liblnk_file_t *file,
      size_t *utf16_string_size,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_get_utf16_machine_identifier(
      liblnk_file_t *file,
      uint16_t *utf16_string,
      size_t utf16_string_size,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_get_droid_volume_identifier(
      liblnk_file_t *file,
      uint8_t *guid,
      size_t size,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_get_droid_file_identifier(
      liblnk_file_t *file,
      uint8_t *guid,
      size_t size,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_get_birth_droid_volume_identifier(
      liblnk_file_t *file,
      uint8_t *guid,
      size_t size,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_get_birth_droid_file_identifier(
      liblnk_file_t *file,
      uint8_t *guid,
      size_t size,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }

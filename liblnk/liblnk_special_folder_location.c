@@ -24,10 +24,9 @@
 #include <memory.h>
 #include <types.h>
 
-#include <liberror.h>
-#include <libnotify.h>
-
 #include "liblnk_data_block.h"
+#include "liblnk_libcerror.h"
+#include "liblnk_libcnotify.h"
 #include "liblnk_special_folder_location.h"
 
 #include "lnk_data_blocks.h"
@@ -37,16 +36,16 @@
  */
 int liblnk_special_folder_location_initialize(
      liblnk_special_folder_location_t **special_folder_location,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_special_folder_location_initialize";
 
 	if( special_folder_location == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid special folder location.",
 		 function );
 
@@ -54,10 +53,10 @@ int liblnk_special_folder_location_initialize(
 	}
 	if( *special_folder_location != NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid special folder location value already set.",
 		 function );
 
@@ -68,10 +67,10 @@ int liblnk_special_folder_location_initialize(
 
 	if( *special_folder_location == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 		 "%s: unable to create special folder location.",
 		 function );
 
@@ -82,10 +81,10 @@ int liblnk_special_folder_location_initialize(
 	     0,
 	     sizeof( liblnk_special_folder_location_t ) ) == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
 		 "%s: unable to clear special folder location.",
 		 function );
 
@@ -109,16 +108,16 @@ on_error:
  */
 int liblnk_special_folder_location_free(
      liblnk_special_folder_location_t **special_folder_location,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_special_folder_location_free";
 
 	if( special_folder_location == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid special folder location.",
 		 function );
 
@@ -140,17 +139,17 @@ int liblnk_special_folder_location_free(
 int liblnk_special_folder_location_read(
      liblnk_special_folder_location_t *special_folder_location,
      liblnk_data_block_t *data_block,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	lnk_data_block_special_folder_location_t *special_folder_location_data = NULL;
 	static char *function                                                  = "liblnk_special_folder_location_read";
 
 	if( special_folder_location == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid special folder location.",
 		 function );
 
@@ -158,10 +157,10 @@ int liblnk_special_folder_location_read(
 	}
 	if( data_block == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid data block.",
 		 function );
 
@@ -169,10 +168,10 @@ int liblnk_special_folder_location_read(
 	}
 	if( data_block->data == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid data block - missing data.",
 		 function );
 
@@ -180,10 +179,10 @@ int liblnk_special_folder_location_read(
 	}
 	if( data_block->data_size < sizeof( lnk_data_block_special_folder_location_t ) )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 		 "%s: invalid data block - data size too small.",
 		 function );
 
@@ -200,31 +199,31 @@ int liblnk_special_folder_location_read(
 	 special_folder_location->first_child_segment_offset );
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: folder identifier\t\t\t: %" PRIu32 "\n",
 		 function,
 		 special_folder_location->folder_identifier );
 
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: first child segment offset\t\t: %" PRIu32 "\n",
 		 function,
 		 special_folder_location->first_child_segment_offset );
 
-		libnotify_printf(
+		libcnotify_printf(
 		 "\n" );
 	}
 #endif
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
 		if( data_block->data_size > sizeof( lnk_data_block_special_folder_location_t ) )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: trailing data:\n",
 			 function );
-			libnotify_print_data(
+			libcnotify_print_data(
 			 &( data_block->data[ sizeof( lnk_data_block_special_folder_location_t ) ] ),
 			 data_block->data_size - sizeof( lnk_data_block_special_folder_location_t ),
 			 0 );

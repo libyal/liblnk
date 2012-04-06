@@ -25,7 +25,7 @@
 #include <common.h>
 #include <types.h>
 
-#include <liberror.h>
+#include "liblnk_libcerror.h"
 
 #if defined( __cplusplus )
 extern "C" {
@@ -61,11 +61,11 @@ struct liblnk_file_information
 
 int liblnk_file_information_initialize(
      liblnk_file_information_t **file_information,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int liblnk_file_information_free(
      liblnk_file_information_t **file_information,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }

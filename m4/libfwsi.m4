@@ -1,6 +1,6 @@
 dnl Functions for libfwsi
 dnl
-dnl Version: 20120312
+dnl Version: 20120406
 
 dnl Function to detect if libfwsi is available
 AC_DEFUN([AX_LIBFWSI_CHECK_LIB],
@@ -70,6 +70,16 @@ AC_DEFUN([AX_LIBFWSI_CHECK_LIB],
 
  AS_IF(
   [test "x$ac_cv_libfwsi" = xyes],
+  [AC_DEFINE(
+   [HAVE_LIBFWSI],
+   [1],
+   [Define to 1 if you have the `fwsi' library (-lfwsi).])
+
+  ac_cv_libfwsi_LIBADD="-lfwsi"
+  ])
+
+ AS_IF(
+  [test "x$ac_cv_libfwsi" = xyes],
   [AC_SUBST(
    [HAVE_LIBFWSI],
    [1]) ],
@@ -88,30 +98,56 @@ AC_DEFUN([AX_LIBFWSI_CHECK_ENABLE],
   [auto-detect],
   [DIR])
 
- AX_LIBFWSI_CHECK_LIB
+ dnl Check for a pkg-config file
+ AS_IF(
+  [test "x$cross_compiling" != "xyes" && test "x$PKGCONFIG" != "x"],
+  [PKG_CHECK_MODULES(
+   [libfwsi],
+   [libfwsi >= 20120405],
+   [ac_cv_libfwsi=yes],
+   [ac_cv_libfwsi=no])
 
+  ac_cv_libfwsi_CPPFLAGS="$pkg_cv_libfwsi_CFLAGS"
+  ac_cv_libfwsi_LIBADD="$pkg_cv_libfwsi_LIBS"
+ ])
+
+ dnl Check for a shared library version
  AS_IF(
   [test "x$ac_cv_libfwsi" != xyes],
-  [AC_DEFINE(
+  [AX_LIBFWSI_CHECK_LIB])
+
+ dnl Check if the dependencies for the local library version
+ AS_IF(
+  [test "x$ac_cv_libfwsi" != xyes],
+  [ac_cv_libfwsi_CPPFLAGS="-I../libfwsi";
+  ac_cv_libfwsi_LIBADD="../libfwsi/libfwsi.la";
+
+  ac_cv_libfwsi=local
+
+  AC_DEFINE(
    [HAVE_LOCAL_LIBFWSI],
    [1],
    [Define to 1 if the local version of libfwsi is used.])
   AC_SUBST(
    [HAVE_LOCAL_LIBFWSI],
    [1])
-  AC_SUBST(
-   [LIBFWSI_CPPFLAGS],
-   [-I../libfwsi])
-  AC_SUBST(
-   [LIBFWSI_LIBADD],
-   [../libfwsi/libfwsi.la])
-
-  ac_cv_libfwsi=local
   ])
 
  AM_CONDITIONAL(
   [HAVE_LOCAL_LIBFWSI],
   [test "x$ac_cv_libfwsi" = xlocal])
+ AS_IF(
+  [test "x$ac_cv_libfwsi_CPPFLAGS" != "x"],
+  [AC_SUBST(
+   [LIBFWSI_CPPFLAGS],
+   [$ac_cv_libfwsi_CPPFLAGS])
+  ])
+ AS_IF(
+  [test "x$ac_cv_libfwsi_LIBADD" != "x"],
+  [AC_SUBST(
+   [LIBFWSI_LIBADD],
+   [$ac_cv_libfwsi_LIBADD])
+  ])
 
  AS_IF(
   [test "x$ac_cv_libfwsi" = xyes],

@@ -23,11 +23,10 @@
 #include <memory.h>
 #include <types.h>
 
-#include <liberror.h>
-
 #include "liblnk_definitions.h"
 #include "liblnk_file.h"
 #include "liblnk_file_information.h"
+#include "liblnk_libcerror.h"
 #include "liblnk_libuna.h"
 #include "liblnk_link_information.h"
 #include "liblnk_link_target_identifier.h"
@@ -40,17 +39,17 @@
 int liblnk_file_get_data_flags(
      liblnk_file_t *file,
      uint32_t *data_flags,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_data_flags";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -60,10 +59,10 @@ int liblnk_file_get_data_flags(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -71,10 +70,10 @@ int liblnk_file_get_data_flags(
 	}
 	if( data_flags == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid data flags.",
 		 function );
 
@@ -90,17 +89,17 @@ int liblnk_file_get_data_flags(
  */
 int liblnk_file_link_refers_to_file(
      liblnk_file_t *file,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_link_refers_to_file";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -110,10 +109,10 @@ int liblnk_file_link_refers_to_file(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -133,17 +132,17 @@ int liblnk_file_link_refers_to_file(
 int liblnk_file_get_file_attribute_flags(
      liblnk_file_t *file,
      uint32_t *file_attribute_flags,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_file_attribute_flags";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -153,10 +152,10 @@ int liblnk_file_get_file_attribute_flags(
 
 	if( internal_file->file_information == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid file - missing file information.",
 		 function );
 
@@ -164,10 +163,10 @@ int liblnk_file_get_file_attribute_flags(
 	}
 	if( file_attribute_flags == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file attribute flags.",
 		 function );
 
@@ -185,17 +184,17 @@ int liblnk_file_get_file_attribute_flags(
 int liblnk_file_get_file_creation_time(
      liblnk_file_t *file,
      uint64_t *creation_time,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_file_creation_time";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -205,10 +204,10 @@ int liblnk_file_get_file_creation_time(
 
 	if( internal_file->file_information == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid file - missing file information.",
 		 function );
 
@@ -216,10 +215,10 @@ int liblnk_file_get_file_creation_time(
 	}
 	if( creation_time == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid creation time.",
 		 function );
 
@@ -237,17 +236,17 @@ int liblnk_file_get_file_creation_time(
 int liblnk_file_get_file_modification_time(
      liblnk_file_t *file,
      uint64_t *modification_time,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_file_modification_time";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -257,10 +256,10 @@ int liblnk_file_get_file_modification_time(
 
 	if( internal_file->file_information == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid file - missing file information.",
 		 function );
 
@@ -268,10 +267,10 @@ int liblnk_file_get_file_modification_time(
 	}
 	if( modification_time == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid modification time.",
 		 function );
 
@@ -289,17 +288,17 @@ int liblnk_file_get_file_modification_time(
 int liblnk_file_get_file_access_time(
      liblnk_file_t *file,
      uint64_t *access_time,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_file_access_time";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -309,10 +308,10 @@ int liblnk_file_get_file_access_time(
 
 	if( internal_file->file_information == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid file - missing file information.",
 		 function );
 
@@ -320,10 +319,10 @@ int liblnk_file_get_file_access_time(
 	}
 	if( access_time == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid access time.",
 		 function );
 
@@ -341,17 +340,17 @@ int liblnk_file_get_file_access_time(
 int liblnk_file_get_file_size(
      liblnk_file_t *file,
      uint32_t *file_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_file_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -361,10 +360,10 @@ int liblnk_file_get_file_size(
 
 	if( internal_file->file_information == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid file - missing file information.",
 		 function );
 
@@ -372,10 +371,10 @@ int liblnk_file_get_file_size(
 	}
 	if( file_size == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file size.",
 		 function );
 
@@ -396,7 +395,7 @@ int liblnk_file_get_file_size(
 int liblnk_file_get_utf8_local_path_size(
      liblnk_file_t *file,
      size_t *utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_local_path_size";
@@ -406,10 +405,10 @@ int liblnk_file_get_utf8_local_path_size(
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -419,10 +418,10 @@ int liblnk_file_get_utf8_local_path_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -430,10 +429,10 @@ int liblnk_file_get_utf8_local_path_size(
 	}
 	if( utf8_string_size == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid UTF-8 string size.",
 		 function );
 
@@ -467,10 +466,10 @@ int liblnk_file_get_utf8_local_path_size(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-8 local path string size.",
 		 function );
 
@@ -496,10 +495,10 @@ int liblnk_file_get_utf8_local_path_size(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-8 common path string size.",
 		 function );
 
@@ -519,7 +518,7 @@ int liblnk_file_get_utf8_local_path(
      liblnk_file_t *file,
      uint8_t *utf8_string,
      size_t utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_local_path";
@@ -528,10 +527,10 @@ int liblnk_file_get_utf8_local_path(
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -541,10 +540,10 @@ int liblnk_file_get_utf8_local_path(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -552,10 +551,10 @@ int liblnk_file_get_utf8_local_path(
 	}
 	if( utf8_string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid UTF-8 string.",
 		 function );
 
@@ -563,10 +562,10 @@ int liblnk_file_get_utf8_local_path(
 	}
 	if( utf8_string_size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: invalid UTF-8 string size value exceeds maximum.",
 		 function );
 
@@ -600,10 +599,10 @@ int liblnk_file_get_utf8_local_path(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-8 local path string size.",
 		 function );
 
@@ -611,10 +610,10 @@ int liblnk_file_get_utf8_local_path(
 	}
 	if( utf8_string_size < utf8_local_path_size )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
 		 "%s: UTF-8 string value too small.",
 		 function );
 
@@ -642,10 +641,10 @@ int liblnk_file_get_utf8_local_path(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-8 local path string.",
 		 function );
 
@@ -673,10 +672,10 @@ int liblnk_file_get_utf8_local_path(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-8 common path string.",
 		 function );
 
@@ -693,7 +692,7 @@ int liblnk_file_get_utf8_local_path(
 int liblnk_file_get_utf16_local_path_size(
      liblnk_file_t *file,
      size_t *utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_local_path_size";
@@ -703,10 +702,10 @@ int liblnk_file_get_utf16_local_path_size(
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -716,10 +715,10 @@ int liblnk_file_get_utf16_local_path_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -727,10 +726,10 @@ int liblnk_file_get_utf16_local_path_size(
 	}
 	if( utf16_string_size == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid UTF-16 string size.",
 		 function );
 
@@ -764,10 +763,10 @@ int liblnk_file_get_utf16_local_path_size(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-16 local path string size.",
 		 function );
 
@@ -793,10 +792,10 @@ int liblnk_file_get_utf16_local_path_size(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-16 common path string size.",
 		 function );
 
@@ -816,7 +815,7 @@ int liblnk_file_get_utf16_local_path(
      liblnk_file_t *file,
      uint16_t *utf16_string,
      size_t utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_local_path";
@@ -825,10 +824,10 @@ int liblnk_file_get_utf16_local_path(
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -838,10 +837,10 @@ int liblnk_file_get_utf16_local_path(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -849,10 +848,10 @@ int liblnk_file_get_utf16_local_path(
 	}
 	if( utf16_string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid UTF-16 string.",
 		 function );
 
@@ -860,10 +859,10 @@ int liblnk_file_get_utf16_local_path(
 	}
 	if( utf16_string_size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: invalid UTF-16 string size value exceeds maximum.",
 		 function );
 
@@ -897,10 +896,10 @@ int liblnk_file_get_utf16_local_path(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-16 local path string size.",
 		 function );
 
@@ -908,10 +907,10 @@ int liblnk_file_get_utf16_local_path(
 	}
 	if( utf16_string_size < utf16_local_path_size )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
 		 "%s: UTF-16 string value too small.",
 		 function );
 
@@ -939,10 +938,10 @@ int liblnk_file_get_utf16_local_path(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-16 local path string.",
 		 function );
 
@@ -970,10 +969,10 @@ int liblnk_file_get_utf16_local_path(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-16 common path string.",
 		 function );
 
@@ -990,7 +989,7 @@ int liblnk_file_get_utf16_local_path(
 int liblnk_file_get_utf8_network_path_size(
      liblnk_file_t *file,
      size_t *utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_network_path_size";
@@ -1000,10 +999,10 @@ int liblnk_file_get_utf8_network_path_size(
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -1013,10 +1012,10 @@ int liblnk_file_get_utf8_network_path_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -1024,10 +1023,10 @@ int liblnk_file_get_utf8_network_path_size(
 	}
 	if( utf8_string_size == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid UTF-8 string size.",
 		 function );
 
@@ -1061,10 +1060,10 @@ int liblnk_file_get_utf8_network_path_size(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-8 network share name string size.",
 		 function );
 
@@ -1090,10 +1089,10 @@ int liblnk_file_get_utf8_network_path_size(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-8 common path string size.",
 		 function );
 
@@ -1113,7 +1112,7 @@ int liblnk_file_get_utf8_network_path(
      liblnk_file_t *file,
      uint8_t *utf8_string,
      size_t utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_network_path";
@@ -1122,10 +1121,10 @@ int liblnk_file_get_utf8_network_path(
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -1135,10 +1134,10 @@ int liblnk_file_get_utf8_network_path(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -1146,10 +1145,10 @@ int liblnk_file_get_utf8_network_path(
 	}
 	if( utf8_string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid UTF-8 string.",
 		 function );
 
@@ -1157,10 +1156,10 @@ int liblnk_file_get_utf8_network_path(
 	}
 	if( utf8_string_size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: invalid UTF-8 string size value exceeds maximum.",
 		 function );
 
@@ -1194,10 +1193,10 @@ int liblnk_file_get_utf8_network_path(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-8 network share name string size.",
 		 function );
 
@@ -1205,10 +1204,10 @@ int liblnk_file_get_utf8_network_path(
 	}
 	if( utf8_string_size < utf8_network_share_name_size )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
 		 "%s: UTF-8 string value too small.",
 		 function );
 
@@ -1236,10 +1235,10 @@ int liblnk_file_get_utf8_network_path(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-8 network share name string.",
 		 function );
 
@@ -1267,10 +1266,10 @@ int liblnk_file_get_utf8_network_path(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-8 common path string.",
 		 function );
 
@@ -1287,7 +1286,7 @@ int liblnk_file_get_utf8_network_path(
 int liblnk_file_get_utf16_network_path_size(
      liblnk_file_t *file,
      size_t *utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_network_path_size";
@@ -1297,10 +1296,10 @@ int liblnk_file_get_utf16_network_path_size(
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -1310,10 +1309,10 @@ int liblnk_file_get_utf16_network_path_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -1321,10 +1320,10 @@ int liblnk_file_get_utf16_network_path_size(
 	}
 	if( utf16_string_size == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid UTF-16 string size.",
 		 function );
 
@@ -1358,10 +1357,10 @@ int liblnk_file_get_utf16_network_path_size(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-16 network share name string size.",
 		 function );
 
@@ -1387,10 +1386,10 @@ int liblnk_file_get_utf16_network_path_size(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-16 common path string size.",
 		 function );
 
@@ -1410,7 +1409,7 @@ int liblnk_file_get_utf16_network_path(
      liblnk_file_t *file,
      uint16_t *utf16_string,
      size_t utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_network_path";
@@ -1419,10 +1418,10 @@ int liblnk_file_get_utf16_network_path(
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -1432,10 +1431,10 @@ int liblnk_file_get_utf16_network_path(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -1443,10 +1442,10 @@ int liblnk_file_get_utf16_network_path(
 	}
 	if( utf16_string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid UTF-16 string.",
 		 function );
 
@@ -1454,10 +1453,10 @@ int liblnk_file_get_utf16_network_path(
 	}
 	if( utf16_string_size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: invalid UTF-16 string size value exceeds maximum.",
 		 function );
 
@@ -1491,10 +1490,10 @@ int liblnk_file_get_utf16_network_path(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-16 network share name string size.",
 		 function );
 
@@ -1502,10 +1501,10 @@ int liblnk_file_get_utf16_network_path(
 	}
 	if( utf16_string_size < utf16_network_share_name_size )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
 		 "%s: UTF-16 string value too small.",
 		 function );
 
@@ -1533,10 +1532,10 @@ int liblnk_file_get_utf16_network_path(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-16 network share name string.",
 		 function );
 
@@ -1564,10 +1563,10 @@ int liblnk_file_get_utf16_network_path(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-16 common path string.",
 		 function );
 
@@ -1583,17 +1582,17 @@ int liblnk_file_get_utf16_network_path(
 int liblnk_file_get_utf8_description_size(
      liblnk_file_t *file,
      size_t *utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_description_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -1603,10 +1602,10 @@ int liblnk_file_get_utf8_description_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -1622,10 +1621,10 @@ int liblnk_file_get_utf8_description_size(
 	     utf8_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-8 data string size.",
 		 function );
 
@@ -1642,17 +1641,17 @@ int liblnk_file_get_utf8_description(
      liblnk_file_t *file,
      uint8_t *utf8_string,
      size_t utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_description";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -1662,10 +1661,10 @@ int liblnk_file_get_utf8_description(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -1682,10 +1681,10 @@ int liblnk_file_get_utf8_description(
 	     utf8_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-8 data string.",
 		 function );
 
@@ -1701,17 +1700,17 @@ int liblnk_file_get_utf8_description(
 int liblnk_file_get_utf16_description_size(
      liblnk_file_t *file,
      size_t *utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_description_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -1721,10 +1720,10 @@ int liblnk_file_get_utf16_description_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -1740,10 +1739,10 @@ int liblnk_file_get_utf16_description_size(
 	     utf16_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-16 data string size.",
 		 function );
 
@@ -1760,17 +1759,17 @@ int liblnk_file_get_utf16_description(
      liblnk_file_t *file,
      uint16_t *utf16_string,
      size_t utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_description";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -1780,10 +1779,10 @@ int liblnk_file_get_utf16_description(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -1800,10 +1799,10 @@ int liblnk_file_get_utf16_description(
 	     utf16_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-16 data string.",
 		 function );
 
@@ -1819,17 +1818,17 @@ int liblnk_file_get_utf16_description(
 int liblnk_file_get_utf8_relative_path_size(
      liblnk_file_t *file,
      size_t *utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_relative_path_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -1839,10 +1838,10 @@ int liblnk_file_get_utf8_relative_path_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -1858,10 +1857,10 @@ int liblnk_file_get_utf8_relative_path_size(
 	     utf8_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-8 data string size.",
 		 function );
 
@@ -1878,17 +1877,17 @@ int liblnk_file_get_utf8_relative_path(
      liblnk_file_t *file,
      uint8_t *utf8_string,
      size_t utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_relative_path";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -1898,10 +1897,10 @@ int liblnk_file_get_utf8_relative_path(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -1918,10 +1917,10 @@ int liblnk_file_get_utf8_relative_path(
 	     utf8_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-8 data string.",
 		 function );
 
@@ -1937,17 +1936,17 @@ int liblnk_file_get_utf8_relative_path(
 int liblnk_file_get_utf16_relative_path_size(
      liblnk_file_t *file,
      size_t *utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_relative_path_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -1957,10 +1956,10 @@ int liblnk_file_get_utf16_relative_path_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -1976,10 +1975,10 @@ int liblnk_file_get_utf16_relative_path_size(
 	     utf16_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-16 data string size.",
 		 function );
 
@@ -1996,17 +1995,17 @@ int liblnk_file_get_utf16_relative_path(
      liblnk_file_t *file,
      uint16_t *utf16_string,
      size_t utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_relative_path";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2016,10 +2015,10 @@ int liblnk_file_get_utf16_relative_path(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2036,10 +2035,10 @@ int liblnk_file_get_utf16_relative_path(
 	     utf16_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-16 data string.",
 		 function );
 
@@ -2055,17 +2054,17 @@ int liblnk_file_get_utf16_relative_path(
 int liblnk_file_get_utf8_working_directory_size(
      liblnk_file_t *file,
      size_t *utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_working_directory_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2075,10 +2074,10 @@ int liblnk_file_get_utf8_working_directory_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2094,10 +2093,10 @@ int liblnk_file_get_utf8_working_directory_size(
 	     utf8_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-8 data string size.",
 		 function );
 
@@ -2114,17 +2113,17 @@ int liblnk_file_get_utf8_working_directory(
      liblnk_file_t *file,
      uint8_t *utf8_string,
      size_t utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_working_directory";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2134,10 +2133,10 @@ int liblnk_file_get_utf8_working_directory(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2154,10 +2153,10 @@ int liblnk_file_get_utf8_working_directory(
 	     utf8_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-8 data string.",
 		 function );
 
@@ -2173,17 +2172,17 @@ int liblnk_file_get_utf8_working_directory(
 int liblnk_file_get_utf16_working_directory_size(
      liblnk_file_t *file,
      size_t *utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_working_directory_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2193,10 +2192,10 @@ int liblnk_file_get_utf16_working_directory_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2212,10 +2211,10 @@ int liblnk_file_get_utf16_working_directory_size(
 	     utf16_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-16 data string size.",
 		 function );
 
@@ -2232,17 +2231,17 @@ int liblnk_file_get_utf16_working_directory(
      liblnk_file_t *file,
      uint16_t *utf16_string,
      size_t utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_working_directory";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2252,10 +2251,10 @@ int liblnk_file_get_utf16_working_directory(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2272,10 +2271,10 @@ int liblnk_file_get_utf16_working_directory(
 	     utf16_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-16 data string.",
 		 function );
 
@@ -2291,17 +2290,17 @@ int liblnk_file_get_utf16_working_directory(
 int liblnk_file_get_utf8_command_line_arguments_size(
      liblnk_file_t *file,
      size_t *utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_command_line_arguments_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2311,10 +2310,10 @@ int liblnk_file_get_utf8_command_line_arguments_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2330,10 +2329,10 @@ int liblnk_file_get_utf8_command_line_arguments_size(
 	     utf8_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-8 data string size.",
 		 function );
 
@@ -2350,17 +2349,17 @@ int liblnk_file_get_utf8_command_line_arguments(
      liblnk_file_t *file,
      uint8_t *utf8_string,
      size_t utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_command_line_arguments";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2370,10 +2369,10 @@ int liblnk_file_get_utf8_command_line_arguments(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2390,10 +2389,10 @@ int liblnk_file_get_utf8_command_line_arguments(
 	     utf8_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-8 data string.",
 		 function );
 
@@ -2409,17 +2408,17 @@ int liblnk_file_get_utf8_command_line_arguments(
 int liblnk_file_get_utf16_command_line_arguments_size(
      liblnk_file_t *file,
      size_t *utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_command_line_arguments_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2429,10 +2428,10 @@ int liblnk_file_get_utf16_command_line_arguments_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2448,10 +2447,10 @@ int liblnk_file_get_utf16_command_line_arguments_size(
 	     utf16_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-16 data string size.",
 		 function );
 
@@ -2468,17 +2467,17 @@ int liblnk_file_get_utf16_command_line_arguments(
      liblnk_file_t *file,
      uint16_t *utf16_string,
      size_t utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_command_line_arguments";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2488,10 +2487,10 @@ int liblnk_file_get_utf16_command_line_arguments(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2508,10 +2507,10 @@ int liblnk_file_get_utf16_command_line_arguments(
 	     utf16_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-16 data string.",
 		 function );
 
@@ -2527,17 +2526,17 @@ int liblnk_file_get_utf16_command_line_arguments(
 int liblnk_file_get_utf8_icon_location_size(
      liblnk_file_t *file,
      size_t *utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_icon_location_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2547,10 +2546,10 @@ int liblnk_file_get_utf8_icon_location_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2566,10 +2565,10 @@ int liblnk_file_get_utf8_icon_location_size(
 	     utf8_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-8 data string size.",
 		 function );
 
@@ -2586,17 +2585,17 @@ int liblnk_file_get_utf8_icon_location(
      liblnk_file_t *file,
      uint8_t *utf8_string,
      size_t utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_icon_location";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2606,10 +2605,10 @@ int liblnk_file_get_utf8_icon_location(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2626,10 +2625,10 @@ int liblnk_file_get_utf8_icon_location(
 	     utf8_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-8 data string.",
 		 function );
 
@@ -2645,17 +2644,17 @@ int liblnk_file_get_utf8_icon_location(
 int liblnk_file_get_utf16_icon_location_size(
      liblnk_file_t *file,
      size_t *utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_icon_location_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2665,10 +2664,10 @@ int liblnk_file_get_utf16_icon_location_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2684,10 +2683,10 @@ int liblnk_file_get_utf16_icon_location_size(
 	     utf16_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-16 data string size.",
 		 function );
 
@@ -2704,17 +2703,17 @@ int liblnk_file_get_utf16_icon_location(
      liblnk_file_t *file,
      uint16_t *utf16_string,
      size_t utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_icon_location";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2724,10 +2723,10 @@ int liblnk_file_get_utf16_icon_location(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2744,10 +2743,10 @@ int liblnk_file_get_utf16_icon_location(
 	     utf16_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-16 data string.",
 		 function );
 
@@ -2763,17 +2762,17 @@ int liblnk_file_get_utf16_icon_location(
 int liblnk_file_get_utf8_environment_variables_location_size(
      liblnk_file_t *file,
      size_t *utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_environment_variables_location_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2783,10 +2782,10 @@ int liblnk_file_get_utf8_environment_variables_location_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2802,10 +2801,10 @@ int liblnk_file_get_utf8_environment_variables_location_size(
 	     utf8_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-8 data string size.",
 		 function );
 
@@ -2822,17 +2821,17 @@ int liblnk_file_get_utf8_environment_variables_location(
      liblnk_file_t *file,
      uint8_t *utf8_string,
      size_t utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_environment_variables_location";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2842,10 +2841,10 @@ int liblnk_file_get_utf8_environment_variables_location(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2862,10 +2861,10 @@ int liblnk_file_get_utf8_environment_variables_location(
 	     utf8_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-8 data string.",
 		 function );
 
@@ -2881,17 +2880,17 @@ int liblnk_file_get_utf8_environment_variables_location(
 int liblnk_file_get_utf16_environment_variables_location_size(
      liblnk_file_t *file,
      size_t *utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_environment_variables_location_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2901,10 +2900,10 @@ int liblnk_file_get_utf16_environment_variables_location_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2920,10 +2919,10 @@ int liblnk_file_get_utf16_environment_variables_location_size(
 	     utf16_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-16 data string size.",
 		 function );
 
@@ -2940,17 +2939,17 @@ int liblnk_file_get_utf16_environment_variables_location(
      liblnk_file_t *file,
      uint16_t *utf16_string,
      size_t utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_environment_variables_location";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -2960,10 +2959,10 @@ int liblnk_file_get_utf16_environment_variables_location(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -2980,10 +2979,10 @@ int liblnk_file_get_utf16_environment_variables_location(
 	     utf16_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-16 data string.",
 		 function );
 
@@ -3000,17 +2999,17 @@ int liblnk_file_get_link_target_identifier_data(
      liblnk_file_t *file,
      uint8_t **data,
      size_t *data_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_link_target_identifier_data";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -3020,10 +3019,10 @@ int liblnk_file_get_link_target_identifier_data(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -3031,10 +3030,10 @@ int liblnk_file_get_link_target_identifier_data(
 	}
 	if( data == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid data.",
 		 function );
 
@@ -3042,10 +3041,10 @@ int liblnk_file_get_link_target_identifier_data(
 	}
 	if( data_size == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid data size.",
 		 function );
 

@@ -23,12 +23,11 @@
 #include <memory.h>
 #include <types.h>
 
-#include <liberror.h>
-#include <libnotify.h>
-
 #include "liblnk_debug.h"
 #include "liblnk_definitions.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_libcerror.h"
+#include "liblnk_libcnotify.h"
 
 #if defined( HAVE_DEBUG_OUTPUT )
 
@@ -39,131 +38,131 @@ void liblnk_debug_print_data_flags(
 {
 	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tContains link target identifier (HasTargetIDList)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tContains location information (HasLinkInfo)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tContains description string (HasName)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tContains relative path string (HasRelativePath)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tContains working directory string (HasWorkingDir)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tContains command line arguments string (HasArguments)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tContains icon location string (HasIconLocation)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_IS_UNICODE ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tString are in Unicode (IsUnicode)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_FORCE_NO_LOCATION_INFORMATION ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tIgnore the location information (ForceNoLinkInfo)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_ENVIRONMENT_VARIABLES_LOCATION_BLOCK ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tContains environment variables location block (HasExpString)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_RUN_IN_SEPARATE_PROCESS ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tRun in separate process (RunInSeparateProcess)\n" );
 	}
 
 	if( ( data_flags & 0x00000800UL ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\t0x00000800 (reserved)\n" );
 	}
 
 	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_DARWIN_IDENTIFIER ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tContains Darwin properites location block (HasDarwinID)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_RUN_AS_USER ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tRun as user (RunAsUser)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_BLOCK ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tContains icon location block (HasExpIcon)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_NO_PIDL_ALIAS ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\t(NoPidlAlias)\n" );
 	}
 
 	if( ( data_flags & LIBLNK_DATA_FLAG_RUN_WITH_SHIM_LAYER ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tContains shim layer properties block (RunWithShimLayer)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tDoes not contain distributed link tracking data block (ForceNoLinkTrack)\n" );
 	}
 	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_METADATA_PROPERTY_STORE_DATA_BLOCK ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tContains metadata property store block (HasTargetMetadata)\n" );
 	}
 
 	if( ( data_flags & 0x00100000UL ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\t0x00100000 (DisableLinkPathTracking)\n" );
 	}
 	if( ( data_flags & 0x00200000UL ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\t0x00200000 (DisableKnownFolderTracking)\n" );
 	}
 	if( ( data_flags & 0x00400000UL ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\t0x00400000 (AllowLinkToLink)\n" );
 	}
 	if( ( data_flags & 0x00800000UL ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\t0x00800000 (UnaliasOnSave)\n" );
 	}
 	if( ( data_flags & 0x01000000UL ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\t0x01000000 (PreferEnvironmentPath)\n" );
 	}
 	if( ( data_flags & 0x02000000UL ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\t0x02000000 (KeepLocalIDListForUNCTarget)\n" );
 	}
 }
@@ -175,79 +174,79 @@ void liblnk_debug_print_file_attribute_flags(
 {
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_READ_ONLY ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tIs read-only (FILE_ATTRIBUTE_READ_ONLY)\n" );
 	}
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_HIDDEN ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tIs hidden (FILE_ATTRIBUTE_HIDDEN)\n" );
 	}
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_SYSTEM ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tIs system (FILE_ATTRIBUTE_SYSTEM)\n" );
 	}
 
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_DIRECTORY ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tIs directory (FILE_ATTRIBUTE_DIRECTORY)\n" );
 	}
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_ARCHIVE ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tShould be archived (FILE_ATTRIBUTE_ARCHIVE)\n" );
 	}
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_DEVICE ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tIs device (FILE_ATTRIBUTE_DEVICE)\n" );
 	}
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_NORMAL ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tIs normal (FILE_ATTRIBUTE_NORMAL)\n" );
 	}
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_TEMPORARY ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tIs temporary (FILE_ATTRIBUTE_TEMPORARY)\n" );
 	}
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_SPARSE_FILE ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tIs a sparse file (FILE_ATTRIBUTE_SPARSE_FILE)\n" );
 	}
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_REPARSE_POINT ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tIs a reparse point or symbolic link (FILE_ATTRIBUTE_FLAG_REPARSE_POINT)\n" );
 	}
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_COMPRESSED ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tIs compressed (FILE_ATTRIBUTE_COMPRESSED)\n" );
 	}
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_OFFLINE ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tIs offline (FILE_ATTRIBUTE_OFFLINE)\n" );
 	}
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_NOT_CONTENT_INDEXED ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tContent should not be indexed (FILE_ATTRIBUTE_NOT_CONTENT_INDEXED)\n" );
 	}
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_ENCRYPTED ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tIs encrypted (FILE_ATTRIBUTE_ENCRYPTED)\n" );
 	}
 
 	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_VIRTUAL ) != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\tIs virtual (FILE_ATTRIBUTE_VIRTUAL)\n" );
 	}
 }
@@ -390,7 +389,7 @@ const char *liblnk_debug_print_network_provider_type(
  */
 int liblnk_debug_print_read_offsets(
      libbfio_handle_t *file_io_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_debug_print_read_offsets";
 	off64_t offset        = 0;
@@ -400,10 +399,10 @@ int liblnk_debug_print_read_offsets(
 
 	if( file_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file io handle.",
 		 function );
 
@@ -414,16 +413,16 @@ int liblnk_debug_print_read_offsets(
 	     &number_of_offsets,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve number of offsets read.",
 		 function );
 
 		return( -1 );
 	}
-	libnotify_printf(
+	libcnotify_printf(
 	 "Offsets read:\n" );
 
 	for( offset_iterator = 0;
@@ -437,17 +436,17 @@ int liblnk_debug_print_read_offsets(
 		     &size,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve offset: %d.",
 			 function,
 			 offset_iterator );
 
 			return( -1 );
 		}
-		libnotify_printf(
+		libcnotify_printf(
 		 "%08" PRIi64 " ( 0x%08" PRIx64 " ) - %08" PRIi64 " ( 0x%08" PRIx64 " ) size: %" PRIu64 "\n",
 		 offset,
 		 offset,
@@ -455,7 +454,7 @@ int liblnk_debug_print_read_offsets(
 		 offset + size,
 		 size );
 	}
-	libnotify_printf(
+	libcnotify_printf(
 	 "\n" );
 
 	return( 1 );

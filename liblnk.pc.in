@@ -7,6 +7,6 @@ Name: liblnk
 Description: Library to support the Windows Shortcut File (LNK) format
 Version: @VERSION@
 Libs: -L${libdir} -llnk
-Libs.private: @ax_libbfio_pc_libs_private@ @ax_libfdatetime_pc_libs_private@ @ax_libfguid_pc_libs_private@ @ax_libfwsi_pc_libs_private@ @ax_libuna_pc_libs_private@
+Libs.private: @ax_libbfio_pc_libs_private@ @ax_libcerror_pc_libs_private@ @ax_libcfile_pc_libs_private@ @ax_libcpath_pc_libs_private@ @ax_libcstring_pc_libs_private@ @ax_libfdatetime_pc_libs_private@ @ax_libfguid_pc_libs_private@ @ax_libfwsi_pc_libs_private@ @ax_libuna_pc_libs_private@
 Cflags: -I${includedir}
 

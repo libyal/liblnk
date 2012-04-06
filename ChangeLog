@@ -1,4 +1,5 @@
 TODO
+* update msvscpp files
 * what about trailing data in xp lnk files ?
 * what about shell items
 * what about ole properties
@@ -44,9 +45,11 @@ Release:
 * automated tests
 
 Bindings:
-* python
 * .net
 * java
+
+20120406
+* updated dependencies
 
 20120319
 * worked on Python bindings (pylnk)

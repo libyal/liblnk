@@ -25,9 +25,8 @@
 #include <common.h>
 #include <types.h>
 
-#include <libcstring.h>
-#include <liberror.h>
-
+#include "pylnk_libcerror.h"
+#include "pylnk_libcstring.h"
 #include "pylnk_liblnk.h"
 
 #if defined( __cplusplus )
@@ -102,7 +101,7 @@ int pylnk_codepage_from_string(
      const char *string,
      size_t string_length,
      uint32_t feature_flags,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 const char *pylnk_codepage_to_string(
              int codepage );

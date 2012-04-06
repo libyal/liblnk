@@ -23,9 +23,6 @@
 #include <memory.h>
 #include <types.h>
 
-#include <libcstring.h>
-#include <liberror.h>
-
 #if defined( HAVE_STDLIB_H ) || defined( HAVE_WINAPI )
 #include <stdlib.h>
 #endif
@@ -36,6 +33,8 @@
 #include "pylnk_file.h"
 #include "pylnk_file_object_io_handle.h"
 #include "pylnk_libbfio.h"
+#include "pylnk_libcerror.h"
+#include "pylnk_libcstring.h"
 #include "pylnk_liblnk.h"
 #include "pylnk_python.h"
 
@@ -426,7 +425,7 @@ int pylnk_file_init(
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
 	static char *function   = "pylnk_file_init";
-	liberror_error_t *error = NULL;
+	libcerror_error_t *error = NULL;
 
 	if( pylnk_file == NULL )
 	{
@@ -445,7 +444,7 @@ int pylnk_file_init(
 	     &( pylnk_file->file ),
 	     &error ) != 1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -463,7 +462,7 @@ int pylnk_file_init(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		return( -1 );
@@ -478,7 +477,7 @@ void pylnk_file_free(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error = NULL;
+	libcerror_error_t *error = NULL;
 	static char *function   = "pylnk_file_free";
 
 	if( pylnk_file == NULL )
@@ -521,7 +520,7 @@ void pylnk_file_free(
 	     &( pylnk_file->file ),
 	     &error ) != 1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -539,7 +538,7 @@ void pylnk_file_free(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 	}
 	pylnk_file->ob_type->tp_free(
@@ -554,7 +553,7 @@ PyObject *pylnk_file_signal_abort(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error = NULL;
+	libcerror_error_t *error = NULL;
 	static char *function   = "pylnk_file_signal_abort";
 	int result              = 0;
 
@@ -577,7 +576,7 @@ PyObject *pylnk_file_signal_abort(
 
 	if( result != 1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -595,7 +594,7 @@ PyObject *pylnk_file_signal_abort(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		return( NULL );
@@ -616,7 +615,7 @@ PyObject *pylnk_file_open(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error     = NULL;
+	libcerror_error_t *error     = NULL;
 	char *filename              = NULL;
 	static char *keyword_list[] = { "filename", "access_flags", NULL };
 	static char *function       = "pylnk_file_open";
@@ -660,7 +659,7 @@ PyObject *pylnk_file_open(
 
 	if( result != 1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -678,7 +677,7 @@ PyObject *pylnk_file_open(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		return( NULL );
@@ -701,7 +700,7 @@ PyObject *pylnk_file_open_file_object(
 
 	PyObject *file_object            = NULL;
 	libbfio_handle_t *file_io_handle = NULL;
-	liberror_error_t *error          = NULL;
+	libcerror_error_t *error          = NULL;
 	static char *keyword_list[]      = { "file_object", "access_flags", NULL };
 	static char *function            = "pylnk_file_open_file_object";
 	int access_flags                 = 0;
@@ -737,7 +736,7 @@ PyObject *pylnk_file_open_file_object(
 	     file_object,
 	     &error ) != 1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -755,7 +754,7 @@ PyObject *pylnk_file_open_file_object(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -772,7 +771,7 @@ PyObject *pylnk_file_open_file_object(
 
 	if( result != 1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -790,7 +789,7 @@ PyObject *pylnk_file_open_file_object(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -818,7 +817,7 @@ PyObject *pylnk_file_close(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error = NULL;
+	libcerror_error_t *error = NULL;
 	static char *function   = "pylnk_file_close";
 	int result              = 0;
 
@@ -841,7 +840,7 @@ PyObject *pylnk_file_close(
 
 	if( result != 0 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -859,7 +858,7 @@ PyObject *pylnk_file_close(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		return( NULL );
@@ -878,7 +877,7 @@ PyObject *pylnk_file_get_ascii_codepage(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error     = NULL;
+	libcerror_error_t *error     = NULL;
 	PyObject *string_object     = NULL;
 	const char *codepage_string = NULL;
 	static char *function       = "pylnk_file_get_ascii_codepage";
@@ -898,7 +897,7 @@ PyObject *pylnk_file_get_ascii_codepage(
 	     &ascii_codepage,
 	     &error ) != 1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -916,7 +915,7 @@ PyObject *pylnk_file_get_ascii_codepage(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		return( NULL );
@@ -959,7 +958,7 @@ PyObject *pylnk_file_set_ascii_codepage(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error       = NULL;
+	libcerror_error_t *error       = NULL;
 	char *codepage_string         = NULL;
 	static char *keyword_list[]   = { "codepage", NULL };
 	static char *function         = "pylnk_file_set_ascii_codepage";
@@ -1007,7 +1006,7 @@ PyObject *pylnk_file_set_ascii_codepage(
 	     feature_flags,
 	     &error ) != 1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1025,7 +1024,7 @@ PyObject *pylnk_file_set_ascii_codepage(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		return( NULL );
@@ -1035,7 +1034,7 @@ PyObject *pylnk_file_set_ascii_codepage(
 	     ascii_codepage,
 	     &error ) != 1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1053,7 +1052,7 @@ PyObject *pylnk_file_set_ascii_codepage(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		return( NULL );
@@ -1072,7 +1071,7 @@ PyObject *pylnk_file_get_file_creation_time(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error    = NULL;
+	libcerror_error_t *error    = NULL;
 	PyObject *date_time_object = NULL;
 	static char *function      = "pylnk_file_get_file_creation_time";
 	uint64_t filetime          = 0;
@@ -1098,7 +1097,7 @@ PyObject *pylnk_file_get_file_creation_time(
 
 	if( result != 1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1116,7 +1115,7 @@ PyObject *pylnk_file_get_file_creation_time(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		return( NULL );
@@ -1135,7 +1134,7 @@ PyObject *pylnk_file_get_file_modification_time(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error    = NULL;
+	libcerror_error_t *error    = NULL;
 	PyObject *date_time_object = NULL;
 	static char *function      = "pylnk_file_get_file_modification_time";
 	uint64_t filetime          = 0;
@@ -1161,7 +1160,7 @@ PyObject *pylnk_file_get_file_modification_time(
 
 	if( result != 1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1179,7 +1178,7 @@ PyObject *pylnk_file_get_file_modification_time(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		return( NULL );
@@ -1198,7 +1197,7 @@ PyObject *pylnk_file_get_file_access_time(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error    = NULL;
+	libcerror_error_t *error    = NULL;
 	PyObject *date_time_object = NULL;
 	static char *function      = "pylnk_file_get_file_access_time";
 	uint64_t filetime          = 0;
@@ -1224,7 +1223,7 @@ PyObject *pylnk_file_get_file_access_time(
 
 	if( result != 1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1242,7 +1241,7 @@ PyObject *pylnk_file_get_file_access_time(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		return( NULL );
@@ -1261,7 +1260,7 @@ PyObject *pylnk_file_get_local_path(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error = NULL;
+	libcerror_error_t *error = NULL;
 	PyObject *string_object = NULL;
 	static char *function   = "pylnk_file_get_local_path";
 	const char *errors      = NULL;
@@ -1289,7 +1288,7 @@ PyObject *pylnk_file_get_local_path(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1307,7 +1306,7 @@ PyObject *pylnk_file_get_local_path(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -1343,7 +1342,7 @@ PyObject *pylnk_file_get_local_path(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1361,7 +1360,7 @@ PyObject *pylnk_file_get_local_path(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -1411,7 +1410,7 @@ PyObject *pylnk_file_get_network_path(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error  = NULL;
+	libcerror_error_t *error  = NULL;
 	PyObject *string_object  = NULL;
 	static char *function    = "pylnk_file_get_network_path";
 	const char *errors       = NULL;
@@ -1439,7 +1438,7 @@ PyObject *pylnk_file_get_network_path(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1457,7 +1456,7 @@ PyObject *pylnk_file_get_network_path(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -1493,7 +1492,7 @@ PyObject *pylnk_file_get_network_path(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1511,7 +1510,7 @@ PyObject *pylnk_file_get_network_path(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -1561,7 +1560,7 @@ PyObject *pylnk_file_get_description(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error  = NULL;
+	libcerror_error_t *error  = NULL;
 	PyObject *string_object  = NULL;
 	static char *function    = "pylnk_file_get_description";
 	const char *errors       = NULL;
@@ -1589,7 +1588,7 @@ PyObject *pylnk_file_get_description(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1607,7 +1606,7 @@ PyObject *pylnk_file_get_description(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -1643,7 +1642,7 @@ PyObject *pylnk_file_get_description(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1661,7 +1660,7 @@ PyObject *pylnk_file_get_description(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -1711,7 +1710,7 @@ PyObject *pylnk_file_get_relative_path(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error   = NULL;
+	libcerror_error_t *error   = NULL;
 	PyObject *string_object   = NULL;
 	static char *function     = "pylnk_file_get_relative_path";
 	const char *errors        = NULL;
@@ -1739,7 +1738,7 @@ PyObject *pylnk_file_get_relative_path(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1757,7 +1756,7 @@ PyObject *pylnk_file_get_relative_path(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -1793,7 +1792,7 @@ PyObject *pylnk_file_get_relative_path(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1811,7 +1810,7 @@ PyObject *pylnk_file_get_relative_path(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -1861,7 +1860,7 @@ PyObject *pylnk_file_get_working_directory(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error       = NULL;
+	libcerror_error_t *error       = NULL;
 	PyObject *string_object       = NULL;
 	static char *function         = "pylnk_file_get_working_directory";
 	const char *errors            = NULL;
@@ -1889,7 +1888,7 @@ PyObject *pylnk_file_get_working_directory(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1907,7 +1906,7 @@ PyObject *pylnk_file_get_working_directory(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -1943,7 +1942,7 @@ PyObject *pylnk_file_get_working_directory(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -1961,7 +1960,7 @@ PyObject *pylnk_file_get_working_directory(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -2011,7 +2010,7 @@ PyObject *pylnk_file_get_command_line_arguments(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error            = NULL;
+	libcerror_error_t *error            = NULL;
 	PyObject *string_object            = NULL;
 	static char *function              = "pylnk_file_get_command_line_arguments";
 	const char *errors                 = NULL;
@@ -2039,7 +2038,7 @@ PyObject *pylnk_file_get_command_line_arguments(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -2057,7 +2056,7 @@ PyObject *pylnk_file_get_command_line_arguments(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -2093,7 +2092,7 @@ PyObject *pylnk_file_get_command_line_arguments(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -2111,7 +2110,7 @@ PyObject *pylnk_file_get_command_line_arguments(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -2161,7 +2160,7 @@ PyObject *pylnk_file_get_icon_location(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error   = NULL;
+	libcerror_error_t *error   = NULL;
 	PyObject *string_object   = NULL;
 	static char *function     = "pylnk_file_get_icon_location";
 	const char *errors        = NULL;
@@ -2189,7 +2188,7 @@ PyObject *pylnk_file_get_icon_location(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -2207,7 +2206,7 @@ PyObject *pylnk_file_get_icon_location(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -2243,7 +2242,7 @@ PyObject *pylnk_file_get_icon_location(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -2261,7 +2260,7 @@ PyObject *pylnk_file_get_icon_location(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -2311,7 +2310,7 @@ PyObject *pylnk_file_get_environment_variables_location(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error                    = NULL;
+	libcerror_error_t *error                    = NULL;
 	PyObject *string_object                    = NULL;
 	static char *function                      = "pylnk_file_get_environment_variables_location";
 	const char *errors                         = NULL;
@@ -2339,7 +2338,7 @@ PyObject *pylnk_file_get_environment_variables_location(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -2357,7 +2356,7 @@ PyObject *pylnk_file_get_environment_variables_location(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;
@@ -2393,7 +2392,7 @@ PyObject *pylnk_file_get_environment_variables_location(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -2411,7 +2410,7 @@ PyObject *pylnk_file_get_environment_variables_location(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		goto on_error;

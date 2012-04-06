@@ -25,9 +25,8 @@
 #include <common.h>
 #include <types.h>
 
-#include <liberror.h>
-
 #include "liblnk_libbfio.h"
+#include "liblnk_libcerror.h"
 
 #if defined( __cplusplus )
 extern "C" {
@@ -48,17 +47,17 @@ struct liblnk_link_target_identifier
 
 int liblnk_link_target_identifier_initialize(
      liblnk_link_target_identifier_t **link_target_identifier,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int liblnk_link_target_identifier_free(
      liblnk_link_target_identifier_t **link_target_identifier,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 ssize_t liblnk_link_target_identifier_read(
          liblnk_link_target_identifier_t *link_target_identifier,
          libbfio_handle_t *file_io_handle,
          off64_t link_target_identifier_offset,
-         liberror_error_t **error );
+         libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }

@@ -24,16 +24,15 @@
 #include <memory.h>
 #include <types.h>
 
-#include <libcstring.h>
-#include <liberror.h>
-#include <libnotify.h>
-
 #include "liblnk_codepage.h"
 #include "liblnk_debug.h"
 #include "liblnk_definitions.h"
 #include "liblnk_file_information.h"
 #include "liblnk_io_handle.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_libcerror.h"
+#include "liblnk_libcnotify.h"
+#include "liblnk_libcstring.h"
 #include "liblnk_libfdatetime.h"
 #include "liblnk_libfguid.h"
 #include "liblnk_libuna.h"
@@ -50,16 +49,16 @@ const uint8_t lnk_file_class_identifier[ 16 ] = \
  */
 int liblnk_io_handle_initialize(
      liblnk_io_handle_t **io_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_io_handle_initialize";
 
 	if( io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid IO handle.",
 		 function );
 
@@ -67,10 +66,10 @@ int liblnk_io_handle_initialize(
 	}
 	if( *io_handle != NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid IO handle value already set.",
 		 function );
 
@@ -81,10 +80,10 @@ int liblnk_io_handle_initialize(
 
 	if( *io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 		 "%s: unable to create IO handle.",
 		 function );
 
@@ -95,10 +94,10 @@ int liblnk_io_handle_initialize(
 	     0,
 	     sizeof( liblnk_io_handle_t ) ) == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
 		 "%s: unable to clear file.",
 		 function );
 
@@ -124,16 +123,16 @@ on_error:
  */
 int liblnk_io_handle_free(
      liblnk_io_handle_t **io_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_io_handle_free";
 
 	if( io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid IO handle.",
 		 function );
 
@@ -158,7 +157,7 @@ ssize_t liblnk_io_handle_read_file_header(
          uint8_t *class_identifier,
          size_t class_identifier_size,
          liblnk_file_information_t *file_information,
-         liberror_error_t **error )
+         libcerror_error_t **error )
 {
 	lnk_file_header_t file_header;
 
@@ -179,10 +178,10 @@ ssize_t liblnk_io_handle_read_file_header(
 
 	if( io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid IO handle.",
 		 function );
 
@@ -190,10 +189,10 @@ ssize_t liblnk_io_handle_read_file_header(
 	}
 	if( class_identifier == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid class identifier.",
 		 function );
 
@@ -201,10 +200,10 @@ ssize_t liblnk_io_handle_read_file_header(
 	}
 	if( class_identifier_size < 16 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
 		 "%s: class identifier too small.",
 		 function );
 
@@ -212,10 +211,10 @@ ssize_t liblnk_io_handle_read_file_header(
 	}
 	if( class_identifier_size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: class identifier size value exceeds maximum.",
 		 function );
 
@@ -223,10 +222,10 @@ ssize_t liblnk_io_handle_read_file_header(
 	}
 	if( file_information == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file information.",
 		 function );
 
@@ -237,19 +236,19 @@ ssize_t liblnk_io_handle_read_file_header(
 	     &( io_handle->file_size ),
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve file size.",
 		 function );
 
 		goto on_error;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: reading file header at offset: 0 (0x00000000)\n",
 		 function );
 	}
@@ -260,16 +259,16 @@ ssize_t liblnk_io_handle_read_file_header(
 	     SEEK_SET,
 	     error ) == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_SEEK_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_SEEK_FAILED,
 		 "%s: unable to seek file header offset: 0.",
 		 function );
 
 		goto on_error;
 	}
-	read_count = libbfio_handle_read(
+	read_count = libbfio_handle_read_buffer(
 	              file_io_handle,
 	              (uint8_t *) &file_header,
 	              sizeof( lnk_file_header_t ),
@@ -277,22 +276,22 @@ ssize_t liblnk_io_handle_read_file_header(
 
 	if( read_count != (ssize_t) sizeof( lnk_file_header_t ) )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_READ_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
 		 "%s: unable to read file header.",
 		 function );
 
 		goto on_error;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: file header:\n",
 		 function );
-		libnotify_print_data(
+		libcnotify_print_data(
 		 (uint8_t *) &file_header,
 		 sizeof( lnk_file_header_t ),
 		 0 );
@@ -304,10 +303,10 @@ ssize_t liblnk_io_handle_read_file_header(
 
 	if( header_size != 0x4c )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 		 "%s: unsupported header size: %" PRIu32 ".",
 		 function,
 		 header_size );
@@ -319,10 +318,10 @@ ssize_t liblnk_io_handle_read_file_header(
 	     lnk_file_class_identifier,
 	     16 ) != 0 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 		 "%s: unsupported file class identifier.",
 		 function );
 
@@ -334,10 +333,10 @@ ssize_t liblnk_io_handle_read_file_header(
 	     file_header.class_identifier,
 	     16 ) == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
 		 "%s: unable to copy class identifier.",
 		 function );
 
@@ -365,9 +364,9 @@ ssize_t liblnk_io_handle_read_file_header(
 	 file_information->size );
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: header size\t\t\t\t: %" PRIu32 "\n",
 		 function,
 		 header_size );
@@ -376,10 +375,10 @@ ssize_t liblnk_io_handle_read_file_header(
 		     &guid,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 			 "%s: unable to create GUID.",
 			 function );
 
@@ -392,10 +391,10 @@ ssize_t liblnk_io_handle_read_file_header(
 		     LIBFGUID_ENDIAN_LITTLE,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy byte stream to GUID.",
 			 function );
 
@@ -416,10 +415,10 @@ ssize_t liblnk_io_handle_read_file_header(
 #endif
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy GUID to string.",
 			 function );
 
@@ -429,46 +428,46 @@ ssize_t liblnk_io_handle_read_file_header(
 		     &guid,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free GUID.",
 			 function );
 
 			goto on_error;
 		}
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: class identifier\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
 		 function,
 		 guid_string );
 
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: data flags\t\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 io_handle->data_flags );
 		liblnk_debug_print_data_flags(
 		 io_handle->data_flags );
-		libnotify_printf(
+		libcnotify_printf(
 		 "\n" );
 
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: file attribute flags\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 file_information->attribute_flags );
 		liblnk_debug_print_file_attribute_flags(
 		 file_information->attribute_flags );
-		libnotify_printf(
+		libcnotify_printf(
 		 "\n" );
 
 		if( libfdatetime_filetime_initialize(
 		     &filetime,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 			 "%s: unable to create filetime.",
 			 function );
 
@@ -481,10 +480,10 @@ ssize_t liblnk_io_handle_read_file_header(
 		     LIBFDATETIME_ENDIAN_LITTLE,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy byte stream to filetime.",
 			 function );
 
@@ -509,16 +508,16 @@ ssize_t liblnk_io_handle_read_file_header(
 #endif
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy filetime to string.",
 			 function );
 
 			goto on_error;
 		}
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: creation time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
 		 function,
 		 filetime_string );
@@ -530,10 +529,10 @@ ssize_t liblnk_io_handle_read_file_header(
 		     LIBFDATETIME_ENDIAN_LITTLE,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy byte stream to filetime.",
 			 function );
 
@@ -558,16 +557,16 @@ ssize_t liblnk_io_handle_read_file_header(
 #endif
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy filetime to string.",
 			 function );
 
 			goto on_error;
 		}
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: access time\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
 		 function,
 		 filetime_string );
@@ -579,10 +578,10 @@ ssize_t liblnk_io_handle_read_file_header(
 		     LIBFDATETIME_ENDIAN_LITTLE,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy byte stream to filetime.",
 			 function );
 
@@ -607,16 +606,16 @@ ssize_t liblnk_io_handle_read_file_header(
 #endif
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy filetime to string.",
 			 function );
 
 			goto on_error;
 		}
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: modification time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
 		 function,
 		 filetime_string );
@@ -625,16 +624,16 @@ ssize_t liblnk_io_handle_read_file_header(
 		     &filetime,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free filetime.",
 			 function );
 
 			goto on_error;
 		}
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: file size\t\t\t\t: %" PRIu32 " bytes\n",
 		 function,
 		 file_information->size );
@@ -642,7 +641,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		byte_stream_copy_to_uint32_little_endian(
 		 file_header.icon_index,
 		 value_32bit );
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: icon index\t\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 value_32bit );
@@ -650,7 +649,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		byte_stream_copy_to_uint32_little_endian(
 		 file_header.show_window_value,
 		 value_32bit );
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: show window value\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 value_32bit );
@@ -658,20 +657,20 @@ ssize_t liblnk_io_handle_read_file_header(
 		byte_stream_copy_to_uint16_little_endian(
 		 file_header.hot_key_value,
 		 value_16bit );
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: hot key value\t\t\t: 0x%04" PRIx16 "\n",
 		 function,
 		 value_16bit );
 
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: reserved:\n",
 		 function );
-		libnotify_print_data(
+		libcnotify_print_data(
 		 (uint8_t *) file_header.reserved,
 		 10,
 		 0 );
 
-		libnotify_printf(
+		libcnotify_printf(
 		 "\n" );
 	}
 #endif

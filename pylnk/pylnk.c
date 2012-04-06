@@ -22,15 +22,14 @@
 #include <common.h>
 #include <types.h>
 
-#include <libcstring.h>
-#include <liberror.h>
-
 #if defined( HAVE_STDLIB_H ) || defined( HAVE_WINAPI )
 #include <stdlib.h>
 #endif
 
 #include "pylnk.h"
 #include "pylnk_file.h"
+#include "pylnk_libcerror.h"
+#include "pylnk_libcstring.h"
 #include "pylnk_liblnk.h"
 #include "pylnk_python.h"
 
@@ -106,7 +105,7 @@ PyObject *pylnk_check_file_signature(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	liberror_error_t *error     = NULL;
+	libcerror_error_t *error     = NULL;
 	static char *function       = "pylnk_check_file_signature";
 	static char *keyword_list[] = { "filename", NULL };
 	const char *filename        = NULL;
@@ -127,7 +126,7 @@ PyObject *pylnk_check_file_signature(
 
 	if( result == -1 )
 	{
-		if( liberror_error_backtrace_sprint(
+		if( libcerror_error_backtrace_sprint(
 		     error,
 		     error_string,
 		     PYLNK_ERROR_STRING_SIZE ) == -1 )
@@ -145,7 +144,7 @@ PyObject *pylnk_check_file_signature(
 			 function,
 			 error_string );
 		}
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		return( NULL );

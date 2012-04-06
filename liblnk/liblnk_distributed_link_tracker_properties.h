@@ -25,10 +25,9 @@
 #include <common.h>
 #include <types.h>
 
-#include <liberror.h>
-
 #include "liblnk_data_block.h"
 #include "liblnk_io_handle.h"
+#include "liblnk_libcerror.h"
 
 #if defined( __cplusplus )
 extern "C" {
@@ -61,17 +60,17 @@ struct liblnk_distributed_link_tracker_properties
 
 int liblnk_distributed_link_tracker_properties_initialize(
      liblnk_distributed_link_tracker_properties_t **distributed_link_tracker_properties,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int liblnk_distributed_link_tracker_properties_free(
      liblnk_distributed_link_tracker_properties_t **distributed_link_tracker_properties,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int liblnk_distributed_link_tracker_properties_read(
      liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
      liblnk_data_block_t *data_block,
      liblnk_io_handle_t *io_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }

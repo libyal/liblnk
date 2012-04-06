@@ -25,11 +25,10 @@
 #include <common.h>
 #include <types.h>
 
-#include <liberror.h>
-
 #include <stdio.h>
 
 #include "liblnk_extern.h"
+#include "liblnk_libcerror.h"
 
 #if defined( __cplusplus )
 extern "C" {
@@ -44,16 +43,16 @@ void liblnk_notify_set_verbose(
 LIBLNK_EXTERN \
 int liblnk_notify_set_stream(
      FILE *stream,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_notify_stream_open(
      const char *filename,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_notify_stream_close(
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 #endif
 

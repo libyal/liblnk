@@ -25,9 +25,8 @@
 #include <common.h>
 #include <types.h>
 
-#include <liberror.h>
-
 #include "liblnk_data_block.h"
+#include "liblnk_libcerror.h"
 
 #if defined( __cplusplus )
 extern "C" {
@@ -48,16 +47,16 @@ struct liblnk_special_folder_location
 
 int liblnk_special_folder_location_initialize(
      liblnk_special_folder_location_t **special_folder_location,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int liblnk_special_folder_location_free(
      liblnk_special_folder_location_t **special_folder_location,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int liblnk_special_folder_location_read(
      liblnk_special_folder_location_t *special_folder_location,
      liblnk_data_block_t *data_block,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }

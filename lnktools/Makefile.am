@@ -1,14 +1,16 @@
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/common \
-	-I$(top_srcdir)/libcstring \
-	-I$(top_srcdir)/liberror \
-	-I$(top_srcdir)/libsystem \
+	@LIBCSTRING_CPPFLAGS@ \
+	@LIBCERROR_CPPFLAGS@ \
 	@LIBUNA_CPPFLAGS@ \
+	@LIBCFILE_CPPFLAGS@ \
+	@LIBCPATH_CPPFLAGS@ \
 	@LIBBFIO_CPPFLAGS@ \
 	@LIBFDATETIME_CPPFLAGS@ \
 	@LIBFGUID_CPPFLAGS@ \
 	@LIBFWSI_CPPFLAGS@ \
+	@LIBCSYSTEM_CPPFLAGS@ \
 	@MEMWATCH_CPPFLAGS@ \
 	@LIBLNK_DLL_IMPORT@
 
@@ -22,18 +24,20 @@ lnkinfo_SOURCES = \
 	lnkinfo.c \
 	lnkinput.c lnkinput.h \
 	lnkoutput.c lnkoutput.h \
+	lnktools_libcerror.h \
+	lnktools_libcstring.h \
 	lnktools_libfdatetime.h \
 	lnktools_libfguid.h \
 	lnktools_libfwsi.h \
 	lnktools_liblnk.h
 
 lnkinfo_LDADD  = \
-	../liberror/liberror.la \
+	@LIBCERROR_LIBADD@ \
 	../liblnk/liblnk.la \
-	../libsystem/libsystem.la \
 	@LIBFDATETIME_LIBADD@ \
 	@LIBFGUID_LIBADD@ \
 	@LIBFWSI_LIBADD@ \
+	@LIBCSYSTEM_LIBADD@ \
 	@LIBINTL@ \
 	@MEMWATCH_LIBADD@
 

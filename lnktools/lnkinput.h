@@ -25,10 +25,8 @@
 #include <common.h>
 #include <types.h>
 
-#include <libcstring.h>
-#include <liberror.h>
-
-#include <libsystem.h>
+#include "lnktools_libcerror.h"
+#include "lnktools_libcstring.h"
 
 #if defined( __cplusplus )
 extern "C" {
@@ -37,7 +35,7 @@ extern "C" {
 int lnkinput_determine_ascii_codepage(
      const libcstring_system_character_t *argument,
      int *ascii_codepage,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }

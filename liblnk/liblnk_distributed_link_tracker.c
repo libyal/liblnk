@@ -23,11 +23,10 @@
 #include <memory.h>
 #include <types.h>
 
-#include <liberror.h>
-#include <libnotify.h>
-
 #include "liblnk_definitions.h"
 #include "liblnk_file.h"
+#include "liblnk_libcerror.h"
+#include "liblnk_libcnotify.h"
 #include "liblnk_libuna.h"
 
 /* Determines if the file contains distributed link tracking data
@@ -35,17 +34,17 @@
  */
 int liblnk_file_has_distributed_link_tracking_data(
      liblnk_file_t *file,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_has_distributed_link_tracking_data";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -55,10 +54,10 @@ int liblnk_file_has_distributed_link_tracking_data(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -78,17 +77,17 @@ int liblnk_file_has_distributed_link_tracking_data(
 int liblnk_file_get_utf8_machine_identifier_size(
      liblnk_file_t *file,
      size_t *utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_machine_identifier_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -98,10 +97,10 @@ int liblnk_file_get_utf8_machine_identifier_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -109,10 +108,10 @@ int liblnk_file_get_utf8_machine_identifier_size(
 	}
 	if( internal_file->distributed_link_tracker_properties == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing distributed link tracker properties.",
 		 function );
 
@@ -125,10 +124,10 @@ int liblnk_file_get_utf8_machine_identifier_size(
 	     utf8_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-8 machine identifier string size.",
 		 function );
 
@@ -145,17 +144,17 @@ int liblnk_file_get_utf8_machine_identifier(
      liblnk_file_t *file,
      uint8_t *utf8_string,
      size_t utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_machine_identifier";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -165,10 +164,10 @@ int liblnk_file_get_utf8_machine_identifier(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -176,10 +175,10 @@ int liblnk_file_get_utf8_machine_identifier(
 	}
 	if( internal_file->distributed_link_tracker_properties == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing distributed link tracker properties.",
 		 function );
 
@@ -193,10 +192,10 @@ int liblnk_file_get_utf8_machine_identifier(
 	     internal_file->io_handle->ascii_codepage,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-8 data string.",
 		 function );
 
@@ -212,17 +211,17 @@ int liblnk_file_get_utf8_machine_identifier(
 int liblnk_file_get_utf16_machine_identifier_size(
      liblnk_file_t *file,
      size_t *utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_machine_identifier_size";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -232,10 +231,10 @@ int liblnk_file_get_utf16_machine_identifier_size(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -243,10 +242,10 @@ int liblnk_file_get_utf16_machine_identifier_size(
 	}
 	if( internal_file->distributed_link_tracker_properties == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing distributed link tracker properties.",
 		 function );
 
@@ -259,10 +258,10 @@ int liblnk_file_get_utf16_machine_identifier_size(
 	     utf16_string_size,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-16 machine identifier string size.",
 		 function );
 
@@ -279,17 +278,17 @@ int liblnk_file_get_utf16_machine_identifier(
      liblnk_file_t *file,
      uint16_t *utf16_string,
      size_t utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_machine_identifier";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -299,10 +298,10 @@ int liblnk_file_get_utf16_machine_identifier(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -310,10 +309,10 @@ int liblnk_file_get_utf16_machine_identifier(
 	}
 	if( internal_file->distributed_link_tracker_properties == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing distributed link tracker properties.",
 		 function );
 
@@ -327,10 +326,10 @@ int liblnk_file_get_utf16_machine_identifier(
 	     internal_file->io_handle->ascii_codepage,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-16 data string.",
 		 function );
 
@@ -346,17 +345,17 @@ int liblnk_file_get_droid_volume_identifier(
      liblnk_file_t *file,
      uint8_t *guid,
      size_t size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_droid_volume_identifier";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -366,10 +365,10 @@ int liblnk_file_get_droid_volume_identifier(
 
 	if( internal_file->distributed_link_tracker_properties == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing distributed link tracker properties.",
 		 function );
 
@@ -377,10 +376,10 @@ int liblnk_file_get_droid_volume_identifier(
 	}
 	if( guid == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid GUID.",
 		 function );
 
@@ -388,10 +387,10 @@ int liblnk_file_get_droid_volume_identifier(
 	}
 	if( size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: size value exceeds maximum.",
 		 function );
 
@@ -399,10 +398,10 @@ int liblnk_file_get_droid_volume_identifier(
 	}
 	if( size < 16 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
 		 "%s: GUID value too small.",
 		 function );
 
@@ -413,10 +412,10 @@ int liblnk_file_get_droid_volume_identifier(
 	     internal_file->distributed_link_tracker_properties->droid_volume_identifier,
 	     16 ) == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 		 "%s: unable to copy droid volume identifier.",
 		 function );
 
@@ -432,17 +431,17 @@ int liblnk_file_get_droid_file_identifier(
      liblnk_file_t *file,
      uint8_t *guid,
      size_t size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_droid_file_identifier";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -452,10 +451,10 @@ int liblnk_file_get_droid_file_identifier(
 
 	if( internal_file->distributed_link_tracker_properties == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing distributed link tracker properties.",
 		 function );
 
@@ -463,10 +462,10 @@ int liblnk_file_get_droid_file_identifier(
 	}
 	if( guid == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid GUID.",
 		 function );
 
@@ -474,10 +473,10 @@ int liblnk_file_get_droid_file_identifier(
 	}
 	if( size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: size value exceeds maximum.",
 		 function );
 
@@ -485,10 +484,10 @@ int liblnk_file_get_droid_file_identifier(
 	}
 	if( size < 16 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
 		 "%s: GUID value too small.",
 		 function );
 
@@ -499,10 +498,10 @@ int liblnk_file_get_droid_file_identifier(
 	     internal_file->distributed_link_tracker_properties->droid_file_identifier,
 	     16 ) == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 		 "%s: unable to copy droid file identifier.",
 		 function );
 
@@ -518,17 +517,17 @@ int liblnk_file_get_birth_droid_volume_identifier(
      liblnk_file_t *file,
      uint8_t *guid,
      size_t size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_birth_droid_volume_identifier";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -538,10 +537,10 @@ int liblnk_file_get_birth_droid_volume_identifier(
 
 	if( internal_file->distributed_link_tracker_properties == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing distributed link tracker properties.",
 		 function );
 
@@ -549,10 +548,10 @@ int liblnk_file_get_birth_droid_volume_identifier(
 	}
 	if( guid == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid GUID.",
 		 function );
 
@@ -560,10 +559,10 @@ int liblnk_file_get_birth_droid_volume_identifier(
 	}
 	if( size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: size value exceeds maximum.",
 		 function );
 
@@ -571,10 +570,10 @@ int liblnk_file_get_birth_droid_volume_identifier(
 	}
 	if( size < 16 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
 		 "%s: GUID value too small.",
 		 function );
 
@@ -585,10 +584,10 @@ int liblnk_file_get_birth_droid_volume_identifier(
 	     internal_file->distributed_link_tracker_properties->birth_droid_volume_identifier,
 	     16 ) == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 		 "%s: unable to copy birth droid volume identifier.",
 		 function );
 
@@ -604,17 +603,17 @@ int liblnk_file_get_birth_droid_file_identifier(
      liblnk_file_t *file,
      uint8_t *guid,
      size_t size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_birth_droid_file_identifier";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -624,10 +623,10 @@ int liblnk_file_get_birth_droid_file_identifier(
 
 	if( internal_file->distributed_link_tracker_properties == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing distributed link tracker properties.",
 		 function );
 
@@ -635,10 +634,10 @@ int liblnk_file_get_birth_droid_file_identifier(
 	}
 	if( guid == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid GUID.",
 		 function );
 
@@ -646,10 +645,10 @@ int liblnk_file_get_birth_droid_file_identifier(
 	}
 	if( size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: size value exceeds maximum.",
 		 function );
 
@@ -657,10 +656,10 @@ int liblnk_file_get_birth_droid_file_identifier(
 	}
 	if( size < 16 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
 		 "%s: GUID value too small.",
 		 function );
 
@@ -671,10 +670,10 @@ int liblnk_file_get_birth_droid_file_identifier(
 	     internal_file->distributed_link_tracker_properties->birth_droid_file_identifier,
 	     16 ) == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 		 "%s: unable to copy birth droid file identifier.",
 		 function );
 

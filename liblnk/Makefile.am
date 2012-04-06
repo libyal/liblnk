@@ -1,10 +1,12 @@
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/common \
-	-I$(top_srcdir)/libcstring \
-	-I$(top_srcdir)/liberror \
-	-I$(top_srcdir)/libnotify \
+	@LIBCSTRING_CPPFLAGS@ \
+	@LIBCERROR_CPPFLAGS@ \
+	@LIBCNOTIFY_CPPFLAGS@ \
 	@LIBUNA_CPPFLAGS@ \
+	@LIBCFILE_CPPFLAGS@ \
+	@LIBCPATH_CPPFLAGS@ \
 	@LIBBFIO_CPPFLAGS@ \
 	@LIBFDATETIME_CPPFLAGS@ \
 	@LIBFGUID_CPPFLAGS@ \
@@ -30,6 +32,9 @@ liblnk_la_SOURCES = \
 	liblnk_io_handle.c liblnk_io_handle.h \
 	liblnk_known_folder_location.c liblnk_known_folder_location.h \
 	liblnk_libbfio.h \
+	liblnk_libcerror.h \
+	liblnk_libcnotify.h \
+	liblnk_libcstring.h \
 	liblnk_libfdatetime.h \
 	liblnk_libfguid.h \
 	liblnk_libfwsi.h \
@@ -47,10 +52,12 @@ liblnk_la_SOURCES = \
 	lnk_location_information.h
 
 liblnk_la_LIBADD = \
-	../libcstring/libcstring.la \
-	../liberror/liberror.la \
-	../libnotify/libnotify.la \
+	@LIBCSTRING_LIBADD@ \
+	@LIBCERROR_LIBADD@ \
+	@LIBCNOTIFY_LIBADD@ \
 	@LIBUNA_LIBADD@ \
+	@LIBCFILE_LIBADD@ \
+	@LIBCPATH_LIBADD@ \
 	@LIBBFIO_LIBADD@ \
 	@LIBFDATETIME_LIBADD@ \
 	@LIBFGUID_LIBADD@ \

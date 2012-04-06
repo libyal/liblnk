@@ -24,8 +24,6 @@
 #include <memory.h>
 #include <types.h>
 
-#include <liberror.h>
-
 #include <stdio.h>
 
 #if defined( HAVE_UNISTD_H )
@@ -36,10 +34,10 @@
 #include <stdlib.h>
 #endif
 
-#include <libsystem.h>
-
 #include "info_handle.h"
 #include "lnkoutput.h"
+#include "lnktools_libcerror.h"
+#include "lnktools_libcsystem.h"
 #include "lnktools_liblnk.h"
 
 info_handle_t *lnkinfo_info_handle = NULL;
@@ -72,9 +70,9 @@ void usage_fprint(
 /* Signal handler for lnkinfo
  */
 void lnkinfo_signal_handler(
-      libsystem_signal_t signal )
+      libcsystem_signal_t signal )
 {
-	liberror_error_t *error = NULL;
+	libcerror_error_t *error = NULL;
 	static char *function   = "lnkinfo_signal_handler";
 
 	lnkinfo_abort = 1;
@@ -85,22 +83,22 @@ void lnkinfo_signal_handler(
 		     lnkinfo_info_handle,
 		     &error ) != 1 )
 		{
-			libsystem_notify_printf(
+			libcsystem_notify_printf(
 			 "%s: unable to signal info handle to abort.\n",
 			 function );
 
-			libsystem_notify_print_error_backtrace(
+			libcsystem_notify_print_error_backtrace(
 			 error );
-			liberror_error_free(
+			libcerror_error_free(
 			 &error );
 		}
 	}
 	/* Force stdin to close otherwise any function reading it will remain blocked
 	 */
-	if( libsystem_file_io_close(
+	if( libcsystem_file_io_close(
 	     0 ) != 0 )
 	{
-		libsystem_notify_printf(
+		libcsystem_notify_printf(
 		 "%s: unable to close stdin.\n",
 		 function );
 	}
@@ -122,13 +120,13 @@ int main( int argc, char * const argv[] )
 	int result                                           = 0;
 	int verbose                                          = 0;
 
-	libsystem_notify_set_stream(
+	libcsystem_notify_set_stream(
 	 stderr,
 	 NULL );
-	libsystem_notify_set_verbose(
+	libcsystem_notify_set_verbose(
 	 1 );
 
-	if( libsystem_initialize(
+	if( libcsystem_initialize(
 	     "lnktools",
 	     _IONBF,
 	     &error ) != 1 )
@@ -137,9 +135,9 @@ int main( int argc, char * const argv[] )
 		 stderr,
 		 "Unable to initialize system values.\n" );
 
-		libsystem_notify_print_error_backtrace(
+		libcsystem_notify_print_error_backtrace(
 		 error );
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 
 		return( EXIT_FAILURE );
@@ -148,7 +146,7 @@ int main( int argc, char * const argv[] )
 	 stdout,
 	 program );
 
-	while( ( option = libsystem_getopt(
+	while( ( option = libcsystem_getopt(
 	                   argc,
 	                   argv,
 	                   _LIBCSTRING_SYSTEM_STRING( "c:hvV" ) ) ) != (libcstring_system_integer_t) -1 )
@@ -203,7 +201,7 @@ int main( int argc, char * const argv[] )
 	}
 	source = argv[ optind ];
 
-	libsystem_notify_set_verbose(
+	libcsystem_notify_set_verbose(
 	 verbose );
 	liblnk_notify_set_stream(
 	 stderr,
@@ -290,9 +288,9 @@ int main( int argc, char * const argv[] )
 on_error:
 	if( error != NULL )
 	{
-		libsystem_notify_print_error_backtrace(
+		libcsystem_notify_print_error_backtrace(
 		 error );
-		liberror_error_free(
+		libcerror_error_free(
 		 &error );
 	}
 	if( lnkinfo_info_handle != NULL )

@@ -24,12 +24,11 @@
 #include <memory.h>
 #include <types.h>
 
-#include <liberror.h>
-#include <libnotify.h>
-
 #include "liblnk_data_string.h"
 #include "liblnk_definitions.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_libcerror.h"
+#include "liblnk_libcnotify.h"
 #include "liblnk_libuna.h"
 
 /* Creates data string
@@ -37,16 +36,16 @@
  */
 int liblnk_data_string_initialize(
      liblnk_data_string_t **data_string,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_data_string_initialize";
 
 	if( data_string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid data string.",
 		 function );
 
@@ -54,10 +53,10 @@ int liblnk_data_string_initialize(
 	}
 	if( *data_string != NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid data string value already set.",
 		 function );
 
@@ -68,10 +67,10 @@ int liblnk_data_string_initialize(
 
 	if( *data_string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 		 "%s: unable to create data string.",
 		 function );
 
@@ -82,10 +81,10 @@ int liblnk_data_string_initialize(
 	     0,
 	     sizeof( liblnk_data_string_t ) ) == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
 		 "%s: unable to clear data string.",
 		 function );
 
@@ -109,16 +108,16 @@ on_error:
  */
 int liblnk_data_string_free(
      liblnk_data_string_t **data_string,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_data_string_free";
 
 	if( data_string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid data string.",
 		 function );
 
@@ -147,7 +146,7 @@ ssize_t liblnk_data_string_read(
          liblnk_io_handle_t *io_handle,
          libbfio_handle_t *file_io_handle,
          off64_t data_string_offset,
-         liberror_error_t **error )
+         libcerror_error_t **error )
 {
 	uint8_t data_string_size_data[ 2 ];
 
@@ -162,10 +161,10 @@ ssize_t liblnk_data_string_read(
 
 	if( data_string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid data string.",
 		 function );
 
@@ -173,10 +172,10 @@ ssize_t liblnk_data_string_read(
 	}
 	if( data_string->data != NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid data string - data already set.",
 		 function );
 
@@ -184,10 +183,10 @@ ssize_t liblnk_data_string_read(
 	}
 	if( io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid IO handle.",
 		 function );
 
@@ -204,9 +203,9 @@ ssize_t liblnk_data_string_read(
 		data_string->is_unicode = 0;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: reading data string at offset: %" PRIi64 " (0x%08" PRIx64 ")\n",
 		 function,
 		 data_string_offset,
@@ -219,17 +218,17 @@ ssize_t liblnk_data_string_read(
 	     SEEK_SET,
 	     error ) == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_SEEK_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_SEEK_FAILED,
 		 "%s: unable to seek data string offset: %" PRIi64 ".",
 		 function,
 		 data_string_offset );
 
 		goto on_error;
 	}
-	read_count = libbfio_handle_read(
+	read_count = libbfio_handle_read_buffer(
 	              file_io_handle,
 	              data_string_size_data,
 	              2,
@@ -237,10 +236,10 @@ ssize_t liblnk_data_string_read(
 
 	if( read_count != (ssize_t) 2 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_READ_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
 		 "%s: unable to read data string size.",
 		 function );
 
@@ -251,9 +250,9 @@ ssize_t liblnk_data_string_read(
 	 data_string->data_size );
 	
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: data string size\t\t\t\t: %" PRIzd "\n",
 		 function,
 		 data_string->data_size );
@@ -269,10 +268,10 @@ ssize_t liblnk_data_string_read(
 	}
 	if( data_string->data_size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: data string size value exceeds maximum.",
 		 function );
 
@@ -284,16 +283,16 @@ ssize_t liblnk_data_string_read(
 
 	if( data_string->data == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 		 "%s: unable to create data string data.",
 		 function );
 
 		goto on_error;
 	}
-	read_count = libbfio_handle_read(
+	read_count = libbfio_handle_read_buffer(
 	              file_io_handle,
 	              data_string->data,
 	              data_string->data_size,
@@ -301,22 +300,22 @@ ssize_t liblnk_data_string_read(
 
 	if( read_count != (ssize_t) data_string->data_size )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_READ_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
 		 "%s: unable to read data string data.",
 		 function );
 
 		goto on_error;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: data string data:\n",
 		 function );
-		libnotify_print_data(
+		libcnotify_print_data(
 		 data_string->data,
 		 data_string->data_size,
 		 0 );
@@ -324,7 +323,7 @@ ssize_t liblnk_data_string_read(
 #endif
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
 		if( data_string->is_unicode != 0 )
 		{
@@ -364,10 +363,10 @@ ssize_t liblnk_data_string_read(
 		}
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to determine size of data string.",
 			 function );
 
@@ -376,10 +375,10 @@ ssize_t liblnk_data_string_read(
 		if( ( value_string_size > (size_t) SSIZE_MAX )
 		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 			 "%s: invalid data string size value exceeds maximum.",
 			 function );
 
@@ -390,10 +389,10 @@ ssize_t liblnk_data_string_read(
 
 		if( value_string == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 			 "%s: unable to create data string.",
 			 function );
 
@@ -441,16 +440,16 @@ ssize_t liblnk_data_string_read(
 		}
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 			 "%s: unable to set data string.",
 			 function );
 
 			goto on_error;
 		}
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: data string\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
 		 function,
 		 value_string );
@@ -460,7 +459,7 @@ ssize_t liblnk_data_string_read(
 
 		value_string = NULL;
 
-		libnotify_printf(
+		libcnotify_printf(
 		 "\n" );
 	}
 #endif
@@ -492,17 +491,17 @@ int liblnk_data_string_get_utf8_string_size(
      liblnk_data_string_t *data_string,
      int ascii_codepage,
      size_t *utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_data_string_get_utf8_string_size";
 	int result            = 0;
 
 	if( data_string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid data string.",
 		 function );
 
@@ -510,10 +509,10 @@ int liblnk_data_string_get_utf8_string_size(
 	}
 	if( data_string->data == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid data string - missing data.",
 		 function );
 
@@ -521,10 +520,10 @@ int liblnk_data_string_get_utf8_string_size(
 	}
 	if( utf8_string_size == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid UTF-8 string size.",
 		 function );
 
@@ -550,10 +549,10 @@ int liblnk_data_string_get_utf8_string_size(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-8 data string size.",
 		 function );
 
@@ -571,17 +570,17 @@ int liblnk_data_string_get_utf8_string(
      int ascii_codepage,
      uint8_t *utf8_string,
      size_t utf8_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_data_string_get_utf8_string";
 	int result            = 0;
 
 	if( data_string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid data string.",
 		 function );
 
@@ -589,10 +588,10 @@ int liblnk_data_string_get_utf8_string(
 	}
 	if( data_string->data == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid data string - missing data.",
 		 function );
 
@@ -600,10 +599,10 @@ int liblnk_data_string_get_utf8_string(
 	}
 	if( utf8_string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid UTF-8 string.",
 		 function );
 
@@ -611,10 +610,10 @@ int liblnk_data_string_get_utf8_string(
 	}
 	if( utf8_string_size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: invalid UTF-8 string size value exceeds maximum.",
 		 function );
 
@@ -642,10 +641,10 @@ int liblnk_data_string_get_utf8_string(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-8 data string.",
 		 function );
 
@@ -662,17 +661,17 @@ int liblnk_data_string_get_utf16_string_size(
      liblnk_data_string_t *data_string,
      int ascii_codepage,
      size_t *utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_data_string_get_utf16_string_size";
 	int result            = 0;
 
 	if( data_string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid data string.",
 		 function );
 
@@ -680,10 +679,10 @@ int liblnk_data_string_get_utf16_string_size(
 	}
 	if( data_string->data == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid data string - missing data.",
 		 function );
 
@@ -691,10 +690,10 @@ int liblnk_data_string_get_utf16_string_size(
 	}
 	if( utf16_string_size == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid UTF-16 string size.",
 		 function );
 
@@ -720,10 +719,10 @@ int liblnk_data_string_get_utf16_string_size(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve UTF-16 data string size.",
 		 function );
 
@@ -741,17 +740,17 @@ int liblnk_data_string_get_utf16_string(
      int ascii_codepage,
      uint16_t *utf16_string,
      size_t utf16_string_size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_data_string_get_utf16_string";
 	int result            = 0;
 
 	if( data_string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid data string.",
 		 function );
 
@@ -759,10 +758,10 @@ int liblnk_data_string_get_utf16_string(
 	}
 	if( data_string->data == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid data string - missing data.",
 		 function );
 
@@ -770,10 +769,10 @@ int liblnk_data_string_get_utf16_string(
 	}
 	if( utf16_string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid UTF-16 string.",
 		 function );
 
@@ -781,10 +780,10 @@ int liblnk_data_string_get_utf16_string(
 	}
 	if( utf16_string_size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: invalid UTF-16 string size value exceeds maximum.",
 		 function );
 
@@ -812,10 +811,10 @@ int liblnk_data_string_get_utf16_string(
 	}
 	if( result != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 		 "%s: unable to set UTF-16 data string.",
 		 function );
 

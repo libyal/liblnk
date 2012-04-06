@@ -36,8 +36,6 @@
 #include <libbfio.h>
 #endif
 
-#include <libsystem.h>
-
 #include "lnkoutput.h"
 #include "lnktools_libfdatetime.h"
 #include "lnktools_libfguid.h"

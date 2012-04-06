@@ -24,11 +24,10 @@
 #include <memory.h>
 #include <types.h>
 
-#include <libcstring.h>
-#include <liberror.h>
-
 #include "info_handle.h"
 #include "lnkinput.h"
+#include "lnktools_libcerror.h"
+#include "lnktools_libcstring.h"
 #include "lnktools_libfdatetime.h"
 #include "lnktools_libfguid.h"
 #include "lnktools_libfwsi.h"
@@ -41,16 +40,16 @@
  */
 int info_handle_initialize(
      info_handle_t **info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "info_handle_initialize";
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -58,10 +57,10 @@ int info_handle_initialize(
 	}
 	if( *info_handle != NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid info handle value already set.",
 		 function );
 
@@ -72,10 +71,10 @@ int info_handle_initialize(
 
 	if( *info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 		 "%s: unable to create info handle.",
 		 function );
 
@@ -86,10 +85,10 @@ int info_handle_initialize(
 	     0,
 	     sizeof( info_handle_t ) ) == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
 		 "%s: unable to clear info handle.",
 		 function );
 
@@ -99,10 +98,10 @@ int info_handle_initialize(
 	     &( ( *info_handle )->input_file ),
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 		 "%s: unable to initialize input file.",
 		 function );
 
@@ -128,17 +127,17 @@ on_error:
  */
 int info_handle_free(
      info_handle_t **info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "info_handle_free";
 	int result            = 1;
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -150,10 +149,10 @@ int info_handle_free(
 		     &( ( *info_handle )->input_file ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free input file.",
 			 function );
 
@@ -172,16 +171,16 @@ int info_handle_free(
  */
 int info_handle_signal_abort(
      info_handle_t *info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "info_handle_signal_abort";
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -195,10 +194,10 @@ int info_handle_signal_abort(
 		     info_handle->input_file,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 			 "%s: unable to signal input file to abort.",
 			 function );
 
@@ -214,17 +213,17 @@ int info_handle_signal_abort(
 int info_handle_set_ascii_codepage(
      info_handle_t *info_handle,
      const libcstring_system_character_t *string,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "info_handle_set_ascii_codepage";
 	int result            = 0;
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -237,10 +236,10 @@ int info_handle_set_ascii_codepage(
 
 	if( result == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to determine ASCII codepage.",
 		 function );
 
@@ -255,16 +254,16 @@ int info_handle_set_ascii_codepage(
 int info_handle_open(
      info_handle_t *info_handle,
      const libcstring_system_character_t *filename,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "info_handle_open";
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -284,10 +283,10 @@ int info_handle_open(
 	     error ) != 1 )
 #endif
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_OPEN_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_OPEN_FAILED,
 		 "%s: unable to open input file.",
 		 function );
 
@@ -301,16 +300,16 @@ int info_handle_open(
  */
 int info_handle_close(
      info_handle_t *info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "info_handle_close";
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -320,10 +319,10 @@ int info_handle_close(
 	     info_handle->input_file,
 	     error ) != 0 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_CLOSE_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_CLOSE_FAILED,
 		 "%s: unable to close input file.",
 		 function );
 
@@ -337,17 +336,17 @@ int info_handle_close(
  */
 int info_handle_data_flags_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "info_handle_data_flags_fprint";
 	uint32_t data_flags   = 0;
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -358,10 +357,10 @@ int info_handle_data_flags_fprint(
 	     &data_flags,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve data flags.",
 		 function );
 
@@ -442,7 +441,7 @@ int info_handle_data_flags_fprint(
  */
 int info_handle_link_information_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	libcstring_system_character_t filetime_string[ 32 ];
 
@@ -456,10 +455,10 @@ int info_handle_link_information_fprint(
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -471,10 +470,10 @@ int info_handle_link_information_fprint(
 
 	if( result == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to determine if the shortcut refers to a file.",
 		 function );
 
@@ -490,10 +489,10 @@ int info_handle_link_information_fprint(
 		     &filetime,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 			 "%s: unable to create filetime.",
 			 function );
 
@@ -504,10 +503,10 @@ int info_handle_link_information_fprint(
 		     &file_attribute_flags,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve file attribute flags.",
 			 function );
 
@@ -520,10 +519,10 @@ int info_handle_link_information_fprint(
 		     &value_64bit,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve file creation time.",
 			 function );
 
@@ -534,10 +533,10 @@ int info_handle_link_information_fprint(
 		     value_64bit,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy 64-bit value to filetime.",
 			 function );
 
@@ -562,10 +561,10 @@ int info_handle_link_information_fprint(
 #endif
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy filetime to string.",
 			 function );
 
@@ -583,10 +582,10 @@ int info_handle_link_information_fprint(
 		     &value_64bit,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve file modification time.",
 			 function );
 
@@ -597,10 +596,10 @@ int info_handle_link_information_fprint(
 		     value_64bit,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy 64-bit value to filetime.",
 			 function );
 
@@ -625,10 +624,10 @@ int info_handle_link_information_fprint(
 #endif
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy filetime to string.",
 			 function );
 
@@ -646,10 +645,10 @@ int info_handle_link_information_fprint(
 		     &value_64bit,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve file access time.",
 			 function );
 
@@ -660,10 +659,10 @@ int info_handle_link_information_fprint(
 		     value_64bit,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy 64-bit value to filetime.",
 			 function );
 
@@ -688,10 +687,10 @@ int info_handle_link_information_fprint(
 #endif
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy filetime to string.",
 			 function );
 
@@ -706,10 +705,10 @@ int info_handle_link_information_fprint(
 		     &filetime,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free filetime.",
 			 function );
 
@@ -728,10 +727,10 @@ int info_handle_link_information_fprint(
 #endif
 		if( result == -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve local path string size.",
 			 function );
 
@@ -742,10 +741,10 @@ int info_handle_link_information_fprint(
 			if( ( value_string_size > (size_t) SSIZE_MAX )
 			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 				 "%s: invalid local path string size value exceeds maximum.",
 				 function );
 
@@ -756,10 +755,10 @@ int info_handle_link_information_fprint(
 
 			if( value_string == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create local path string.",
 				 function );
 
@@ -780,10 +779,10 @@ int info_handle_link_information_fprint(
 #endif
 			if( result == -1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 				 "%s: unable to retrieve local path.",
 				 function );
 
@@ -812,10 +811,10 @@ int info_handle_link_information_fprint(
 #endif
 		if( result == -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve network path string size.",
 			 function );
 
@@ -826,10 +825,10 @@ int info_handle_link_information_fprint(
 			if( ( value_string_size > (size_t) SSIZE_MAX )
 			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 				 "%s: invalid network path string size value exceeds maximum.",
 				 function );
 
@@ -840,10 +839,10 @@ int info_handle_link_information_fprint(
 
 			if( value_string == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create network path string.",
 				 function );
 
@@ -864,10 +863,10 @@ int info_handle_link_information_fprint(
 #endif
 			if( result == -1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 				 "%s: unable to retrieve local path.",
 				 function );
 
@@ -906,7 +905,7 @@ on_error:
  */
 int info_handle_description_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	libcstring_system_character_t *value_string = NULL;
 	static char *function                       = "info_handle_description_fprint";
@@ -915,10 +914,10 @@ int info_handle_description_fprint(
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -937,10 +936,10 @@ int info_handle_description_fprint(
 #endif
 	if( result == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve description string size.",
 		 function );
 
@@ -951,10 +950,10 @@ int info_handle_description_fprint(
 		if( ( value_string_size > (size_t) SSIZE_MAX )
 		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 			 "%s: invalid description string size value exceeds maximum.",
 			 function );
 
@@ -965,10 +964,10 @@ int info_handle_description_fprint(
 
 		if( value_string == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 			 "%s: unable to create description string.",
 			 function );
 
@@ -989,10 +988,10 @@ int info_handle_description_fprint(
 #endif
 		if( result == -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve description.",
 			 function );
 
@@ -1024,7 +1023,7 @@ on_error:
  */
 int info_handle_relative_path_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	libcstring_system_character_t *value_string = NULL;
 	static char *function                       = "info_handle_relative_path_fprint";
@@ -1033,10 +1032,10 @@ int info_handle_relative_path_fprint(
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -1055,10 +1054,10 @@ int info_handle_relative_path_fprint(
 #endif
 	if( result == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve relative path string size.",
 		 function );
 
@@ -1069,10 +1068,10 @@ int info_handle_relative_path_fprint(
 		if( ( value_string_size > (size_t) SSIZE_MAX )
 		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 			 "%s: invalid relative path string size value exceeds maximum.",
 			 function );
 
@@ -1083,10 +1082,10 @@ int info_handle_relative_path_fprint(
 
 		if( value_string == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 			 "%s: unable to create relative path string.",
 			 function );
 
@@ -1107,10 +1106,10 @@ int info_handle_relative_path_fprint(
 #endif
 		if( result == -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve relative path.",
 			 function );
 
@@ -1142,7 +1141,7 @@ on_error:
  */
 int info_handle_working_directory_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	libcstring_system_character_t *value_string = NULL;
 	static char *function                       = "info_handle_working_directory_fprint";
@@ -1151,10 +1150,10 @@ int info_handle_working_directory_fprint(
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -1173,10 +1172,10 @@ int info_handle_working_directory_fprint(
 #endif
 	if( result == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve working directory string size.",
 		 function );
 
@@ -1187,10 +1186,10 @@ int info_handle_working_directory_fprint(
 		if( ( value_string_size > (size_t) SSIZE_MAX )
 		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 			 "%s: invalid working directory string size value exceeds maximum.",
 			 function );
 
@@ -1201,10 +1200,10 @@ int info_handle_working_directory_fprint(
 
 		if( value_string == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 			 "%s: unable to create working directory string.",
 			 function );
 
@@ -1225,10 +1224,10 @@ int info_handle_working_directory_fprint(
 #endif
 		if( result == -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve working directory.",
 			 function );
 
@@ -1260,7 +1259,7 @@ on_error:
  */
 int info_handle_command_line_arguments_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	libcstring_system_character_t *value_string = NULL;
 	static char *function                       = "info_handle_command_line_arguments_fprint";
@@ -1269,10 +1268,10 @@ int info_handle_command_line_arguments_fprint(
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -1291,10 +1290,10 @@ int info_handle_command_line_arguments_fprint(
 #endif
 	if( result == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve command line arguments string size.",
 		 function );
 
@@ -1305,10 +1304,10 @@ int info_handle_command_line_arguments_fprint(
 		if( ( value_string_size > (size_t) SSIZE_MAX )
 		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 			 "%s: invalid command line arguments string size value exceeds maximum.",
 			 function );
 
@@ -1319,10 +1318,10 @@ int info_handle_command_line_arguments_fprint(
 
 		if( value_string == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 			 "%s: unable to create command line arguments string.",
 			 function );
 
@@ -1343,10 +1342,10 @@ int info_handle_command_line_arguments_fprint(
 #endif
 		if( result == -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve command line arguments.",
 			 function );
 
@@ -1378,7 +1377,7 @@ on_error:
  */
 int info_handle_icon_location_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	libcstring_system_character_t *value_string = NULL;
 	static char *function                       = "info_handle_icon_location_fprint";
@@ -1387,10 +1386,10 @@ int info_handle_icon_location_fprint(
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -1409,10 +1408,10 @@ int info_handle_icon_location_fprint(
 #endif
 	if( result == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve icon location string size.",
 		 function );
 
@@ -1423,10 +1422,10 @@ int info_handle_icon_location_fprint(
 		if( ( value_string_size > (size_t) SSIZE_MAX )
 		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 			 "%s: invalid icon location string size value exceeds maximum.",
 			 function );
 
@@ -1437,10 +1436,10 @@ int info_handle_icon_location_fprint(
 
 		if( value_string == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 			 "%s: unable to create icon location string.",
 			 function );
 
@@ -1461,10 +1460,10 @@ int info_handle_icon_location_fprint(
 #endif
 		if( result == -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve icon location.",
 			 function );
 
@@ -1496,7 +1495,7 @@ on_error:
  */
 int info_handle_environment_variables_location_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	libcstring_system_character_t *value_string = NULL;
 	static char *function                       = "info_handle_environment_variables_location_fprint";
@@ -1505,10 +1504,10 @@ int info_handle_environment_variables_location_fprint(
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -1527,10 +1526,10 @@ int info_handle_environment_variables_location_fprint(
 #endif
 	if( result == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve environment variables location string size.",
 		 function );
 
@@ -1541,10 +1540,10 @@ int info_handle_environment_variables_location_fprint(
 		if( ( value_string_size > (size_t) SSIZE_MAX )
 		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 			 "%s: invalid environment variables location string size value exceeds maximum.",
 			 function );
 
@@ -1555,10 +1554,10 @@ int info_handle_environment_variables_location_fprint(
 
 		if( value_string == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 			 "%s: unable to create environment variables location string.",
 			 function );
 
@@ -1579,10 +1578,10 @@ int info_handle_environment_variables_location_fprint(
 #endif
 		if( result == -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve environment variables location.",
 			 function );
 
@@ -1614,7 +1613,7 @@ on_error:
  */
 int info_handle_link_target_identifier_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	uint8_t *link_target_identifier_data    = NULL;
 	static char *function                   = "info_handle_link_target_identifier_fprint";
@@ -1623,10 +1622,10 @@ int info_handle_link_target_identifier_fprint(
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -1640,10 +1639,10 @@ int info_handle_link_target_identifier_fprint(
 
 	if( result == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to retrieve link target identifier data.",
 		 function );
 
@@ -1665,7 +1664,7 @@ int info_handle_link_target_identifier_fprint(
  */
 int info_handle_distributed_link_tracking_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	uint8_t guid_data[ 16 ];
 
@@ -1679,10 +1678,10 @@ int info_handle_distributed_link_tracking_fprint(
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -1694,10 +1693,10 @@ int info_handle_distributed_link_tracking_fprint(
 
 	if( result == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 		 "%s: unable to determine if file contains distributed link tracking data.",
 		 function );
 
@@ -1722,10 +1721,10 @@ int info_handle_distributed_link_tracking_fprint(
 #endif
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve machine identifier string size.",
 			 function );
 
@@ -1734,10 +1733,10 @@ int info_handle_distributed_link_tracking_fprint(
 		if( ( value_string_size > (size_t) SSIZE_MAX )
 		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 			 "%s: invalid machine identifier size value exceeds maximum.",
 			 function );
 
@@ -1748,10 +1747,10 @@ int info_handle_distributed_link_tracking_fprint(
 
 		if( value_string == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 			 "%s: unable to create machine identifier string.",
 			 function );
 
@@ -1772,10 +1771,10 @@ int info_handle_distributed_link_tracking_fprint(
 #endif
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve machine identifier.",
 			 function );
 
@@ -1795,10 +1794,10 @@ int info_handle_distributed_link_tracking_fprint(
 		     &guid,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 			 "%s: unable to create GUID.",
 			 function );
 
@@ -1810,10 +1809,10 @@ int info_handle_distributed_link_tracking_fprint(
 		     16,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve droid volume identifier.",
 			 function );
 
@@ -1826,10 +1825,10 @@ int info_handle_distributed_link_tracking_fprint(
 		     LIBFGUID_ENDIAN_LITTLE,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy byte stream to GUID.",
 			 function );
 
@@ -1850,10 +1849,10 @@ int info_handle_distributed_link_tracking_fprint(
 #endif
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy GUID to string.",
 			 function );
 
@@ -1870,10 +1869,10 @@ int info_handle_distributed_link_tracking_fprint(
 		     16,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve droid file identifier.",
 			 function );
 
@@ -1886,10 +1885,10 @@ int info_handle_distributed_link_tracking_fprint(
 		     LIBFGUID_ENDIAN_LITTLE,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy byte stream to GUID.",
 			 function );
 
@@ -1910,10 +1909,10 @@ int info_handle_distributed_link_tracking_fprint(
 #endif
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy GUID to string.",
 			 function );
 
@@ -1930,10 +1929,10 @@ int info_handle_distributed_link_tracking_fprint(
 		     16,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve birth droid volume identifier.",
 			 function );
 
@@ -1946,10 +1945,10 @@ int info_handle_distributed_link_tracking_fprint(
 		     LIBFGUID_ENDIAN_LITTLE,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy byte stream to GUID.",
 			 function );
 
@@ -1970,10 +1969,10 @@ int info_handle_distributed_link_tracking_fprint(
 #endif
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy GUID to string.",
 			 function );
 
@@ -1990,10 +1989,10 @@ int info_handle_distributed_link_tracking_fprint(
 		     16,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve birth droid file identifier.",
 			 function );
 
@@ -2006,10 +2005,10 @@ int info_handle_distributed_link_tracking_fprint(
 		     LIBFGUID_ENDIAN_LITTLE,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy byte stream to GUID.",
 			 function );
 
@@ -2030,10 +2029,10 @@ int info_handle_distributed_link_tracking_fprint(
 #endif
 		if( result != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy GUID to string.",
 			 function );
 
@@ -2048,10 +2047,10 @@ int info_handle_distributed_link_tracking_fprint(
 		     &guid,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free GUID.",
 			 function );
 
@@ -2083,16 +2082,16 @@ on_error:
  */
 int info_handle_file_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "info_handle_file_fprint";
 
 	if( info_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
 		 function );
 
@@ -2102,10 +2101,10 @@ int info_handle_file_fprint(
 	     info_handle,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
 		 "%s: unable to print data flags.",
 		 function );
 
@@ -2115,10 +2114,10 @@ int info_handle_file_fprint(
 	     info_handle,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
 		 "%s: unable to print link information.",
 		 function );
 
@@ -2128,10 +2127,10 @@ int info_handle_file_fprint(
 	     info_handle,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
 		 "%s: unable to print description.",
 		 function );
 
@@ -2141,10 +2140,10 @@ int info_handle_file_fprint(
 	     info_handle,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
 		 "%s: unable to print relative path.",
 		 function );
 
@@ -2154,10 +2153,10 @@ int info_handle_file_fprint(
 	     info_handle,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
 		 "%s: unable to print working directory.",
 		 function );
 
@@ -2167,10 +2166,10 @@ int info_handle_file_fprint(
 	     info_handle,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
 		 "%s: unable to print command line arguments.",
 		 function );
 
@@ -2180,10 +2179,10 @@ int info_handle_file_fprint(
 	     info_handle,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
 		 "%s: unable to print icon location.",
 		 function );
 
@@ -2193,10 +2192,10 @@ int info_handle_file_fprint(
 	     info_handle,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
 		 "%s: unable to print environment variables location.",
 		 function );
 
@@ -2210,10 +2209,10 @@ int info_handle_file_fprint(
 	     info_handle,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
 		 "%s: unable to print distributed link tracking data.",
 		 function );
 

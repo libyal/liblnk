@@ -23,10 +23,6 @@
 #include <memory.h>
 #include <types.h>
 
-#include <libcstring.h>
-#include <liberror.h>
-#include <libnotify.h>
-
 #include "liblnk_codepage.h"
 #include "liblnk_data_block.h"
 #include "liblnk_data_block_strings.h"
@@ -39,6 +35,9 @@
 #include "liblnk_io_handle.h"
 #include "liblnk_known_folder_location.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_libcerror.h"
+#include "liblnk_libcnotify.h"
+#include "liblnk_libcstring.h"
 #include "liblnk_link_target_identifier.h"
 #include "liblnk_location_information.h"
 #include "liblnk_special_folder_location.h"
@@ -49,17 +48,17 @@
  */
 int liblnk_file_initialize(
      liblnk_file_t **file,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_initialize";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -67,10 +66,10 @@ int liblnk_file_initialize(
 	}
 	if( *file != NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid file value already set.",
 		 function );
 
@@ -81,10 +80,10 @@ int liblnk_file_initialize(
 
 	if( internal_file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 		 "%s: unable to create file.",
 		 function );
 
@@ -95,10 +94,10 @@ int liblnk_file_initialize(
 	     0,
 	     sizeof( liblnk_internal_file_t ) ) == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
 		 "%s: unable to clear file.",
 		 function );
 
@@ -111,10 +110,10 @@ int liblnk_file_initialize(
 	     &( internal_file->file_information ),
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 		 "%s: unable to create file information.",
 		 function );
 
@@ -124,10 +123,10 @@ int liblnk_file_initialize(
 	     &( internal_file->io_handle ),
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 		 "%s: unable to create IO handle.",
 		 function );
 
@@ -157,7 +156,7 @@ on_error:
  */
 int liblnk_file_free(
      liblnk_file_t **file,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_free";
@@ -165,10 +164,10 @@ int liblnk_file_free(
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -184,10 +183,10 @@ int liblnk_file_free(
 			     *file,
 			     error ) != 0 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_IO,
-				 LIBERROR_IO_ERROR_CLOSE_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_IO,
+				 LIBCERROR_IO_ERROR_CLOSE_FAILED,
 				 "%s: unable to close file.",
 				 function );
 
@@ -200,10 +199,10 @@ int liblnk_file_free(
 		     &( internal_file->io_handle ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free IO handle.",
 			 function );
 
@@ -220,17 +219,17 @@ int liblnk_file_free(
  */
 int liblnk_file_signal_abort(
      liblnk_file_t *file,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_signal_abort";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -240,10 +239,10 @@ int liblnk_file_signal_abort(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -261,7 +260,7 @@ int liblnk_file_open(
      liblnk_file_t *file,
      const char *filename,
      int access_flags,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	libbfio_handle_t *file_io_handle      = NULL;
 	liblnk_internal_file_t *internal_file = NULL;
@@ -269,10 +268,10 @@ int liblnk_file_open(
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -282,10 +281,10 @@ int liblnk_file_open(
 
 	if( filename == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid filename.",
 		 function );
 
@@ -294,10 +293,10 @@ int liblnk_file_open(
 	if( ( ( access_flags & LIBLNK_ACCESS_FLAG_READ ) == 0 )
 	 && ( ( access_flags & LIBLNK_ACCESS_FLAG_WRITE ) == 0 ) )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
 		 "%s: unsupported accesss flags.",
 		 function );
 
@@ -305,10 +304,10 @@ int liblnk_file_open(
 	}
 	if( ( access_flags & LIBLNK_ACCESS_FLAG_WRITE ) != 0 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
 		 "%s: write access currently not supported.",
 		 function );
 
@@ -318,10 +317,10 @@ int liblnk_file_open(
 	     &file_io_handle,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 		 "%s: unable to create file IO handle.",
 		 function );
 
@@ -333,10 +332,10 @@ int liblnk_file_open(
 	     1,
 	     error ) != 1 )
 	{
-                liberror_error_set(
+                libcerror_error_set(
                  error,
-                 LIBERROR_ERROR_DOMAIN_RUNTIME,
-                 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+                 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+                 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
                  "%s: unable to set track offsets read in file IO handle.",
                  function );
 
@@ -354,10 +353,10 @@ int liblnk_file_open(
 	      filename ) + 1,
 	     error ) != 1 )
 	{
-                liberror_error_set(
+                libcerror_error_set(
                  error,
-                 LIBERROR_ERROR_DOMAIN_RUNTIME,
-                 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+                 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+                 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
                  "%s: unable to set filename in file IO handle.",
                  function );
 
@@ -373,10 +372,10 @@ int liblnk_file_open(
 	     access_flags,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_OPEN_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_OPEN_FAILED,
 		 "%s: unable to open file: %s.",
 		 function,
 		 filename );
@@ -401,7 +400,7 @@ int liblnk_file_open_wide(
      liblnk_file_t *file,
      const wchar_t *filename,
      int access_flags,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	libbfio_handle_t *file_io_handle      = NULL;
 	liblnk_internal_file_t *internal_file = NULL;
@@ -409,10 +408,10 @@ int liblnk_file_open_wide(
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -422,10 +421,10 @@ int liblnk_file_open_wide(
 
 	if( filename == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid filename.",
 		 function );
 
@@ -434,10 +433,10 @@ int liblnk_file_open_wide(
 	if( ( ( access_flags & LIBLNK_ACCESS_FLAG_READ ) == 0 )
 	 && ( ( access_flags & LIBLNK_ACCESS_FLAG_WRITE ) == 0 ) )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
 		 "%s: unsupported access flags.",
 		 function );
 
@@ -445,10 +444,10 @@ int liblnk_file_open_wide(
 	}
 	if( ( access_flags & LIBLNK_ACCESS_FLAG_WRITE ) != 0 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
 		 "%s: write access currently not supported.",
 		 function );
 
@@ -458,10 +457,10 @@ int liblnk_file_open_wide(
 	     &file_io_handle,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 		 "%s: unable to create file IO handle.",
 		 function );
 
@@ -473,10 +472,10 @@ int liblnk_file_open_wide(
 	     1,
 	     error ) != 1 )
 	{
-                liberror_error_set(
+                libcerror_error_set(
                  error,
-                 LIBERROR_ERROR_DOMAIN_RUNTIME,
-                 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+                 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+                 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
                  "%s: unable to set track offsets read in file IO handle.",
                  function );
 
@@ -494,10 +493,10 @@ int liblnk_file_open_wide(
 	      filename ) + 1,
 	     error ) != 1 )
 	{
-                liberror_error_set(
+                libcerror_error_set(
                  error,
-                 LIBERROR_ERROR_DOMAIN_RUNTIME,
-                 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+                 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+                 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
                  "%s: unable to set filename in file IO handle.",
                  function );
 
@@ -513,10 +512,10 @@ int liblnk_file_open_wide(
 	     access_flags,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_OPEN_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_OPEN_FAILED,
 		 "%s: unable to open file: %ls.",
 		 function,
 		 filename );
@@ -541,7 +540,7 @@ int liblnk_file_open_file_io_handle(
      liblnk_file_t *file,
      libbfio_handle_t *file_io_handle,
      int access_flags,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_open_file_io_handle";
@@ -550,10 +549,10 @@ int liblnk_file_open_file_io_handle(
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -563,10 +562,10 @@ int liblnk_file_open_file_io_handle(
 
 	if( internal_file->file_io_handle != NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid internal file - file IO handle already set.",
 		 function );
 
@@ -574,10 +573,10 @@ int liblnk_file_open_file_io_handle(
 	}
 	if( file_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file IO handle.",
 		 function );
 
@@ -586,10 +585,10 @@ int liblnk_file_open_file_io_handle(
 	if( ( ( access_flags & LIBLNK_ACCESS_FLAG_READ ) == 0 )
 	 && ( ( access_flags & LIBLNK_ACCESS_FLAG_WRITE ) == 0 ) )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
 		 "%s: unsupported access flags.",
 		 function );
 
@@ -597,10 +596,10 @@ int liblnk_file_open_file_io_handle(
 	}
 	if( ( access_flags & LIBLNK_ACCESS_FLAG_WRITE ) != 0 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
 		 "%s: write access currently not supported.",
 		 function );
 
@@ -618,10 +617,10 @@ int liblnk_file_open_file_io_handle(
 
 	if( file_io_handle_is_open == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_OPEN_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_OPEN_FAILED,
 		 "%s: unable to open file.",
 		 function );
 
@@ -634,10 +633,10 @@ int liblnk_file_open_file_io_handle(
 		     bfio_access_flags,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_OPEN_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_OPEN_FAILED,
 			 "%s: unable to open file IO handle.",
 			 function );
 
@@ -648,10 +647,10 @@ int liblnk_file_open_file_io_handle(
 	     internal_file,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_READ_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
 		 "%s: unable to read from file handle.",
 		 function );
 
@@ -665,7 +664,7 @@ int liblnk_file_open_file_io_handle(
  */
 int liblnk_file_close(
      liblnk_file_t *file,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_close";
@@ -673,10 +672,10 @@ int liblnk_file_close(
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -686,10 +685,10 @@ int liblnk_file_close(
 
 	if( internal_file->file_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid file - missing file IO handle.",
 		 function );
 
@@ -698,16 +697,16 @@ int liblnk_file_close(
 	if( internal_file->file_io_handle_created_in_library != 0 )
 	{
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
 			if( liblnk_debug_print_read_offsets(
 			     internal_file->file_io_handle,
 			     error ) != 1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_PRINT_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
 				 "%s: unable to print the read offsets.",
 				 function );
 
@@ -719,10 +718,10 @@ int liblnk_file_close(
 		     internal_file->file_io_handle,
 		     error ) != 0 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_CLOSE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_CLOSE_FAILED,
 			 "%s: unable to close file IO handle.",
 			 function );
 
@@ -732,10 +731,10 @@ int liblnk_file_close(
 		     &( internal_file->file_io_handle ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free file IO handle.",
 			 function );
 
@@ -751,10 +750,10 @@ int liblnk_file_close(
 		     &( internal_file->file_information ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free file information.",
 			 function );
 
@@ -767,10 +766,10 @@ int liblnk_file_close(
 		     &( internal_file->link_target_identifier ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free link target identifier.",
 			 function );
 
@@ -783,10 +782,10 @@ int liblnk_file_close(
 		     &( internal_file->location_information ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free location information.",
 			 function );
 
@@ -799,10 +798,10 @@ int liblnk_file_close(
 		     &( internal_file->description ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free description.",
 			 function );
 
@@ -815,10 +814,10 @@ int liblnk_file_close(
 		     &( internal_file->relative_path ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free relative path.",
 			 function );
 
@@ -831,10 +830,10 @@ int liblnk_file_close(
 		     &( internal_file->working_directory ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free working directory.",
 			 function );
 
@@ -847,10 +846,10 @@ int liblnk_file_close(
 		     &( internal_file->command_line_arguments ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free command line arguments.",
 			 function );
 
@@ -863,10 +862,10 @@ int liblnk_file_close(
 		     &( internal_file->icon_location ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free icon location.",
 			 function );
 
@@ -879,10 +878,10 @@ int liblnk_file_close(
 		     &( internal_file->environment_variables_location ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free environment variables location.",
 			 function );
 
@@ -895,10 +894,10 @@ int liblnk_file_close(
 		     &( internal_file->darwin_application_identifier ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free darwin application identifier.",
 			 function );
 
@@ -911,10 +910,10 @@ int liblnk_file_close(
 		     &( internal_file->special_folder_location ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free special folder location.",
 			 function );
 
@@ -927,10 +926,10 @@ int liblnk_file_close(
 		     &( internal_file->known_folder_location ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free known folder location.",
 			 function );
 
@@ -943,10 +942,10 @@ int liblnk_file_close(
 		     &( internal_file->distributed_link_tracker_properties ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free distributed link tracker properties.",
 			 function );
 
@@ -961,7 +960,7 @@ int liblnk_file_close(
  */
 int liblnk_file_open_read(
      liblnk_internal_file_t *internal_file,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_data_block_t *data_block = NULL;
 	static char *function           = "liblnk_file_open_read";
@@ -976,10 +975,10 @@ int liblnk_file_open_read(
 
 	if( internal_file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid internal file.",
 		 function );
 
@@ -987,19 +986,19 @@ int liblnk_file_open_read(
 	}
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
 		goto on_error;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "Reading file header:\n" );
 	}
 #endif
@@ -1013,10 +1012,10 @@ int liblnk_file_open_read(
 
 	if( read_count <= 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_READ_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
 		 "%s: unable to read file header.",
 		 function );
 
@@ -1030,19 +1029,19 @@ int liblnk_file_open_read(
 		     &( internal_file->link_target_identifier ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 			 "%s: unable to create link target identifier.",
 			 function );
 
 			goto on_error;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "Reading link target identifier:\n" );
 		}
 #endif
@@ -1054,10 +1053,10 @@ int liblnk_file_open_read(
 
 		if( read_count <= -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_READ_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_READ_FAILED,
 			 "%s: unable to read link target identifier.",
 			 function );
 
@@ -1071,19 +1070,19 @@ int liblnk_file_open_read(
 		     &( internal_file->location_information ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 			 "%s: unable to create location information.",
 			 function );
 
 			goto on_error;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "Reading location information:\n" );
 		}
 #endif
@@ -1096,10 +1095,10 @@ int liblnk_file_open_read(
 
 		if( read_count <= -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_READ_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_READ_FAILED,
 			 "%s: unable to read location information.",
 			 function );
 
@@ -1113,19 +1112,19 @@ int liblnk_file_open_read(
 		     &( internal_file->description ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 			 "%s: unable to create description.",
 			 function );
 
 			goto on_error;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "Reading description data string:\n" );
 		}
 #endif
@@ -1138,10 +1137,10 @@ int liblnk_file_open_read(
 
 		if( read_count <= -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_READ_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_READ_FAILED,
 			 "%s: unable to read description.",
 			 function );
 
@@ -1155,19 +1154,19 @@ int liblnk_file_open_read(
 		     &( internal_file->relative_path ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 			 "%s: unable to create relative path.",
 			 function );
 
 			goto on_error;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "Reading relative path data string:\n" );
 		}
 #endif
@@ -1180,10 +1179,10 @@ int liblnk_file_open_read(
 
 		if( read_count <= -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_READ_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_READ_FAILED,
 			 "%s: unable to read relative path.",
 			 function );
 
@@ -1197,19 +1196,19 @@ int liblnk_file_open_read(
 		     &( internal_file->working_directory ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 			 "%s: unable to create working directory.",
 			 function );
 
 			goto on_error;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "Reading working directory data string:\n" );
 		}
 #endif
@@ -1222,10 +1221,10 @@ int liblnk_file_open_read(
 
 		if( read_count <= -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_READ_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_READ_FAILED,
 			 "%s: unable to read working directory.",
 			 function );
 
@@ -1239,19 +1238,19 @@ int liblnk_file_open_read(
 		     &( internal_file->command_line_arguments ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 			 "%s: unable to create command line arguments.",
 			 function );
 
 			goto on_error;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "Reading command line arguments data string:\n" );
 		}
 #endif
@@ -1264,10 +1263,10 @@ int liblnk_file_open_read(
 
 		if( read_count <= -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_READ_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_READ_FAILED,
 			 "%s: unable to read command line arguments.",
 			 function );
 
@@ -1281,19 +1280,19 @@ int liblnk_file_open_read(
 		     &( internal_file->icon_location ),
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 			 "%s: unable to create icon location.",
 			 function );
 
 			goto on_error;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "Reading icon location data string:\n" );
 		}
 #endif
@@ -1306,10 +1305,10 @@ int liblnk_file_open_read(
 
 		if( read_count <= -1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_READ_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_READ_FAILED,
 			 "%s: unable to read icon location.",
 			 function );
 
@@ -1326,9 +1325,9 @@ int liblnk_file_open_read(
 		}
 #endif
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "Reading extra data blocks:\n" );
 		}
 #endif
@@ -1338,10 +1337,10 @@ int liblnk_file_open_read(
 			     &data_block,
 			     error ) != 1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 				 "%s: unable to create data block.",
 				 function );
 
@@ -1356,10 +1355,10 @@ int liblnk_file_open_read(
 
 			if( read_count <= -1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_IO,
-				 LIBERROR_IO_ERROR_READ_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_IO,
+				 LIBCERROR_IO_ERROR_READ_FAILED,
 				 "%s: unable to read data block.",
 				 function );
 
@@ -1375,11 +1374,11 @@ int liblnk_file_open_read(
 				{
 					case LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION:
 #if defined( HAVE_VERBOSE_OUTPUT )
-						if( libnotify_verbose != 0 )
+						if( libcnotify_verbose != 0 )
 						{
 							if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_ENVIRONMENT_VARIABLES_LOCATION_BLOCK ) == 0 )
 							{
-								libnotify_printf(
+								libcnotify_printf(
 								 "%s: environment variables location data block found but data flag was not set\n",
 								 function );
 							}
@@ -1389,19 +1388,19 @@ int liblnk_file_open_read(
 						     &( internal_file->environment_variables_location ),
 						     error ) != 1 )
 						{
-							liberror_error_set(
+							libcerror_error_set(
 							 error,
-							 LIBERROR_ERROR_DOMAIN_RUNTIME,
-							 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+							 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+							 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 							 "%s: unable to create environment variables location.",
 							 function );
 
 							goto on_error;
 						}
 #if defined( HAVE_DEBUG_OUTPUT )
-						if( libnotify_verbose != 0 )
+						if( libcnotify_verbose != 0 )
 						{
-							libnotify_printf(
+							libcnotify_printf(
 							 "Reading environment variables location data block:\n" );
 						}
 #endif
@@ -1411,10 +1410,10 @@ int liblnk_file_open_read(
 						     internal_file->io_handle,
 						     error ) != 1 )
 						{
-							liberror_error_set(
+							libcerror_error_set(
 							 error,
-							 LIBERROR_ERROR_DOMAIN_IO,
-							 LIBERROR_IO_ERROR_READ_FAILED,
+							 LIBCERROR_ERROR_DOMAIN_IO,
+							 LIBCERROR_IO_ERROR_READ_FAILED,
 							 "%s: unable to read environment variables data block.",
 							 function );
 
@@ -1424,11 +1423,11 @@ int liblnk_file_open_read(
 
 					case LIBLNK_DATA_BLOCK_SIGNATURE_DISTRIBUTED_LINK_TRACKER_PROPERTIES:
 #if defined( HAVE_VERBOSE_OUTPUT )
-						if( libnotify_verbose != 0 )
+						if( libcnotify_verbose != 0 )
 						{
 							if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK ) != 0 )
 							{
-								libnotify_printf(
+								libcnotify_printf(
 								 "%s: environment variables location data block found but data flag was not set\n",
 								 function );
 							}
@@ -1438,19 +1437,19 @@ int liblnk_file_open_read(
 						     &( internal_file->distributed_link_tracker_properties ),
 						     error ) != 1 )
 						{
-							liberror_error_set(
+							libcerror_error_set(
 							 error,
-							 LIBERROR_ERROR_DOMAIN_RUNTIME,
-							 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+							 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+							 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 							 "%s: unable to create distributed link tracker properties.",
 							 function );
 
 							goto on_error;
 						}
 #if defined( HAVE_DEBUG_OUTPUT )
-						if( libnotify_verbose != 0 )
+						if( libcnotify_verbose != 0 )
 						{
-							libnotify_printf(
+							libcnotify_printf(
 							 "Reading distributed link tracker properties data block:\n" );
 						}
 #endif
@@ -1460,10 +1459,10 @@ int liblnk_file_open_read(
 						     internal_file->io_handle,
 						     error ) != 1 )
 						{
-							liberror_error_set(
+							libcerror_error_set(
 							 error,
-							 LIBERROR_ERROR_DOMAIN_IO,
-							 LIBERROR_IO_ERROR_READ_FAILED,
+							 LIBCERROR_ERROR_DOMAIN_IO,
+							 LIBCERROR_IO_ERROR_READ_FAILED,
 							 "%s: unable to read distributed link tracker properties data block.",
 							 function );
 
@@ -1476,19 +1475,19 @@ int liblnk_file_open_read(
 						     &( internal_file->special_folder_location ),
 						     error ) != 1 )
 						{
-							liberror_error_set(
+							libcerror_error_set(
 							 error,
-							 LIBERROR_ERROR_DOMAIN_RUNTIME,
-							 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+							 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+							 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 							 "%s: unable to create special folder location.",
 							 function );
 
 							goto on_error;
 						}
 #if defined( HAVE_DEBUG_OUTPUT )
-						if( libnotify_verbose != 0 )
+						if( libcnotify_verbose != 0 )
 						{
-							libnotify_printf(
+							libcnotify_printf(
 							 "Reading special folder location data block:\n" );
 						}
 #endif
@@ -1497,10 +1496,10 @@ int liblnk_file_open_read(
 						     data_block,
 						     error ) != 1 )
 						{
-							liberror_error_set(
+							libcerror_error_set(
 							 error,
-							 LIBERROR_ERROR_DOMAIN_IO,
-							 LIBERROR_IO_ERROR_READ_FAILED,
+							 LIBCERROR_ERROR_DOMAIN_IO,
+							 LIBCERROR_IO_ERROR_READ_FAILED,
 							 "%s: unable to read special folder location data block.",
 							 function );
 
@@ -1510,11 +1509,11 @@ int liblnk_file_open_read(
 
 					case LIBLNK_DATA_BLOCK_SIGNATURE_DARWIN_PROPERTIES:
 #if defined( HAVE_VERBOSE_OUTPUT )
-						if( libnotify_verbose != 0 )
+						if( libcnotify_verbose != 0 )
 						{
 							if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_DARWIN_IDENTIFIER ) == 0 )
 							{
-								libnotify_printf(
+								libcnotify_printf(
 								 "%s: darwin application identifier data block found but data flag was not set\n",
 								 function );
 							}
@@ -1524,19 +1523,19 @@ int liblnk_file_open_read(
 						     &( internal_file->darwin_application_identifier ),
 						     error ) != 1 )
 						{
-							liberror_error_set(
+							libcerror_error_set(
 							 error,
-							 LIBERROR_ERROR_DOMAIN_RUNTIME,
-							 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+							 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+							 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 							 "%s: unable to create darwin application identifier.",
 							 function );
 
 							goto on_error;
 						}
 #if defined( HAVE_DEBUG_OUTPUT )
-						if( libnotify_verbose != 0 )
+						if( libcnotify_verbose != 0 )
 						{
-							libnotify_printf(
+							libcnotify_printf(
 							 "Reading darwin application identifier data block:\n" );
 						}
 #endif
@@ -1546,10 +1545,10 @@ int liblnk_file_open_read(
 						     internal_file->io_handle,
 						     error ) != 1 )
 						{
-							liberror_error_set(
+							libcerror_error_set(
 							 error,
-							 LIBERROR_ERROR_DOMAIN_IO,
-							 LIBERROR_IO_ERROR_READ_FAILED,
+							 LIBCERROR_ERROR_DOMAIN_IO,
+							 LIBCERROR_IO_ERROR_READ_FAILED,
 							 "%s: unable to read darwin application identifier data block.",
 							 function );
 
@@ -1559,11 +1558,11 @@ int liblnk_file_open_read(
 
 					case LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION:
 #if defined( HAVE_VERBOSE_OUTPUT )
-						if( libnotify_verbose != 0 )
+						if( libcnotify_verbose != 0 )
 						{
 							if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_BLOCK ) == 0 )
 							{
-								libnotify_printf(
+								libcnotify_printf(
 								 "%s: icon location data block found but data flag was not set\n",
 								 function );
 							}
@@ -1575,10 +1574,10 @@ int liblnk_file_open_read(
 							     &( internal_file->icon_location ),
 							     error ) != 1 )
 							{
-								liberror_error_set(
+								libcerror_error_set(
 								 error,
-								 LIBERROR_ERROR_DOMAIN_RUNTIME,
-								 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+								 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+								 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 								 "%s: unable to free icon location.",
 								 function );
 
@@ -1589,19 +1588,19 @@ int liblnk_file_open_read(
 						     &( internal_file->icon_location ),
 						     error ) != 1 )
 						{
-							liberror_error_set(
+							libcerror_error_set(
 							 error,
-							 LIBERROR_ERROR_DOMAIN_RUNTIME,
-							 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+							 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+							 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 							 "%s: unable to create icon location.",
 							 function );
 
 							goto on_error;
 						}
 #if defined( HAVE_DEBUG_OUTPUT )
-						if( libnotify_verbose != 0 )
+						if( libcnotify_verbose != 0 )
 						{
-							libnotify_printf(
+							libcnotify_printf(
 							 "Reading icon location data block:\n" );
 						}
 #endif
@@ -1611,10 +1610,10 @@ int liblnk_file_open_read(
 						     internal_file->io_handle,
 						     error ) != 1 )
 						{
-							liberror_error_set(
+							libcerror_error_set(
 							 error,
-							 LIBERROR_ERROR_DOMAIN_IO,
-							 LIBERROR_IO_ERROR_READ_FAILED,
+							 LIBCERROR_ERROR_DOMAIN_IO,
+							 LIBCERROR_IO_ERROR_READ_FAILED,
 							 "%s: unable to read icon location data block.",
 							 function );
 
@@ -1627,19 +1626,19 @@ int liblnk_file_open_read(
 						     &( internal_file->known_folder_location ),
 						     error ) != 1 )
 						{
-							liberror_error_set(
+							libcerror_error_set(
 							 error,
-							 LIBERROR_ERROR_DOMAIN_RUNTIME,
-							 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+							 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+							 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 							 "%s: unable to create known folder location.",
 							 function );
 
 							goto on_error;
 						}
 #if defined( HAVE_DEBUG_OUTPUT )
-						if( libnotify_verbose != 0 )
+						if( libcnotify_verbose != 0 )
 						{
-							libnotify_printf(
+							libcnotify_printf(
 							 "Reading known folder location data block:\n" );
 						}
 #endif
@@ -1648,10 +1647,10 @@ int liblnk_file_open_read(
 						     data_block,
 						     error ) != 1 )
 						{
-							liberror_error_set(
+							libcerror_error_set(
 							 error,
-							 LIBERROR_ERROR_DOMAIN_IO,
-							 LIBERROR_IO_ERROR_READ_FAILED,
+							 LIBCERROR_ERROR_DOMAIN_IO,
+							 LIBCERROR_IO_ERROR_READ_FAILED,
 							 "%s: unable to read known folder location data block.",
 							 function );
 
@@ -1661,9 +1660,9 @@ int liblnk_file_open_read(
 
 					default:
 #if defined( HAVE_DEBUG_OUTPUT )
-						if( libnotify_verbose != 0 )
+						if( libcnotify_verbose != 0 )
 						{
-							libnotify_printf(
+							libcnotify_printf(
 							 "%s: unsupported extra data block type.\n\n",
 							 function );
 						}
@@ -1675,10 +1674,10 @@ int liblnk_file_open_read(
 			     &data_block,
 			     error ) != 1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 				 "%s: unable to free data block.",
 				 function );
 
@@ -1691,7 +1690,7 @@ int liblnk_file_open_read(
 		}
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
 		if( file_offset < (off64_t) internal_file->io_handle->file_size )
 		{
@@ -1702,16 +1701,16 @@ int liblnk_file_open_read(
 
 			if( trailing_data == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create trailing data.",
 				 function );
 
 				goto on_error;
 			}
-			read_count = libbfio_handle_read(
+			read_count = libbfio_handle_read_buffer(
 				      internal_file->file_io_handle,
 				      trailing_data,
 				      trailing_data_size,
@@ -1719,10 +1718,10 @@ int liblnk_file_open_read(
 
 			if( read_count != (ssize_t) trailing_data_size )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_IO,
-				 LIBERROR_IO_ERROR_READ_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_IO,
+				 LIBCERROR_IO_ERROR_READ_FAILED,
 				 "%s: unable to read trailing data.",
 				 function );
 
@@ -1733,10 +1732,10 @@ int liblnk_file_open_read(
 			}
 			file_offset += read_count;
 
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: trailing data:\n",
 			 function );
-			libnotify_print_data(
+			libcnotify_print_data(
 			 trailing_data,
 			 trailing_data_size,
 			 0 );
@@ -1773,17 +1772,17 @@ on_error:
 int liblnk_file_get_ascii_codepage(
      liblnk_file_t *file,
      int *ascii_codepage,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_ascii_codepage";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -1793,10 +1792,10 @@ int liblnk_file_get_ascii_codepage(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -1804,10 +1803,10 @@ int liblnk_file_get_ascii_codepage(
 	}
 	if( ascii_codepage == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid ASCII codepage.",
 		 function );
 
@@ -1824,17 +1823,17 @@ int liblnk_file_get_ascii_codepage(
 int liblnk_file_set_ascii_codepage(
      liblnk_file_t *file,
      int ascii_codepage,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_set_ascii_codepage";
 
 	if( file == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file.",
 		 function );
 
@@ -1844,10 +1843,10 @@ int liblnk_file_set_ascii_codepage(
 
 	if( internal_file->io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
 		 function );
 
@@ -1866,10 +1865,10 @@ int liblnk_file_set_ascii_codepage(
 	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1257 )
 	 && ( ascii_codepage != LIBLNK_CODEPAGE_WINDOWS_1258 ) )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
 		 "%s: unsupported ASCII codepage.",
 		 function );
 

@@ -2,8 +2,11 @@ if HAVE_PYTHON
 AM_CFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/common \
-	-I$(top_srcdir)/libcstring \
-	-I$(top_srcdir)/liberror \
+	@LIBCSTRING_CPPFLAGS@ \
+	@LIBCERROR_CPPFLAGS@ \
+	@LIBUNA_CPPFLAGS@ \
+	@LIBCFILE_CPPFLAGS@ \
+	@LIBCPATH_CPPFLAGS@ \
 	@LIBBFIO_CPPFLAGS@ \
 	@MEMWATCH_CPPFLAGS@
 
@@ -14,14 +17,16 @@ pylnk_la_SOURCES = \
 	pylnk_codepage.c pylnk_codepage.h \
 	pylnk_datetime.c pylnk_datetime.h \
 	pylnk_libbfio.h \
+	pylnk_libcerror.h \
+	pylnk_libcstring.h \
 	pylnk_liblnk.h \
 	pylnk_file.c pylnk_file.h \
 	pylnk_file_object_io_handle.c pylnk_file_object_io_handle.h \
 	pylnk_python.h
 
 pylnk_la_LIBADD = \
-	../libcstring/libcstring.la \
-	../liberror/liberror.la \
+	@LIBCSTRING_LIBADD@ \
+	@LIBCERROR_LIBADD@ \
 	../liblnk/liblnk.la \
 	@LIBBFIO_LIBADD@
 

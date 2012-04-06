@@ -1,5 +1,5 @@
 /*
- * Data block strings functions
+ * The internal libcstring header
  *
  * Copyright (c) 2009-2012, Joachim Metz <jbmetz@users.sourceforge.net>
  *
@@ -9,39 +9,46 @@
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_DATA_BLOCK_STRINGS_H )
-#define _LIBLNK_DATA_BLOCK_STRINGS_H
+#if !defined( _LNKTOOLS_LIBCSTRING_H )
+#define _LNKTOOLS_LIBCSTRING_H
 
 #include <common.h>
-#include <types.h>
 
-#include "liblnk_data_block.h"
-#include "liblnk_data_string.h"
-#include "liblnk_io_handle.h"
-#include "liblnk_libcerror.h"
+/* Define HAVE_LOCAL_LIBCSTRING for local use of libcstring
+ */
+#if defined( HAVE_LOCAL_LIBCSTRING )
 
-#if defined( __cplusplus )
-extern "C" {
+#include <libcstring_codepage.h>
+#include <libcstring_definitions.h>
+#include <libcstring_locale.h>
+#include <libcstring_narrow_string.h>
+#include <libcstring_system_string.h>
+#include <libcstring_types.h>
+#include <libcstring_wide_string.h>
+
+#elif defined( HAVE_LIBCSTRING_H )
+
+/* If libtool DLL support is enabled set LIBCSTRING_DLL_IMPORT
+ * before including libcstring.h
+ */
+#if defined( _WIN32 ) && defined( DLL_IMPORT )
+#define LIBCSTRING_DLL_IMPORT
 #endif
 
-int liblnk_data_block_strings_read(
-     liblnk_data_string_t *data_string,
-     liblnk_data_block_t *data_block,
-     liblnk_io_handle_t *io_handle,
-     libcerror_error_t **error );
+#include <libcstring.h>
 
-#if defined( __cplusplus )
-}
+#else
+#error Missing libcstring.h
 #endif
 
 #endif

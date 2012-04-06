@@ -25,8 +25,6 @@
 #include <common.h>
 #include <types.h>
 
-#include <liberror.h>
-
 #include "liblnk_data_string.h"
 #include "liblnk_distributed_link_tracker_properties.h"
 #include "liblnk_extern.h"
@@ -34,6 +32,7 @@
 #include "liblnk_io_handle.h"
 #include "liblnk_known_folder_location.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_libcerror.h"
 #include "liblnk_link_target_identifier.h"
 #include "liblnk_location_information.h"
 #include "liblnk_special_folder_location.h"
@@ -128,24 +127,24 @@ struct liblnk_internal_file
 LIBLNK_EXTERN \
 int liblnk_file_initialize(
      liblnk_file_t **file,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_free(
      liblnk_file_t **file,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_signal_abort(
      liblnk_file_t *file,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_open(
      liblnk_file_t *file,
      const char *filename,
      int access_flags,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 #if defined( HAVE_WIDE_CHARACTER_TYPE )
 LIBLNK_EXTERN \
@@ -153,7 +152,7 @@ int liblnk_file_open_wide(
      liblnk_file_t *file,
      const wchar_t *filename,
      int access_flags,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 #endif
 
 LIBLNK_EXTERN \
@@ -161,28 +160,28 @@ int liblnk_file_open_file_io_handle(
      liblnk_file_t *file,
      libbfio_handle_t *file_io_handle,
      int access_flags,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_close(
      liblnk_file_t *file,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int liblnk_file_open_read(
      liblnk_internal_file_t *internal_file,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_get_ascii_codepage(
      liblnk_file_t *file,
      int *ascii_codepage,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_set_ascii_codepage(
      liblnk_file_t *file,
      int ascii_codepage,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }

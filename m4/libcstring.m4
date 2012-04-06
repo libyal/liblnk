@@ -1,6 +1,61 @@
 dnl Functions for libcstring
 dnl
-dnl Version: 201111203
+dnl Version: 20120406
+
+dnl Function to detect if libcstring is available
+dnl ac_libcstring_dummy is used to prevent AC_CHECK_LIB adding unnecessary -l<library> arguments
+AC_DEFUN([AX_LIBCSTRING_CHECK_LIB],
+ [dnl Check if parameters were provided
+ AS_IF(
+  [test "x$ac_cv_with_libcstring" != x && test "x$ac_cv_with_libcstring" != xno && test "x$ac_cv_with_libcstring" != xauto-detect],
+  [AS_IF(
+   [test -d "$ac_cv_with_libcstring"],
+   [CFLAGS="$CFLAGS -I${ac_cv_with_libcstring}/include"
+   LDFLAGS="$LDFLAGS -L${ac_cv_with_libcstring}/lib"],
+   [AC_MSG_WARN([no such directory: $ac_cv_with_libcstring])
+   ])
+  ])
+
+ AS_IF(
+  [test "x$ac_cv_with_libcstring" = xno],
+  [ac_cv_libcstring=no],
+  [dnl Check for headers
+  AC_CHECK_HEADERS([libcstring.h])
+ 
+  AS_IF(
+   [test "x$ac_cv_header_libcstring_h" = xno],
+   [ac_cv_libcstring=no],
+   [ac_cv_libcstring=yes
+   AC_CHECK_LIB(
+    cstring,
+    libcstring_get_version,
+    [ac_cv_libcstring_dummy=yes],
+    [ac_cv_libcstring=no])
+  
+   dnl TODO add functions
+   ])
+  ])
+
+ AS_IF(
+  [test "x$ac_cv_libcstring" = xyes],
+  [AC_DEFINE(
+   [HAVE_LIBCSTRING],
+   [1],
+   [Define to 1 if you have the `cstring' library (-lcstring).])
+
+  ac_cv_libcstring_LIBADD="-lcstring"
+  ])
+
+ AS_IF(
+  [test "x$ac_cv_libcstring" = xyes],
+  [AC_SUBST(
+   [HAVE_LIBCSTRING],
+   [1]) ],
+  [AC_SUBST(
+   [HAVE_LIBCSTRING],
+   [0])
+  ])
+ ])
 
 dnl Function to detect whether nl_langinfo supports CODESET
 AC_DEFUN([AX_LIBCSTRING_CHECK_FUNC_LANGINFO_CODESET],
@@ -221,6 +276,86 @@ AC_DEFUN([AX_LIBCSTRING_CHECK_LOCAL],
     [Missing function: wcsstr],
     [1])
    ])
+  ])
+
+ ac_cv_libcstring_CPPFLAGS="-I../libcstring";
+ ac_cv_libcstring_LIBADD="../libcstring/libcstring.la";
+
+ ac_cv_libcstring=local
+ ])
+
+dnl Function to detect how to enable libcstring
+AC_DEFUN([AX_LIBCSTRING_CHECK_ENABLE],
+ [AX_COMMON_ARG_WITH(
+  [libcstring],
+  [libcstring],
+  [search for libcstring in includedir and libdir or in the specified DIR, or no if to use local version],
+  [auto-detect],
+  [DIR])
+
+ dnl Check for a pkg-config file
+ AS_IF(
+  [test "x$cross_compiling" != "xyes" && test "x$PKGCONFIG" != "x"],
+  [PKG_CHECK_MODULES(
+   [libcstring],
+   [libcstring >= 20120405],
+   [ac_cv_libcstring=yes],
+   [ac_cv_libcstring=no])
+
+  ac_cv_libcstring_CPPFLAGS="$pkg_cv_libcstring_CFLAGS"
+  ac_cv_libcstring_LIBADD="$pkg_cv_libcstring_LIBS"
+ ])
+
+ dnl Check for a shared library version
+ AS_IF(
+  [test "x$ac_cv_libcstring" != xyes],
+  [AX_LIBCSTRING_CHECK_LIB])
+
+ dnl Check if the dependencies for the local library version
+ AS_IF(
+  [test "x$ac_cv_libcstring" != xyes],
+  [AX_LIBCSTRING_CHECK_LOCAL
+
+  AC_DEFINE(
+   [HAVE_LOCAL_LIBCSTRING],
+   [1],
+   [Define to 1 if the local version of libcstring is used.])
+  AC_SUBST(
+   [HAVE_LOCAL_LIBCSTRING],
+   [1])
+  ])
+
+ AM_CONDITIONAL(
+  [HAVE_LOCAL_LIBCSTRING],
+  [test "x$ac_cv_libcstring" = xlocal])
+ AS_IF(
+  [test "x$ac_cv_libcstring_CPPFLAGS" != "x"],
+  [AC_SUBST(
+   [LIBCSTRING_CPPFLAGS],
+   [$ac_cv_libcstring_CPPFLAGS])
+  ])
+ AS_IF(
+  [test "x$ac_cv_libcstring_LIBADD" != "x"],
+  [AC_SUBST(
+   [LIBCSTRING_LIBADD],
+   [$ac_cv_libcstring_LIBADD])
+  ])
+
+ AS_IF(
+  [test "x$ac_cv_libcstring" = xyes],
+  [AC_SUBST(
+   [ax_libcstring_pc_libs_private],
+   [-lstring])
+  ])
+
+ AS_IF(
+  [test "x$ac_cv_libcstring" = xyes],
+  [AC_SUBST(
+   [ax_libcstring_spec_requires],
+   [libcstring])
+  AC_SUBST(
+   [ax_libcstring_spec_build_requires],
+   [libcstring-devel])
   ])
  ])
 

@@ -4,15 +4,17 @@ SUBDIRS = \
 	include \
 	common \
 	libcstring \
-	liberror \
-	libnotify \
+	libcerror \
+	libcnotify \
 	libuna \
+	libcfile \
+	libcpath \
 	libbfio \
 	libfdatetime \
 	libfguid \
 	libfwsi \
 	liblnk \
-	libsystem \
+	libcsystem \
 	lnktools \
 	pylnk \
 	po \
@@ -70,9 +72,11 @@ lib: library
 library:
 	(cd $(srcdir)/common && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libcstring && $(MAKE) $(AM_MAKEFLAGS))
-	(cd $(srcdir)/liberror && $(MAKE) $(AM_MAKEFLAGS))
-	(cd $(srcdir)/libnotify && $(MAKE) $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libcerror && $(MAKE) $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libcnotify && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libuna && $(MAKE) $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libcfile && $(MAKE) $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libcpath && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libbfio && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libfdatetime && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libfguid && $(MAKE) $(AM_MAKEFLAGS))
@@ -93,14 +97,16 @@ distclean: clean
 
 splint:
 	(cd $(srcdir)/libcstring && $(MAKE) splint $(AM_MAKEFLAGS))
-	(cd $(srcdir)/liberror && $(MAKE) splint $(AM_MAKEFLAGS))
-	(cd $(srcdir)/libnotify && $(MAKE) splint $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libcerror && $(MAKE) splint $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libcnotify && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libuna && $(MAKE) splint $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libcfile && $(MAKE) splint $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libcpath && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libbfio && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libfdatetime && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libfguid && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libfwsi && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/liblnk && $(MAKE) splint $(AM_MAKEFLAGS))
-	(cd $(srcdir)/libsystem && $(MAKE) splint $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libcsystem && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/lnktools && $(MAKE) splint $(AM_MAKEFLAGS))
 

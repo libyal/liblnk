@@ -22,9 +22,8 @@
 #include <common.h>
 #include <types.h>
 
-#include <libcstring.h>
-#include <liberror.h>
-
+#include "pylnk_libcerror.h"
+#include "pylnk_libcstring.h"
 #include "pylnk_codepage.h"
 
 /* Determines the codepage from a string
@@ -35,7 +34,7 @@ int pylnk_codepage_from_string(
      const char *string,
      size_t string_length,
      uint32_t feature_flags,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function    = "pylnk_codepage_from_string";
 	size_t string_index      = 0;
@@ -44,10 +43,10 @@ int pylnk_codepage_from_string(
 
 	if( codepage == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid codepage.",
 		 function );
 
@@ -55,10 +54,10 @@ int pylnk_codepage_from_string(
 	}
 	if( string == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid string.",
 		 function );
 
@@ -66,10 +65,10 @@ int pylnk_codepage_from_string(
 	}
 	if( string_length > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: invalid string length value exceeds maximum.",
 		 function );
 
@@ -81,10 +80,10 @@ int pylnk_codepage_from_string(
 
 	if( ( feature_flags & ~( supported_flags ) ) != 0 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
 		 "%s: unsupported feature flags value: 0x%08" PRIx32 ".",
 		 function,
 		 feature_flags );

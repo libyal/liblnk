@@ -24,13 +24,12 @@
 #include <memory.h>
 #include <types.h>
 
-#include <libcstring.h>
-#include <liberror.h>
-#include <libnotify.h>
-
 #include "liblnk_debug.h"
 #include "liblnk_definitions.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_libcerror.h"
+#include "liblnk_libcnotify.h"
+#include "liblnk_libcstring.h"
 #include "liblnk_libuna.h"
 #include "liblnk_location_information.h"
 
@@ -41,16 +40,16 @@
  */
 int liblnk_location_information_initialize(
      liblnk_location_information_t **location_information,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_location_information_initialize";
 
 	if( location_information == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid location information.",
 		 function );
 
@@ -58,10 +57,10 @@ int liblnk_location_information_initialize(
 	}
 	if( *location_information != NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid location information value already set.",
 		 function );
 
@@ -72,10 +71,10 @@ int liblnk_location_information_initialize(
 
 	if( *location_information == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 		 "%s: unable to create location information.",
 		 function );
 
@@ -86,10 +85,10 @@ int liblnk_location_information_initialize(
 	     0,
 	     sizeof( liblnk_location_information_t ) ) == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
 		 "%s: unable to clear location information.",
 		 function );
 
@@ -113,16 +112,16 @@ on_error:
  */
 int liblnk_location_information_free(
      liblnk_location_information_t **location_information,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_location_information_free";
 
 	if( location_information == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid location information.",
 		 function );
 
@@ -171,7 +170,7 @@ ssize_t liblnk_location_information_read(
          liblnk_io_handle_t *io_handle,
          libbfio_handle_t *file_io_handle,
          off64_t location_information_offset,
-         liberror_error_t **error )
+         libcerror_error_t **error )
 {
 	uint8_t location_information_size_data[ 4 ];
 
@@ -207,10 +206,10 @@ ssize_t liblnk_location_information_read(
 
 	if( location_information == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid location information.",
 		 function );
 
@@ -218,19 +217,19 @@ ssize_t liblnk_location_information_read(
 	}
 	if( io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid IO handle.",
 		 function );
 
 		return( -1 );
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: reading location information at offset: %" PRIi64 " (0x%08" PRIx64 ")\n",
 		 function,
 		 location_information_offset,
@@ -243,17 +242,17 @@ ssize_t liblnk_location_information_read(
 	     SEEK_SET,
 	     error ) == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_SEEK_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_SEEK_FAILED,
 		 "%s: unable to seek location information offset: %" PRIi64 ".",
 		 function,
 		 location_information_offset );
 
 		goto on_error;
 	}
-	read_count = libbfio_handle_read(
+	read_count = libbfio_handle_read_buffer(
 	              file_io_handle,
 	              location_information_size_data,
 	              4,
@@ -261,10 +260,10 @@ ssize_t liblnk_location_information_read(
 
 	if( read_count != (ssize_t) 4 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_READ_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
 		 "%s: unable to read location information size.",
 		 function );
 
@@ -275,9 +274,9 @@ ssize_t liblnk_location_information_read(
 	 location_information_size );
 	
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: location information size\t\t\t\t: %" PRIzd "\n",
 		 function,
 		 location_information_size );
@@ -286,9 +285,9 @@ ssize_t liblnk_location_information_read(
 	if( location_information_size <= 4 )
 	{
 #if defined( HAVE_VERBOSE_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: empty location information.\n",
 			 function );
 		}
@@ -297,10 +296,10 @@ ssize_t liblnk_location_information_read(
 	}
 	if( location_information_size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: location information size value exceeds maximum.",
 		 function );
 
@@ -314,16 +313,16 @@ ssize_t liblnk_location_information_read(
 
 	if( location_information_data == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 		 "%s: unable to create location information data.",
 		 function );
 
 		goto on_error;
 	}
-	read_count = libbfio_handle_read(
+	read_count = libbfio_handle_read_buffer(
 	              file_io_handle,
 	              location_information_data,
 	              location_information_size,
@@ -331,22 +330,22 @@ ssize_t liblnk_location_information_read(
 
 	if( read_count != (ssize_t) location_information_size )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_READ_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
 		 "%s: unable to read location information data.",
 		 function );
 
 		goto on_error;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: location information data:\n",
 		 function );
-		libnotify_print_data(
+		libcnotify_print_data(
 		 location_information_data,
 		 location_information_size,
 		 0 );
@@ -372,29 +371,29 @@ ssize_t liblnk_location_information_read(
 	 common_path_offset );
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: location information header size\t\t\t: %" PRIu32 "\n",
 		 function,
 		 location_information_header_size );
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: location information flags\t\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 location_information->flags );
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: location information volume information offset\t: %" PRIu32 "\n",
 		 function,
 		 volume_information_offset );
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: location information local path offset\t\t: %" PRIu32 "\n",
 		 function,
 		 local_path_offset );
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: location information network share information offset\t: %" PRIu32 "\n",
 		 function,
 		 network_share_information_offset );
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: location information common path offset\t\t: %" PRIu32 "\n",
 		 function,
 		 common_path_offset );
@@ -404,10 +403,10 @@ ssize_t liblnk_location_information_read(
 	 && ( location_information_header_size != 32 )
 	 && ( location_information_header_size != 36 ) )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_UNSUPPORTED_VALUE,
 		 "%s: unsupported location information header size: %" PRIu32 ".",
 		 function,
 		 location_information_header_size );
@@ -421,9 +420,9 @@ ssize_t liblnk_location_information_read(
 		 unicode_local_path_offset );
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: location information unicode local path offset\t\t: %" PRIu32 "\n",
 			 function,
 			 unicode_local_path_offset );
@@ -437,9 +436,9 @@ ssize_t liblnk_location_information_read(
 		 unicode_common_path_offset );
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: location information unicode common path offset\t\t: %" PRIu32 "\n",
 			 function,
 			 unicode_common_path_offset );
@@ -447,9 +446,9 @@ ssize_t liblnk_location_information_read(
 #endif
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\n" );
 	}
 #endif
@@ -460,10 +459,10 @@ ssize_t liblnk_location_information_read(
 	{
 		if( volume_information_offset < location_information_header_size )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: volume information offset smaller than location information header size.",
 			 function );
 
@@ -473,10 +472,10 @@ ssize_t liblnk_location_information_read(
 
 		if( volume_information_offset > location_information_size )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: volume information offset exceeds location information data.",
 			 function );
 
@@ -489,12 +488,12 @@ ssize_t liblnk_location_information_read(
 		 location_information_value_size );
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: volume information data:\n",
 			 function );
-			libnotify_print_data(
+			libcnotify_print_data(
 			 location_information_value_data,
 			 location_information_value_size,
 			 0 );
@@ -505,9 +504,9 @@ ssize_t liblnk_location_information_read(
 		 volume_label_offset );
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: volume information size\t\t\t\t: %" PRIu32 "\n",
 			 function,
 			 location_information_value_size );
@@ -516,7 +515,7 @@ ssize_t liblnk_location_information_read(
 			 ( (lnk_volume_information_t *) location_information_value_data )->drive_type,
 			 value_32bit );
 
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: volume information drive type\t\t\t\t: 0x%08" PRIx32 "\n",
 			 function,
 			 value_32bit );
@@ -525,12 +524,12 @@ ssize_t liblnk_location_information_read(
 			 ( (lnk_volume_information_t *) location_information_value_data )->drive_serial_number,
 			 value_32bit );
 
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: volume information drive serial number\t\t: 0x%08" PRIx32 "\n",
 			 function,
 			 value_32bit );
 
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: volume information volume label offset\t\t: %" PRIu32 "\n",
 			 function,
 			 volume_label_offset );
@@ -544,9 +543,9 @@ ssize_t liblnk_location_information_read(
 			 unicode_volume_label_offset );
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			if( libnotify_verbose != 0 )
+			if( libcnotify_verbose != 0 )
 			{
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: unicode volume information volume label offset\t: %" PRIu32 "\n",
 				 function,
 				 unicode_volume_label_offset );
@@ -557,10 +556,10 @@ ssize_t liblnk_location_information_read(
 		{
 			if( volume_label_offset > location_information_value_size )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 				 "%s: volume label offset exceeds volume information data.",
 				 function );
 
@@ -580,16 +579,16 @@ ssize_t liblnk_location_information_read(
 			value_size++;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			if( libnotify_verbose != 0 )
+			if( libcnotify_verbose != 0 )
 			{
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: volume information volume label size\t\t\t: %" PRIu32 "\n",
 				 function,
 				 value_size );
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: volume information volume label data:\n",
 				 function );
-				libnotify_print_data(
+				libcnotify_print_data(
 				 location_information_value_data,
 				 value_size,
 				 0 );
@@ -600,10 +599,10 @@ ssize_t liblnk_location_information_read(
 		{
 			if( unicode_volume_label_offset > location_information_value_size )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 				 "%s: unicode volume label offset exceeds volume information data.",
 				 function );
 
@@ -624,16 +623,16 @@ ssize_t liblnk_location_information_read(
 			unicode_value_size += 2;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			if( libnotify_verbose != 0 )
+			if( libcnotify_verbose != 0 )
 			{
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: unicode volume information volume label size\t\t: %" PRIu32 "\n",
 				 function,
 				 unicode_value_size );
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: unicode volume information volume label data:\n",
 				 function );
-				libnotify_print_data(
+				libcnotify_print_data(
 				 location_information_unicode_value_data,
 				 unicode_value_size,
 				 0 );
@@ -644,10 +643,10 @@ ssize_t liblnk_location_information_read(
 
 			if( location_information->volume_label == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create volume label.",
 				 function );
 
@@ -658,10 +657,10 @@ ssize_t liblnk_location_information_read(
 			     location_information_unicode_value_data,
 			     unicode_value_size ) == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 				 "%s: unable to copy volume label.",
 				 function );
 
@@ -677,10 +676,10 @@ ssize_t liblnk_location_information_read(
 
 			if( location_information->volume_label == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create volume label.",
 				 function );
 
@@ -691,10 +690,10 @@ ssize_t liblnk_location_information_read(
 			     location_information_value_data,
 			     value_size ) == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 				 "%s: unable to copy volume label.",
 				 function );
 
@@ -703,7 +702,7 @@ ssize_t liblnk_location_information_read(
 			location_information->volume_label_size = value_size;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
 			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
 			{
@@ -743,10 +742,10 @@ ssize_t liblnk_location_information_read(
 			}
 			if( result != 1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 				 "%s: unable to determine size of volume label string.",
 				 function );
 
@@ -755,10 +754,10 @@ ssize_t liblnk_location_information_read(
 			if( ( value_string_size > (size_t) SSIZE_MAX )
 			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 				 "%s: invalid volume label string size value exceeds maximum.",
 				 function );
 
@@ -769,10 +768,10 @@ ssize_t liblnk_location_information_read(
 
 			if( value_string == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create volume label string.",
 				 function );
 
@@ -820,16 +819,16 @@ ssize_t liblnk_location_information_read(
 			}
 			if( result != 1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 				 "%s: unable to set volume label string.",
 				 function );
 
 				goto on_error;
 			}
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: volume information volume label\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
 			 function,
 			 value_string );
@@ -847,10 +846,10 @@ ssize_t liblnk_location_information_read(
 	{
 		if( local_path_offset < location_information_header_size )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: local path information offset smaller than location information header size",
 			 function );
 
@@ -860,10 +859,10 @@ ssize_t liblnk_location_information_read(
 
 		if( local_path_offset > location_information_size )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: local path offset exceeds location information data.",
 			 function );
 
@@ -883,16 +882,16 @@ ssize_t liblnk_location_information_read(
 		value_size++;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: local path data size\t\t\t\t\t: %" PRIu32 "\n",
 			 function,
 			 value_size );
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: local path data:\n",
 			 function );
-			libnotify_print_data(
+			libcnotify_print_data(
 			 location_information_value_data,
 			 value_size,
 			 0 );
@@ -903,10 +902,10 @@ ssize_t liblnk_location_information_read(
 	{
 		if( unicode_local_path_offset < location_information_header_size )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: unicode local path information offset smaller than location information header size",
 			 function );
 
@@ -916,10 +915,10 @@ ssize_t liblnk_location_information_read(
 
 		if( unicode_local_path_offset > location_information_size )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: unicode local path offset exceeds location information data.",
 			 function );
 
@@ -940,16 +939,16 @@ ssize_t liblnk_location_information_read(
 		unicode_value_size += 2;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: unicode local path data size\t\t\t: %" PRIu32 "\n",
 			 function,
 			 value_size );
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: unicode local path data:\n",
 			 function );
-			libnotify_print_data(
+			libcnotify_print_data(
 			 location_information_unicode_value_data,
 			 unicode_value_size,
 			 0 );
@@ -960,10 +959,10 @@ ssize_t liblnk_location_information_read(
 
 		if( location_information->local_path == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 			 "%s: unable to create local path.",
 			 function );
 
@@ -974,10 +973,10 @@ ssize_t liblnk_location_information_read(
 		     location_information_unicode_value_data,
 		     unicode_value_size ) == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 			 "%s: unable to copy local path.",
 			 function );
 
@@ -993,10 +992,10 @@ ssize_t liblnk_location_information_read(
 
 		if( location_information->local_path == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 			 "%s: unable to create local path.",
 			 function );
 
@@ -1007,10 +1006,10 @@ ssize_t liblnk_location_information_read(
 		     location_information_value_data,
 		     value_size ) == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 			 "%s: unable to copy local path.",
 			 function );
 
@@ -1019,7 +1018,7 @@ ssize_t liblnk_location_information_read(
 		location_information->local_path_size = value_size;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
 		if( ( local_path_offset > 0 )
 		 || ( unicode_local_path_offset > 0 ) )
@@ -1062,10 +1061,10 @@ ssize_t liblnk_location_information_read(
 			}
 			if( result != 1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 				 "%s: unable to determine size of local path string.",
 				 function );
 
@@ -1074,10 +1073,10 @@ ssize_t liblnk_location_information_read(
 			if( ( value_string_size > (size_t) SSIZE_MAX )
 			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 				 "%s: invalid local path string size value exceeds maximum.",
 				 function );
 
@@ -1088,10 +1087,10 @@ ssize_t liblnk_location_information_read(
 
 			if( value_string == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create local path string.",
 				 function );
 
@@ -1139,16 +1138,16 @@ ssize_t liblnk_location_information_read(
 			}
 			if( result != 1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 				 "%s: unable to set local path string.",
 				 function );
 
 				goto on_error;
 			}
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: local path\t\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
 			 function,
 			 value_string );
@@ -1166,10 +1165,10 @@ ssize_t liblnk_location_information_read(
 	{
 		if( network_share_information_offset < location_information_header_size )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: network share information offset smaller than location information header size.",
 			 function );
 
@@ -1179,10 +1178,10 @@ ssize_t liblnk_location_information_read(
 
 		if( network_share_information_offset > location_information_size )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: network share information offset exceeds location information data.",
 			 function );
 
@@ -1195,12 +1194,12 @@ ssize_t liblnk_location_information_read(
 		 location_information_value_size );
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: network share information data:\n",
 			 function );
-			libnotify_print_data(
+			libcnotify_print_data(
 			 location_information_value_data,
 			 location_information_value_size,
 			 0 );
@@ -1218,9 +1217,9 @@ ssize_t liblnk_location_information_read(
 		 location_information->network_provider_type );
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: network share information size\t\t\t: %" PRIu32 "\n",
 			 function,
 			 location_information_value_size );
@@ -1228,21 +1227,21 @@ ssize_t liblnk_location_information_read(
 			byte_stream_copy_to_uint32_little_endian(
 			 ( (lnk_network_share_information_t *) location_information_value_data )->network_share_type,
 			 value_32bit );
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: network share information network share type\t\t: 0x%08" PRIx32 "\n",
 			 function,
 			 value_32bit );
 
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: network share information network share name offset\t: %" PRIu32 "\n",
 			 function,
 			 network_share_name_offset );
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: network share information device name offset\t\t: %" PRIu32 "\n",
 			 function,
 			 device_name_offset );
 
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: network share information network provider type\t: 0x%08" PRIx32 " (%s)\n",
 			 function,
 			 location_information->network_provider_type,
@@ -1261,13 +1260,13 @@ ssize_t liblnk_location_information_read(
 			 unicode_device_name_offset );
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			if( libnotify_verbose != 0 )
+			if( libcnotify_verbose != 0 )
 			{
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: network share information unicode network share name offset\t: %" PRIu32 "\n",
 				 function,
 				 unicode_network_share_name_offset );
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: network share information unicode device name offset\t: %" PRIu32 "\n",
 				 function,
 				 unicode_device_name_offset );
@@ -1278,10 +1277,10 @@ ssize_t liblnk_location_information_read(
 		{
 			if( network_share_name_offset > location_information_value_size )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 				 "%s: network share name offset exceeds network share information data.",
 				 function );
 
@@ -1301,16 +1300,16 @@ ssize_t liblnk_location_information_read(
 			value_size++;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			if( libnotify_verbose != 0 )
+			if( libcnotify_verbose != 0 )
 			{
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: network share information network share name size\t: %" PRIu32 "\n",
 				 function,
 				 value_size );
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: network share information network share name data:\n",
 				 function );
-				libnotify_print_data(
+				libcnotify_print_data(
 				 location_information_value_data,
 				 value_size,
 				 0 );
@@ -1321,10 +1320,10 @@ ssize_t liblnk_location_information_read(
 		{
 			if( unicode_network_share_name_offset > location_information_value_size )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 				 "%s: unicode network share name offset exceeds volume information data.",
 				 function );
 
@@ -1345,16 +1344,16 @@ ssize_t liblnk_location_information_read(
 			unicode_value_size += 2;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			if( libnotify_verbose != 0 )
+			if( libcnotify_verbose != 0 )
 			{
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: unicode volume information network share name size\t\t: %" PRIu32 "\n",
 				 function,
 				 unicode_value_size );
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: unicode volume information network share name data:\n",
 				 function );
-				libnotify_print_data(
+				libcnotify_print_data(
 				 location_information_unicode_value_data,
 				 unicode_value_size,
 				 0 );
@@ -1365,10 +1364,10 @@ ssize_t liblnk_location_information_read(
 
 			if( location_information->network_share_name == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create network share name.",
 				 function );
 
@@ -1379,10 +1378,10 @@ ssize_t liblnk_location_information_read(
 			     location_information_unicode_value_data,
 			     unicode_value_size ) == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 				 "%s: unable to copy network share name.",
 				 function );
 
@@ -1398,10 +1397,10 @@ ssize_t liblnk_location_information_read(
 
 			if( location_information->network_share_name == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create network share name.",
 				 function );
 
@@ -1412,10 +1411,10 @@ ssize_t liblnk_location_information_read(
 			     location_information_value_data,
 			     value_size ) == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 				 "%s: unable to copy network share name.",
 				 function );
 
@@ -1424,7 +1423,7 @@ ssize_t liblnk_location_information_read(
 			location_information->network_share_name_size = value_size;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
 			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE ) != 0 )
 			{
@@ -1464,10 +1463,10 @@ ssize_t liblnk_location_information_read(
 			}
 			if( result != 1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 				 "%s: unable to determine size of network share name string.",
 				 function );
 
@@ -1476,10 +1475,10 @@ ssize_t liblnk_location_information_read(
 			if( ( value_string_size > (size_t) SSIZE_MAX )
 			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 				 "%s: invalid network share string size value exceeds maximum.",
 				 function );
 
@@ -1490,10 +1489,10 @@ ssize_t liblnk_location_information_read(
 
 			if( value_string == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create network share name string.",
 				 function );
 
@@ -1541,16 +1540,16 @@ ssize_t liblnk_location_information_read(
 			}
 			if( result != 1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 				 "%s: unable to set network share name string.",
 				 function );
 
 				goto on_error;
 			}
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: volume information network share name\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
 			 function,
 			 value_string );
@@ -1565,10 +1564,10 @@ ssize_t liblnk_location_information_read(
 		{
 			if( device_name_offset > location_information_value_size )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 				 "%s: device name offset exceeds network share information data.",
 				 function );
 
@@ -1588,16 +1587,16 @@ ssize_t liblnk_location_information_read(
 			value_size++;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			if( libnotify_verbose != 0 )
+			if( libcnotify_verbose != 0 )
 			{
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: network share information device name size\t: %" PRIu32 "\n",
 				 function,
 				 value_size );
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: network share information device name data:\n",
 				 function );
-				libnotify_print_data(
+				libcnotify_print_data(
 				 location_information_value_data,
 				 value_size,
 				 0 );
@@ -1608,10 +1607,10 @@ ssize_t liblnk_location_information_read(
 		{
 			if( unicode_device_name_offset > location_information_value_size )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 				 "%s: unicode device name offset exceeds volume information data.",
 				 function );
 
@@ -1632,16 +1631,16 @@ ssize_t liblnk_location_information_read(
 			unicode_value_size += 2;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-			if( libnotify_verbose != 0 )
+			if( libcnotify_verbose != 0 )
 			{
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: unicode volume information device name size\t\t: %" PRIu32 "\n",
 				 function,
 				 unicode_value_size );
-				libnotify_printf(
+				libcnotify_printf(
 				 "%s: unicode volume information device name data:\n",
 				 function );
-				libnotify_print_data(
+				libcnotify_print_data(
 				 location_information_unicode_value_data,
 				 unicode_value_size,
 				 0 );
@@ -1652,10 +1651,10 @@ ssize_t liblnk_location_information_read(
 
 			if( location_information->device_name == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create device name.",
 				 function );
 
@@ -1666,10 +1665,10 @@ ssize_t liblnk_location_information_read(
 			     location_information_unicode_value_data,
 			     unicode_value_size ) == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 				 "%s: unable to copy device name.",
 				 function );
 
@@ -1685,10 +1684,10 @@ ssize_t liblnk_location_information_read(
 
 			if( location_information->device_name == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create device name.",
 				 function );
 
@@ -1699,10 +1698,10 @@ ssize_t liblnk_location_information_read(
 			     location_information_value_data,
 			     value_size ) == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 				 "%s: unable to copy device name.",
 				 function );
 
@@ -1711,7 +1710,7 @@ ssize_t liblnk_location_information_read(
 			location_information->device_name_size = value_size;
 		}
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
 			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_DEVICE_NAME_IS_UNICODE ) != 0 )
 			{
@@ -1751,10 +1750,10 @@ ssize_t liblnk_location_information_read(
 			}
 			if( result != 1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 				 "%s: unable to determine size of device name string.",
 				 function );
 
@@ -1763,10 +1762,10 @@ ssize_t liblnk_location_information_read(
 			if( ( value_string_size > (size_t) SSIZE_MAX )
 			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 				 "%s: invalid device name string size value exceeds maximum.",
 				 function );
 
@@ -1777,10 +1776,10 @@ ssize_t liblnk_location_information_read(
 
 			if( value_string == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create device name string.",
 				 function );
 
@@ -1828,16 +1827,16 @@ ssize_t liblnk_location_information_read(
 			}
 			if( result != 1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 				 "%s: unable to set device name string.",
 				 function );
 
 				goto on_error;
 			}
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: volume information device name\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
 			 function,
 			 value_string );
@@ -1855,10 +1854,10 @@ ssize_t liblnk_location_information_read(
 	{
 		if( common_path_offset < location_information_header_size )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: common path offset smaller than location information header size.",
 			 function );
 
@@ -1868,10 +1867,10 @@ ssize_t liblnk_location_information_read(
 
 		if( common_path_offset > location_information_size )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: common path offset exceeds location information data.",
 			 function );
 
@@ -1891,16 +1890,16 @@ ssize_t liblnk_location_information_read(
 		value_size++;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: common path data size\t\t\t\t\t: %" PRIu32 "\n",
 			 function,
 			 value_size );
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: common path data:\n",
 			 function );
-			libnotify_print_data(
+			libcnotify_print_data(
 			 location_information_value_data,
 			 value_size,
 			 0 );
@@ -1911,10 +1910,10 @@ ssize_t liblnk_location_information_read(
 	{
 		if( unicode_common_path_offset < location_information_header_size )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: unicode common path information offset smaller than location information header size",
 			 function );
 
@@ -1924,10 +1923,10 @@ ssize_t liblnk_location_information_read(
 
 		if( unicode_common_path_offset > location_information_size )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
 			 "%s: unicode common path offset exceeds location information data.",
 			 function );
 
@@ -1948,16 +1947,16 @@ ssize_t liblnk_location_information_read(
 		unicode_value_size += 2;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libnotify_verbose != 0 )
+		if( libcnotify_verbose != 0 )
 		{
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: unicode common path data size\t\t\t: %" PRIu32 "\n",
 			 function,
 			 value_size );
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: unicode common path data:\n",
 			 function );
-			libnotify_print_data(
+			libcnotify_print_data(
 			 location_information_unicode_value_data,
 			 unicode_value_size,
 			 0 );
@@ -1968,10 +1967,10 @@ ssize_t liblnk_location_information_read(
 
 		if( location_information->common_path == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 			 "%s: unable to create common path.",
 			 function );
 
@@ -1982,10 +1981,10 @@ ssize_t liblnk_location_information_read(
 		     location_information_unicode_value_data,
 		     unicode_value_size ) == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 			 "%s: unable to copy common path.",
 			 function );
 
@@ -2001,10 +2000,10 @@ ssize_t liblnk_location_information_read(
 
 		if( location_information->common_path == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 			 "%s: unable to create common path.",
 			 function );
 
@@ -2015,10 +2014,10 @@ ssize_t liblnk_location_information_read(
 		     location_information_value_data,
 		     value_size ) == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 			 "%s: unable to copy common path.",
 			 function );
 
@@ -2027,7 +2026,7 @@ ssize_t liblnk_location_information_read(
 		location_information->common_path_size = value_size;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
 		if( ( common_path_offset > 0 )
 		 || ( unicode_common_path_offset > 0 ) )
@@ -2070,10 +2069,10 @@ ssize_t liblnk_location_information_read(
 			}
 			if( result != 1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 				 "%s: unable to determine size of common path string.",
 				 function );
 
@@ -2082,10 +2081,10 @@ ssize_t liblnk_location_information_read(
 			if( ( value_string_size > (size_t) SSIZE_MAX )
 			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 				 "%s: invalid common path string size value exceeds maximum.",
 				 function );
 
@@ -2096,10 +2095,10 @@ ssize_t liblnk_location_information_read(
 
 			if( value_string == NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_MEMORY,
-				 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create common path string.",
 				 function );
 
@@ -2147,16 +2146,16 @@ ssize_t liblnk_location_information_read(
 			}
 			if( result != 1 )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBERROR_RUNTIME_ERROR_SET_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
 				 "%s: unable to set common path string.",
 				 function );
 
 				goto on_error;
 			}
-			libnotify_printf(
+			libcnotify_printf(
 			 "%s: common path\t\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
 			 function,
 			 value_string );
@@ -2174,9 +2173,9 @@ ssize_t liblnk_location_information_read(
 	location_information_data = NULL;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "\n" );
 	}
 #endif

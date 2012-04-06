@@ -24,11 +24,10 @@
 #include <memory.h>
 #include <types.h>
 
-#include <liberror.h>
-#include <libnotify.h>
-
 #include "liblnk_definitions.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_libcerror.h"
+#include "liblnk_libcnotify.h"
 #include "liblnk_libfwsi.h"
 #include "liblnk_link_target_identifier.h"
 
@@ -37,16 +36,16 @@
  */
 int liblnk_link_target_identifier_initialize(
      liblnk_link_target_identifier_t **link_target_identifier,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_link_target_identifier_initialize";
 
 	if( link_target_identifier == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid link target identifier.",
 		 function );
 
@@ -54,10 +53,10 @@ int liblnk_link_target_identifier_initialize(
 	}
 	if( *link_target_identifier != NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid link target identifier value already set.",
 		 function );
 
@@ -68,10 +67,10 @@ int liblnk_link_target_identifier_initialize(
 
 	if( *link_target_identifier == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 		 "%s: unable to create link target identifier.",
 		 function );
 
@@ -82,10 +81,10 @@ int liblnk_link_target_identifier_initialize(
 	     0,
 	     sizeof( liblnk_link_target_identifier_t ) ) == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
 		 "%s: unable to clear link target identifier.",
 		 function );
 
@@ -109,16 +108,16 @@ on_error:
  */
 int liblnk_link_target_identifier_free(
      liblnk_link_target_identifier_t **link_target_identifier,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_link_target_identifier_free";
 
 	if( link_target_identifier == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid link target identifier.",
 		 function );
 
@@ -146,7 +145,7 @@ ssize_t liblnk_link_target_identifier_read(
          liblnk_link_target_identifier_t *link_target_identifier,
          libbfio_handle_t *file_io_handle,
          off64_t file_offset,
-         liberror_error_t **error )
+         libcerror_error_t **error )
 {
 	uint8_t size_data[ 2 ];
 
@@ -159,10 +158,10 @@ ssize_t liblnk_link_target_identifier_read(
 
 	if( link_target_identifier == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid link target identifier.",
 		 function );
 
@@ -170,19 +169,19 @@ ssize_t liblnk_link_target_identifier_read(
 	}
 	if( link_target_identifier->data != NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid link target identifier - data value already set.",
 		 function );
 
 		return( -1 );
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
-		libnotify_printf(
+		libcnotify_printf(
 		 "%s: reading link target identifier at offset: %" PRIi64 " (0x%08" PRIx64 ")\n",
 		 function,
 		 file_offset,
@@ -195,17 +194,17 @@ ssize_t liblnk_link_target_identifier_read(
 	     SEEK_SET,
 	     error ) == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_SEEK_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_SEEK_FAILED,
 		 "%s: unable to seek link target identifier offset: %" PRIi64 ".",
 		 function,
 		 file_offset );
 
 		goto on_error;
 	}
-	read_count = libbfio_handle_read(
+	read_count = libbfio_handle_read_buffer(
 	              file_io_handle,
 	              size_data,
 	              2,
@@ -213,10 +212,10 @@ ssize_t liblnk_link_target_identifier_read(
 
 	if( read_count != (ssize_t) 2 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_READ_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
 		 "%s: unable to read link target identifier size.",
 		 function );
 
@@ -232,10 +231,10 @@ ssize_t liblnk_link_target_identifier_read(
 
 	if( link_target_identifier->data == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 		 "%s: unable to create link target identifier data.",
 		 function );
 
@@ -244,7 +243,7 @@ ssize_t liblnk_link_target_identifier_read(
 	link_target_identifier->data[ 0 ] = size_data[ 0 ];
 	link_target_identifier->data[ 1 ] = size_data[ 1 ];
 
-	read_count = libbfio_handle_read(
+	read_count = libbfio_handle_read_buffer(
 	              file_io_handle,
 	              &( link_target_identifier->data[ 2 ] ),
 	              link_target_identifier->data_size,
@@ -252,10 +251,10 @@ ssize_t liblnk_link_target_identifier_read(
 
 	if( read_count != (ssize_t) link_target_identifier->data_size )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_READ_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
 		 "%s: unable to read link target identifier data.",
 		 function );
 
@@ -264,16 +263,16 @@ ssize_t liblnk_link_target_identifier_read(
 	link_target_identifier->data_size += 2;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
 	{
 		if( libfwsi_item_list_initialize(
 		     &shell_item_list,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 			 "%s: unable to create shell item list.",
 			 function );
 
@@ -285,10 +284,10 @@ ssize_t liblnk_link_target_identifier_read(
 		     link_target_identifier->data_size,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
 			 "%s: unable to copy byte stream to shell item list.",
 			 function );
 
@@ -298,10 +297,10 @@ ssize_t liblnk_link_target_identifier_read(
 		     &shell_item_list,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
 			 "%s: unable to free shell item list.",
 			 function );
 

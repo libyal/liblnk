@@ -25,9 +25,8 @@
 #include <common.h>
 #include <types.h>
 
-#include <liberror.h>
-
 #include "liblnk_io_handle.h"
+#include "liblnk_libcerror.h"
 #include "liblnk_libbfio.h"
 
 #if defined( __cplusplus )
@@ -53,18 +52,18 @@ struct liblnk_data_block
 
 int liblnk_data_block_initialize(
      liblnk_data_block_t **data_block,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int liblnk_data_block_free(
      liblnk_data_block_t **data_block,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 ssize_t liblnk_data_block_read(
          liblnk_data_block_t *data_block,
          liblnk_io_handle_t *io_handle,
          libbfio_handle_t *data_block_io_handle,
          off64_t data_block_offset,
-         liberror_error_t **error );
+         libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }

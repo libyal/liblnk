@@ -25,10 +25,9 @@
 #include <common.h>
 #include <types.h>
 
-#include <liberror.h>
-
 #include "liblnk_file_information.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_libcerror.h"
 
 #if defined( __cplusplus )
 extern "C" {
@@ -59,11 +58,11 @@ struct liblnk_io_handle
 
 int liblnk_io_handle_initialize(
      liblnk_io_handle_t **io_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int liblnk_io_handle_free(
      liblnk_io_handle_t **io_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 ssize_t liblnk_io_handle_read_file_header(
          liblnk_io_handle_t *io_handle,
@@ -71,7 +70,7 @@ ssize_t liblnk_io_handle_read_file_header(
          uint8_t *class_identifier,
          size_t class_identifier_size,
          liblnk_file_information_t *file_information,
-         liberror_error_t **error );
+         libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }

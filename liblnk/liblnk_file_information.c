@@ -23,25 +23,24 @@
 #include <memory.h>
 #include <types.h>
 
-#include <liberror.h>
-
 #include "liblnk_file_information.h"
+#include "liblnk_libcerror.h"
 
 /* Creates file information
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_information_initialize(
      liblnk_file_information_t **file_information,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_file_information_initialize";
 
 	if( file_information == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file information.",
 		 function );
 
@@ -49,10 +48,10 @@ int liblnk_file_information_initialize(
 	}
 	if( *file_information != NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid file information value already set.",
 		 function );
 
@@ -63,10 +62,10 @@ int liblnk_file_information_initialize(
 
 	if( *file_information == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 		 "%s: unable to create file information.",
 		 function );
 
@@ -77,10 +76,10 @@ int liblnk_file_information_initialize(
 	     0,
 	     sizeof( liblnk_file_information_t ) ) == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
 		 "%s: unable to clear file information.",
 		 function );
 
@@ -104,16 +103,16 @@ on_error:
  */
 int liblnk_file_information_free(
      liblnk_file_information_t **file_information,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "liblnk_file_information_free";
 
 	if( file_information == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file information.",
 		 function );
 

@@ -26,9 +26,8 @@
 #include <file_stream.h>
 #include <types.h>
 
-#include <libcstring.h>
-#include <liberror.h>
-
+#include "lnktools_libcerror.h"
+#include "lnktools_libcstring.h"
 #include "lnktools_liblnk.h"
 
 #if defined( __cplusplus )
@@ -58,69 +57,69 @@ struct info_handle
 
 int info_handle_initialize(
      info_handle_t **info_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_free(
      info_handle_t **info_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_signal_abort(
      info_handle_t *info_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_set_ascii_codepage(
      info_handle_t *info_handle,
      const libcstring_system_character_t *string,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_open(
      info_handle_t *info_handle,
      const libcstring_system_character_t *filename,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_close(
      info_handle_t *info_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_data_flags_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_link_information_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_description_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_relative_path_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_working_directory_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_command_line_arguments_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_icon_location_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_link_target_identifier_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_distributed_link_tracking_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int info_handle_file_fprint(
      info_handle_t *info_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }

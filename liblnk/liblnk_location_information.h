@@ -25,10 +25,9 @@
 #include <common.h>
 #include <types.h>
 
-#include <liberror.h>
-
 #include "liblnk_io_handle.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_libcerror.h"
 
 #if defined( __cplusplus )
 extern "C" {
@@ -102,18 +101,18 @@ struct liblnk_location_information
 
 int liblnk_location_information_initialize(
      liblnk_location_information_t **location_information,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 int liblnk_location_information_free(
      liblnk_location_information_t **location_information,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 ssize_t liblnk_location_information_read(
          liblnk_location_information_t *location_information,
          liblnk_io_handle_t *io_handle,
          libbfio_handle_t *file_io_handle,
          off64_t location_information_offset,
-         liberror_error_t **error );
+         libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }

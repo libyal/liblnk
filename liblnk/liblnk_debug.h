@@ -25,9 +25,8 @@
 #include <common.h>
 #include <types.h>
 
-#include <liberror.h>
-
 #include "liblnk_libbfio.h"
+#include "liblnk_libcerror.h"
 
 #if defined( __cplusplus )
 extern "C" {
@@ -46,7 +45,7 @@ const char *liblnk_debug_print_network_provider_type(
 
 int liblnk_debug_print_read_offsets(
      libbfio_handle_t *file_io_handle,
-     liberror_error_t **error );
+     libcerror_error_t **error );
 
 #endif
 

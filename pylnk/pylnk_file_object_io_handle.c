@@ -23,11 +23,10 @@
 #include <memory.h>
 #include <types.h>
 
-#include <libcstring.h>
-#include <liberror.h>
-
 #include "pylnk_file_object_io_handle.h"
 #include "pylnk_libbfio.h"
+#include "pylnk_libcerror.h"
+#include "pylnk_libcstring.h"
 #include "pylnk_python.h"
 
 /* Initializes the file object IO handle
@@ -36,16 +35,16 @@
 int pylnk_file_object_io_handle_initialize(
      pylnk_file_object_io_handle_t **file_object_io_handle,
      PyObject *file_object,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "pylnk_file_object_io_handle_initialize";
 
 	if( file_object_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object IO handle.",
 		 function );
 
@@ -53,10 +52,10 @@ int pylnk_file_object_io_handle_initialize(
 	}
 	if( *file_object_io_handle != NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid file object IO handle value already set.",
 		 function );
 
@@ -64,10 +63,10 @@ int pylnk_file_object_io_handle_initialize(
 	}
 	if( file_object == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object.",
 		 function );
 
@@ -78,10 +77,10 @@ int pylnk_file_object_io_handle_initialize(
 
 	if( *file_object_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_INSUFFICIENT,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 		 "%s: unable to create file object IO handle.",
 		 function );
 
@@ -92,10 +91,10 @@ int pylnk_file_object_io_handle_initialize(
 	     0,
 	     sizeof( pylnk_file_object_io_handle_t ) ) == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_MEMORY,
-		 LIBERROR_MEMORY_ERROR_SET_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
 		 "%s: unable to clear file object IO handle.",
 		 function );
 
@@ -125,17 +124,17 @@ on_error:
 int pylnk_file_object_initialize(
      libbfio_handle_t **handle,
      PyObject *file_object,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	pylnk_file_object_io_handle_t *file_object_io_handle = NULL;
 	static char *function                                = "pylnk_file_object_initialize";
 
 	if( handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid handle.",
 		 function );
 
@@ -143,10 +142,10 @@ int pylnk_file_object_initialize(
 	}
 	if( *handle != NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid handle value already set.",
 		 function );
 
@@ -157,10 +156,10 @@ int pylnk_file_object_initialize(
 	     file_object,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 		 "%s: unable to create file object IO handle.",
 		 function );
 
@@ -169,23 +168,23 @@ int pylnk_file_object_initialize(
 	if( libbfio_handle_initialize(
 	     handle,
 	     (intptr_t *) file_object_io_handle,
-	     (int (*)(intptr_t **, liberror_error_t **)) pylnk_file_object_io_handle_free,
-	     (int (*)(intptr_t **, intptr_t *, liberror_error_t **)) pylnk_file_object_io_handle_clone,
-	     (int (*)(intptr_t *, int, liberror_error_t **)) pylnk_file_object_io_handle_open,
-	     (int (*)(intptr_t *, liberror_error_t **)) pylnk_file_object_io_handle_close,
-	     (ssize_t (*)(intptr_t *, uint8_t *, size_t, liberror_error_t **)) pylnk_file_object_io_handle_read,
-	     (ssize_t (*)(intptr_t *, const uint8_t *, size_t, liberror_error_t **)) pylnk_file_object_io_handle_write,
-	     (off64_t (*)(intptr_t *, off64_t, int, liberror_error_t **)) pylnk_file_object_io_handle_seek_offset,
-	     (int (*)(intptr_t *, liberror_error_t **)) pylnk_file_object_io_handle_exists,
-	     (int (*)(intptr_t *, liberror_error_t **)) pylnk_file_object_io_handle_is_open,
-	     (int (*)(intptr_t *, size64_t *, liberror_error_t **)) pylnk_file_object_io_handle_get_size,
+	     (int (*)(intptr_t **, libcerror_error_t **)) pylnk_file_object_io_handle_free,
+	     (int (*)(intptr_t **, intptr_t *, libcerror_error_t **)) pylnk_file_object_io_handle_clone,
+	     (int (*)(intptr_t *, int, libcerror_error_t **)) pylnk_file_object_io_handle_open,
+	     (int (*)(intptr_t *, libcerror_error_t **)) pylnk_file_object_io_handle_close,
+	     (ssize_t (*)(intptr_t *, uint8_t *, size_t, libcerror_error_t **)) pylnk_file_object_io_handle_read,
+	     (ssize_t (*)(intptr_t *, const uint8_t *, size_t, libcerror_error_t **)) pylnk_file_object_io_handle_write,
+	     (off64_t (*)(intptr_t *, off64_t, int, libcerror_error_t **)) pylnk_file_object_io_handle_seek_offset,
+	     (int (*)(intptr_t *, libcerror_error_t **)) pylnk_file_object_io_handle_exists,
+	     (int (*)(intptr_t *, libcerror_error_t **)) pylnk_file_object_io_handle_is_open,
+	     (int (*)(intptr_t *, size64_t *, libcerror_error_t **)) pylnk_file_object_io_handle_get_size,
 	     LIBBFIO_FLAG_IO_HANDLE_MANAGED | LIBBFIO_FLAG_IO_HANDLE_CLONE_BY_FUNCTION,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 		 "%s: unable to create handle.",
 		 function );
 
@@ -208,16 +207,16 @@ on_error:
  */
 int pylnk_file_object_io_handle_free(
      pylnk_file_object_io_handle_t **file_object_io_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "pylnk_file_object_io_handle_free";
 
 	if( file_object_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object IO handle.",
 		 function );
 
@@ -242,16 +241,16 @@ int pylnk_file_object_io_handle_free(
 int pylnk_file_object_io_handle_clone(
      pylnk_file_object_io_handle_t **destination_file_object_io_handle,
      pylnk_file_object_io_handle_t *source_file_object_io_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "pylnk_file_object_io_handle_clone";
 
 	if( destination_file_object_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid destination file object IO handle.",
 		 function );
 
@@ -259,10 +258,10 @@ int pylnk_file_object_io_handle_clone(
 	}
 	if( *destination_file_object_io_handle != NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: destination file object IO handle already set.",
 		 function );
 
@@ -279,10 +278,10 @@ int pylnk_file_object_io_handle_clone(
 	     source_file_object_io_handle->file_object,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 		 "%s: unable to create file object IO handle.",
 		 function );
 
@@ -290,10 +289,10 @@ int pylnk_file_object_io_handle_clone(
 	}
 	if( *destination_file_object_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: missing destination file object IO handle.",
 		 function );
 
@@ -308,16 +307,16 @@ int pylnk_file_object_io_handle_clone(
 int pylnk_file_object_io_handle_open(
      pylnk_file_object_io_handle_t *file_object_io_handle,
      int access_flags,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "pylnk_file_object_io_handle_open";
 
 	if( file_object_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object IO handle.",
 		 function );
 
@@ -325,10 +324,10 @@ int pylnk_file_object_io_handle_open(
 	}
 	if( file_object_io_handle->file_object == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid file object IO handle - missing file object.",
 		 function );
 
@@ -337,10 +336,10 @@ int pylnk_file_object_io_handle_open(
 	if( ( ( access_flags & LIBBFIO_ACCESS_FLAG_READ ) != 0 )
 	 && ( ( access_flags & LIBBFIO_ACCESS_FLAG_WRITE ) != 0 ) )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
 		 "%s: unsupported access flags.",
 		 function );
 
@@ -348,10 +347,10 @@ int pylnk_file_object_io_handle_open(
 	}
 	if( ( access_flags & LIBBFIO_ACCESS_FLAG_WRITE ) != 0 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
 		 "%s: write access currently not supported.",
 		 function );
 
@@ -369,16 +368,16 @@ int pylnk_file_object_io_handle_open(
  */
 int pylnk_file_object_io_handle_close(
      pylnk_file_object_io_handle_t *file_object_io_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "pylnk_file_object_io_handle_close";
 
 	if( file_object_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object IO handle.",
 		 function );
 
@@ -386,10 +385,10 @@ int pylnk_file_object_io_handle_close(
 	}
 	if( file_object_io_handle->file_object == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid file object IO handle - missing file object.",
 		 function );
 
@@ -410,7 +409,7 @@ ssize_t pylnk_file_object_read_buffer(
          PyObject *file_object,
          uint8_t *buffer,
          size_t size,
-         liberror_error_t **error )
+         libcerror_error_t **error )
 {
 	PyObject *argument_size       = NULL;
 	PyObject *exception_string    = NULL;
@@ -428,10 +427,10 @@ ssize_t pylnk_file_object_read_buffer(
 
 	if( file_object == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object.",
 		 function );
 
@@ -439,10 +438,10 @@ ssize_t pylnk_file_object_read_buffer(
 	}
 	if( buffer == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid buffer.",
 		 function );
 
@@ -450,10 +449,10 @@ ssize_t pylnk_file_object_read_buffer(
 	}
 	if( size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: invalid size value exceeds maximum.",
 		 function );
 
@@ -490,20 +489,20 @@ ssize_t pylnk_file_object_read_buffer(
 
 			if( error_string != NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_IO,
-				 LIBERROR_IO_ERROR_READ_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_IO,
+				 LIBCERROR_IO_ERROR_READ_FAILED,
 				 "%s: unable to read from file object with error: %s.",
 				 function,
 				 error_string );
 			}
 			else
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_IO,
-				 LIBERROR_IO_ERROR_READ_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_IO,
+				 LIBCERROR_IO_ERROR_READ_FAILED,
 				 "%s: unable to read from file object.",
 				 function );
 			}
@@ -532,20 +531,20 @@ ssize_t pylnk_file_object_read_buffer(
 
 			if( error_string != NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_IO,
-				 LIBERROR_IO_ERROR_READ_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_IO,
+				 LIBCERROR_IO_ERROR_READ_FAILED,
 				 "%s: unable to read from file object with error: %s.",
 				 function,
 				 error_string );
 			}
 			else
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_IO,
-				 LIBERROR_IO_ERROR_READ_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_IO,
+				 LIBCERROR_IO_ERROR_READ_FAILED,
 				 "%s: unable to read from file object.",
 				 function );
 			}
@@ -556,10 +555,10 @@ ssize_t pylnk_file_object_read_buffer(
 		}
 		if( safe_read_count > (Py_ssize_t) SSIZE_MAX )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 			 "%s: invalid read count value exceeds maximum.",
 			 function );
 
@@ -572,10 +571,10 @@ ssize_t pylnk_file_object_read_buffer(
 		     safe_buffer,
 		     read_count ) == NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_MEMORY,
-			 LIBERROR_MEMORY_ERROR_COPY_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 			 "%s: unable to data to buffer.",
 			 function );
 
@@ -618,7 +617,7 @@ ssize_t pylnk_file_object_io_handle_read(
          pylnk_file_object_io_handle_t *file_object_io_handle,
          uint8_t *buffer,
          size_t size,
-         liberror_error_t **error )
+         libcerror_error_t **error )
 {
 	static char *function      = "pylnk_file_object_io_handle_read";
 	PyGILState_STATE gil_state = 0;
@@ -626,10 +625,10 @@ ssize_t pylnk_file_object_io_handle_read(
 
 	if( file_object_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object IO handle.",
 		 function );
 
@@ -645,10 +644,10 @@ ssize_t pylnk_file_object_io_handle_read(
 
 	if( read_count == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_READ_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
 		 "%s: unable to read from file object.",
 		 function );
 
@@ -674,7 +673,7 @@ ssize_t pylnk_file_object_write_buffer(
          PyObject *file_object,
          const uint8_t *buffer,
          size_t size,
-         liberror_error_t **error )
+         libcerror_error_t **error )
 {
 	PyObject *argument_string     = NULL;
 	PyObject *exception_string    = NULL;
@@ -689,10 +688,10 @@ ssize_t pylnk_file_object_write_buffer(
 
 	if( file_object == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object.",
 		 function );
 
@@ -700,10 +699,10 @@ ssize_t pylnk_file_object_write_buffer(
 	}
 	if( buffer == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid buffer.",
 		 function );
 
@@ -711,10 +710,10 @@ ssize_t pylnk_file_object_write_buffer(
 	}
 	if( size > (size_t) SSIZE_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: invalid size value exceeds maximum.",
 		 function );
 
@@ -752,20 +751,20 @@ ssize_t pylnk_file_object_write_buffer(
 
 			if( error_string != NULL )
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_IO,
-				 LIBERROR_IO_ERROR_WRITE_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_IO,
+				 LIBCERROR_IO_ERROR_WRITE_FAILED,
 				 "%s: unable to write from file object with error: %s.",
 				 function,
 				 error_string );
 			}
 			else
 			{
-				liberror_error_set(
+				libcerror_error_set(
 				 error,
-				 LIBERROR_ERROR_DOMAIN_IO,
-				 LIBERROR_IO_ERROR_WRITE_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_IO,
+				 LIBCERROR_IO_ERROR_WRITE_FAILED,
 				 "%s: unable to write from file object.",
 				 function );
 			}
@@ -811,7 +810,7 @@ ssize_t pylnk_file_object_io_handle_write(
          pylnk_file_object_io_handle_t *file_object_io_handle,
          const uint8_t *buffer,
          size_t size,
-         liberror_error_t **error )
+         libcerror_error_t **error )
 {
 	static char *function      = "pylnk_file_object_io_handle_write";
 	PyGILState_STATE gil_state = 0;
@@ -819,10 +818,10 @@ ssize_t pylnk_file_object_io_handle_write(
 
 	if( file_object_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object IO handle.",
 		 function );
 
@@ -838,10 +837,10 @@ ssize_t pylnk_file_object_io_handle_write(
 
 	if( write_count == -1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_WRITE_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_WRITE_FAILED,
 		 "%s: unable to write from file object.",
 		 function );
 
@@ -867,7 +866,7 @@ int pylnk_file_object_seek_offset(
      PyObject *file_object,
      off64_t offset,
      int whence,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	PyObject *argument_offset     = NULL;
 	PyObject *argument_whence     = NULL;
@@ -882,10 +881,10 @@ int pylnk_file_object_seek_offset(
 
 	if( file_object == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object.",
 		 function );
 
@@ -893,10 +892,10 @@ int pylnk_file_object_seek_offset(
 	}
 	if( offset > (off64_t) INT64_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: invalid offset value exceeds maximum.",
 		 function );
 
@@ -906,10 +905,10 @@ int pylnk_file_object_seek_offset(
 	 && ( whence != SEEK_END )
 	 && ( whence != SEEK_SET ) )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
 		 "%s: unsupported whence.",
 		 function );
 
@@ -948,20 +947,20 @@ int pylnk_file_object_seek_offset(
 
 		if( error_string != NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_SEEK_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_SEEK_FAILED,
 			 "%s: unable to seek in file object with error: %s.",
 			 function,
 			 error_string );
 		}
 		else
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_SEEK_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_SEEK_FAILED,
 			 "%s: unable to seek in file object.",
 			 function );
 		}
@@ -1015,7 +1014,7 @@ on_error:
 int pylnk_file_object_get_offset(
      PyObject *file_object,
      off64_t *offset,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	PyObject *exception_string    = NULL;
 	PyObject *exception_traceback = NULL;
@@ -1030,10 +1029,10 @@ int pylnk_file_object_get_offset(
 
 	if( file_object == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object.",
 		 function );
 
@@ -1041,10 +1040,10 @@ int pylnk_file_object_get_offset(
 	}
 	if( offset == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid offset.",
 		 function );
 
@@ -1093,20 +1092,20 @@ int pylnk_file_object_get_offset(
 
 		if( error_string != NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve current offset in file object with error: %s.",
 			 function,
 			 error_string );
 		}
 		else
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve current offset in file object.",
 			 function );
 		}
@@ -1135,20 +1134,20 @@ int pylnk_file_object_get_offset(
 
 		if( error_string != NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve current offset in file object with error: %s.",
 			 function,
 			 error_string );
 		}
 		else
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve current offset in file object.",
 			 function );
 		}
@@ -1159,10 +1158,10 @@ int pylnk_file_object_get_offset(
 	}
 	if( safe_offset > (PY_LONG_LONG) INT64_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: invalid offset value exceeds maximum.",
 		 function );
 
@@ -1199,17 +1198,17 @@ off64_t pylnk_file_object_io_handle_seek_offset(
          pylnk_file_object_io_handle_t *file_object_io_handle,
          off64_t offset,
          int whence,
-         liberror_error_t **error )
+         libcerror_error_t **error )
 {
 	static char *function      = "pylnk_file_object_io_handle_seek_offset";
 	PyGILState_STATE gil_state = 0;
 
 	if( file_object_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object IO handle.",
 		 function );
 
@@ -1223,10 +1222,10 @@ off64_t pylnk_file_object_io_handle_seek_offset(
 	     whence,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_SEEK_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_SEEK_FAILED,
 		 "%s: unable to seek in file object.",
 		 function );
 
@@ -1237,10 +1236,10 @@ off64_t pylnk_file_object_io_handle_seek_offset(
 	     &offset,
 	     error ) != 1 )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_IO,
-		 LIBERROR_IO_ERROR_SEEK_FAILED,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_SEEK_FAILED,
 		 "%s: unable to retrieve current offset in file object.",
 		 function );
 
@@ -1263,16 +1262,16 @@ on_error:
  */
 int pylnk_file_object_io_handle_exists(
      pylnk_file_object_io_handle_t *file_object_io_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "pylnk_file_object_io_handle_exists";
 
 	if( file_object_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object IO handle.",
 		 function );
 
@@ -1290,16 +1289,16 @@ int pylnk_file_object_io_handle_exists(
  */
 int pylnk_file_object_io_handle_is_open(
      pylnk_file_object_io_handle_t *file_object_io_handle,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	static char *function = "pylnk_file_object_io_handle_is_open";
 
 	if( file_object_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object IO handle.",
 		 function );
 
@@ -1307,10 +1306,10 @@ int pylnk_file_object_io_handle_is_open(
 	}
 	if( file_object_io_handle->file_object == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid file object IO handle - missing file object.",
 		 function );
 
@@ -1328,7 +1327,7 @@ int pylnk_file_object_io_handle_is_open(
 int pylnk_file_object_get_size(
      PyObject *file_object,
      size64_t *size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	PyObject *exception_string    = NULL;
 	PyObject *exception_traceback = NULL;
@@ -1342,10 +1341,10 @@ int pylnk_file_object_get_size(
 
 	if( file_object == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object.",
 		 function );
 
@@ -1353,10 +1352,10 @@ int pylnk_file_object_get_size(
 	}
 	if( size == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid size.",
 		 function );
 
@@ -1387,20 +1386,20 @@ int pylnk_file_object_get_size(
 
 		if( error_string != NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve size of file object with error: %s.",
 			 function,
 			 error_string );
 		}
 		else
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve size of file object.",
 			 function );
 		}
@@ -1429,20 +1428,20 @@ int pylnk_file_object_get_size(
 
 		if( error_string != NULL )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve size of file object with error: %s.",
 			 function,
 			 error_string );
 		}
 		else
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve size of in file object.",
 			 function );
 		}
@@ -1453,10 +1452,10 @@ int pylnk_file_object_get_size(
 	}
 	if( safe_size > (PY_LONG_LONG) INT64_MAX )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
 		 "%s: invalid size value exceeds maximum.",
 		 function );
 
@@ -1492,7 +1491,7 @@ on_error:
 int pylnk_file_object_io_handle_get_size(
      pylnk_file_object_io_handle_t *file_object_io_handle,
      size64_t *size,
-     liberror_error_t **error )
+     libcerror_error_t **error )
 {
 	PyObject *method_name      = NULL;
 	static char *function      = "pylnk_file_object_io_handle_get_size";
@@ -1502,10 +1501,10 @@ int pylnk_file_object_io_handle_get_size(
 
 	if( file_object_io_handle == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid file object IO handle.",
 		 function );
 
@@ -1513,10 +1512,10 @@ int pylnk_file_object_io_handle_get_size(
 	}
 	if( file_object_io_handle->file_object == NULL )
 	{
-		liberror_error_set(
+		libcerror_error_set(
 		 error,
-		 LIBERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid file object IO handle - missing file object.",
 		 function );
 
@@ -1542,10 +1541,10 @@ int pylnk_file_object_io_handle_get_size(
 		     size,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve size of file object.",
 			 function );
 
@@ -1559,10 +1558,10 @@ int pylnk_file_object_io_handle_get_size(
 		     &current_offset,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve current offset in file object.",
 			 function );
 
@@ -1574,10 +1573,10 @@ int pylnk_file_object_io_handle_get_size(
 		     SEEK_END,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_SEEK_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_SEEK_FAILED,
 			 "%s: unable to seek end of file object.",
 			 function );
 
@@ -1588,10 +1587,10 @@ int pylnk_file_object_io_handle_get_size(
 		     (off64_t *) size,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBERROR_RUNTIME_ERROR_GET_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
 			 "%s: unable to retrieve end offset in file object.",
 			 function );
 
@@ -1609,10 +1608,10 @@ int pylnk_file_object_io_handle_get_size(
 		     SEEK_SET,
 		     error ) != 1 )
 		{
-			liberror_error_set(
+			libcerror_error_set(
 			 error,
-			 LIBERROR_ERROR_DOMAIN_IO,
-			 LIBERROR_IO_ERROR_SEEK_FAILED,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_SEEK_FAILED,
 			 "%s: unable to seek current offset in file object.",
 			 function );
 
