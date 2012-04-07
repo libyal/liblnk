@@ -251,98 +251,6 @@ AC_DEFUN([AX_LIBBFIO_CHECK_LIB],
   ])
  ])
 
-dnl Function to detect if libbfio dependencies are available
-AC_DEFUN([AX_LIBBFIO_CHECK_LOCAL],
- [dnl Headers included in libbfio/libbfio_file.c
- AC_CHECK_HEADERS([errno.h fcntl.h sys/stat.h unistd.h])
-
- dnl File input/output functions used in libbfio/libbfio_file.h
- AC_CHECK_FUNCS([close fstat ftruncate getcwd lseek open read stat write])
-
- AS_IF(
-  [test "x$ac_cv_func_close" != xyes],
-  [AC_MSG_FAILURE(
-   [Missing function: close],
-   [1])
-  ])
- 
- AS_IF(
-  [test "x$ac_cv_func_fstat" != xyes],
-  [AC_MSG_FAILURE(
-   [Missing function: fstat],
-   [1])
-  ])
- 
- AS_IF(
-  [test "x$ac_cv_func_ftruncate" != xyes],
-  [AC_MSG_FAILURE(
-   [Missing function: ftruncate],
-   [1])
-  ])
- 
- AS_IF(
-  [test "x$ac_cv_func_getcwd" != xyes],
-  [AC_MSG_FAILURE(
-   [Missing function: getcwd],
-   [1])
-  ])
- 
- AS_IF(
-  [test "x$ac_cv_func_lseek" != xyes],
-  [AC_MSG_FAILURE(
-   [Missing function: lseek],
-   [1])
-  ])
- 
- AS_IF(
-  [test "x$ac_cv_func_open" != xyes],
-  [AC_MSG_FAILURE(
-   [Missing function: open],
-   [1])
-  ])
- 
- AS_IF(
-  [test "x$ac_cv_func_read" != xyes],
-  [AC_MSG_FAILURE(
-   [Missing function: read],
-   [1])
-  ])
- 
- AS_IF(
-  [test "x$ac_cv_func_stat" != xyes],
-  [AC_MSG_FAILURE(
-   [Missing function: stat],
-   [1])
-  ])
- 
- AS_IF(
-  [test "x$ac_cv_func_write" != xyes],
-  [AC_MSG_FAILURE(
-   [Missing function: write],
-   [1])
-  ])
-
- dnl Check for error string functions used in libbfio/libbfio_error_string.c
- AC_FUNC_STRERROR_R()
-
- AS_IF(
-  [test "x$ac_cv_have_decl_strerror_r" = xno],
-  [AC_CHECK_FUNCS([strerror])
-
-  AS_IF(
-   [test "x$ac_cv_func_strerror" != xyes],
-   [AC_MSG_FAILURE(
-    [Missing functions: strerror and strerror_r],
-    [1])
-   ])
-  ])
-
- ac_cv_libbfio_CPPFLAGS="-I../libbfio";
- ac_cv_libbfio_LIBADD="../libbfio/libbfio.la";
-
- ac_cv_libbfio=local
- ])
-
 dnl Function to detect how to enable libbfio
 AC_DEFUN([AX_LIBBFIO_CHECK_ENABLE],
  [AX_COMMON_ARG_WITH(
@@ -373,15 +281,18 @@ AC_DEFUN([AX_LIBBFIO_CHECK_ENABLE],
  dnl Check if the dependencies for the local library version
  AS_IF(
   [test "x$ac_cv_libbfio" != xyes],
-  [AX_LIBBFIO_CHECK_LOCAL
-
-  AC_DEFINE(
+  [AC_DEFINE(
    [HAVE_LOCAL_LIBBFIO],
    [1],
    [Define to 1 if the local version of libbfio is used.])
   AC_SUBST(
    [HAVE_LOCAL_LIBBFIO],
    [1])
+
+  ac_cv_libbfio_CPPFLAGS="-I../libbfio";
+  ac_cv_libbfio_LIBADD="../libbfio/libbfio.la";
+
+  ac_cv_libbfio=local
   ])
 
  AM_CONDITIONAL(

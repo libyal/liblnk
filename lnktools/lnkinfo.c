@@ -37,6 +37,8 @@
 #include "info_handle.h"
 #include "lnkoutput.h"
 #include "lnktools_libcerror.h"
+#include "lnktools_libclocale.h"
+#include "lnktools_libcnotify.h"
 #include "lnktools_libcsystem.h"
 #include "lnktools_liblnk.h"
 
@@ -83,11 +85,11 @@ void lnkinfo_signal_handler(
 		     lnkinfo_info_handle,
 		     &error ) != 1 )
 		{
-			libcsystem_notify_printf(
+			libcnotify_printf(
 			 "%s: unable to signal info handle to abort.\n",
 			 function );
 
-			libcsystem_notify_print_error_backtrace(
+			libcnotify_print_error_backtrace(
 			 error );
 			libcerror_error_free(
 			 &error );
@@ -98,7 +100,7 @@ void lnkinfo_signal_handler(
 	if( libcsystem_file_io_close(
 	     0 ) != 0 )
 	{
-		libcsystem_notify_printf(
+		libcnotify_printf(
 		 "%s: unable to close stdin.\n",
 		 function );
 	}
@@ -120,14 +122,23 @@ int main( int argc, char * const argv[] )
 	int result                                           = 0;
 	int verbose                                          = 0;
 
-	libcsystem_notify_set_stream(
+	libcnotify_stream_set(
 	 stderr,
 	 NULL );
-	libcsystem_notify_set_verbose(
+	libcnotify_verbose_set(
 	 1 );
 
-	if( libcsystem_initialize(
+	if( libclocale_initialize(
 	     "lnktools",
+	     &error ) != 1 )
+	{
+		fprintf(
+		 stderr,
+		 "Unable to initialize locale values.\n" );
+
+		goto on_error;
+	}
+	if( libcsystem_initialize(
 	     _IONBF,
 	     &error ) != 1 )
 	{
@@ -135,7 +146,7 @@ int main( int argc, char * const argv[] )
 		 stderr,
 		 "Unable to initialize system values.\n" );
 
-		libcsystem_notify_print_error_backtrace(
+		libcnotify_print_error_backtrace(
 		 error );
 		libcerror_error_free(
 		 &error );
@@ -201,7 +212,7 @@ int main( int argc, char * const argv[] )
 	}
 	source = argv[ optind ];
 
-	libcsystem_notify_set_verbose(
+	libcnotify_verbose_set(
 	 verbose );
 	liblnk_notify_set_stream(
 	 stderr,
@@ -288,7 +299,7 @@ int main( int argc, char * const argv[] )
 on_error:
 	if( error != NULL )
 	{
-		libcsystem_notify_print_error_backtrace(
+		libcnotify_print_error_backtrace(
 		 error );
 		libcerror_error_free(
 		 &error );

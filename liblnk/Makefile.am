@@ -3,6 +3,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/common \
 	@LIBCSTRING_CPPFLAGS@ \
 	@LIBCERROR_CPPFLAGS@ \
+	@LIBCLOCALE_CPPFLAGS@ \
 	@LIBCNOTIFY_CPPFLAGS@ \
 	@LIBUNA_CPPFLAGS@ \
 	@LIBCFILE_CPPFLAGS@ \
@@ -33,6 +34,7 @@ liblnk_la_SOURCES = \
 	liblnk_known_folder_location.c liblnk_known_folder_location.h \
 	liblnk_libbfio.h \
 	liblnk_libcerror.h \
+	liblnk_libclocale.h \
 	liblnk_libcnotify.h \
 	liblnk_libcstring.h \
 	liblnk_libfdatetime.h \
@@ -54,6 +56,7 @@ liblnk_la_SOURCES = \
 liblnk_la_LIBADD = \
 	@LIBCSTRING_LIBADD@ \
 	@LIBCERROR_LIBADD@ \
+	@LIBCLOCALE_LIBADD@ \
 	@LIBCNOTIFY_LIBADD@ \
 	@LIBUNA_LIBADD@ \
 	@LIBCFILE_LIBADD@ \

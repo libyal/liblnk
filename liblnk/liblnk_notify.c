@@ -52,7 +52,7 @@ int liblnk_notify_set_stream(
 {
 	static char *function = "liblnk_notify_set_stream";
 
-	if( libcnotify_set_stream(
+	if( libcnotify_stream_set(
 	     stream,
 	     error ) != 1 )
 	{

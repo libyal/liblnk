@@ -28,9 +28,7 @@
  */
 #if defined( HAVE_LOCAL_LIBCSTRING )
 
-#include <libcstring_codepage.h>
 #include <libcstring_definitions.h>
-#include <libcstring_locale.h>
 #include <libcstring_narrow_string.h>
 #include <libcstring_system_string.h>
 #include <libcstring_types.h>

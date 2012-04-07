@@ -1,6 +1,6 @@
 dnl Functions for libcerror
 dnl
-dnl Version: 20120406
+dnl Version: 20120407
 
 dnl Function to detect if libcerror is available
 dnl ac_libcerror_dummy is used to prevent AC_CHECK_LIB adding unnecessary -l<library> arguments
@@ -32,7 +32,49 @@ AC_DEFUN([AX_LIBCERROR_CHECK_LIB],
     [ac_cv_libcerror_dummy=yes],
     [ac_cv_libcerror=no])
   
-   dnl TODO add functions
+   dnl Error functions
+   AC_CHECK_LIB(
+    cerror,
+    libcerror_error_free,
+    [ac_cv_libcerror_dummy=yes],
+    [ac_cv_libcerror=no])
+   AC_CHECK_LIB(
+    cerror,
+    libcerror_error_set,
+    [ac_cv_libcerror_dummy=yes],
+    [ac_cv_libcerror=no])
+   AC_CHECK_LIB(
+    cerror,
+    libcerror_error_matches,
+    [ac_cv_libcerror_dummy=yes],
+    [ac_cv_libcerror=no])
+   AC_CHECK_LIB(
+    cerror,
+    libcerror_error_fprint,
+    [ac_cv_libcerror_dummy=yes],
+    [ac_cv_libcerror=no])
+   AC_CHECK_LIB(
+    cerror,
+    libcerror_error_sprint,
+    [ac_cv_libcerror_dummy=yes],
+    [ac_cv_libcerror=no])
+   AC_CHECK_LIB(
+    cerror,
+    libcerror_error_backtrace_fprint,
+    [ac_cv_libcerror_dummy=yes],
+    [ac_cv_libcerror=no])
+   AC_CHECK_LIB(
+    cerror,
+    libcerror_error_backtrace_sprint,
+    [ac_cv_libcerror_dummy=yes],
+    [ac_cv_libcerror=no])
+  
+   dnl System rrror functions
+   AC_CHECK_LIB(
+    cerror,
+    libcerror_system_set_error,
+    [ac_cv_libcerror_dummy=yes],
+    [ac_cv_libcerror=no])
    ])
   ])
 

@@ -3,6 +3,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/common \
 	@LIBCSTRING_CPPFLAGS@ \
 	@LIBCERROR_CPPFLAGS@ \
+	@LIBCLOCALE_CPPFLAGS@ \
+	@LIBCNOTIFY_CPPFLAGS@ \
 	@LIBUNA_CPPFLAGS@ \
 	@LIBCFILE_CPPFLAGS@ \
 	@LIBCPATH_CPPFLAGS@ \
@@ -25,14 +27,20 @@ lnkinfo_SOURCES = \
 	lnkinput.c lnkinput.h \
 	lnkoutput.c lnkoutput.h \
 	lnktools_libcerror.h \
+	lnktools_libclocale.h \
+	lnktools_libcnotify.h \
 	lnktools_libcstring.h \
+	lnktools_libcsystem.h \
 	lnktools_libfdatetime.h \
 	lnktools_libfguid.h \
 	lnktools_libfwsi.h \
 	lnktools_liblnk.h
 
 lnkinfo_LDADD  = \
+	@LIBCSTRING_LIBADD@ \
 	@LIBCERROR_LIBADD@ \
+	@LIBCLOCALE_LIBADD@ \
+	@LIBCNOTIFY_LIBADD@ \
 	../liblnk/liblnk.la \
 	@LIBFDATETIME_LIBADD@ \
 	@LIBFGUID_LIBADD@ \

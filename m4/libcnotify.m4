@@ -1,6 +1,6 @@
 dnl Functions for libcnotify
 dnl
-dnl Version: 20120406
+dnl Version: 20120407
 
 dnl Function to detect if libcnotify is available
 dnl ac_libcnotify_dummy is used to prevent AC_CHECK_LIB adding unnecessary -l<library> arguments
@@ -32,7 +32,46 @@ AC_DEFUN([AX_LIBCNOTIFY_CHECK_LIB],
     [ac_cv_libcnotify_dummy=yes],
     [ac_cv_libcnotify=no])
   
-   dnl TODO add functions
+   dnl Print functions
+   AC_CHECK_LIB(
+    cnotify,
+    libcnotify_printf,
+    [ac_cv_libcnotify_dummy=yes],
+    [ac_cv_libcnotify=no])
+   AC_CHECK_LIB(
+    cnotify,
+    libcnotify_print_data,
+    [ac_cv_libcnotify_dummy=yes],
+    [ac_cv_libcnotify=no])
+   AC_CHECK_LIB(
+    cnotify,
+    libcnotify_print_error_backtrace,
+    [ac_cv_libcnotify_dummy=yes],
+    [ac_cv_libcnotify=no])
+  
+   dnl Stream functions
+   AC_CHECK_LIB(
+    cnotify,
+    libcnotify_stream_set,
+    [ac_cv_libcnotify_dummy=yes],
+    [ac_cv_libcnotify=no])
+   AC_CHECK_LIB(
+    cnotify,
+    libcnotify_stream_open,
+    [ac_cv_libcnotify_dummy=yes],
+    [ac_cv_libcnotify=no])
+   AC_CHECK_LIB(
+    cnotify,
+    libcnotify_stream_close,
+    [ac_cv_libcnotify_dummy=yes],
+    [ac_cv_libcnotify=no])
+  
+   dnl Verbose functions
+   AC_CHECK_LIB(
+    cnotify,
+    libcnotify_verbose_set,
+    [ac_cv_libcnotify_dummy=yes],
+    [ac_cv_libcnotify=no])
    ])
   ])
 

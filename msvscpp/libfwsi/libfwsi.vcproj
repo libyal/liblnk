@@ -38,8 +38,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\libcstring;..\..\liberror;..\..\libnotify;..\..\libuna;..\..\libfdatetime;..\..\libfguid"
-				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBUNA;HAVE_LOCAL_LIBFDATETIME;HAVE_LOCAL_LIBFGUID;HAVE_LOCAL_LIBFWSI"
+				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\libcstring;..\..\libcerror;..\..\libcnotify;..\..\libuna;..\..\libfdatetime;..\..\libfguid"
+				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBCSTRING;HAVE_LOCAL_LIBCERROR;HAVE_LOCAL_LIBCNOTIFY;HAVE_LOCAL_LIBUNA;HAVE_LOCAL_LIBFDATETIME;HAVE_LOCAL_LIBFGUID;HAVE_LOCAL_LIBFWSI"
 				RuntimeLibrary="2"
 				WarningLevel="4"
 				CompileAs="1"
@@ -98,12 +98,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\libcstring;..\..\liberror;..\..\libnotify;..\..\libuna;..\..\libfdatetime;..\..\libfguid"
-				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBUNA;HAVE_LOCAL_LIBFDATETIME;HAVE_LOCAL_LIBFGUID;HAVE_LOCAL_LIBFWSI"
+				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\libcstring;..\..\libcerror;..\..\libcnotify;..\..\libuna;..\..\libfdatetime;..\..\libfguid"
+				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBCSTRING;HAVE_LOCAL_LIBCERROR;HAVE_LOCAL_LIBCNOTIFY;HAVE_LOCAL_LIBUNA;HAVE_LOCAL_LIBFDATETIME;HAVE_LOCAL_LIBFGUID;HAVE_LOCAL_LIBFWSI"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="true"
 				RuntimeLibrary="3"
 				WarningLevel="4"
+				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
 			<Tool
@@ -147,6 +148,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_array_type.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_error.c"
 				>
 			</File>
@@ -163,6 +168,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_item_list.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_support.c"
 				>
 			</File>
@@ -172,6 +181,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_array_type.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_definitions.h"
 				>
@@ -197,6 +210,22 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_item_list.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_libcerror.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_libcnotify.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_libcstring.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_libfdatetime.h"
 				>
 			</File>
@@ -214,6 +243,10 @@
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_types.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_unused.h"
 				>
 			</File>
 		</Filter>

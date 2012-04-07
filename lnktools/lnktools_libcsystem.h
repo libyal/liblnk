@@ -34,7 +34,6 @@
 #include <libcsystem_getopt.h>
 #include <libcsystem_glob.h>
 #include <libcsystem_i18n.h>
-#include <libcsystem_notify.h>
 #include <libcsystem_signal.h>
 #include <libcsystem_string.h>
 #include <libcsystem_support.h>

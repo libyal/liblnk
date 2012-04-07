@@ -1,7 +1,7 @@
 /*
- * The internal libcstring header
+ * The internal libcnotify header
  *
- * Copyright (c) 2009-2012, Joachim Metz <jbmetz@users.sourceforge.net>
+ * Copyright (c) 2010-2012, Joachim Metz <jbmetz@users.sourceforge.net>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -19,34 +19,33 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LNKTOOLS_LIBCSTRING_H )
-#define _LNKTOOLS_LIBCSTRING_H
+#if !defined( _LNKTOOLS_LIBCNOTIFY_H )
+#define _LNKTOOLS_LIBCNOTIFY_H
 
 #include <common.h>
 
-/* Define HAVE_LOCAL_LIBCSTRING for local use of libcstring
+/* Define HAVE_LOCAL_LIBCNOTIFY for local use of libcnotify
  */
-#if defined( HAVE_LOCAL_LIBCSTRING )
+#if defined( HAVE_LOCAL_LIBCNOTIFY )
 
-#include <libcstring_definitions.h>
-#include <libcstring_narrow_string.h>
-#include <libcstring_system_string.h>
-#include <libcstring_types.h>
-#include <libcstring_wide_string.h>
+#include <libcnotify_definitions.h>
+#include <libcnotify_print.h>
+#include <libcnotify_stream.h>
+#include <libcnotify_verbose.h>
 
-#elif defined( HAVE_LIBCSTRING_H )
+#elif defined( HAVE_LIBCNOTIFY_H )
 
-/* If libtool DLL support is enabled set LIBCSTRING_DLL_IMPORT
- * before including libcstring.h
+/* If libtool DLL support is enabled set LIBCNOTIFY_DLL_IMPORT
+ * before including libcnotify.h
  */
 #if defined( _WIN32 ) && defined( DLL_IMPORT )
-#define LIBCSTRING_DLL_IMPORT
+#define LIBCNOTIFY_DLL_IMPORT
 #endif
 
-#include <libcstring.h>
+#include <libcnotify.h>
 
 #else
-#error Missing libcstring.h
+#error Missing libcnotify.h
 #endif
 
 #endif
