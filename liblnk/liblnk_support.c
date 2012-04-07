@@ -29,7 +29,6 @@
 #include "liblnk_io_handle.h"
 #include "liblnk_libbfio.h"
 #include "liblnk_libcerror.h"
-#include "liblnk_libclocale.h"
 #include "liblnk_libcstring.h"
 #include "liblnk_support.h"
 
@@ -61,19 +60,19 @@ int liblnk_get_codepage(
 {
 	static char *function = "liblnk_get_codepage";
 
-	if( libclocale_codepage_get(
-	     codepage,
-	     error ) != 1 )
+	if( codepage == NULL )
 	{
 		libcerror_error_set(
 		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve codepage.",
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid codepage.",
 		 function );
 
 		return( -1 );
 	}
+	*codepage = libcstring_narrow_system_string_codepage;
+
 	return( 1 );
 }
 
@@ -87,19 +86,48 @@ int liblnk_set_codepage(
 {
 	static char *function = "liblnk_set_codepage";
 
-	if( libclocale_codepage_set(
-	     codepage,
-	     error ) != 1 )
+	if( ( codepage != LIBLNK_CODEPAGE_ASCII )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_1 )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_2 )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_3 )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_4 )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_5 )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_6 )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_7 )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_8 )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_9 )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_10 )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_11 )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_13 )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_14 )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_15 )
+	 && ( codepage != LIBLNK_CODEPAGE_ISO_8859_16 )
+	 && ( codepage != LIBLNK_CODEPAGE_KOI8_R )
+	 && ( codepage != LIBLNK_CODEPAGE_KOI8_U )
+	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_874 )
+	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_932 )
+	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_936 )
+	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_1250 )
+	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_1251 )
+	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_1252 )
+	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_1253 )
+	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_1254 )
+	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_1256 )
+	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_1257 )
+	 && ( codepage != LIBLNK_CODEPAGE_WINDOWS_1258 )
+	 && ( codepage != 0 ) )
 	{
 		libcerror_error_set(
 		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set codepage.",
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: unsupported codepage.",
 		 function );
 
 		return( -1 );
 	}
+	libcstring_narrow_system_string_codepage = codepage;
+
 	return( 1 );
 }
 
