@@ -105,7 +105,7 @@ PyObject *pylnk_check_file_signature(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	libcerror_error_t *error     = NULL;
+	libcerror_error_t *error    = NULL;
 	static char *function       = "pylnk_check_file_signature";
 	static char *keyword_list[] = { "filename", NULL };
 	const char *filename        = NULL;

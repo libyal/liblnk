@@ -1,6 +1,6 @@
 dnl Functions for libcstring
 dnl
-dnl Version: 20120406
+dnl Version: 20120407
 
 dnl Function to detect if libcstring is available
 dnl ac_libcstring_dummy is used to prevent AC_CHECK_LIB adding unnecessary -l<library> arguments
@@ -57,76 +57,11 @@ AC_DEFUN([AX_LIBCSTRING_CHECK_LIB],
   ])
  ])
 
-dnl Function to detect whether nl_langinfo supports CODESET
-AC_DEFUN([AX_LIBCSTRING_CHECK_FUNC_LANGINFO_CODESET],
- [AC_CHECK_FUNCS([nl_langinfo])
-
- AS_IF(
-  [test "x$ac_cv_func_nl_langinfo" = xyes],
-  [AC_CACHE_CHECK(
-   [for nl_langinfo CODESET support],
-   [ac_cv_cv_langinfo_codeset],
-   [AC_LANG_PUSH(C)
-   AC_LINK_IFELSE(
-    [AC_LANG_PROGRAM(
-     [[#include <langinfo.h>]],
-     [[char* charset = nl_langinfo( CODESET );]] )],
-    [ac_cv_cv_langinfo_codeset=yes],
-    [ac_cv_cv_langinfo_codeset=no])
-   AC_LANG_POP(C) ]) ],
-  [ac_cv_cv_langinfo_codeset=no])
-
- AS_IF(
-  [test "x$ac_cv_cv_langinfo_codeset" = xyes],
-  [AC_DEFINE(
-   [HAVE_LANGINFO_CODESET],
-   [1],
-   [Define if nl_langinfo has CODESET support.])
-  ])
- ])
-
 dnl Function to detect if libcstring dependencies are available
 AC_DEFUN([AX_LIBCSTRING_CHECK_LOCAL],
  [dnl Headers included in libcstring/libcstring_narrow_string.h
  AC_CHECK_HEADERS([stdlib.h string.h])
 
- dnl Headers included in libcstring/libcstring_locale.c
- AC_CHECK_HEADERS([langinfo.h locale.h])
-
- dnl Check for environment functions in libcstring/libcstring_locale.c
- AC_CHECK_FUNCS([getenv])
-
- AS_IF(
-  [test "x$ac_cv_func_getenv" != xyes],
-  [AC_MSG_FAILURE(
-   [Missing function: getenv],
-   [1])
-  ])
- 
- dnl Check for localization functions in libcstring/libcstring_locale.c
- AS_IF(
-  [test "x$ac_cv_enable_winapi" = xno],
-  [AC_CHECK_FUNCS([localeconv])
-
-  AS_IF(
-   [test "x$ac_cv_func_localeconv" != xyes],
-   [AC_MSG_FAILURE(
-    [Missing function: localeconv],
-    [1])
-   ])
-  ])
- 
- AC_CHECK_FUNCS([setlocale])
-
- AS_IF(
-  [test "x$ac_cv_func_setlocale" != xyes],
-  [AC_MSG_FAILURE(
-   [Missing function: setlocale],
-   [1])
-  ])
- 
- AX_LIBCSTRING_CHECK_FUNC_LANGINFO_CODESET
- 
  dnl Narrow character string functions used in libcstring/libcstring_narrow_string.h
  AC_CHECK_FUNCS([fgets memchr memcmp memcpy memrchr snprintf sscanf strcasecmp strchr strlen strncasecmp strncmp strncpy strrchr strstr vsnprintf])
 

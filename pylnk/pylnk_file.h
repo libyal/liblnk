@@ -25,7 +25,6 @@
 #include <common.h>
 #include <types.h>
 
-#include "pylnk_libcerror.h"
 #include "pylnk_liblnk.h"
 #include "pylnk_python.h"
 

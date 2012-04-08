@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="libcnotify"
-	ProjectGUID="{9381BD88-C1D2-4573-9567-5A9D705AE74E}"
+	ProjectGUID="{5304AD69-D449-4589-B2C9-E4607E56A51D}"
 	RootNamespace="libcnotify"
 	TargetFrameworkVersion="131072"
 	>
@@ -41,6 +41,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\libcstring;..\..\libcerror"
 				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBCSTRING;HAVE_LOCAL_LIBCERROR;HAVE_LOCAL_LIBCNOTIFY"
+				SmallerTypeCheck="true"
 				RuntimeLibrary="2"
 				WarningLevel="4"
 				WarnAsError="false"

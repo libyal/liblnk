@@ -154,15 +154,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\libcstring\libcstring_locale.c"
-				>
-			</File>
-			<File
 				RelativePath="..\..\libcstring\libcstring_support.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\libcstring\libcstring_system_string.c"
 				>
 			</File>
 			<File
@@ -176,19 +168,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\libcstring\libcstring_codepage.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\libcstring\libcstring_definitions.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\libcstring\libcstring_extern.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\libcstring\libcstring_locale.h"
 				>
 			</File>
 			<File

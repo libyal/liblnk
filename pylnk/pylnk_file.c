@@ -34,6 +34,7 @@
 #include "pylnk_file_object_io_handle.h"
 #include "pylnk_libbfio.h"
 #include "pylnk_libcerror.h"
+#include "pylnk_libclocale.h"
 #include "pylnk_libcstring.h"
 #include "pylnk_liblnk.h"
 #include "pylnk_python.h"
@@ -181,7 +182,7 @@ PyGetSetDef pylnk_file_object_get_set_definitions[] = {
 
 	{ "ascii_codepage",
 	  (getter) pylnk_file_get_ascii_codepage,
-	  (setter) 0,
+	  (setter) pylnk_file_set_ascii_codepage,
 	  "The codepage used for ASCII strings in the file",
 	  NULL },
 
@@ -424,7 +425,7 @@ int pylnk_file_init(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	static char *function   = "pylnk_file_init";
+	static char *function    = "pylnk_file_init";
 	libcerror_error_t *error = NULL;
 
 	if( pylnk_file == NULL )
@@ -478,7 +479,8 @@ void pylnk_file_free(
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
 	libcerror_error_t *error = NULL;
-	static char *function   = "pylnk_file_free";
+	static char *function    = "pylnk_file_free";
+	int result               = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -516,9 +518,15 @@ void pylnk_file_free(
 
 		return;
 	}
-	if( liblnk_file_free(
-	     &( pylnk_file->file ),
-	     &error ) != 1 )
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_free(
+	          &( pylnk_file->file ),
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
 	{
 		if( libcerror_error_backtrace_sprint(
 		     error,
@@ -554,8 +562,8 @@ PyObject *pylnk_file_signal_abort(
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
 	libcerror_error_t *error = NULL;
-	static char *function   = "pylnk_file_signal_abort";
-	int result              = 0;
+	static char *function    = "pylnk_file_signal_abort";
+	int result               = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -615,7 +623,7 @@ PyObject *pylnk_file_open(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	libcerror_error_t *error     = NULL;
+	libcerror_error_t *error    = NULL;
 	char *filename              = NULL;
 	static char *keyword_list[] = { "filename", "access_flags", NULL };
 	static char *function       = "pylnk_file_open";
@@ -700,7 +708,7 @@ PyObject *pylnk_file_open_file_object(
 
 	PyObject *file_object            = NULL;
 	libbfio_handle_t *file_io_handle = NULL;
-	libcerror_error_t *error          = NULL;
+	libcerror_error_t *error         = NULL;
 	static char *keyword_list[]      = { "file_object", "access_flags", NULL };
 	static char *function            = "pylnk_file_open_file_object";
 	int access_flags                 = 0;
@@ -818,8 +826,8 @@ PyObject *pylnk_file_close(
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
 	libcerror_error_t *error = NULL;
-	static char *function   = "pylnk_file_close";
-	int result              = 0;
+	static char *function    = "pylnk_file_close";
+	int result               = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -877,7 +885,7 @@ PyObject *pylnk_file_get_ascii_codepage(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	libcerror_error_t *error     = NULL;
+	libcerror_error_t *error    = NULL;
 	PyObject *string_object     = NULL;
 	const char *codepage_string = NULL;
 	static char *function       = "pylnk_file_get_ascii_codepage";
@@ -958,7 +966,7 @@ PyObject *pylnk_file_set_ascii_codepage(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	libcerror_error_t *error       = NULL;
+	libcerror_error_t *error      = NULL;
 	char *codepage_string         = NULL;
 	static char *keyword_list[]   = { "codepage", NULL };
 	static char *function         = "pylnk_file_set_ascii_codepage";
@@ -996,10 +1004,10 @@ PyObject *pylnk_file_set_ascii_codepage(
 	codepage_string_length = libcstring_narrow_string_length(
 	                          codepage_string );
 
-	feature_flags = PYLNK_CODEPAGE_FEATURE_FLAG_HAVE_KOI8_CODEPAGES
-	              | PYLNK_CODEPAGE_FEATURE_FLAG_HAVE_WINDOWS_CODEPAGES;
+	feature_flags = LIBCLOCALE_CODEPAGE_FEATURE_FLAG_HAVE_KOI8
+	              | LIBCLOCALE_CODEPAGE_FEATURE_FLAG_HAVE_WINDOWS;
 
-	if( pylnk_codepage_from_string(
+	if( libclocale_codepage_copy_from_string(
 	     &ascii_codepage,
 	     codepage_string,
 	     codepage_string_length,
@@ -1071,7 +1079,7 @@ PyObject *pylnk_file_get_file_creation_time(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	libcerror_error_t *error    = NULL;
+	libcerror_error_t *error   = NULL;
 	PyObject *date_time_object = NULL;
 	static char *function      = "pylnk_file_get_file_creation_time";
 	uint64_t filetime          = 0;
@@ -1134,7 +1142,7 @@ PyObject *pylnk_file_get_file_modification_time(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	libcerror_error_t *error    = NULL;
+	libcerror_error_t *error   = NULL;
 	PyObject *date_time_object = NULL;
 	static char *function      = "pylnk_file_get_file_modification_time";
 	uint64_t filetime          = 0;
@@ -1197,7 +1205,7 @@ PyObject *pylnk_file_get_file_access_time(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	libcerror_error_t *error    = NULL;
+	libcerror_error_t *error   = NULL;
 	PyObject *date_time_object = NULL;
 	static char *function      = "pylnk_file_get_file_access_time";
 	uint64_t filetime          = 0;
@@ -1261,12 +1269,12 @@ PyObject *pylnk_file_get_local_path(
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
 	libcerror_error_t *error = NULL;
-	PyObject *string_object = NULL;
-	static char *function   = "pylnk_file_get_local_path";
-	const char *errors      = NULL;
-	char *local_path        = NULL;
-	size_t local_path_size  = 0;
-	int result              = 0;
+	PyObject *string_object  = NULL;
+	static char *function    = "pylnk_file_get_local_path";
+	const char *errors       = NULL;
+	char *local_path         = NULL;
+	size_t local_path_size   = 0;
+	int result               = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -1410,7 +1418,7 @@ PyObject *pylnk_file_get_network_path(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	libcerror_error_t *error  = NULL;
+	libcerror_error_t *error = NULL;
 	PyObject *string_object  = NULL;
 	static char *function    = "pylnk_file_get_network_path";
 	const char *errors       = NULL;
@@ -1560,7 +1568,7 @@ PyObject *pylnk_file_get_description(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	libcerror_error_t *error  = NULL;
+	libcerror_error_t *error = NULL;
 	PyObject *string_object  = NULL;
 	static char *function    = "pylnk_file_get_description";
 	const char *errors       = NULL;
@@ -1710,7 +1718,7 @@ PyObject *pylnk_file_get_relative_path(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	libcerror_error_t *error   = NULL;
+	libcerror_error_t *error  = NULL;
 	PyObject *string_object   = NULL;
 	static char *function     = "pylnk_file_get_relative_path";
 	const char *errors        = NULL;
@@ -1860,7 +1868,7 @@ PyObject *pylnk_file_get_working_directory(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	libcerror_error_t *error       = NULL;
+	libcerror_error_t *error      = NULL;
 	PyObject *string_object       = NULL;
 	static char *function         = "pylnk_file_get_working_directory";
 	const char *errors            = NULL;
@@ -2010,7 +2018,7 @@ PyObject *pylnk_file_get_command_line_arguments(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	libcerror_error_t *error            = NULL;
+	libcerror_error_t *error           = NULL;
 	PyObject *string_object            = NULL;
 	static char *function              = "pylnk_file_get_command_line_arguments";
 	const char *errors                 = NULL;
@@ -2160,7 +2168,7 @@ PyObject *pylnk_file_get_icon_location(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	libcerror_error_t *error   = NULL;
+	libcerror_error_t *error  = NULL;
 	PyObject *string_object   = NULL;
 	static char *function     = "pylnk_file_get_icon_location";
 	const char *errors        = NULL;
@@ -2310,7 +2318,7 @@ PyObject *pylnk_file_get_environment_variables_location(
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
-	libcerror_error_t *error                    = NULL;
+	libcerror_error_t *error                   = NULL;
 	PyObject *string_object                    = NULL;
 	static char *function                      = "pylnk_file_get_environment_variables_location";
 	const char *errors                         = NULL;

@@ -1,5 +1,5 @@
 /*
- * Codepage functions
+ * The internal libclocale header
  *
  * Copyright (c) 2009-2012, Joachim Metz <jbmetz@users.sourceforge.net>
  *
@@ -9,33 +9,43 @@
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _PYLNK_CODEPAGE_H )
-#define _PYLNK_CODEPAGE_H
+#if !defined( _LIBLNK_LIBCLOCALE_H )
+#define _LIBLNK_LIBCLOCALE_H
 
 #include <common.h>
-#include <types.h>
 
-#if defined( __cplusplus )
-extern "C" {
+/* Define HAVE_LOCAL_LIBCLOCALE for local use of libclocale
+ */
+#if defined( HAVE_LOCAL_LIBCLOCALE )
+
+#include <libclocale_codepage.h>
+#include <libclocale_definitions.h>
+#include <libclocale_locale.h>
+#include <libclocale_support.h>
+
+#elif defined( HAVE_LIBCLOCALE_H )
+
+/* If libtool DLL support is enabled set LIBCLOCALE_DLL_IMPORT
+ * before including libclocale.h
+ */
+#if defined( _WIN32 ) && defined( DLL_IMPORT )
+#define LIBCLOCALE_DLL_IMPORT
 #endif
 
-const char *pylnk_codepage_to_string(
-             int codepage );
+#include <libclocale.h>
 
-/* TODO add list function */
-
-#if defined( __cplusplus )
-}
+#else
+#error Missing libclocale.h
 #endif
 
 #endif

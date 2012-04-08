@@ -25,8 +25,8 @@
 #include <types.h>
 
 #include "info_handle.h"
-#include "lnkinput.h"
 #include "lnktools_libcerror.h"
+#include "lnktools_libclocale.h"
 #include "lnktools_libcstring.h"
 #include "lnktools_libfdatetime.h"
 #include "lnktools_libfguid.h"
@@ -215,8 +215,10 @@ int info_handle_set_ascii_codepage(
      const libcstring_system_character_t *string,
      libcerror_error_t **error )
 {
-	static char *function = "info_handle_set_ascii_codepage";
-	int result            = 0;
+	static char *function  = "info_handle_set_ascii_codepage";
+	size_t string_length   = 0;
+	uint32_t feature_flags = 0;
+	int result             = 0;
 
 	if( info_handle == NULL )
 	{
@@ -229,11 +231,27 @@ int info_handle_set_ascii_codepage(
 
 		return( -1 );
 	}
-	result = lnkinput_determine_ascii_codepage(
-	          string,
-	          &( info_handle->ascii_codepage ),
-	          error );
+	feature_flags = LIBCLOCALE_CODEPAGE_FEATURE_FLAG_HAVE_KOI8
+	              | LIBCLOCALE_CODEPAGE_FEATURE_FLAG_HAVE_WINDOWS;
 
+	string_length = libcstring_system_string_length(
+	                 string );
+
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+	result = libclocale_codepage_copy_from_string_wide(
+	          &( info_handle->ascii_codepage ),
+	          string,
+	          string_length,
+	          feature_flags,
+	          error );
+#else
+	result = libclocale_codepage_copy_from_string(
+	          &( info_handle->ascii_codepage ),
+	          string,
+	          string_length,
+	          feature_flags,
+	          error );
+#endif
 	if( result == -1 )
 	{
 		libcerror_error_set(
@@ -1615,9 +1633,14 @@ int info_handle_link_target_identifier_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error )
 {
+	libfwsi_item_t *item                    = NULL;
+	libfwsi_item_list_t *item_list          = NULL;
 	uint8_t *link_target_identifier_data    = NULL;
 	static char *function                   = "info_handle_link_target_identifier_fprint";
 	size_t link_target_identifier_data_size = 0;
+	uint8_t item_type                       = 0;
+	int item_index                          = 0;
+	int number_of_items                     = 0;
 	int result                              = 0;
 
 	if( info_handle == NULL )
@@ -1646,7 +1669,7 @@ int info_handle_link_target_identifier_fprint(
 		 "%s: unable to retrieve link target identifier data.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	else if( result != 0 )
 	{
@@ -1654,9 +1677,132 @@ int info_handle_link_target_identifier_fprint(
 		 info_handle->notify_stream,
 		 "Link target identifier:\n" );
 
+		if( libfwsi_item_list_initialize(
+		     &item_list,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 "%s: unable to create item list.",
+			 function );
+
+			goto on_error;
+		}
+		if( libfwsi_item_list_copy_from_byte_stream(
+		     item_list,
+		     link_target_identifier_data,
+		     link_target_identifier_data_size,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy item list from byte stream.",
+			 function );
+
+			goto on_error;
+		}
+		if( libfwsi_item_list_get_number_of_items(
+		     item_list,
+		     &number_of_items,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve number of items.",
+			 function );
+
+			goto on_error;
+		}
+		for( item_index = 0;
+		     item_index < number_of_items;
+		     item_index++ )
+		{
+			if( libfwsi_item_list_get_item(
+			     item_list,
+			     item_index,
+			     &item,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to retrieve item: %d.",
+				 function,
+				 item_index );
+
+				goto on_error;
+			}
+			if( libfwsi_item_get_type(
+			     item,
+			     &item_type,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to retrieve item: %d type.",
+				 function,
+				 item_index );
+
+				goto on_error;
+			}
 /* TODO */
+			if( libfwsi_item_free(
+			     &item,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+				 "%s: unable to free item: %d.",
+				 function,
+				 item_index );
+
+				goto on_error;
+			}
+		}
+		if( libfwsi_item_list_free(
+		     &item_list,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free item list.",
+			 function );
+
+			goto on_error;
+		}
+		fprintf(
+		 info_handle->notify_stream,
+		 "\n" );
 	}
 	return( 1 );
+
+on_error:
+	if( item != NULL )
+	{
+		libfwsi_item_free(
+		 &item,
+		 NULL );
+	}
+	if( item_list != NULL )
+	{
+		libfwsi_item_list_free(
+		 &item_list,
+		 NULL );
+	}
+	return( -1 );
 }
 
 /* Prints the distributed link tracking data
@@ -2205,6 +2351,19 @@ int info_handle_file_fprint(
 	 info_handle->notify_stream,
 	 "\n" );
 
+	if( info_handle_link_target_identifier_fprint(
+	     info_handle,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 "%s: unable to print link target identifier data.",
+		 function );
+
+		return( -1 );
+	}
 	if( info_handle_distributed_link_tracking_fprint(
 	     info_handle,
 	     error ) != 1 )

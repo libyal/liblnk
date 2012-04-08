@@ -37,6 +37,7 @@
 #include "info_handle.h"
 #include "lnkoutput.h"
 #include "lnktools_libcerror.h"
+#include "lnktools_libclocale.h"
 #include "lnktools_libcnotify.h"
 #include "lnktools_libcsystem.h"
 #include "lnktools_liblnk.h"
@@ -127,8 +128,17 @@ int main( int argc, char * const argv[] )
 	libcnotify_verbose_set(
 	 1 );
 
-	if( libcsystem_initialize(
+	if( libclocale_initialize(
 	     "lnktools",
+	     &error ) != 1 )
+	{
+		fprintf(
+		 stderr,
+		 "Unable to initialize locale values.\n" );
+
+		goto on_error;
+	}
+	if( libcsystem_initialize(
 	     _IONBF,
 	     &error ) != 1 )
 	{
@@ -136,12 +146,7 @@ int main( int argc, char * const argv[] )
 		 stderr,
 		 "Unable to initialize system values.\n" );
 
-		libcnotify_print_error_backtrace(
-		 error );
-		libcerror_error_free(
-		 &error );
-
-		return( EXIT_FAILURE );
+		goto on_error;
 	}
 	lnkoutput_version_fprint(
 	 stdout,
