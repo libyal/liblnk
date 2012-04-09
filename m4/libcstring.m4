@@ -1,6 +1,6 @@
 dnl Functions for libcstring
 dnl
-dnl Version: 20120407
+dnl Version: 20120408
 
 dnl Function to detect if libcstring is available
 dnl ac_libcstring_dummy is used to prevent AC_CHECK_LIB adding unnecessary -l<library> arguments
@@ -61,6 +61,9 @@ dnl Function to detect if libcstring dependencies are available
 AC_DEFUN([AX_LIBCSTRING_CHECK_LOCAL],
  [dnl Headers included in libcstring/libcstring_narrow_string.h
  AC_CHECK_HEADERS([stdlib.h string.h])
+
+ dnl Headers included in libcstring/libcstring_wide.h
+ AC_CHECK_HEADERS([wchar.h wctype.h])
 
  dnl Narrow character string functions used in libcstring/libcstring_narrow_string.h
  AC_CHECK_FUNCS([fgets memchr memcmp memcpy memrchr snprintf sscanf strcasecmp strchr strlen strncasecmp strncmp strncpy strrchr strstr vsnprintf])
