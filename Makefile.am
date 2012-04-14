@@ -75,7 +75,7 @@ library:
 	(cd $(srcdir)/common && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libcstring && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libcerror && $(MAKE) $(AM_MAKEFLAGS))
-	(cd $(srcdir)/libcloclae && $(MAKE) $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libclocale && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libcnotify && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libuna && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libcfile && $(MAKE) $(AM_MAKEFLAGS))
