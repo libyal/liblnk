@@ -324,7 +324,7 @@ int liblnk_file_open(
 		 "%s: unable to create file IO handle.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libbfio_handle_set_track_offsets_read(
@@ -339,11 +339,7 @@ int liblnk_file_open(
                  "%s: unable to set track offsets read in file IO handle.",
                  function );
 
-		libbfio_handle_free(
-		 &file_io_handle,
-		 NULL );
-
-                return( -1 );
+		goto on_error;
 	}
 #endif
 	if( libbfio_file_set_name(
@@ -360,11 +356,7 @@ int liblnk_file_open(
                  "%s: unable to set filename in file IO handle.",
                  function );
 
-		libbfio_handle_free(
-		 &file_io_handle,
-		 NULL );
-
-                return( -1 );
+                goto on_error;
 	}
 	if( liblnk_file_open_file_io_handle(
 	     file,
@@ -380,15 +372,20 @@ int liblnk_file_open(
 		 function,
 		 filename );
 
-		libbfio_handle_free(
-		 &file_io_handle,
-		 NULL );
-
-		return( -1 );
+                goto on_error;
 	}
 	internal_file->file_io_handle_created_in_library = 1;
 
 	return( 1 );
+
+on_error:
+	if( file_io_handle != NULL )
+	{
+		libbfio_handle_free(
+		 &file_io_handle,
+		 NULL );
+	}
+	return( -1 );
 }
 
 #if defined( HAVE_WIDE_CHARACTER_TYPE )
@@ -464,7 +461,7 @@ int liblnk_file_open_wide(
 		 "%s: unable to create file IO handle.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libbfio_handle_set_track_offsets_read(
@@ -479,11 +476,7 @@ int liblnk_file_open_wide(
                  "%s: unable to set track offsets read in file IO handle.",
                  function );
 
-		libbfio_handle_free(
-		 &file_io_handle,
-		 NULL );
-
-                return( -1 );
+		goto on_error;
 	}
 #endif
 	if( libbfio_file_set_name_wide(
@@ -500,11 +493,7 @@ int liblnk_file_open_wide(
                  "%s: unable to set filename in file IO handle.",
                  function );
 
-		libbfio_handle_free(
-		 &file_io_handle,
-		 NULL );
-
-                return( -1 );
+		goto on_error;
 	}
 	if( liblnk_file_open_file_io_handle(
 	     file,
@@ -520,15 +509,20 @@ int liblnk_file_open_wide(
 		 function,
 		 filename );
 
-		libbfio_handle_free(
-		 &file_io_handle,
-		 NULL );
-
-		return( -1 );
+		goto on_error;
 	}
 	internal_file->file_io_handle_created_in_library = 1;
 
 	return( 1 );
+
+on_error:
+	if( file_io_handle != NULL )
+	{
+		libbfio_handle_free(
+		 &file_io_handle,
+		 NULL );
+	}
+	return( -1 );
 }
 
 #endif
@@ -609,10 +603,8 @@ int liblnk_file_open_file_io_handle(
 	{
 		bfio_access_flags = LIBBFIO_ACCESS_FLAG_READ;
 	}
-	internal_file->file_io_handle = file_io_handle;
-
 	file_io_handle_is_open = libbfio_handle_is_open(
-	                          internal_file->file_io_handle,
+	                          file_io_handle,
 	                          error );
 
 	if( file_io_handle_is_open == -1 )
@@ -624,12 +616,12 @@ int liblnk_file_open_file_io_handle(
 		 "%s: unable to open file.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	else if( file_io_handle_is_open == 0 )
 	{
 		if( libbfio_handle_open(
-		     internal_file->file_io_handle,
+		     file_io_handle,
 		     bfio_access_flags,
 		     error ) != 1 )
 		{
@@ -640,9 +632,12 @@ int liblnk_file_open_file_io_handle(
 			 "%s: unable to open file IO handle.",
 			 function );
 
-			return( -1 );
+			goto on_error;
 		}
+		internal_file->file_io_handle_opened_in_library = 1;
 	}
+	internal_file->file_io_handle = file_io_handle;
+
 	if( liblnk_file_open_read(
 	     internal_file,
 	     error ) != 1 )
@@ -654,9 +649,21 @@ int liblnk_file_open_file_io_handle(
 		 "%s: unable to read from file handle.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	return( 1 );
+
+on_error:
+	if( file_io_handle_is_open == 0 )
+	{
+		libbfio_handle_close(
+		 file_io_handle,
+		 error );
+	}
+	internal_file->file_io_handle                   = NULL;
+	internal_file->file_io_handle_opened_in_library = 0;
+
+	return( -1 );
 }
 
 /* Closes a file
@@ -714,18 +721,22 @@ int liblnk_file_close(
 			}
 		}
 #endif
-		if( libbfio_handle_close(
-		     internal_file->file_io_handle,
-		     error ) != 0 )
+		if( internal_file->file_io_handle_opened_in_library != 0 )
 		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_IO,
-			 LIBCERROR_IO_ERROR_CLOSE_FAILED,
-			 "%s: unable to close file IO handle.",
-			 function );
+			if( libbfio_handle_close(
+			     internal_file->file_io_handle,
+			     error ) != 0 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_IO,
+				 LIBCERROR_IO_ERROR_CLOSE_FAILED,
+				 "%s: unable to close file IO handle.",
+				 function );
 
-			result = -1;
+				result = -1;
+			}
+			internal_file->file_io_handle_opened_in_library = 0;
 		}
 		if( libbfio_handle_free(
 		     &( internal_file->file_io_handle ),
@@ -740,10 +751,8 @@ int liblnk_file_close(
 
 			result = -1;
 		}
+		internal_file->file_io_handle_created_in_library = 0;
 	}
-	internal_file->file_io_handle                    = NULL;
-	internal_file->file_io_handle_created_in_library = 0;
-
 	if( internal_file->file_information != NULL )
 	{
 		if( liblnk_file_information_free(

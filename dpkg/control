@@ -27,3 +27,10 @@ Depends: liblnk (= ${Source-Version}), ${shlibs:Depends}
 Description: Several tools for reading Windows Shortcut Files (LNK)
  Several tools for reading Windows Shortcut Files (LNK).
 
+Package: liblnk-python
+Section: python
+Architecture: any
+Depends: liblnk (= ${Source-Version}), ${shlibs:Depends}
+Description: Python bindings for liblnk
+ Python bindings for liblnk.
+

@@ -3,6 +3,7 @@ TODO
 * what about trailing data in xp lnk files ?
 * what about shell items
 * what about ole properties
+* pylnk add functions
 
 Checks
 * compare environment variables string and unicode string
@@ -25,9 +26,6 @@ Debug
 
 Library
 * create API functions to access link information values
-* move libbfio handle from io handle to file
-* update support check signature (pff)
-* move shell item code into libfwsi (check)
 * add libfvalue
 
 API
@@ -47,6 +45,10 @@ Release:
 Bindings:
 * .net
 * java
+
+20120419
+* applied updates
+* code clean up
 
 20120408
 * code clean up

@@ -150,7 +150,7 @@ int liblnk_distributed_link_tracker_properties_read(
 	uint32_t data_version                                                                          = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	libcstring_system_character_t guid_string[ LIBFGUID_IDENTIFIER_STRING_SIZE ];
+	libcstring_system_character_t guid_string[ 32 ];
 
 	libcstring_system_character_t *value_string                                                    = NULL;
 	libfguid_identifier_t *guid                                                                    = NULL;
@@ -462,13 +462,15 @@ int liblnk_distributed_link_tracker_properties_read(
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #endif
 		if( result != 1 )
@@ -507,13 +509,15 @@ int liblnk_distributed_link_tracker_properties_read(
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #endif
 		if( result != 1 )
@@ -552,13 +556,15 @@ int liblnk_distributed_link_tracker_properties_read(
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #endif
 		if( result != 1 )
@@ -597,13 +603,15 @@ int liblnk_distributed_link_tracker_properties_read(
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #endif
 		if( result != 1 )

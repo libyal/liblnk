@@ -565,16 +565,14 @@ int info_handle_link_information_fprint(
 			  filetime,
 			  (uint16_t *) filetime_string,
 			  32,
-			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_MICRO_SECONDS,
-			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
+			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
 			  error );
 #else
 		result = libfdatetime_filetime_copy_to_utf8_string(
 			  filetime,
 			  (uint8_t *) filetime_string,
 			  32,
-			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_MICRO_SECONDS,
-			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
+			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
 			  error );
 #endif
 		if( result != 1 )
@@ -628,16 +626,14 @@ int info_handle_link_information_fprint(
 			  filetime,
 			  (uint16_t *) filetime_string,
 			  32,
-			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_MICRO_SECONDS,
-			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
+			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
 			  error );
 #else
 		result = libfdatetime_filetime_copy_to_utf8_string(
 			  filetime,
 			  (uint8_t *) filetime_string,
 			  32,
-			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_MICRO_SECONDS,
-			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
+			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
 			  error );
 #endif
 		if( result != 1 )
@@ -691,16 +687,14 @@ int info_handle_link_information_fprint(
 			  filetime,
 			  (uint16_t *) filetime_string,
 			  32,
-			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_MICRO_SECONDS,
-			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
+			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
 			  error );
 #else
 		result = libfdatetime_filetime_copy_to_utf8_string(
 			  filetime,
 			  (uint8_t *) filetime_string,
 			  32,
-			  LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_MICRO_SECONDS,
-			  LIBFDATETIME_DATE_TIME_FORMAT_CTIME,
+			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
 			  error );
 #endif
 		if( result != 1 )
@@ -1814,7 +1808,7 @@ int info_handle_distributed_link_tracking_fprint(
 {
 	uint8_t guid_data[ 16 ];
 
-	libcstring_system_character_t guid_string[ LIBFGUID_IDENTIFIER_STRING_SIZE ];
+	libcstring_system_character_t guid_string[ 32 ];
 
 	libfguid_identifier_t *guid                 = NULL;
 	libcstring_system_character_t *value_string = NULL;
@@ -1984,13 +1978,15 @@ int info_handle_distributed_link_tracking_fprint(
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #endif
 		if( result != 1 )
@@ -2044,13 +2040,15 @@ int info_handle_distributed_link_tracking_fprint(
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #endif
 		if( result != 1 )
@@ -2104,13 +2102,15 @@ int info_handle_distributed_link_tracking_fprint(
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #endif
 		if( result != 1 )
@@ -2164,13 +2164,15 @@ int info_handle_distributed_link_tracking_fprint(
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
-			  LIBFGUID_IDENTIFIER_STRING_SIZE,
+			  32,
+			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #endif
 		if( result != 1 )

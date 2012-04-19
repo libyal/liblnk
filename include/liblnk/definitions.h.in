@@ -42,7 +42,7 @@ enum LIBLNK_ACCESS_FLAGS
 	LIBLNK_ACCESS_FLAG_WRITE					= 0x02
 };
 
-/* The libpff file access macros
+/* The libnlk file access macros
  */
 #define LIBLNK_OPEN_READ						( LIBLNK_ACCESS_FLAG_READ )
 /* Reserved: not supported yet */
