@@ -34,7 +34,7 @@
 #include <libfwsi_item_list.h>
 #include <libfwsi_types.h>
 
-#elif defined( HAVE_LIBFWSI_H )
+#else
 
 /* If libtool DLL support is enabled set LIBFWSI_DLL_IMPORT
  * before including libfwsi.h
@@ -45,8 +45,6 @@
 
 #include <libfwsi.h>
 
-#else
-#error Missing libfwsi.h
 #endif
 
 #endif

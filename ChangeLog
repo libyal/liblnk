@@ -46,6 +46,10 @@ Bindings:
 * .net
 * java
 
+20120426
+* fixes for pkg-config detection of libraries
+* applied updates
+
 20120419
 * applied updates
 * code clean up

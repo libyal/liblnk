@@ -1,6 +1,6 @@
 dnl Functions for libfwsi
 dnl
-dnl Version: 20120406
+dnl Version: 20120426
 
 dnl Function to detect if libfwsi is available
 AC_DEFUN([AX_LIBFWSI_CHECK_LIB],
@@ -18,53 +18,70 @@ AC_DEFUN([AX_LIBFWSI_CHECK_LIB],
  AS_IF(
   [test "x$ac_cv_with_libfwsi" = xno],
   [ac_cv_libfwsi=no],
-  [dnl Check for headers
-  AC_CHECK_HEADERS([libfwsi.h])
- 
+  [dnl Check for a pkg-config file
   AS_IF(
-   [test "x$ac_cv_header_libfwsi_h" = xno],
-   [ac_cv_libfwsi=no],
-   [ac_cv_libfwsi=yes
+   [test "x$cross_compiling" != "xyes" && test "x$PKGCONFIG" != "x"],
+   [PKG_CHECK_MODULES(
+    [libfwsi],
+    [libfwsi >= 20120426],
+    [ac_cv_libfwsi=yes],
+    [ac_cv_libfwsi=no])
+   ])
 
-   AC_CHECK_LIB(
-    fwsi,
-    libfwsi_get_version,
-    [ac_cv_libfwsi_dummy=yes],
-    [ac_cv_libfwsi=no])
-  
-   dnl Item functions
-   AC_CHECK_LIB(
-    fwsi,
-    libfwsi_item_initialize,
-    [ac_cv_libfwsi_dummy=yes],
-    [ac_cv_libfwsi=no])
-   AC_CHECK_LIB(
-    fwsi,
-    libfwsi_item_free,
-    [ac_cv_libfwsi_dummy=yes],
-    [ac_cv_libfwsi=no])
-   AC_CHECK_LIB(
-    fwsi,
-    libfwsi_item_copy_from_byte_stream,
-    [ac_cv_libfwsi_dummy=yes],
-    [ac_cv_libfwsi=no])
-  
-   dnl Item list functions
-   AC_CHECK_LIB(
-    fwsi,
-    libfwsi_item_list_initialize,
-    [ac_cv_libfwsi_dummy=yes],
-    [ac_cv_libfwsi=no])
-   AC_CHECK_LIB(
-    fwsi,
-    libfwsi_item_list_free,
-    [ac_cv_libfwsi_dummy=yes],
-    [ac_cv_libfwsi=no])
-   AC_CHECK_LIB(
-    fwsi,
-    libfwsi_item_list_copy_from_byte_stream,
-    [ac_cv_libfwsi_dummy=yes],
-    [ac_cv_libfwsi=no])
+  AS_IF(
+   [test "x$ac_cv_libfwsi" = xyes],
+   [ac_cv_libfwsi_CPPFLAGS="$pkg_cv_libfwsi_CFLAGS"
+   ac_cv_libfwsi_LIBADD="$pkg_cv_libfwsi_LIBS"],
+   [dnl Check for headers
+   AC_CHECK_HEADERS([libfwsi.h])
+ 
+   AS_IF(
+    [test "x$ac_cv_header_libfwsi_h" != xno],
+    [dnl Check for the individual functions
+    ac_cv_libfwsi=yes
+
+    AC_CHECK_LIB(
+     fwsi,
+     libfwsi_get_version,
+     [ac_cv_libfwsi_dummy=yes],
+     [ac_cv_libfwsi=no])
+   
+    dnl Item functions
+    AC_CHECK_LIB(
+     fwsi,
+     libfwsi_item_initialize,
+     [ac_cv_libfwsi_dummy=yes],
+     [ac_cv_libfwsi=no])
+    AC_CHECK_LIB(
+     fwsi,
+     libfwsi_item_free,
+     [ac_cv_libfwsi_dummy=yes],
+     [ac_cv_libfwsi=no])
+    AC_CHECK_LIB(
+     fwsi,
+     libfwsi_item_copy_from_byte_stream,
+     [ac_cv_libfwsi_dummy=yes],
+     [ac_cv_libfwsi=no])
+   
+    dnl Item list functions
+    AC_CHECK_LIB(
+     fwsi,
+     libfwsi_item_list_initialize,
+     [ac_cv_libfwsi_dummy=yes],
+     [ac_cv_libfwsi=no])
+    AC_CHECK_LIB(
+     fwsi,
+     libfwsi_item_list_free,
+     [ac_cv_libfwsi_dummy=yes],
+     [ac_cv_libfwsi=no])
+    AC_CHECK_LIB(
+     fwsi,
+     libfwsi_item_list_copy_from_byte_stream,
+     [ac_cv_libfwsi_dummy=yes],
+     [ac_cv_libfwsi=no])
+ 
+    ac_cv_libfwsi_LIBADD="-lfwsi"
+    ])
    ])
   ])
 
@@ -74,8 +91,6 @@ AC_DEFUN([AX_LIBFWSI_CHECK_LIB],
    [HAVE_LIBFWSI],
    [1],
    [Define to 1 if you have the `fwsi' library (-lfwsi).])
-
-  ac_cv_libfwsi_LIBADD="-lfwsi"
   ])
 
  AS_IF(
@@ -98,23 +113,8 @@ AC_DEFUN([AX_LIBFWSI_CHECK_ENABLE],
   [auto-detect],
   [DIR])
 
- dnl Check for a pkg-config file
- AS_IF(
-  [test "x$cross_compiling" != "xyes" && test "x$PKGCONFIG" != "x"],
-  [PKG_CHECK_MODULES(
-   [libfwsi],
-   [libfwsi >= 20120405],
-   [ac_cv_libfwsi=yes],
-   [ac_cv_libfwsi=no])
-
-  ac_cv_libfwsi_CPPFLAGS="$pkg_cv_libfwsi_CFLAGS"
-  ac_cv_libfwsi_LIBADD="$pkg_cv_libfwsi_LIBS"
- ])
-
  dnl Check for a shared library version
- AS_IF(
-  [test "x$ac_cv_libfwsi" != xyes],
-  [AX_LIBFWSI_CHECK_LIB])
+ AX_LIBFWSI_CHECK_LIB
 
  dnl Check if the dependencies for the local library version
  AS_IF(
