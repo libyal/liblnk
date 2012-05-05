@@ -1808,7 +1808,7 @@ int info_handle_distributed_link_tracking_fprint(
 {
 	uint8_t guid_data[ 16 ];
 
-	libcstring_system_character_t guid_string[ 32 ];
+	libcstring_system_character_t guid_string[ 48 ];
 
 	libfguid_identifier_t *guid                 = NULL;
 	libcstring_system_character_t *value_string = NULL;
@@ -1978,14 +1978,14 @@ int info_handle_distributed_link_tracking_fprint(
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
-			  32,
+			  48,
 			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
-			  32,
+			  48,
 			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #endif
@@ -2040,14 +2040,14 @@ int info_handle_distributed_link_tracking_fprint(
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
-			  32,
+			  48,
 			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
-			  32,
+			  48,
 			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #endif
@@ -2102,14 +2102,14 @@ int info_handle_distributed_link_tracking_fprint(
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
-			  32,
+			  48,
 			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
-			  32,
+			  48,
 			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #endif
@@ -2164,14 +2164,14 @@ int info_handle_distributed_link_tracking_fprint(
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
-			  32,
+			  48,
 			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
-			  32,
+			  48,
 			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
 			  error );
 #endif
