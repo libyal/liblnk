@@ -1749,6 +1749,7 @@ int info_handle_link_target_identifier_fprint(
 				goto on_error;
 			}
 /* TODO */
+/* TODO the item is currently managed by the list
 			if( libfwsi_item_free(
 			     &item,
 			     error ) != 1 )
@@ -1763,6 +1764,7 @@ int info_handle_link_target_identifier_fprint(
 
 				goto on_error;
 			}
+*/
 		}
 		if( libfwsi_item_list_free(
 		     &item_list,
@@ -1784,12 +1786,14 @@ int info_handle_link_target_identifier_fprint(
 	return( 1 );
 
 on_error:
+/* TODO the item is currently managed by the list
 	if( item != NULL )
 	{
 		libfwsi_item_free(
 		 &item,
 		 NULL );
 	}
+*/
 	if( item_list != NULL )
 	{
 		libfwsi_item_list_free(

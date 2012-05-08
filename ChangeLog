@@ -46,6 +46,11 @@ Bindings:
 * .net
 * java
 
+20120507
+* updated dependencies
+* fixed GUID string too small issue
+* fixed issue for handling shell items
+
 20120426
 * fixes for pkg-config detection of libraries
 * applied updates
