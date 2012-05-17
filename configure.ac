@@ -206,8 +206,9 @@ AC_MSG_NOTICE([
 Building:
    libcstring support:                       $ac_cv_libcstring
    libcerror support:                        $ac_cv_libcerror
-   libuna support:                           $ac_cv_libuna
    libclocale support:                       $ac_cv_libclocale
+   libcnotify support:                       $ac_cv_libcnotify
+   libuna support:                           $ac_cv_libuna
    libcfile support:                         $ac_cv_libcfile
    libcpath support:                         $ac_cv_libcpath
    libbfio support:                          $ac_cv_libbfio
