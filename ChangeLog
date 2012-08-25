@@ -46,6 +46,10 @@ Bindings:
 * .net
 * java
 
+20120825
+* email change
+* updated dependencies
+
 20120507
 * updated dependencies
 * fixed GUID string too small issue

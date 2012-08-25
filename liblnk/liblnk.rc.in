@@ -24,11 +24,11 @@ BEGIN
       VALUE "FileDescription",		"Library to support the Windows Shortcut File (LNK) format\0"
       VALUE "FileVersion",		"@VERSION@" "\0"
       VALUE "InternalName",		"liblnk.dll\0"
-      VALUE "LegalCopyright",		"(c) 2009-2012 Joachim Metz <jbmetz@users.sourceforge.net>\0"
+      VALUE "LegalCopyright",		"(c) 2009-2012 Joachim Metz <joachim.metz@gmail.com>\0"
       VALUE "OriginalFilename",		"liblnk.dll\0"
       VALUE "ProductName",		"liblnk\0"
       VALUE "ProductVersion",		"@VERSION@" "\0"
-      VALUE "Comments",			"For more information visit http://liblnk.sourceforge.net\0"
+      VALUE "Comments",			"For more information visit http://code.google.com/p/liblnk/\0"
     END
   END
   BLOCK "VarFileInfo"

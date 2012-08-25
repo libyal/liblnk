@@ -5,10 +5,10 @@ Summary: Library to support the Windows Shortcut File (LNK) format
 Group: System Environment/Libraries
 License: LGPL
 Source: %{name}-%{version}.tar.gz
-URL: http://liblnk.sourceforge.net
+URL: http://code.google.com/p/liblnk/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-@liblnk_spec_requires@ @ax_libbfio_spec_requires@ @ax_libcerror_spec_requires@ @ax_libcfile_spec_requires@ @ax_libclocale_spec_requires@ @ax_libcnotify_spec_requires@ @ax_libcpath_spec_requires@ @ax_libcstring_spec_requires@ @ax_libfdatetime_spec_requires@ @ax_libfguid_spec_requires@ @ax_libfwsi_spec_requires@ @ax_libuna_spec_requires@
-@liblnk_spec_build_requires@ @ax_libbfio_spec_build_requires@ @ax_libcerror_spec_build_requires@ @ax_libcfile_spec_build_requires@ @ax_libclocale_spec_build_requires@ @ax_libcnotify_spec_build_requires@ @ax_libcpath_spec_build_requires@ @ax_libcstring_spec_build_requires@ @ax_libfdatetime_spec_build_requires@ @ax_libfguid_spec_build_requires@ @ax_libfwsi_spec_build_requires@ @ax_libuna_spec_build_requires@
+@liblnk_spec_requires@ @ax_libbfio_spec_requires@ @ax_libcerror_spec_requires@ @ax_libcfile_spec_requires@ @ax_libclocale_spec_requires@ @ax_libcnotify_spec_requires@ @ax_libcpath_spec_requires@ @ax_libcsplit_spec_requires@ @ax_libcstring_spec_requires@ @ax_libfdatetime_spec_requires@ @ax_libfguid_spec_requires@ @ax_libfwsi_spec_requires@ @ax_libuna_spec_requires@
+@liblnk_spec_build_requires@ @ax_libbfio_spec_build_requires@ @ax_libcerror_spec_build_requires@ @ax_libcfile_spec_build_requires@ @ax_libclocale_spec_build_requires@ @ax_libcnotify_spec_build_requires@ @ax_libcpath_spec_build_requires@ @ax_libcsplit_spec_build_requires@ @ax_libcstring_spec_build_requires@ @ax_libfdatetime_spec_build_requires@ @ax_libfguid_spec_build_requires@ @ax_libfwsi_spec_build_requires@ @ax_libuna_spec_build_requires@
 
 %description
 liblnk is a library to support the Windows Shortcut File (LNK) format 
@@ -87,18 +87,18 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_libdir}/python*/site-packages/*.so
 
 %changelog
-* Fri Apr  6 2012 Joachim Metz <jbmetz@users.sourceforge.net> 20120406-1
+* Fri Apr  6 2012 Joachim Metz <joachim.metz@gmail.com> 20120406-1
 - Changes due to dependency changes
 
-* Mon Mar  5 2012 Joachim Metz <jbmetz@users.sourceforge.net> 20120305-1
+* Mon Mar  5 2012 Joachim Metz <joachim.metz@gmail.com> 20120305-1
 - Added support for Python bindings
 
-* Sun Oct  9 2011 Joachim Metz <jbmetz@users.sourceforge.net> 20111009-1
+* Sun Oct  9 2011 Joachim Metz <joachim.metz@gmail.com> 20111009-1
 - Changes for configure update and README files
 
-* Sat Jul 17 2010 Joachim Metz <jbmetz@users.sourceforge.net> 20100717-1
+* Sat Jul 17 2010 Joachim Metz <joachim.metz@gmail.com> 20100717-1
 - Added libfguid and libfwsi support
 
-* Sun Sep  6 2009 Joachim Metz <jbmetz@users.sourceforge.net> 20090906-1
+* Sun Sep  6 2009 Joachim Metz <joachim.metz@gmail.com> 20090906-1
 - Initial version
 

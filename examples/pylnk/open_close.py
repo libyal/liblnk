@@ -10,7 +10,7 @@
 __author__    = "Joachim Metz"
 __version__   = "20120312"
 __date__      = "Mar 12, 2012"
-__copyright__ = "Copyright (c) 2009-2012, Joachim Metz <jbmetz@users.sourceforge.net>"
+__copyright__ = "Copyright (c) 2009-2012, Joachim Metz <joachim.metz@gmail.com>"
 __license__   = "GNU LGPL version 3"
 
 import sys
