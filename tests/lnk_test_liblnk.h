@@ -1,7 +1,7 @@
 /*
- * Configuration file for Borland/CodeGear C++ Builder compiler
+ * The internal liblnk header
  *
- * Copyright (c) 2006-2012, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -19,34 +19,19 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _CONFIG_BORLANDC_H )
-#define _CONFIG_BORLANDC_H
+#if !defined( _LNK_TEST_LIBLNK_H )
+#define _LNK_TEST_LIBLNK_H
 
-/* Define to the address where bug reports for this package should be sent.
- */
-#define PACKAGE_BUGREPORT "joachim.metz@gmail.com"
+#include <common.h>
 
-/* Define the size of the wide character for WINAPI
+/* If Cygwin libtool DLL support is enabled set LIBLNK_DLL_IMPORT
+ * before including liblnk.h
  */
-#if !defined( SIZEOF_WCHAR_T )
-#define SIZEOF_WCHAR_T          2
+#if defined( _WIN32 ) && defined( DLL_EXPORT )
+#define LIBLNK_DLL_IMPORT
 #endif
 
-/* Use the C Runtime (CRT) functions instead of the WINAPI functions
-#define USE_CRT_FUNCTIONS	1
- */
-
-/* Enable verbose output
-#define HAVE_VERBOSE_OUTPUT     1
- */
-
-/* Enable debug output
-#define HAVE_DEBUG_OUTPUT       1
- */
-
-/* Enable the v1 API
-#define HAVE_V1_API		1
- */
+#include <liblnk.h>
 
 #endif
 

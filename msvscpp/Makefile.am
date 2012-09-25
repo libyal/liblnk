@@ -1,5 +1,6 @@
 EXTRA_DIST = \
 	libbfio/libbfio.vcproj \
+	libcdata/libcdata.vcproj \
 	libcerror/libcerror.vcproj \
 	libcfile/libcfile.vcproj \
 	libclocale/libclocale.vcproj \

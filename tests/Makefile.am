@@ -1,19 +1,31 @@
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/common \
-	-I$(top_srcdir)/libcstring \
-	-I$(top_srcdir)/liberror \
-	-I$(top_srcdir)/libsystem \
-	@MEMWATCH_CPPFLAGS@
+	@LIBCSTRING_CPPFLAGS@ \
+	@LIBCERROR_CPPFLAGS@
 
-TESTS = 
+TESTS = \
+	test_file_open_close.sh
 
-check_SCRIPTS =
+check_SCRIPTS = \
+	test_file_open_close.sh
 
 EXTRA_DIST = \
 	$(check_SCRIPTS)
 
-check_PROGRAMS = 
+check_PROGRAMS =  \
+	lnk_test_open_close
+
+lnk_test_file_open_close_SOURCES = \
+	lnk_test_libcerror.h \
+	lnk_test_liblnk.h \
+	lnk_test_libcstring.h \
+	lnk_test_file_read.c
+
+lnk_test_file_open_close_LDADD = \
+	../liblnk/liblnk.la
+	@LIBCERROR_LIBADD@ \
+	@LIBCSTRING_LIBADD@
 
 MAINTAINERCLEANFILES = \
 	Makefile.in

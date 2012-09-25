@@ -61,9 +61,10 @@ void usage_fprint(
 	fprintf( stream, "\tsource: the source file\n\n" );
 
 	fprintf( stream, "\t-c:     codepage of ASCII strings, options: ascii, windows-874,\n"
-	                 "\t        windows-932, windows-936, windows-1250, windows-1251,\n"
-	                 "\t        windows-1252 (default), windows-1253, windows-1254,\n"
-	                 "\t        windows-1255, windows-1256, windows-1257 or windows-1258\n" );
+	                 "\t        windows-932, windows-936, windows-949, windows-950,\n"
+	                 "\t        windows-1250, windows-1251, windows-1252 (default),\n"
+	                 "\t        windows-1253, windows-1254, windows-1255, windows-1256\n"
+	                 "\t        windows-1257 or windows-1258\n" );
 	fprintf( stream, "\t-h:     shows this help\n" );
 	fprintf( stream, "\t-v:     verbose output to stderr\n" );
 	fprintf( stream, "\t-V:     print version\n" );
@@ -247,7 +248,7 @@ int main( int argc, char * const argv[] )
 			 "Unsupported ASCII codepage defaulting to: windows-1252.\n" );
 		}
 	}
-	if( info_handle_open(
+	if( info_handle_open_input(
 	     lnkinfo_info_handle,
 	     source,
 	     &error ) != 1 )
@@ -269,7 +270,7 @@ int main( int argc, char * const argv[] )
 
 		goto on_error;
 	}
-	if( info_handle_close(
+	if( info_handle_close_input(
 	     lnkinfo_info_handle,
 	     &error ) != 0 )
 	{

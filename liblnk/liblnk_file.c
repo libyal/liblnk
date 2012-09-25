@@ -101,22 +101,6 @@ int liblnk_file_initialize(
 		 "%s: unable to clear file.",
 		 function );
 
-		memory_free(
-		 internal_file );
-
-		return( -1 );
-	}
-	if( liblnk_file_information_initialize(
-	     &( internal_file->file_information ),
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-		 "%s: unable to create file information.",
-		 function );
-
 		goto on_error;
 	}
 	if( liblnk_io_handle_initialize(
@@ -139,12 +123,6 @@ int liblnk_file_initialize(
 on_error:
 	if( internal_file != NULL )
 	{
-		if( internal_file->file_information != NULL )
-		{
-			liblnk_file_information_free(
-			 &( internal_file->file_information ),
-			 NULL );
-		}
 		memory_free(
 		 internal_file );
 	}
@@ -753,6 +731,8 @@ int liblnk_file_close(
 		}
 		internal_file->file_io_handle_created_in_library = 0;
 	}
+	internal_file->file_io_handle = NULL;
+
 	if( internal_file->file_information != NULL )
 	{
 		if( liblnk_file_information_free(
@@ -1000,6 +980,30 @@ int liblnk_file_open_read(
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		goto on_error;
+	}
+	if( internal_file->file_information != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid internal file - file information value already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( liblnk_file_information_initialize(
+	     &( internal_file->file_information ),
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 "%s: unable to create file information.",
 		 function );
 
 		goto on_error;
@@ -1770,6 +1774,12 @@ on_error:
 	{
 		liblnk_data_block_free(
 		 &data_block,
+		 NULL );
+	}
+	if( internal_file->file_information != NULL )
+	{
+		liblnk_file_information_free(
+		 &( internal_file->file_information ),
 		 NULL );
 	}
 	return( -1 );

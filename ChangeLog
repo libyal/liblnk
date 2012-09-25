@@ -41,10 +41,16 @@ Release:
 * update manuals
 * update macosx package files
 * automated tests
+  - 2x open/close (bfio and normal)
 
 Bindings:
 * .net
 * java
+
+20120925
+* updated dependencies
+* fixed issue that file io handle is not cleared on close when passed
+* lnkinfo: fixed issue not passing codepage
 
 20120825
 * email change

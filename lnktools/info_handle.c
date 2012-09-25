@@ -107,7 +107,8 @@ int info_handle_initialize(
 
 		goto on_error;
 	}
-	( *info_handle )->notify_stream = INFO_HANDLE_NOTIFY_STREAM;
+	( *info_handle )->ascii_codepage = LIBLNK_CODEPAGE_WINDOWS_1252;
+	( *info_handle )->notify_stream  = INFO_HANDLE_NOTIFY_STREAM;
 
 	return( 1 );
 
@@ -266,15 +267,15 @@ int info_handle_set_ascii_codepage(
 	return( result );
 }
 
-/* Opens the info handle
+/* Opens the input
  * Returns 1 if successful or -1 on error
  */
-int info_handle_open(
+int info_handle_open_input(
      info_handle_t *info_handle,
      const libcstring_system_character_t *filename,
      libcerror_error_t **error )
 {
-	static char *function = "info_handle_open";
+	static char *function = "info_handle_open_input";
 
 	if( info_handle == NULL )
 	{
@@ -283,6 +284,20 @@ int info_handle_open(
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid info handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( liblnk_file_set_ascii_codepage(
+	     info_handle->input_file,
+	     info_handle->ascii_codepage,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set ASCII codepage in input file.",
 		 function );
 
 		return( -1 );
@@ -313,14 +328,14 @@ int info_handle_open(
 	return( 1 );
 }
 
-/* Closes the info handle
+/* Closes the input
  * Returns the 0 if succesful or -1 on error
  */
-int info_handle_close(
+int info_handle_close_input(
      info_handle_t *info_handle,
      libcerror_error_t **error )
 {
-	static char *function = "info_handle_close";
+	static char *function = "info_handle_close_input";
 
 	if( info_handle == NULL )
 	{
