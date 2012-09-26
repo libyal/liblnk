@@ -27,11 +27,11 @@ EXIT_IGNORE=77;
 INPUT="input";
 TMP="tmp";
 
-test_file_open_close()
+test_open_close()
 { 
 	echo "Testing open close of input:" $*;
 
-	./${LNK_TEST_FILE_OPEN_CLOSE} $*;
+	./${LNK_TEST_OPEN_CLOSE} $*;
 
 	RESULT=$?;
 
@@ -40,16 +40,16 @@ test_file_open_close()
 	return ${RESULT};
 }
 
-LNK_TEST_FILE_OPEN_CLOSE="lnk_test_file_open_close";
+LNK_TEST_OPEN_CLOSE="lnk_test_open_close";
 
-if ! test -x ${LNK_TEST_FILE_OPEN_CLOSE};
+if ! test -x ${LNK_TEST_OPEN_CLOSE};
 then
-	LNK_TEST_FILE_OPEN_CLOSE="lnk_test_file_open_close.exe";
+	LNK_TEST_OPEN_CLOSE="lnk_test_open_close.exe";
 fi
 
-if ! test -x ${LNK_TEST_FILE_OPEN_CLOSe};
+if ! test -x ${LNK_TEST_OPEN_CLOSe};
 then
-	echo "Missing executable: ${LNK_TEST_FILE_OPEN_CLOSE}";
+	echo "Missing executable: ${LNK_TEST_OPEN_CLOSE}";
 
 	exit ${EXIT_FAILURE};
 fi
@@ -63,7 +63,7 @@ fi
 
 for FILENAME in ${INPUT}/*;
 do
-	if ! test_file_open_close ${FILENAME};
+	if ! test_open_close ${FILENAME};
 	then
 		exit ${EXIT_FAILURE};
 	fi
