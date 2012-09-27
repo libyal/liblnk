@@ -133,6 +133,138 @@ int lnk_test_single_open_close_filename(
 	return( result );
 }
 
+/* Tests multiple open and close of a file using the filename
+ * Returns 1 if successful, 0 if not or -1 on error
+ */
+int lnk_test_multi_open_close_filename(
+     libcstring_system_character_t *filename,
+     int access_flags,
+     int expected_result )
+{
+	libcerror_error_t *error = NULL;
+	liblnk_file_t *file      = NULL;
+	static char *function    = "lnk_test_multi_open_close_filename";
+	int result               = 0;
+
+	if( filename == NULL )
+	{
+		return( -1 );
+	}
+	fprintf(
+	 stdout,
+	 "Testing open close: filename multi\t" );
+
+	if( liblnk_file_initialize(
+	     &file,
+	     &error ) != 1 )
+	{
+		libcerror_error_set(
+		 &error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 "%s: unable to create file.",
+		 function );
+
+		return( -1 );
+	}
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+	result = liblnk_file_open_wide(
+	          file,
+	          filename,
+	          access_flags,
+	          &error );
+#else
+	result = liblnk_file_open(
+	          file,
+	          filename,
+	          access_flags,
+	          &error );
+#endif
+
+	if( liblnk_file_close(
+	     file,
+	     &error ) != 0 )
+	{
+		libcerror_error_set(
+		 &error,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_CLOSE_FAILED,
+		 "%s: unable to close file.",
+		 function );
+
+		result = -1;
+	}
+	if( result == 1 )
+	{
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+		result = liblnk_file_open_wide(
+		          file,
+		          filename,
+		          access_flags,
+		          &error );
+#else
+		result = liblnk_file_open(
+		          file,
+		          filename,
+		          access_flags,
+		          &error );
+#endif
+
+		if( liblnk_file_close(
+		     file,
+		     &error ) != 0 )
+		{
+			libcerror_error_set(
+			 &error,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_CLOSE_FAILED,
+			 "%s: unable to close file.",
+			 function );
+
+			result = -1;
+		}
+	}
+	if( liblnk_file_free(
+	     &file,
+	     &error ) != 1 )
+	{
+		libcerror_error_set(
+		 &error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+		 "%s: unable to free file.",
+		 function );
+
+		result = -1;
+	}
+	if( result != expected_result )
+	{
+		fprintf(
+		 stdout,
+		 "(PASS)" );
+	}
+	else
+	{
+		fprintf(
+		 stdout,
+		 "(FAIL)" );
+	}
+	fprintf(
+	 stdout,
+	 "\n" );
+
+	if( result == -1 )
+	{
+		libcerror_error_backtrace_fprint(
+		 error,
+		 stdout );
+
+		libcerror_error_free(
+		 &error );
+	}
+	return( result );
+}
+
 /* The main program
  */
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
@@ -149,7 +281,7 @@ int main( int argc, char * const argv[] )
 
 		return( EXIT_FAILURE );
 	}
-	/* Case 0: single open and close
+	/* Case 0: single open and close using filename
 	 */
 	if( lnk_test_single_open_close_filename(
 	     argv[ 1 ],
@@ -164,6 +296,30 @@ int main( int argc, char * const argv[] )
 	}
 	if( lnk_test_single_open_close_filename(
 	     NULL,
+	     LIBLNK_OPEN_READ,
+	     -1 ) != 1 )
+	{
+		fprintf(
+		 stderr,
+		 "Unable to test open close.\n" );
+
+		return( EXIT_FAILURE );
+	}
+	if( lnk_test_single_open_close_filename(
+	     argv[ 1 ],
+	     LIBLNK_OPEN_WRITE,
+	     -1 ) != 1 )
+	{
+		fprintf(
+		 stderr,
+		 "Unable to test open close.\n" );
+
+		return( EXIT_FAILURE );
+	}
+	/* Case 1: multiple open and close using filename
+	 */
+	if( lnk_test_multi_open_close_filename(
+	     argv[ 1 ],
 	     LIBLNK_OPEN_READ,
 	     1 ) != 1 )
 	{
