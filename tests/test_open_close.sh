@@ -61,6 +61,10 @@ then
 	exit ${EXIT_IGNORE};
 fi
 
+OLDIFS=${IFS};
+IFS="
+";
+
 for FILENAME in ${INPUT}/*;
 do
 	if ! test_open_close ${FILENAME};
@@ -68,6 +72,8 @@ do
 		exit ${EXIT_FAILURE};
 	fi
 done
+
+IFS=${OLDIFS};
 
 exit ${EXIT_SUCCESS};
 

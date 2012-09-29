@@ -44,10 +44,6 @@ int lnk_test_single_open_close_filename(
 	static char *function    = "lnk_test_single_open_close_filename";
 	int result               = 0;
 
-	if( filename == NULL )
-	{
-		return( -1 );
-	}
 	fprintf(
 	 stdout,
 	 "Testing open close: filename single\t" );
@@ -78,19 +74,21 @@ int lnk_test_single_open_close_filename(
 	          access_flags,
 	          &error );
 #endif
-
-	if( liblnk_file_close(
-	     file,
-	     &error ) != 0 )
+	if( result == 1 )
 	{
-		libcerror_error_set(
-		 &error,
-		 LIBCERROR_ERROR_DOMAIN_IO,
-		 LIBCERROR_IO_ERROR_CLOSE_FAILED,
-		 "%s: unable to close file.",
-		 function );
+		if( liblnk_file_close(
+		     file,
+		     &error ) != 0 )
+		{
+			libcerror_error_set(
+			 &error,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_CLOSE_FAILED,
+			 "%s: unable to close file.",
+			 function );
 
-		result = -1;
+			result = -1;
+		}
 	}
 	if( liblnk_file_free(
 	     &file,
@@ -105,7 +103,7 @@ int lnk_test_single_open_close_filename(
 
 		result = -1;
 	}
-	if( result != expected_result )
+	if( result == expected_result )
 	{
 		fprintf(
 		 stdout,
@@ -130,7 +128,11 @@ int lnk_test_single_open_close_filename(
 		libcerror_error_free(
 		 &error );
 	}
-	return( result );
+	if( result != expected_result )
+	{
+		return( -1 );
+	}
+	return( 1 );
 }
 
 /* Tests multiple open and close of a file using the filename
@@ -146,10 +148,6 @@ int lnk_test_multi_open_close_filename(
 	static char *function    = "lnk_test_multi_open_close_filename";
 	int result               = 0;
 
-	if( filename == NULL )
-	{
-		return( -1 );
-	}
 	fprintf(
 	 stdout,
 	 "Testing open close: filename multi\t" );
@@ -180,22 +178,21 @@ int lnk_test_multi_open_close_filename(
 	          access_flags,
 	          &error );
 #endif
-
-	if( liblnk_file_close(
-	     file,
-	     &error ) != 0 )
-	{
-		libcerror_error_set(
-		 &error,
-		 LIBCERROR_ERROR_DOMAIN_IO,
-		 LIBCERROR_IO_ERROR_CLOSE_FAILED,
-		 "%s: unable to close file.",
-		 function );
-
-		result = -1;
-	}
 	if( result == 1 )
 	{
+		if( liblnk_file_close(
+		     file,
+		     &error ) != 0 )
+		{
+			libcerror_error_set(
+			 &error,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_CLOSE_FAILED,
+			 "%s: unable to close file.",
+			 function );
+
+			result = -1;
+		}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_open_wide(
 		          file,
@@ -209,19 +206,21 @@ int lnk_test_multi_open_close_filename(
 		          access_flags,
 		          &error );
 #endif
-
-		if( liblnk_file_close(
-		     file,
-		     &error ) != 0 )
+		if( result == 1 )
 		{
-			libcerror_error_set(
-			 &error,
-			 LIBCERROR_ERROR_DOMAIN_IO,
-			 LIBCERROR_IO_ERROR_CLOSE_FAILED,
-			 "%s: unable to close file.",
-			 function );
+			if( liblnk_file_close(
+			     file,
+			     &error ) != 0 )
+			{
+				libcerror_error_set(
+				 &error,
+				 LIBCERROR_ERROR_DOMAIN_IO,
+				 LIBCERROR_IO_ERROR_CLOSE_FAILED,
+				 "%s: unable to close file.",
+				 function );
 
-			result = -1;
+				result = -1;
+			}
 		}
 	}
 	if( liblnk_file_free(
@@ -237,7 +236,7 @@ int lnk_test_multi_open_close_filename(
 
 		result = -1;
 	}
-	if( result != expected_result )
+	if( result == expected_result )
 	{
 		fprintf(
 		 stdout,
@@ -262,7 +261,11 @@ int lnk_test_multi_open_close_filename(
 		libcerror_error_free(
 		 &error );
 	}
-	return( result );
+	if( result != expected_result )
+	{
+		return( -1 );
+	}
+	return( 1 );
 }
 
 /* The main program
