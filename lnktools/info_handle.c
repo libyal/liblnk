@@ -1,4 +1,4 @@
-/* 
+/*
  * Info handle
  *
  * Copyright (c) 2009-2012, Joachim Metz <joachim.metz@gmail.com>
@@ -1998,14 +1998,14 @@ int info_handle_distributed_link_tracking_fprint(
 			  guid,
 			  (uint16_t *) guid_string,
 			  48,
-			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
+			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
 			  48,
-			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
+			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
 			  error );
 #endif
 		if( result != 1 )
@@ -2060,14 +2060,14 @@ int info_handle_distributed_link_tracking_fprint(
 			  guid,
 			  (uint16_t *) guid_string,
 			  48,
-			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
+			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
 			  48,
-			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
+			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
 			  error );
 #endif
 		if( result != 1 )
@@ -2122,14 +2122,14 @@ int info_handle_distributed_link_tracking_fprint(
 			  guid,
 			  (uint16_t *) guid_string,
 			  48,
-			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
+			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
 			  48,
-			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
+			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
 			  error );
 #endif
 		if( result != 1 )
@@ -2184,14 +2184,14 @@ int info_handle_distributed_link_tracking_fprint(
 			  guid,
 			  (uint16_t *) guid_string,
 			  48,
-			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
+			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
 			  error );
 #else
 		result = libfguid_identifier_copy_to_utf8_string(
 			  guid,
 			  (uint8_t *) guid_string,
 			  48,
-			  LIBFGUID_STRING_FORMAT_USE_LOWER_CASE,
+			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
 			  error );
 #endif
 		if( result != 1 )

@@ -9,12 +9,12 @@
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -95,7 +95,7 @@ PyObject *pylnk_get_access_flags_read(
 	         (long) liblnk_get_access_flags_read() ) );
 }
 
-/* Checks if the file has a Windows NT Registy File signature
+/* Checks if the file has a Windows Shortcut File (LNK) signature
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_check_file_signature(
@@ -165,7 +165,7 @@ PyObject *pylnk_check_file_signature(
 /* Initializes the pylnk module
  */
 PyMODINIT_FUNC initpylnk(
-                void ) 
+                void )
 {
 	PyObject *module               = NULL;
 	PyTypeObject *file_type_object = NULL;

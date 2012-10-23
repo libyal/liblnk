@@ -47,6 +47,11 @@ Bindings:
 * .net
 * java
 
+20121023
+* updated dependencies
+* bug fixes in pylnk
+* code clean up
+
 20120925
 * updated dependencies
 * fixed issue that file io handle is not cleared on close when passed

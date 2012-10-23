@@ -9,12 +9,12 @@
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -1324,6 +1324,9 @@ PyObject *pylnk_file_get_local_path(
 	else if( ( result == 0 )
 	      || ( local_path_size == 0 ) )
 	{
+		Py_IncRef(
+		 Py_None );
+
 		return( Py_None );
 	}
 	local_path = (char *) memory_allocate(
@@ -1379,6 +1382,9 @@ PyObject *pylnk_file_get_local_path(
 	{
 		memory_free(
 		 local_path );
+
+		Py_IncRef(
+		 Py_None );
 
 		return( Py_None );
 	}
@@ -1474,6 +1480,9 @@ PyObject *pylnk_file_get_network_path(
 	else if( ( result == 0 )
 	      || ( network_path_size == 0 ) )
 	{
+		Py_IncRef(
+		 Py_None );
+
 		return( Py_None );
 	}
 	network_path = (char *) memory_allocate(
@@ -1529,6 +1538,9 @@ PyObject *pylnk_file_get_network_path(
 	{
 		memory_free(
 		 network_path );
+
+		Py_IncRef(
+		 Py_None );
 
 		return( Py_None );
 	}
@@ -1624,6 +1636,9 @@ PyObject *pylnk_file_get_description(
 	else if( ( result == 0 )
 	      || ( description_size == 0 ) )
 	{
+		Py_IncRef(
+		 Py_None );
+
 		return( Py_None );
 	}
 	description = (char *) memory_allocate(
@@ -1679,6 +1694,9 @@ PyObject *pylnk_file_get_description(
 	{
 		memory_free(
 		 description );
+
+		Py_IncRef(
+		 Py_None );
 
 		return( Py_None );
 	}
@@ -1774,6 +1792,9 @@ PyObject *pylnk_file_get_relative_path(
 	else if( ( result == 0 )
 	      || ( relative_path_size == 0 ) )
 	{
+		Py_IncRef(
+		 Py_None );
+
 		return( Py_None );
 	}
 	relative_path = (char *) memory_allocate(
@@ -1829,6 +1850,9 @@ PyObject *pylnk_file_get_relative_path(
 	{
 		memory_free(
 		 relative_path );
+
+		Py_IncRef(
+		 Py_None );
 
 		return( Py_None );
 	}
@@ -1924,6 +1948,9 @@ PyObject *pylnk_file_get_working_directory(
 	else if( ( result == 0 )
 	      || ( working_directory_size == 0 ) )
 	{
+		Py_IncRef(
+		 Py_None );
+
 		return( Py_None );
 	}
 	working_directory = (char *) memory_allocate(
@@ -1979,6 +2006,9 @@ PyObject *pylnk_file_get_working_directory(
 	{
 		memory_free(
 		 working_directory );
+
+		Py_IncRef(
+		 Py_None );
 
 		return( Py_None );
 	}
@@ -2074,6 +2104,9 @@ PyObject *pylnk_file_get_command_line_arguments(
 	else if( ( result == 0 )
 	      || ( command_line_arguments_size == 0 ) )
 	{
+		Py_IncRef(
+		 Py_None );
+
 		return( Py_None );
 	}
 	command_line_arguments = (char *) memory_allocate(
@@ -2129,6 +2162,9 @@ PyObject *pylnk_file_get_command_line_arguments(
 	{
 		memory_free(
 		 command_line_arguments );
+
+		Py_IncRef(
+		 Py_None );
 
 		return( Py_None );
 	}
@@ -2224,6 +2260,9 @@ PyObject *pylnk_file_get_icon_location(
 	else if( ( result == 0 )
 	      || ( icon_location_size == 0 ) )
 	{
+		Py_IncRef(
+		 Py_None );
+
 		return( Py_None );
 	}
 	icon_location = (char *) memory_allocate(
@@ -2279,6 +2318,9 @@ PyObject *pylnk_file_get_icon_location(
 	{
 		memory_free(
 		 icon_location );
+
+		Py_IncRef(
+		 Py_None );
 
 		return( Py_None );
 	}
@@ -2374,6 +2416,9 @@ PyObject *pylnk_file_get_environment_variables_location(
 	else if( ( result == 0 )
 	      || ( environment_variables_location_size == 0 ) )
 	{
+		Py_IncRef(
+		 Py_None );
+
 		return( Py_None );
 	}
 	environment_variables_location = (char *) memory_allocate(
@@ -2429,6 +2474,9 @@ PyObject *pylnk_file_get_environment_variables_location(
 	{
 		memory_free(
 		 environment_variables_location );
+
+		Py_IncRef(
+		 Py_None );
 
 		return( Py_None );
 	}
