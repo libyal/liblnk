@@ -47,6 +47,9 @@ Bindings:
 * .net
 * java
 
+20121024
+* pylnk: added time_as_integer functions
+
 20121023
 * updated dependencies
 * bug fixes in pylnk
