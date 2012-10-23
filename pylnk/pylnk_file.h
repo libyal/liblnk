@@ -89,10 +89,19 @@ PyObject *pylnk_file_set_ascii_codepage(
 PyObject *pylnk_file_get_file_creation_time(
            pylnk_file_t *pylnk_file );
 
+PyObject *pylnk_file_get_file_creation_time_as_integer(
+           pylnk_file_t *pylnk_file );
+
 PyObject *pylnk_file_get_file_modification_time(
            pylnk_file_t *pylnk_file );
 
+PyObject *pylnk_file_get_file_modification_time_as_integer(
+           pylnk_file_t *pylnk_file );
+
 PyObject *pylnk_file_get_file_access_time(
+           pylnk_file_t *pylnk_file );
+
+PyObject *pylnk_file_get_file_access_time_as_integer(
            pylnk_file_t *pylnk_file );
 
 PyObject *pylnk_file_get_local_path(

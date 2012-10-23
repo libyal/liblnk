@@ -104,6 +104,13 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  "\n"
 	  "Returns the creation date and time of the linked file" },
 
+	{ "get_file_creation_time_as_integer",
+	  (PyCFunction) pylnk_file_get_file_creation_time_as_integer,
+	  METH_NOARGS,
+	  "pylnk_file_get_file_creation_time() -> Integer\n"
+	  "\n"
+	  "Returns the creation date and time as a 64-bit integer containing a FILETIME value" },
+
 	{ "get_file_modification_time",
 	  (PyCFunction) pylnk_file_get_file_modification_time,
 	  METH_NOARGS,
@@ -111,12 +118,26 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  "\n"
 	  "Returns the modification date and time of the linked file" },
 
+	{ "get_file_modification_time_as_integer",
+	  (PyCFunction) pylnk_file_get_file_modification_time_as_integer,
+	  METH_NOARGS,
+	  "pylnk_file_get_file_modification_time() -> Integer\n"
+	  "\n"
+	  "Returns the modification date and time as a 64-bit integer containing a FILETIME value" },
+
 	{ "get_file_access_time",
 	  (PyCFunction) pylnk_file_get_file_access_time,
 	  METH_NOARGS,
 	  "get_file_access_time() -> Datetime\n"
 	  "\n"
 	  "Returns the access date and time of the linked file" },
+
+	{ "get_file_access_time_as_integer",
+	  (PyCFunction) pylnk_file_get_file_access_time_as_integer,
+	  METH_NOARGS,
+	  "pylnk_file_get_file_access_time() -> Integer\n"
+	  "\n"
+	  "Returns the access date and time as a 64-bit integer containing a FILETIME value" },
 
 	{ "get_local_path",
 	  (PyCFunction) pylnk_file_get_local_path,
@@ -1134,6 +1155,75 @@ PyObject *pylnk_file_get_file_creation_time(
 	return( date_time_object );
 }
 
+/* Retrieves the creation date and time as an integer
+ * Returns a Python object holding the offset if successful or NULL on error
+ */
+PyObject *pylnk_file_get_creation_time_as_integer(
+           pylnk_file_t *pylnk_file )
+{
+	char error_string[ PYLNK_ERROR_STRING_SIZE ];
+
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_file_get_creation_time_as_integer";
+	uint64_t filetime        = 0;
+	int result               = 0;
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_file_creation_time(
+	          pylnk_file->file,
+	          &filetime,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve creation time.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve creation time.\n%s",
+			 function,
+			 error_string );
+		}
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	if( filetime > (uint64_t) LONG_MAX )
+	{
+		PyErr_Format(
+		 PyExc_OverflowError,
+		 "%s: filetime value exceeds maximum.",
+		 function );
+
+		return( NULL );
+	}
+	return( PyInt_FromLong(
+	         (long) filetime ) );
+}
+
 /* Retrieves the modification date and time of the linked file
  * Returns a Python object holding the offset if successful or NULL on error
  */
@@ -1197,6 +1287,75 @@ PyObject *pylnk_file_get_file_modification_time(
 	return( date_time_object );
 }
 
+/* Retrieves the modification date and time as an integer
+ * Returns a Python object holding the offset if successful or NULL on error
+ */
+PyObject *pylnk_file_get_modification_time_as_integer(
+           pylnk_file_t *pylnk_file )
+{
+	char error_string[ PYLNK_ERROR_STRING_SIZE ];
+
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_file_get_modification_time_as_integer";
+	uint64_t filetime        = 0;
+	int result               = 0;
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_file_modification_time(
+	          pylnk_file->file,
+	          &filetime,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve modification time.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve modification time.\n%s",
+			 function,
+			 error_string );
+		}
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	if( filetime > (uint64_t) LONG_MAX )
+	{
+		PyErr_Format(
+		 PyExc_OverflowError,
+		 "%s: filetime value exceeds maximum.",
+		 function );
+
+		return( NULL );
+	}
+	return( PyInt_FromLong(
+	         (long) filetime ) );
+}
+
 /* Retrieves the access date and time of the linked file
  * Returns a Python object holding the offset if successful or NULL on error
  */
@@ -1258,6 +1417,75 @@ PyObject *pylnk_file_get_file_access_time(
 	                    filetime );
 
 	return( date_time_object );
+}
+
+/* Retrieves the access date and time as an integer
+ * Returns a Python object holding the offset if successful or NULL on error
+ */
+PyObject *pylnk_file_get_access_time_as_integer(
+           pylnk_file_t *pylnk_file )
+{
+	char error_string[ PYLNK_ERROR_STRING_SIZE ];
+
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_file_get_access_time_as_integer";
+	uint64_t filetime        = 0;
+	int result               = 0;
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_file_access_time(
+	          pylnk_file->file,
+	          &filetime,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve access time.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve access time.\n%s",
+			 function,
+			 error_string );
+		}
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	if( filetime > (uint64_t) LONG_MAX )
+	{
+		PyErr_Format(
+		 PyExc_OverflowError,
+		 "%s: filetime value exceeds maximum.",
+		 function );
+
+		return( NULL );
+	}
+	return( PyInt_FromLong(
+	         (long) filetime ) );
 }
 
 /* Retrieves the local path of the linked file
