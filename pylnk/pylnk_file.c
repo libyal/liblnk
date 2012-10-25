@@ -107,7 +107,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_file_creation_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_creation_time_as_integer,
 	  METH_NOARGS,
-	  "pylnk_file_get_file_creation_time() -> Integer\n"
+	  "get_file_creation_time_as_integer() -> Integer\n"
 	  "\n"
 	  "Returns the creation date and time as a 64-bit integer containing a FILETIME value" },
 
@@ -121,7 +121,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_file_modification_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_modification_time_as_integer,
 	  METH_NOARGS,
-	  "pylnk_file_get_file_modification_time() -> Integer\n"
+	  "get_file_modification_time_as_integer() -> Integer\n"
 	  "\n"
 	  "Returns the modification date and time as a 64-bit integer containing a FILETIME value" },
 
@@ -135,7 +135,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_file_access_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_access_time_as_integer,
 	  METH_NOARGS,
-	  "pylnk_file_get_file_access_time() -> Integer\n"
+	  "get_file_access_time_as_integer() -> Integer\n"
 	  "\n"
 	  "Returns the access date and time as a 64-bit integer containing a FILETIME value" },
 
@@ -1158,13 +1158,13 @@ PyObject *pylnk_file_get_file_creation_time(
 /* Retrieves the creation date and time as an integer
  * Returns a Python object holding the offset if successful or NULL on error
  */
-PyObject *pylnk_file_get_creation_time_as_integer(
+PyObject *pylnk_file_get_file_creation_time_as_integer(
            pylnk_file_t *pylnk_file )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
 	libcerror_error_t *error = NULL;
-	static char *function    = "pylnk_file_get_creation_time_as_integer";
+	static char *function    = "pylnk_file_get_file_creation_time_as_integer";
 	uint64_t filetime        = 0;
 	int result               = 0;
 
@@ -1290,13 +1290,13 @@ PyObject *pylnk_file_get_file_modification_time(
 /* Retrieves the modification date and time as an integer
  * Returns a Python object holding the offset if successful or NULL on error
  */
-PyObject *pylnk_file_get_modification_time_as_integer(
+PyObject *pylnk_file_get_file_modification_time_as_integer(
            pylnk_file_t *pylnk_file )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
 	libcerror_error_t *error = NULL;
-	static char *function    = "pylnk_file_get_modification_time_as_integer";
+	static char *function    = "pylnk_file_get_file_modification_time_as_integer";
 	uint64_t filetime        = 0;
 	int result               = 0;
 
@@ -1422,13 +1422,13 @@ PyObject *pylnk_file_get_file_access_time(
 /* Retrieves the access date and time as an integer
  * Returns a Python object holding the offset if successful or NULL on error
  */
-PyObject *pylnk_file_get_access_time_as_integer(
+PyObject *pylnk_file_get_file_access_time_as_integer(
            pylnk_file_t *pylnk_file )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
 	libcerror_error_t *error = NULL;
-	static char *function    = "pylnk_file_get_access_time_as_integer";
+	static char *function    = "pylnk_file_get_file_access_time_as_integer";
 	uint64_t filetime        = 0;
 	int result               = 0;
 
