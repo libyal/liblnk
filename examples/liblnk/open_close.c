@@ -1,5 +1,5 @@
 /*
- * C application to open and close a Nickfile using liblnk
+ * C application to open and close a Windows Shortcut File (LNK) using liblnk
  *
  * Copyright (c) 2009-2012, Joachim Metz <joachim.metz@gmail.com>
  *

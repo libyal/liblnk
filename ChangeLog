@@ -47,6 +47,9 @@ Bindings:
 * .net
 * java
 
+20121025
+* libfwsi update, fixed issues with debug output
+
 20121024
 * pylnk: added time_as_integer functions
 

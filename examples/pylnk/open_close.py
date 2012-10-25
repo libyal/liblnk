@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #
-# Python script to open and close Windows Shortcut (LNK) file(s) using pylnk
+# Python script to open and close Windows a Shortcut File (LNK) using pylnk
 #
 # Author:            Joachim Metz
 # Creation date:     March 5, 2012
