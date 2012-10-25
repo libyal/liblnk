@@ -179,8 +179,8 @@ PyMODINIT_FUNC initpylnk(
 	 */
 	module = Py_InitModule3(
 	          "pylnk",
-	           pylnk_module_methods,
-	           "Python liblnk module (pylnk)." );
+	          pylnk_module_methods,
+	          "Python liblnk module (pylnk)." );
 
 	/* Setup the file type object
 	 */
