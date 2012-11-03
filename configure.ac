@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
- [20121026],
+ [20121103],
  [joachim.metz@gmail.com])
 
 AC_CONFIG_SRCDIR(
@@ -139,7 +139,7 @@ AS_IF(
 AS_IF(
  [test "x$ac_cv_libcsystem" = xyes],
  [AC_SUBST(
-  [liblnk_tools_spec_build_requires],
+  [liblnk_spec_tools_build_requires],
   [BuildRequires:])
  ])
 

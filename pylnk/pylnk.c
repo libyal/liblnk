@@ -171,16 +171,18 @@ PyMODINIT_FUNC initpylnk(
 	PyTypeObject *file_type_object = NULL;
 	PyGILState_STATE gil_state     = 0;
 
-	PyEval_InitThreads();
-
-	gil_state = PyGILState_Ensure();
-
 	/* Create the module
+	 * This function must be called before grabbing the GIL
+	 * otherwise the module will segfault on a version mismatch
 	 */
 	module = Py_InitModule3(
 	          "pylnk",
 	          pylnk_module_methods,
 	          "Python liblnk module (pylnk)." );
+
+	PyEval_InitThreads();
+
+	gil_state = PyGILState_Ensure();
 
 	/* Setup the file type object
 	 */
@@ -189,7 +191,7 @@ PyMODINIT_FUNC initpylnk(
 	if( PyType_Ready(
 	     &pylnk_file_type_object ) < 0 )
 	{
-		return;
+		goto on_error;
 	}
 	Py_IncRef(
 	 (PyObject *) &pylnk_file_type_object );
@@ -201,6 +203,7 @@ PyMODINIT_FUNC initpylnk(
 	"file",
 	(PyObject *) file_type_object );
 
+on_error:
 	PyGILState_Release(
 	 gil_state );
 }

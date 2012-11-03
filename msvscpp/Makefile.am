@@ -15,7 +15,8 @@ EXTRA_DIST = \
 	liblnk_dll/liblnk_dll.vcproj \
 	libuna/libuna.vcproj \
 	liblnk.sln \
-	lnkinfo/lnkinfo.vcproj
+	lnkinfo/lnkinfo.vcproj \
+	pylnk/pylnk.vcproj
 
 MAINTAINERCLEANFILES = \
 	Makefile.in

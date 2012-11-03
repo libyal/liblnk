@@ -47,6 +47,11 @@ Bindings:
 * .net
 * java
 
+20121103
+* pylnk: bug fixes
+* updated dependencies
+* fixes to spec file
+
 20121026
 * bug fix in new pylnk functions
 

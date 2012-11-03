@@ -36,7 +36,7 @@ lnkinfo_SOURCES = \
 	lnktools_libfwsi.h \
 	lnktools_liblnk.h
 
-lnkinfo_LDADD  = \
+lnkinfo_LDADD = \
 	@LIBCSYSTEM_LIBADD@ \
 	@LIBFWSI_LIBADD@ \
 	@LIBFGUID_LIBADD@ \
@@ -56,6 +56,6 @@ distclean: clean
 	/bin/rm -f Makefile
 
 splint:
-	@echo "Running splint on lnkinfo ..." 
-	-splint -preproc -redef $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(lnkinfo_SOURCES) 
+	@echo "Running splint on lnkinfo ..."
+	-splint -preproc -redef $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(lnkinfo_SOURCES)
 

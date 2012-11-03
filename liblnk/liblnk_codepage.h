@@ -41,7 +41,7 @@ extern "C" {
 
 /* The codepage definitions
  */
-enum LIBLNK_CODEPAGE
+enum LIBLNK_CODEPAGES
 {
 	LIBLNK_CODEPAGE_ASCII				= 20127,
 
