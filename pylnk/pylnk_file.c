@@ -107,7 +107,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_file_creation_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_creation_time_as_integer,
 	  METH_NOARGS,
-	  "get_file_creation_time_as_integer() -> Integer\n"
+	  "get_file_creation_time_as_integer() -> Long\n"
 	  "\n"
 	  "Returns the creation date and time as a 64-bit integer containing a FILETIME value" },
 
@@ -121,7 +121,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_file_modification_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_modification_time_as_integer,
 	  METH_NOARGS,
-	  "get_file_modification_time_as_integer() -> Integer\n"
+	  "get_file_modification_time_as_integer() -> Long\n"
 	  "\n"
 	  "Returns the modification date and time as a 64-bit integer containing a FILETIME value" },
 
@@ -135,7 +135,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_file_access_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_access_time_as_integer,
 	  METH_NOARGS,
-	  "get_file_access_time_as_integer() -> Integer\n"
+	  "get_file_access_time_as_integer() -> Long\n"
 	  "\n"
 	  "Returns the access date and time as a 64-bit integer containing a FILETIME value" },
 
@@ -899,7 +899,7 @@ PyObject *pylnk_file_close(
 }
 
 /* Retrieves the codepage used for ASCII strings in the file
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_ascii_codepage(
            pylnk_file_t *pylnk_file )
@@ -978,7 +978,7 @@ PyObject *pylnk_file_get_ascii_codepage(
 }
 
 /* Sets the codepage used for ASCII strings in the file
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_set_ascii_codepage(
            pylnk_file_t *pylnk_file,
@@ -1093,7 +1093,7 @@ PyObject *pylnk_file_set_ascii_codepage(
 }
 
 /* Retrieves the creation date and time of the linked file
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_creation_time(
            pylnk_file_t *pylnk_file )
@@ -1156,7 +1156,7 @@ PyObject *pylnk_file_get_file_creation_time(
 }
 
 /* Retrieves the creation date and time as an integer
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_creation_time_as_integer(
            pylnk_file_t *pylnk_file )
@@ -1211,6 +1211,19 @@ PyObject *pylnk_file_get_file_creation_time_as_integer(
 
 		return( NULL );
 	}
+#if defined( HAVE_LONG_LONG )
+	if( filetime > (uint64_t) LLONG_MAX )
+	{
+		PyErr_Format(
+		 PyExc_OverflowError,
+		 "%s: filetime value exceeds maximum.",
+		 function );
+
+		return( NULL );
+	}
+	return( PyLong_FromLongLong(
+	         (long long) filetime ) );
+#else
 	if( filetime > (uint64_t) LONG_MAX )
 	{
 		PyErr_Format(
@@ -1220,12 +1233,13 @@ PyObject *pylnk_file_get_file_creation_time_as_integer(
 
 		return( NULL );
 	}
-	return( PyInt_FromLong(
+	return( PyLong_FromLong(
 	         (long) filetime ) );
+#endif
 }
 
 /* Retrieves the modification date and time of the linked file
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_modification_time(
            pylnk_file_t *pylnk_file )
@@ -1288,7 +1302,7 @@ PyObject *pylnk_file_get_file_modification_time(
 }
 
 /* Retrieves the modification date and time as an integer
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_modification_time_as_integer(
            pylnk_file_t *pylnk_file )
@@ -1343,6 +1357,19 @@ PyObject *pylnk_file_get_file_modification_time_as_integer(
 
 		return( NULL );
 	}
+#if defined( HAVE_LONG_LONG )
+	if( filetime > (uint64_t) LLONG_MAX )
+	{
+		PyErr_Format(
+		 PyExc_OverflowError,
+		 "%s: filetime value exceeds maximum.",
+		 function );
+
+		return( NULL );
+	}
+	return( PyLong_FromLongLong(
+	         (long long) filetime ) );
+#else
 	if( filetime > (uint64_t) LONG_MAX )
 	{
 		PyErr_Format(
@@ -1352,12 +1379,13 @@ PyObject *pylnk_file_get_file_modification_time_as_integer(
 
 		return( NULL );
 	}
-	return( PyInt_FromLong(
+	return( PyLong_FromLong(
 	         (long) filetime ) );
+#endif
 }
 
 /* Retrieves the access date and time of the linked file
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_access_time(
            pylnk_file_t *pylnk_file )
@@ -1420,7 +1448,7 @@ PyObject *pylnk_file_get_file_access_time(
 }
 
 /* Retrieves the access date and time as an integer
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_access_time_as_integer(
            pylnk_file_t *pylnk_file )
@@ -1475,6 +1503,19 @@ PyObject *pylnk_file_get_file_access_time_as_integer(
 
 		return( NULL );
 	}
+#if defined( HAVE_LONG_LONG )
+	if( filetime > (uint64_t) LLONG_MAX )
+	{
+		PyErr_Format(
+		 PyExc_OverflowError,
+		 "%s: filetime value exceeds maximum.",
+		 function );
+
+		return( NULL );
+	}
+	return( PyLong_FromLongLong(
+	         (long long) filetime ) );
+#else
 	if( filetime > (uint64_t) LONG_MAX )
 	{
 		PyErr_Format(
@@ -1484,12 +1525,13 @@ PyObject *pylnk_file_get_file_access_time_as_integer(
 
 		return( NULL );
 	}
-	return( PyInt_FromLong(
+	return( PyLong_FromLong(
 	         (long) filetime ) );
+#endif
 }
 
 /* Retrieves the local path of the linked file
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_local_path(
            pylnk_file_t *pylnk_file )
@@ -1645,7 +1687,7 @@ on_error:
 }
 
 /* Retrieves the network path of the linked file
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_network_path(
            pylnk_file_t *pylnk_file )
@@ -1801,7 +1843,7 @@ on_error:
 }
 
 /* Retrieves the description of the linked file
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_description(
            pylnk_file_t *pylnk_file )
@@ -1957,7 +1999,7 @@ on_error:
 }
 
 /* Retrieves the relative path of the linked file
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_relative_path(
            pylnk_file_t *pylnk_file )
@@ -2113,7 +2155,7 @@ on_error:
 }
 
 /* Retrieves the working directory of the linked file
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_working_directory(
            pylnk_file_t *pylnk_file )
@@ -2269,7 +2311,7 @@ on_error:
 }
 
 /* Retrieves the command line arguments of the linked file
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_command_line_arguments(
            pylnk_file_t *pylnk_file )
@@ -2425,7 +2467,7 @@ on_error:
 }
 
 /* Retrieves the icon location of the linked file
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_icon_location(
            pylnk_file_t *pylnk_file )
@@ -2581,7 +2623,7 @@ on_error:
 }
 
 /* Retrieves the environment variables location of the linked file
- * Returns a Python object holding the offset if successful or NULL on error
+ * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_environment_variables_location(
            pylnk_file_t *pylnk_file )

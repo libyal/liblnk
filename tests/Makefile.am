@@ -12,8 +12,14 @@ AM_CPPFLAGS = \
 	@LIBCPATH_CPPFLAGS@ \
 	@LIBBFIO_CPPFLAGS@
 
+if HAVE_PYTHON
+TESTS_PYLNK  = \
+	test_pylnk.sh
+endif
+
 TESTS = \
-	test_open_close.sh
+	test_open_close.sh \
+	$(TESTS_PYLNK)
 
 check_SCRIPTS = \
 	test_open_close.sh
