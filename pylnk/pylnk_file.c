@@ -20,7 +20,6 @@
  */
 
 #include <common.h>
-#include <memory.h>
 #include <types.h>
 
 #if defined( HAVE_STDLIB_H ) || defined( HAVE_WINAPI )
@@ -1599,7 +1598,7 @@ PyObject *pylnk_file_get_local_path(
 
 		return( Py_None );
 	}
-	local_path = (char *) memory_allocate(
+	local_path = (char *) PyMem_Malloc(
 	                       sizeof( char ) * local_path_size );
 
 	if( local_path == NULL )
@@ -1650,7 +1649,7 @@ PyObject *pylnk_file_get_local_path(
 	 */
 	else if( result == 0 )
 	{
-		memory_free(
+		PyMem_Free(
 		 local_path );
 
 		Py_IncRef(
@@ -1672,7 +1671,7 @@ PyObject *pylnk_file_get_local_path(
 
 		goto on_error;
 	}
-	memory_free(
+	PyMem_Free(
 	 local_path );
 
 	return( string_object );
@@ -1680,7 +1679,7 @@ PyObject *pylnk_file_get_local_path(
 on_error:
 	if( local_path != NULL )
 	{
-		memory_free(
+		PyMem_Free(
 		 local_path );
 	}
 	return( NULL );
@@ -1755,7 +1754,7 @@ PyObject *pylnk_file_get_network_path(
 
 		return( Py_None );
 	}
-	network_path = (char *) memory_allocate(
+	network_path = (char *) PyMem_Malloc(
 	                         sizeof( char ) * network_path_size );
 
 	if( network_path == NULL )
@@ -1806,7 +1805,7 @@ PyObject *pylnk_file_get_network_path(
 	 */
 	else if( result == 0 )
 	{
-		memory_free(
+		PyMem_Free(
 		 network_path );
 
 		Py_IncRef(
@@ -1828,7 +1827,7 @@ PyObject *pylnk_file_get_network_path(
 
 		goto on_error;
 	}
-	memory_free(
+	PyMem_Free(
 	 network_path );
 
 	return( string_object );
@@ -1836,7 +1835,7 @@ PyObject *pylnk_file_get_network_path(
 on_error:
 	if( network_path != NULL )
 	{
-		memory_free(
+		PyMem_Free(
 		 network_path );
 	}
 	return( NULL );
@@ -1911,7 +1910,7 @@ PyObject *pylnk_file_get_description(
 
 		return( Py_None );
 	}
-	description = (char *) memory_allocate(
+	description = (char *) PyMem_Malloc(
 	                        sizeof( char ) * description_size );
 
 	if( description == NULL )
@@ -1962,7 +1961,7 @@ PyObject *pylnk_file_get_description(
 	 */
 	else if( result == 0 )
 	{
-		memory_free(
+		PyMem_Free(
 		 description );
 
 		Py_IncRef(
@@ -1984,7 +1983,7 @@ PyObject *pylnk_file_get_description(
 
 		goto on_error;
 	}
-	memory_free(
+	PyMem_Free(
 	 description );
 
 	return( string_object );
@@ -1992,7 +1991,7 @@ PyObject *pylnk_file_get_description(
 on_error:
 	if( description != NULL )
 	{
-		memory_free(
+		PyMem_Free(
 		 description );
 	}
 	return( NULL );
@@ -2067,7 +2066,7 @@ PyObject *pylnk_file_get_relative_path(
 
 		return( Py_None );
 	}
-	relative_path = (char *) memory_allocate(
+	relative_path = (char *) PyMem_Malloc(
 	                          sizeof( char ) * relative_path_size );
 
 	if( relative_path == NULL )
@@ -2118,7 +2117,7 @@ PyObject *pylnk_file_get_relative_path(
 	 */
 	else if( result == 0 )
 	{
-		memory_free(
+		PyMem_Free(
 		 relative_path );
 
 		Py_IncRef(
@@ -2140,7 +2139,7 @@ PyObject *pylnk_file_get_relative_path(
 
 		goto on_error;
 	}
-	memory_free(
+	PyMem_Free(
 	 relative_path );
 
 	return( string_object );
@@ -2148,7 +2147,7 @@ PyObject *pylnk_file_get_relative_path(
 on_error:
 	if( relative_path != NULL )
 	{
-		memory_free(
+		PyMem_Free(
 		 relative_path );
 	}
 	return( NULL );
@@ -2223,7 +2222,7 @@ PyObject *pylnk_file_get_working_directory(
 
 		return( Py_None );
 	}
-	working_directory = (char *) memory_allocate(
+	working_directory = (char *) PyMem_Malloc(
 	                              sizeof( char ) * working_directory_size );
 
 	if( working_directory == NULL )
@@ -2274,7 +2273,7 @@ PyObject *pylnk_file_get_working_directory(
 	 */
 	else if( result == 0 )
 	{
-		memory_free(
+		PyMem_Free(
 		 working_directory );
 
 		Py_IncRef(
@@ -2296,7 +2295,7 @@ PyObject *pylnk_file_get_working_directory(
 
 		goto on_error;
 	}
-	memory_free(
+	PyMem_Free(
 	 working_directory );
 
 	return( string_object );
@@ -2304,7 +2303,7 @@ PyObject *pylnk_file_get_working_directory(
 on_error:
 	if( working_directory != NULL )
 	{
-		memory_free(
+		PyMem_Free(
 		 working_directory );
 	}
 	return( NULL );
@@ -2379,7 +2378,7 @@ PyObject *pylnk_file_get_command_line_arguments(
 
 		return( Py_None );
 	}
-	command_line_arguments = (char *) memory_allocate(
+	command_line_arguments = (char *) PyMem_Malloc(
 	                                   sizeof( char ) * command_line_arguments_size );
 
 	if( command_line_arguments == NULL )
@@ -2430,7 +2429,7 @@ PyObject *pylnk_file_get_command_line_arguments(
 	 */
 	else if( result == 0 )
 	{
-		memory_free(
+		PyMem_Free(
 		 command_line_arguments );
 
 		Py_IncRef(
@@ -2452,7 +2451,7 @@ PyObject *pylnk_file_get_command_line_arguments(
 
 		goto on_error;
 	}
-	memory_free(
+	PyMem_Free(
 	 command_line_arguments );
 
 	return( string_object );
@@ -2460,7 +2459,7 @@ PyObject *pylnk_file_get_command_line_arguments(
 on_error:
 	if( command_line_arguments != NULL )
 	{
-		memory_free(
+		PyMem_Free(
 		 command_line_arguments );
 	}
 	return( NULL );
@@ -2535,7 +2534,7 @@ PyObject *pylnk_file_get_icon_location(
 
 		return( Py_None );
 	}
-	icon_location = (char *) memory_allocate(
+	icon_location = (char *) PyMem_Malloc(
 	                          sizeof( char ) * icon_location_size );
 
 	if( icon_location == NULL )
@@ -2586,7 +2585,7 @@ PyObject *pylnk_file_get_icon_location(
 	 */
 	else if( result == 0 )
 	{
-		memory_free(
+		PyMem_Free(
 		 icon_location );
 
 		Py_IncRef(
@@ -2608,7 +2607,7 @@ PyObject *pylnk_file_get_icon_location(
 
 		goto on_error;
 	}
-	memory_free(
+	PyMem_Free(
 	 icon_location );
 
 	return( string_object );
@@ -2616,7 +2615,7 @@ PyObject *pylnk_file_get_icon_location(
 on_error:
 	if( icon_location != NULL )
 	{
-		memory_free(
+		PyMem_Free(
 		 icon_location );
 	}
 	return( NULL );
@@ -2691,7 +2690,7 @@ PyObject *pylnk_file_get_environment_variables_location(
 
 		return( Py_None );
 	}
-	environment_variables_location = (char *) memory_allocate(
+	environment_variables_location = (char *) PyMem_Malloc(
 	                                           sizeof( char ) * environment_variables_location_size );
 
 	if( environment_variables_location == NULL )
@@ -2742,7 +2741,7 @@ PyObject *pylnk_file_get_environment_variables_location(
 	 */
 	else if( result == 0 )
 	{
-		memory_free(
+		PyMem_Free(
 		 environment_variables_location );
 
 		Py_IncRef(
@@ -2764,7 +2763,7 @@ PyObject *pylnk_file_get_environment_variables_location(
 
 		goto on_error;
 	}
-	memory_free(
+	PyMem_Free(
 	 environment_variables_location );
 
 	return( string_object );
@@ -2772,7 +2771,7 @@ PyObject *pylnk_file_get_environment_variables_location(
 on_error:
 	if( environment_variables_location != NULL )
 	{
-		memory_free(
+		PyMem_Free(
 		 environment_variables_location );
 	}
 	return( NULL );
