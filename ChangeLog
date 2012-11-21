@@ -47,6 +47,9 @@ Bindings:
 * .net
 * java
 
+20121120
+* update for missing path separator in network path
+
 20121104
 * pylnk: fixes for 32-bit build
 
