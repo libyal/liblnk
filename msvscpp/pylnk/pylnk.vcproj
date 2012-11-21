@@ -204,22 +204,6 @@
 				RelativePath="..\..\pylnk\pylnk_file_object_io_handle.c"
 				>
 			</File>
-			<File
-				RelativePath="..\..\pylnk\pylnk_key.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\pylnk\pylnk_keys.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\pylnk\pylnk_value.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\pylnk\pylnk_values.c"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -247,14 +231,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\pylnk\pylnk_key.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\pylnk\pylnk_keys.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\pylnk\pylnk_libbfio.h"
 				>
 			</File>
@@ -276,14 +252,6 @@
 			</File>
 			<File
 				RelativePath="..\..\pylnk\pylnk_python.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\pylnk\pylnk_value.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\pylnk\pylnk_values.h"
 				>
 			</File>
 		</Filter>
