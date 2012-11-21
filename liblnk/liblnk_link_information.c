@@ -477,17 +477,23 @@ int liblnk_file_get_utf8_local_path_size(
 	}
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE ) != 0 )
 	{
-		if( ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 3 ] != (uint8_t) '\\' )
-		 || ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 2 ] != 0 ) )
+		if( internal_file->location_information->local_path_size >= 4 )
 		{
-			utf8_local_path_size += 1;
+			if( ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 4 ] != (uint8_t) '\\' )
+			 || ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 3 ] != 0 ) )
+			{
+				utf8_local_path_size += 1;
+			}
 		}
 	}
 	else
 	{
-		if( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 1 ] != (uint8_t) '\\' )
+		if( internal_file->location_information->local_path_size >= 2 )
 		{
-			utf8_local_path_size += 1;
+			if( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 2 ] != (uint8_t) '\\' )
+			{
+				utf8_local_path_size += 1;
+			}
 		}
 	}
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
@@ -631,39 +637,45 @@ int liblnk_file_get_utf8_local_path(
 
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE ) != 0 )
 	{
-		if( ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 3 ] != (uint8_t) '\\' )
-		 || ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 2 ] != 0 ) )
+		if( internal_file->location_information->local_path_size >= 4 )
 		{
-			if( ( string_index + 1 ) > utf8_string_size )
+			if( ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 4 ] != (uint8_t) '\\' )
+			 || ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 3 ] != 0 ) )
 			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-				 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-				 "%s: UTF-8 string value too small.",
-				 function );
+				if( ( string_index + 1 ) > utf8_string_size )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+					 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+					 "%s: UTF-8 string value too small.",
+					 function );
 
-				return( -1 );
+					return( -1 );
+				}
+				utf8_string[ string_index++ ] = (uint8_t) '\\';
 			}
-			utf8_string[ string_index++ ] = (uint8_t) '\\';
 		}
 	}
 	else
 	{
-		if( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 1 ] != (uint8_t) '\\' )
+		if( internal_file->location_information->local_path_size >= 2 )
 		{
-			if( ( string_index + 1 ) > utf8_string_size )
+			if( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 2 ] != (uint8_t) '\\' )
 			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-				 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-				 "%s: UTF-8 string value too small.",
-				 function );
+				if( ( string_index + 1 ) > utf8_string_size )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+					 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+					 "%s: UTF-8 string value too small.",
+					 function );
 
-				return( -1 );
+					return( -1 );
+				}
+				utf8_string[ string_index++ ] = (uint8_t) '\\';
 			}
-			utf8_string[ string_index++ ] = (uint8_t) '\\';
 		}
 	}
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
@@ -792,17 +804,23 @@ int liblnk_file_get_utf16_local_path_size(
 	}
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE ) != 0 )
 	{
-		if( ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 3 ] != (uint8_t) '\\' )
-		 || ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 2 ] != 0 ) )
+		if( internal_file->location_information->local_path_size >= 4 )
 		{
-			utf16_local_path_size += 1;
+			if( ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 4 ] != (uint8_t) '\\' )
+			 || ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 3 ] != 0 ) )
+			{
+				utf16_local_path_size += 1;
+			}
 		}
 	}
 	else
 	{
-		if( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 1 ] != (uint8_t) '\\' )
+		if( internal_file->location_information->local_path_size >= 2 )
 		{
-			utf16_local_path_size += 1;
+			if( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 2 ] != (uint8_t) '\\' )
+			{
+				utf16_local_path_size += 1;
+			}
 		}
 	}
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
@@ -946,39 +964,45 @@ int liblnk_file_get_utf16_local_path(
 
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE ) != 0 )
 	{
-		if( ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 3 ] != (uint8_t) '\\' )
-		 || ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 2 ] != 0 ) )
+		if( internal_file->location_information->local_path_size >= 4 )
 		{
-			if( ( string_index + 1 ) > utf16_string_size )
+			if( ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 4 ] != (uint8_t) '\\' )
+			 || ( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 3 ] != 0 ) )
 			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-				 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-				 "%s: UTF-16 string value too small.",
-				 function );
+				if( ( string_index + 1 ) > utf16_string_size )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+					 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+					 "%s: UTF-16 string value too small.",
+					 function );
 
-				return( -1 );
+					return( -1 );
+				}
+				utf16_string[ string_index++ ] = (uint16_t) '\\';
 			}
-			utf16_string[ string_index++ ] = (uint16_t) '\\';
 		}
 	}
 	else
 	{
-		if( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 1 ] != (uint16_t) '\\' )
+		if( internal_file->location_information->local_path_size >= 2 )
 		{
-			if( ( string_index + 1 ) > utf16_string_size )
+			if( ( internal_file->location_information->local_path )[ internal_file->location_information->local_path_size - 2 ] != (uint16_t) '\\' )
 			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-				 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-				 "%s: UTF-16 string value too small.",
-				 function );
+				if( ( string_index + 1 ) > utf16_string_size )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+					 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+					 "%s: UTF-16 string value too small.",
+					 function );
 
-				return( -1 );
+					return( -1 );
+				}
+				utf16_string[ string_index++ ] = (uint16_t) '\\';
 			}
-			utf16_string[ string_index++ ] = (uint16_t) '\\';
 		}
 	}
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
@@ -1107,17 +1131,23 @@ int liblnk_file_get_utf8_network_path_size(
 	}
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE ) != 0 )
 	{
-		if( ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 3 ] != (uint8_t) '\\' )
-		 || ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 2 ] != 0 ) )
+		if( internal_file->location_information->network_share_name_size >= 4 )
 		{
-			utf8_network_share_name_size += 1;
+			if( ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 4 ] != (uint8_t) '\\' )
+			 || ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 3 ] != 0 ) )
+			{
+				utf8_network_share_name_size += 1;
+			}
 		}
 	}
 	else
 	{
-		if( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 1 ] != (uint8_t) '\\' )
+		if( internal_file->location_information->network_share_name_size >= 2 )
 		{
-			utf8_network_share_name_size += 1;
+			if( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 2 ] != (uint8_t) '\\' )
+			{
+				utf8_network_share_name_size += 1;
+			}
 		}
 	}
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
@@ -1261,39 +1291,45 @@ int liblnk_file_get_utf8_network_path(
 
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE ) != 0 )
 	{
-		if( ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 3 ] != (uint8_t) '\\' )
-		 || ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 2 ] != 0 ) )
+		if( internal_file->location_information->network_share_name_size >= 4 )
 		{
-			if( ( string_index + 1 ) > utf8_string_size )
+			if( ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 4 ] != (uint8_t) '\\' )
+			 || ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 3 ] != 0 ) )
 			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-				 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-				 "%s: UTF-8 string value too small.",
-				 function );
+				if( ( string_index + 1 ) > utf8_string_size )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+					 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+					 "%s: UTF-8 string value too small.",
+					 function );
 
-				return( -1 );
+					return( -1 );
+				}
+				utf8_string[ string_index++ ] = (uint8_t) '\\';
 			}
-			utf8_string[ string_index++ ] = (uint8_t) '\\';
 		}
 	}
 	else
 	{
-		if( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 1 ] != (uint8_t) '\\' )
+		if( internal_file->location_information->network_share_name_size >= 2 )
 		{
-			if( ( string_index + 1 ) > utf8_string_size )
+			if( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 2 ] != (uint8_t) '\\' )
 			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-				 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-				 "%s: UTF-8 string value too small.",
-				 function );
+				if( ( string_index + 1 ) > utf8_string_size )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+					 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+					 "%s: UTF-8 string value too small.",
+					 function );
 
-				return( -1 );
+					return( -1 );
+				}
+				utf8_string[ string_index++ ] = (uint8_t) '\\';
 			}
-			utf8_string[ string_index++ ] = (uint8_t) '\\';
 		}
 	}
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
@@ -1422,17 +1458,23 @@ int liblnk_file_get_utf16_network_path_size(
 	}
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE ) != 0 )
 	{
-		if( ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 3 ] != (uint8_t) '\\' )
-		 || ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 2 ] != 0 ) )
+		if( internal_file->location_information->network_share_name_size >= 4 )
 		{
-			utf16_network_share_name_size += 1;
+			if( ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 4 ] != (uint8_t) '\\' )
+			 || ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 3 ] != 0 ) )
+			{
+				utf16_network_share_name_size += 1;
+			}
 		}
 	}
 	else
 	{
-		if( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 1 ] != (uint8_t) '\\' )
+		if( internal_file->location_information->network_share_name_size >= 2 )
 		{
-			utf16_network_share_name_size += 1;
+			if( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 2 ] != (uint8_t) '\\' )
+			{
+				utf16_network_share_name_size += 1;
+			}
 		}
 	}
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
@@ -1576,39 +1618,45 @@ int liblnk_file_get_utf16_network_path(
 
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE ) != 0 )
 	{
-		if( ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 3 ] != (uint8_t) '\\' )
-		 || ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 2 ] != 0 ) )
+		if( internal_file->location_information->network_share_name_size >= 4 )
 		{
-			if( ( string_index + 1 ) > utf16_string_size )
+			if( ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 4 ] != (uint8_t) '\\' )
+			 || ( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 3 ] != 0 ) )
 			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-				 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-				 "%s: UTF-16 string value too small.",
-				 function );
+				if( ( string_index + 1 ) > utf16_string_size )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+					 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+					 "%s: UTF-16 string value too small.",
+					 function );
 
-				return( -1 );
+					return( -1 );
+				}
+				utf16_string[ string_index++ ] = (uint16_t) '\\';
 			}
-			utf16_string[ string_index++ ] = (uint16_t) '\\';
 		}
 	}
 	else
 	{
-		if( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 1 ] != (uint8_t) '\\' )
+		if( internal_file->location_information->network_share_name_size >= 2 )
 		{
-			if( ( string_index + 1 ) > utf16_string_size )
+			if( ( internal_file->location_information->network_share_name )[ internal_file->location_information->network_share_name_size - 2 ] != (uint8_t) '\\' )
 			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-				 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-				 "%s: UTF-16 string value too small.",
-				 function );
+				if( ( string_index + 1 ) > utf16_string_size )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+					 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+					 "%s: UTF-16 string value too small.",
+					 function );
 
-				return( -1 );
+					return( -1 );
+				}
+				utf16_string[ string_index++ ] = (uint16_t) '\\';
 			}
-			utf16_string[ string_index++ ] = (uint16_t) '\\';
 		}
 	}
 	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
