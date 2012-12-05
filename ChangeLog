@@ -47,6 +47,9 @@ Bindings:
 * .net
 * java
 
+20121205
+* changes to msvscpp files for visual studio 2010 build
+
 20121121
 * update for missing path separator in network path
 * updated msvscpp files
