@@ -497,6 +497,233 @@ int info_handle_link_information_fprint(
 
 		return( -1 );
 	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "Link information:\n" );
+
+	if( libfdatetime_filetime_initialize(
+	     &filetime,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 "%s: unable to create filetime.",
+		 function );
+
+		goto on_error;
+	}
+	if( liblnk_file_get_file_attribute_flags(
+	     info_handle->input_file,
+	     &file_attribute_flags,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve file attribute flags.",
+		 function );
+
+		goto on_error;
+	}
+	/* Creation time
+	 */
+	if( liblnk_file_get_file_creation_time(
+	     info_handle->input_file,
+	     &value_64bit,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve file creation time.",
+		 function );
+
+		goto on_error;
+	}
+	if( libfdatetime_filetime_copy_from_64bit(
+	     filetime,
+	     value_64bit,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+		 "%s: unable to copy 64-bit value to filetime.",
+		 function );
+
+		goto on_error;
+	}
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+	result = libfdatetime_filetime_copy_to_utf16_string(
+		  filetime,
+		  (uint16_t *) filetime_string,
+		  48,
+		  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
+		  error );
+#else
+	result = libfdatetime_filetime_copy_to_utf8_string(
+		  filetime,
+		  (uint8_t *) filetime_string,
+		  48,
+		  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
+		  error );
+#endif
+	if( result != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+		 "%s: unable to copy filetime to string.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\tCreation time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+	 filetime_string );
+
+	/* Modification time
+	 */
+	if( liblnk_file_get_file_modification_time(
+	     info_handle->input_file,
+	     &value_64bit,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve file modification time.",
+		 function );
+
+		goto on_error;
+	}
+	if( libfdatetime_filetime_copy_from_64bit(
+	     filetime,
+	     value_64bit,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+		 "%s: unable to copy 64-bit value to filetime.",
+		 function );
+
+		goto on_error;
+	}
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+	result = libfdatetime_filetime_copy_to_utf16_string(
+		  filetime,
+		  (uint16_t *) filetime_string,
+		  48,
+		  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
+		  error );
+#else
+	result = libfdatetime_filetime_copy_to_utf8_string(
+		  filetime,
+		  (uint8_t *) filetime_string,
+		  48,
+		  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
+		  error );
+#endif
+	if( result != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+		 "%s: unable to copy filetime to string.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\tModification time\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+	 filetime_string );
+
+	/* Access time
+	 */
+	if( liblnk_file_get_file_access_time(
+	     info_handle->input_file,
+	     &value_64bit,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve file access time.",
+		 function );
+
+		goto on_error;
+	}
+	if( libfdatetime_filetime_copy_from_64bit(
+	     filetime,
+	     value_64bit,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+		 "%s: unable to copy 64-bit value to filetime.",
+		 function );
+
+		goto on_error;
+	}
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+	result = libfdatetime_filetime_copy_to_utf16_string(
+		  filetime,
+		  (uint16_t *) filetime_string,
+		  48,
+		  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
+		  error );
+#else
+	result = libfdatetime_filetime_copy_to_utf8_string(
+		  filetime,
+		  (uint8_t *) filetime_string,
+		  48,
+		  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
+		  error );
+#endif
+	if( result != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+		 "%s: unable to copy filetime to string.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\tAccess time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+	 filetime_string );
+
+	if( libfdatetime_filetime_free(
+	     &filetime,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+		 "%s: unable to free filetime.",
+		 function );
+
+		goto on_error;
+	}
 	result = liblnk_file_link_refers_to_file(
 	          info_handle->input_file,
 	          error );
@@ -514,233 +741,6 @@ int info_handle_link_information_fprint(
 	}
 	else if( result != 0 )
 	{
-		fprintf(
-		 info_handle->notify_stream,
-		 "Link information:\n" );
-
-		if( libfdatetime_filetime_initialize(
-		     &filetime,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to create filetime.",
-			 function );
-
-			goto on_error;
-		}
-		if( liblnk_file_get_file_attribute_flags(
-		     info_handle->input_file,
-		     &file_attribute_flags,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve file attribute flags.",
-			 function );
-
-			goto on_error;
-		}
-		/* Creation time
-		 */
-		if( liblnk_file_get_file_creation_time(
-		     info_handle->input_file,
-		     &value_64bit,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve file creation time.",
-			 function );
-
-			goto on_error;
-		}
-		if( libfdatetime_filetime_copy_from_64bit(
-		     filetime,
-		     value_64bit,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy 64-bit value to filetime.",
-			 function );
-
-			goto on_error;
-		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libfdatetime_filetime_copy_to_utf16_string(
-			  filetime,
-			  (uint16_t *) filetime_string,
-			  48,
-			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
-			  error );
-#else
-		result = libfdatetime_filetime_copy_to_utf8_string(
-			  filetime,
-			  (uint8_t *) filetime_string,
-			  48,
-			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy filetime to string.",
-			 function );
-
-			goto on_error;
-		}
-		fprintf(
-		 info_handle->notify_stream,
-		 "\tCreation time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
-		 filetime_string );
-
-		/* Modification time
-		 */
-		if( liblnk_file_get_file_modification_time(
-		     info_handle->input_file,
-		     &value_64bit,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve file modification time.",
-			 function );
-
-			goto on_error;
-		}
-		if( libfdatetime_filetime_copy_from_64bit(
-		     filetime,
-		     value_64bit,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy 64-bit value to filetime.",
-			 function );
-
-			goto on_error;
-		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libfdatetime_filetime_copy_to_utf16_string(
-			  filetime,
-			  (uint16_t *) filetime_string,
-			  48,
-			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
-			  error );
-#else
-		result = libfdatetime_filetime_copy_to_utf8_string(
-			  filetime,
-			  (uint8_t *) filetime_string,
-			  48,
-			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy filetime to string.",
-			 function );
-
-			goto on_error;
-		}
-		fprintf(
-		 info_handle->notify_stream,
-		 "\tModification time\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
-		 filetime_string );
-
-		/* Access time
-		 */
-		if( liblnk_file_get_file_access_time(
-		     info_handle->input_file,
-		     &value_64bit,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve file access time.",
-			 function );
-
-			goto on_error;
-		}
-		if( libfdatetime_filetime_copy_from_64bit(
-		     filetime,
-		     value_64bit,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy 64-bit value to filetime.",
-			 function );
-
-			goto on_error;
-		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libfdatetime_filetime_copy_to_utf16_string(
-			  filetime,
-			  (uint16_t *) filetime_string,
-			  48,
-			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
-			  error );
-#else
-		result = libfdatetime_filetime_copy_to_utf8_string(
-			  filetime,
-			  (uint8_t *) filetime_string,
-			  48,
-			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy filetime to string.",
-			 function );
-
-			goto on_error;
-		}
-		fprintf(
-		 info_handle->notify_stream,
-		 "\tAccess time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
-		 filetime_string );
-
-		if( libfdatetime_filetime_free(
-		     &filetime,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free filetime.",
-			 function );
-
-			goto on_error;
-		}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_get_utf16_local_path_size(
 		          info_handle->input_file,

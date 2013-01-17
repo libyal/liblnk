@@ -1029,6 +1029,7 @@ PyObject *pylnk_file_set_ascii_codepage(
 	size_t codepage_string_length = 0;
 	uint32_t feature_flags        = 0;
 	int ascii_codepage            = 0;
+	int result                    = 0;
 
 	if( pylnk_file == NULL )
 	{

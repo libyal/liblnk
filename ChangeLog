@@ -47,6 +47,10 @@ Bindings:
 * .net
 * java
 
+20130117
+* fixed issue in lnkinfo where date and time values were not printed
+  when location info flag was not set
+
 20130116
 * 2013 update
 * updated dependencies
