@@ -47,6 +47,13 @@ Bindings:
 * .net
 * java
 
+20130116
+* 2013 update
+* updated dependencies
+* updated pylnk
+* bug fixes in lnktools
+* bug fixes in pylnk
+
 20121205
 * changes to msvscpp files for visual studio 2010 build
 

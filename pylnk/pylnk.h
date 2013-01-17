@@ -1,7 +1,7 @@
 /*
  * Python bindings for liblnk (pylnk)
  *
- * Copyright (c) 2009-2012, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -36,15 +36,12 @@ extern "C" {
 PyObject *pylnk_get_version(
            PyObject *self );
 
-PyObject *pylnk_get_access_flags_read(
-           PyObject *self );
-
 PyObject *pylnk_check_file_signature(
            PyObject *self,
            PyObject *arguments,
            PyObject *keywords );
 
-PyObject *pylnk_set_notify_values(
+PyObject *pylnk_check_file_signature_file_object(
            PyObject *self,
            PyObject *arguments,
            PyObject *keywords );

@@ -1,7 +1,7 @@
 /*
  * Info handle
  *
- * Copyright (c) 2009-2012, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -476,7 +476,7 @@ int info_handle_link_information_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error )
 {
-	libcstring_system_character_t filetime_string[ 32 ];
+	libcstring_system_character_t filetime_string[ 48 ];
 
 	libfdatetime_filetime_t *filetime           = NULL;
 	libcstring_system_character_t *value_string = NULL;
@@ -579,14 +579,14 @@ int info_handle_link_information_fprint(
 		result = libfdatetime_filetime_copy_to_utf16_string(
 			  filetime,
 			  (uint16_t *) filetime_string,
-			  32,
+			  48,
 			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
 			  error );
 #else
 		result = libfdatetime_filetime_copy_to_utf8_string(
 			  filetime,
 			  (uint8_t *) filetime_string,
-			  32,
+			  48,
 			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
 			  error );
 #endif
@@ -640,14 +640,14 @@ int info_handle_link_information_fprint(
 		result = libfdatetime_filetime_copy_to_utf16_string(
 			  filetime,
 			  (uint16_t *) filetime_string,
-			  32,
+			  48,
 			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
 			  error );
 #else
 		result = libfdatetime_filetime_copy_to_utf8_string(
 			  filetime,
 			  (uint8_t *) filetime_string,
-			  32,
+			  48,
 			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
 			  error );
 #endif
@@ -701,14 +701,14 @@ int info_handle_link_information_fprint(
 		result = libfdatetime_filetime_copy_to_utf16_string(
 			  filetime,
 			  (uint16_t *) filetime_string,
-			  32,
+			  48,
 			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
 			  error );
 #else
 		result = libfdatetime_filetime_copy_to_utf8_string(
 			  filetime,
 			  (uint8_t *) filetime_string,
-			  32,
+			  48,
 			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
 			  error );
 #endif

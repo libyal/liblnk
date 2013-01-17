@@ -1,7 +1,7 @@
 /*
  * Python object definition of the liblnk file
  *
- * Copyright (c) 2009-2012, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -49,9 +49,14 @@ extern PyMethodDef pylnk_file_object_methods[];
 extern PyTypeObject pylnk_file_type_object;
 
 PyObject *pylnk_file_new(
-           PyObject *self );
+           void );
 
 PyObject *pylnk_file_new_open(
+           PyObject *self,
+           PyObject *arguments,
+           PyObject *keywords );
+
+PyObject *pylnk_file_new_open_file_object(
            PyObject *self,
            PyObject *arguments,
            PyObject *keywords );

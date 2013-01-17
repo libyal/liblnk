@@ -86,18 +86,6 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_libdir}/python*/site-packages/*.so
 
 %changelog
-* Fri Apr  6 2012 Joachim Metz <joachim.metz@gmail.com> 20120406-1
-- Changes due to dependency changes
-
-* Mon Mar  5 2012 Joachim Metz <joachim.metz@gmail.com> 20120305-1
-- Added support for Python bindings
-
-* Sun Oct  9 2011 Joachim Metz <joachim.metz@gmail.com> 20111009-1
-- Changes for configure update and README files
-
-* Sat Jul 17 2010 Joachim Metz <joachim.metz@gmail.com> 20100717-1
-- Added libfguid and libfwsi support
-
-* Sun Sep  6 2009 Joachim Metz <joachim.metz@gmail.com> 20090906-1
-- Initial version
+* @SPEC_DATE@ Joachim Metz <joachim.metz@gmail.com> @VERSION@-1
+- Auto-generated
 

@@ -1,7 +1,7 @@
 /*
  * Python object definition of the liblnk file
  *
- * Copyright (c) 2009-2012, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -61,14 +61,14 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "open",
 	  (PyCFunction) pylnk_file_open,
 	  METH_VARARGS | METH_KEYWORDS,
-	  "open(filename, access_flags) -> None\n"
+	  "open(filename, mode='r') -> None\n"
 	  "\n"
 	  "Opens a file" },
 
 	{ "open_file_object",
 	  (PyCFunction) pylnk_file_open_file_object,
 	  METH_VARARGS | METH_KEYWORDS,
-	  "open(file_object, access_flags) -> None\n"
+	  "open(file_object, mode='r') -> None\n"
 	  "\n"
 	  "Opens a file using a file-like object" },
 
@@ -266,7 +266,7 @@ PyGetSetDef pylnk_file_object_get_set_definitions[] = {
 	  "The icon location of the linked file",
 	  NULL },
 
-	{ "environment_variables",
+	{ "environment_variables_location",
 	  (getter) pylnk_file_get_environment_variables_location,
 	  (setter) 0,
 	  "The environment variables location of the linked file",
@@ -377,10 +377,10 @@ PyTypeObject pylnk_file_type_object = {
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_new(
-           PyObject *self )
+           void )
 {
 	pylnk_file_t *pylnk_file = NULL;
-	static char *function      = "pylnk_file_new";
+	static char *function    = "pylnk_file_new";
 
 	pylnk_file = PyObject_New(
 	              struct pylnk_file,
@@ -393,7 +393,7 @@ PyObject *pylnk_file_new(
 		 "%s: unable to initialize file.",
 		 function );
 
-		return( NULL );
+		goto on_error;
 	}
 	if( pylnk_file_init(
 	     pylnk_file ) != 0 )
@@ -426,10 +426,29 @@ PyObject *pylnk_file_new_open(
 {
 	PyObject *pylnk_file = NULL;
 
-	pylnk_file = pylnk_file_new(
-	              self );
+	pylnk_file = pylnk_file_new();
 
 	pylnk_file_open(
+	 (pylnk_file_t *) pylnk_file,
+	 arguments,
+	 keywords );
+
+	return( pylnk_file );
+}
+
+/* Creates a new file object and opens it
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_new_open_file_object(
+           PyObject *self,
+           PyObject *arguments,
+           PyObject *keywords )
+{
+	PyObject *pylnk_file = NULL;
+
+	pylnk_file = pylnk_file_new();
+
+	pylnk_file_open_file_object(
 	 (pylnk_file_t *) pylnk_file,
 	 arguments,
 	 keywords );
@@ -645,9 +664,9 @@ PyObject *pylnk_file_open(
 
 	libcerror_error_t *error    = NULL;
 	char *filename              = NULL;
-	static char *keyword_list[] = { "filename", "access_flags", NULL };
+	char *mode                  = NULL;
+	static char *keyword_list[] = { "filename", "mode", NULL };
 	static char *function       = "pylnk_file_open";
-	int access_flags            = 0;
 	int result                  = 0;
 
 	if( pylnk_file == NULL )
@@ -662,25 +681,30 @@ PyObject *pylnk_file_open(
 	if( PyArg_ParseTupleAndKeywords(
 	     arguments,
 	     keywords,
-	     "s|i",
+	     "s|s",
 	     keyword_list,
 	     &filename,
-	     &access_flags ) == 0 )
+	     &mode ) == 0 )
         {
                 return( NULL );
         }
-	/* Default to read-only if no access flags were provided
-	 */
-	if( access_flags == 0 )
+	if( ( mode != NULL )
+	 && ( mode[ 0 ] != 'r' ) )
 	{
-		access_flags = liblnk_get_access_flags_read();
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: unsupported mode: %s.",
+		 function,
+		 mode );
+
+		return( NULL );
 	}
 	Py_BEGIN_ALLOW_THREADS
 
 	result = liblnk_file_open(
 	          pylnk_file->file,
                   filename,
-                  access_flags,
+                  LIBLNK_OPEN_READ,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -729,9 +753,9 @@ PyObject *pylnk_file_open_file_object(
 	PyObject *file_object            = NULL;
 	libbfio_handle_t *file_io_handle = NULL;
 	libcerror_error_t *error         = NULL;
-	static char *keyword_list[]      = { "file_object", "access_flags", NULL };
+	char *mode                       = NULL;
+	static char *keyword_list[]      = { "file_object", "mode", NULL };
 	static char *function            = "pylnk_file_open_file_object";
-	int access_flags                 = 0;
 	int result                       = 0;
 
 	if( pylnk_file == NULL )
@@ -746,18 +770,23 @@ PyObject *pylnk_file_open_file_object(
 	if( PyArg_ParseTupleAndKeywords(
 	     arguments,
 	     keywords,
-	     "O|i",
+	     "O|s",
 	     keyword_list,
 	     &file_object,
-	     &access_flags ) == 0 )
+	     &mode ) == 0 )
         {
                 return( NULL );
         }
-	/* Default to read-only if no access flags were provided
-	 */
-	if( access_flags == 0 )
+	if( ( mode != NULL )
+	 && ( mode[ 0 ] != 'r' ) )
 	{
-		access_flags = liblnk_get_access_flags_read();
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: unsupported mode: %s.",
+		 function,
+		 mode );
+
+		return( NULL );
 	}
 	if( pylnk_file_object_initialize(
 	     &file_io_handle,
@@ -792,7 +821,7 @@ PyObject *pylnk_file_open_file_object(
 	result = liblnk_file_open_file_io_handle(
 	          pylnk_file->file,
                   file_io_handle,
-                  access_flags,
+                  LIBLNK_OPEN_READ,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -910,6 +939,7 @@ PyObject *pylnk_file_get_ascii_codepage(
 	const char *codepage_string = NULL;
 	static char *function       = "pylnk_file_get_ascii_codepage";
 	int ascii_codepage          = 0;
+	int result                  = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -920,10 +950,16 @@ PyObject *pylnk_file_get_ascii_codepage(
 
 		return( NULL );
 	}
-	if( liblnk_file_get_ascii_codepage(
-	     pylnk_file->file,
-	     &ascii_codepage,
-	     &error ) != 1 )
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_ascii_codepage(
+	          pylnk_file->file,
+	          &ascii_codepage,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
 	{
 		if( libcerror_error_backtrace_sprint(
 		     error,
@@ -1057,10 +1093,16 @@ PyObject *pylnk_file_set_ascii_codepage(
 
 		return( NULL );
 	}
-	if( liblnk_file_set_ascii_codepage(
-	     pylnk_file->file,
-	     ascii_codepage,
-	     &error ) != 1 )
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_set_ascii_codepage(
+	          pylnk_file->file,
+	          ascii_codepage,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
 	{
 		if( libcerror_error_backtrace_sprint(
 		     error,
@@ -1657,9 +1699,13 @@ PyObject *pylnk_file_get_local_path(
 
 		return( Py_None );
 	}
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
+	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 local_path,
-	                 (Py_ssize_t) local_path_size,
+	                 (Py_ssize_t) local_path_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
@@ -1813,9 +1859,13 @@ PyObject *pylnk_file_get_network_path(
 
 		return( Py_None );
 	}
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
+	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 network_path,
-	                 (Py_ssize_t) network_path_size,
+	                 (Py_ssize_t) network_path_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
@@ -1969,9 +2019,13 @@ PyObject *pylnk_file_get_description(
 
 		return( Py_None );
 	}
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
+	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 description,
-	                 (Py_ssize_t) description_size,
+	                 (Py_ssize_t) description_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
@@ -2125,9 +2179,13 @@ PyObject *pylnk_file_get_relative_path(
 
 		return( Py_None );
 	}
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
+	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 relative_path,
-	                 (Py_ssize_t) relative_path_size,
+	                 (Py_ssize_t) relative_path_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
@@ -2281,9 +2339,13 @@ PyObject *pylnk_file_get_working_directory(
 
 		return( Py_None );
 	}
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
+	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 working_directory,
-	                 (Py_ssize_t) working_directory_size,
+	                 (Py_ssize_t) working_directory_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
@@ -2437,9 +2499,13 @@ PyObject *pylnk_file_get_command_line_arguments(
 
 		return( Py_None );
 	}
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
+	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 command_line_arguments,
-	                 (Py_ssize_t) command_line_arguments_size,
+	                 (Py_ssize_t) command_line_arguments_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
@@ -2593,9 +2659,13 @@ PyObject *pylnk_file_get_icon_location(
 
 		return( Py_None );
 	}
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
+	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 icon_location,
-	                 (Py_ssize_t) icon_location_size,
+	                 (Py_ssize_t) icon_location_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
@@ -2749,9 +2819,13 @@ PyObject *pylnk_file_get_environment_variables_location(
 
 		return( Py_None );
 	}
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
+	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 environment_variables_location,
-	                 (Py_ssize_t) environment_variables_location_size,
+	                 (Py_ssize_t) environment_variables_location_size - 1,
 	                 errors );
 
 	if( string_object == NULL )

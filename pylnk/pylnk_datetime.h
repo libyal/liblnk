@@ -1,7 +1,7 @@
 /*
  * Date and time functions
  *
- * Copyright (c) 2009-2012, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -30,6 +30,9 @@
 #if defined( __cplusplus )
 extern "C" {
 #endif
+
+PyObject *pylnk_datetime_new_from_fat_date_time(
+           uint32_t fat_date_time );
 
 PyObject *pylnk_datetime_new_from_filetime(
            uint64_t filetime );

@@ -1,7 +1,7 @@
 /*
  * Common output functions for the lnktools
  *
- * Copyright (c) 2009-2012, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -53,7 +53,7 @@ void lnkoutput_copyright_fprint(
 	}
 	fprintf(
 	 stream,
-	 "Copyright (c) 2009-2012, Joachim Metz, <%s>.\n"
+	 "Copyright (c) 2009-2013, Joachim Metz, <%s>.\n"
 	 "This is free software; see the source for copying conditions. There is NO\n"
 	 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n",
 	 PACKAGE_BUGREPORT );
