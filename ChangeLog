@@ -47,6 +47,10 @@ Bindings:
 * .net
 * java
 
+20130202
+* improved handling of link information flags for Windows 95 LNK file
+* updated libfwsi
+
 20130117
 * fixed issue in lnkinfo where date and time values were not printed
   when location info flag was not set

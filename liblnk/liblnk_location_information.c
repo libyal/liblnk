@@ -452,10 +452,10 @@ ssize_t liblnk_location_information_read(
 		 "\n" );
 	}
 #endif
-
 	/* Volume information path
 	 */
-	if( volume_information_offset > 0 )
+	if( ( ( location_information->flags & 0x00000001UL ) != 0 )
+	 && ( volume_information_offset > 0 ) )
 	{
 		if( volume_information_offset < location_information_header_size )
 		{
@@ -535,7 +535,6 @@ ssize_t liblnk_location_information_read(
 			 volume_label_offset );
 		}
 #endif
-
 		if( volume_label_offset > 16 )
 		{
 			byte_stream_copy_to_uint32_little_endian(
@@ -728,14 +727,14 @@ ssize_t liblnk_location_information_read(
 				result = libuna_utf16_string_size_from_byte_stream(
 					  location_information->volume_label,
 					  location_information->volume_label_size,
-				          io_handle->ascii_codepage,
+					  io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #else
 				result = libuna_utf8_string_size_from_byte_stream(
 					  location_information->volume_label,
 					  location_information->volume_label_size,
-				          io_handle->ascii_codepage,
+					  io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #endif
@@ -764,7 +763,7 @@ ssize_t liblnk_location_information_read(
 				goto on_error;
 			}
 			value_string = libcstring_system_string_allocate(
-			                value_string_size );
+					value_string_size );
 
 			if( value_string == NULL )
 			{
@@ -842,7 +841,8 @@ ssize_t liblnk_location_information_read(
 	}
 	/* Local path
 	 */
-	if( local_path_offset > 0 )
+	if( ( ( location_information->flags & 0x00000001UL ) != 0 )
+	 && ( local_path_offset > 0 ) )
 	{
 		if( local_path_offset < location_information_header_size )
 		{
@@ -1047,14 +1047,14 @@ ssize_t liblnk_location_information_read(
 				result = libuna_utf16_string_size_from_byte_stream(
 					  location_information->local_path,
 					  location_information->local_path_size,
-				          io_handle->ascii_codepage,
+					  io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #else
 				result = libuna_utf8_string_size_from_byte_stream(
 					  location_information->local_path,
 					  location_information->local_path_size,
-				          io_handle->ascii_codepage,
+					  io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #endif
@@ -1083,7 +1083,7 @@ ssize_t liblnk_location_information_read(
 				goto on_error;
 			}
 			value_string = libcstring_system_string_allocate(
-			                value_string_size );
+					value_string_size );
 
 			if( value_string == NULL )
 			{
@@ -1161,7 +1161,8 @@ ssize_t liblnk_location_information_read(
 #endif
 	/* Network share information
 	 */
-	if( network_share_information_offset > 0 )
+	if( ( ( location_information->flags & 0x00000002UL ) != 0 )
+	 && ( network_share_information_offset > 0 ) )
 	{
 		if( network_share_information_offset < location_information_header_size )
 		{
@@ -1249,7 +1250,6 @@ ssize_t liblnk_location_information_read(
 			  location_information->network_provider_type ) );
 		}
 #endif
-
 		if( network_share_name_offset > 20 )
 		{
 			byte_stream_copy_to_uint32_little_endian(
@@ -1393,7 +1393,7 @@ ssize_t liblnk_location_information_read(
 		else
 		{
 			location_information->network_share_name = (uint8_t *) memory_allocate(
-			                                                        sizeof( uint8_t ) * value_size );
+										sizeof( uint8_t ) * value_size );
 
 			if( location_information->network_share_name == NULL )
 			{
@@ -1449,14 +1449,14 @@ ssize_t liblnk_location_information_read(
 				result = libuna_utf16_string_size_from_byte_stream(
 					  location_information->network_share_name,
 					  location_information->network_share_name_size,
-				          io_handle->ascii_codepage,
+					  io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #else
 				result = libuna_utf8_string_size_from_byte_stream(
 					  location_information->network_share_name,
 					  location_information->network_share_name_size,
-				          io_handle->ascii_codepage,
+					  io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #endif
@@ -1485,7 +1485,7 @@ ssize_t liblnk_location_information_read(
 				goto on_error;
 			}
 			value_string = libcstring_system_string_allocate(
-			                value_string_size );
+					value_string_size );
 
 			if( value_string == NULL )
 			{
@@ -1736,14 +1736,14 @@ ssize_t liblnk_location_information_read(
 				result = libuna_utf16_string_size_from_byte_stream(
 					  location_information->device_name,
 					  location_information->device_name_size,
-				          io_handle->ascii_codepage,
+					  io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #else
 				result = libuna_utf8_string_size_from_byte_stream(
 					  location_information->device_name,
 					  location_information->device_name_size,
-				          io_handle->ascii_codepage,
+					  io_handle->ascii_codepage,
 					  &value_string_size,
 					  error );
 #endif
@@ -1772,7 +1772,7 @@ ssize_t liblnk_location_information_read(
 				goto on_error;
 			}
 			value_string = libcstring_system_string_allocate(
-			                value_string_size );
+					value_string_size );
 
 			if( value_string == NULL )
 			{
