@@ -109,6 +109,21 @@ PyObject *pylnk_file_get_file_access_time(
 PyObject *pylnk_file_get_file_access_time_as_integer(
            pylnk_file_t *pylnk_file );
 
+PyObject *pylnk_file_get_file_size(
+           pylnk_file_t *pylnk_file );
+
+PyObject *pylnk_file_get_file_attribute_flags(
+           pylnk_file_t *pylnk_file );
+
+PyObject *pylnk_file_get_drive_type(
+           pylnk_file_t *pylnk_file );
+
+PyObject *pylnk_file_get_drive_serial_number(
+           pylnk_file_t *pylnk_file );
+
+PyObject *pylnk_file_get_volume_label(
+           pylnk_file_t *pylnk_file );
+
 PyObject *pylnk_file_get_local_path(
            pylnk_file_t *pylnk_file );
 

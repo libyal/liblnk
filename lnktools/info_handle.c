@@ -483,7 +483,7 @@ int info_handle_link_information_fprint(
 	static char *function                       = "info_handle_link_information_fprint";
 	size_t value_string_size                    = 0;
 	uint64_t value_64bit                        = 0;
-	uint32_t file_attribute_flags               = 0;
+	uint32_t value_32bit                        = 0;
 	int result                                  = 0;
 
 	if( info_handle == NULL )
@@ -510,20 +510,6 @@ int info_handle_link_information_fprint(
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
 		 "%s: unable to create filetime.",
-		 function );
-
-		goto on_error;
-	}
-	if( liblnk_file_get_file_attribute_flags(
-	     info_handle->input_file,
-	     &file_attribute_flags,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve file attribute flags.",
 		 function );
 
 		goto on_error;
@@ -724,6 +710,140 @@ int info_handle_link_information_fprint(
 
 		goto on_error;
 	}
+	if( liblnk_file_get_file_size(
+	     info_handle->input_file,
+	     &value_32bit,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve file size.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\tFile size\t\t\t: %" PRIu32 " bytes\n",
+	 value_32bit );
+
+	if( liblnk_file_get_file_attribute_flags(
+	     info_handle->input_file,
+	     &value_32bit,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve file attribute flags.",
+		 function );
+
+		goto on_error;
+	}
+/* TODO print file attribute flags description */
+	fprintf(
+	 info_handle->notify_stream,
+	 "\tFile attribute flags\t\t: 0x%08" PRIx32 "\n",
+	 value_32bit );
+
+	result = liblnk_file_get_drive_type(
+	          info_handle->input_file,
+	          &value_32bit,
+	          error );
+
+	if( result == -1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve drive type.",
+		 function );
+
+		goto on_error;
+	}
+	else if( result != 0 )
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tDrive type\t\t\t: " );
+
+		switch( value_32bit )
+		{
+			case LIBLNK_DRIVE_TYPE_NO_ROOT_DIR:
+				fprintf(
+				 info_handle->notify_stream,
+				 "No root directory" );
+				break;
+
+			case LIBLNK_DRIVE_TYPE_REMOVABLE:
+				fprintf(
+				 info_handle->notify_stream,
+				 "Removable" );
+				break;
+
+			case LIBLNK_DRIVE_TYPE_FIXED:
+				fprintf(
+				 info_handle->notify_stream,
+				 "Fixed" );
+				break;
+
+			case LIBLNK_DRIVE_TYPE_REMOTE:
+				fprintf(
+				 info_handle->notify_stream,
+				 "Remote" );
+				break;
+
+			case LIBLNK_DRIVE_TYPE_CDROM:
+				fprintf(
+				 info_handle->notify_stream,
+				 "CDROM" );
+				break;
+
+			case LIBLNK_DRIVE_TYPE_RAMDISK:
+				fprintf(
+				 info_handle->notify_stream,
+				 "RAM disk" );
+				break;
+
+			case LIBLNK_DRIVE_TYPE_UNKNOWN:
+			default:
+				fprintf(
+				 info_handle->notify_stream,
+				 "Unknown" );
+				break;
+		}
+		fprintf(
+		 info_handle->notify_stream,
+		 " (0x%08" PRIx32 ")\n",
+		 value_32bit );
+	}
+	result = liblnk_file_get_drive_serial_number(
+	          info_handle->input_file,
+	          &value_32bit,
+	          error );
+
+	if( result == -1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve drive serial number.",
+		 function );
+
+		goto on_error;
+	}
+	else if( result != 0 )
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tDrive serial number\t\t: 0x%08" PRIx32 "\n",
+		 value_32bit );
+	}
 	result = liblnk_file_link_refers_to_file(
 	          info_handle->input_file,
 	          error );
@@ -741,6 +861,90 @@ int info_handle_link_information_fprint(
 	}
 	else if( result != 0 )
 	{
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+		result = liblnk_file_get_utf16_volume_label_size(
+		          info_handle->input_file,
+		          &value_string_size,
+		          error );
+#else
+		result = liblnk_file_get_utf8_volume_label_size(
+		          info_handle->input_file,
+		          &value_string_size,
+		          error );
+#endif
+		if( result == -1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve volume label string size.",
+			 function );
+
+			goto on_error;
+		}
+		else if( result != 0 )
+		{
+			if( ( value_string_size > (size_t) SSIZE_MAX )
+			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+				 "%s: invalid volume label string size value exceeds maximum.",
+				 function );
+
+				goto on_error;
+			}
+			value_string = libcstring_system_string_allocate(
+			                value_string_size );
+
+			if( value_string == NULL )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+				 "%s: unable to create volume label string.",
+				 function );
+
+				goto on_error;
+			}
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+			result = liblnk_file_get_utf16_volume_label(
+			          info_handle->input_file,
+			          (uint16_t *) value_string,
+			          value_string_size,
+			          error );
+#else
+			result = liblnk_file_get_utf8_volume_label(
+			          info_handle->input_file,
+			          (uint8_t *) value_string,
+			          value_string_size,
+			          error );
+#endif
+			if( result == -1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to retrieve volume label.",
+				 function );
+
+				goto on_error;
+			}
+			fprintf(
+			 info_handle->notify_stream,
+			 "\tVolume label\t\t\t: %s\n",
+			 value_string );
+
+			memory_free(
+			 value_string );
+
+			value_string = NULL;
+		}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_get_utf16_local_path_size(
 		          info_handle->input_file,

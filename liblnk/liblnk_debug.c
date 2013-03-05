@@ -251,7 +251,38 @@ void liblnk_debug_print_file_attribute_flags(
 	}
 }
 
-/* Prints the nework provider type
+/* Prints the dirve type
+ */
+const char *liblnk_debug_print_drive_type(
+             uint32_t drive_type )
+{
+	switch( drive_type )
+	{
+		case LIBLNK_DRIVE_TYPE_UNKNOWN:
+			return( "Unknown" );
+
+		case LIBLNK_DRIVE_TYPE_NO_ROOT_DIR:
+			return( "No root directory" );
+
+		case LIBLNK_DRIVE_TYPE_REMOVABLE:
+			return( "Removable" );
+
+		case LIBLNK_DRIVE_TYPE_FIXED:
+			return( "Fixed" );
+
+		case LIBLNK_DRIVE_TYPE_REMOTE:
+			return( "Remote" );
+
+		case LIBLNK_DRIVE_TYPE_CDROM:
+			return( "CDROM" );
+
+		case LIBLNK_DRIVE_TYPE_RAMDISK:
+			return( "RAM disk" );
+	}
+	return( "_UNKNOWN_" );
+}
+
+/* Prints the network provider type
  */
 const char *liblnk_debug_print_network_provider_type(
              uint32_t network_provider_type )

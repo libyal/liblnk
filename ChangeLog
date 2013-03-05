@@ -1,9 +1,14 @@
 TODO
+* check behavior of liblnk_file_link_refers_to_file() seems to block certain time values from being printed.
 * update msvscpp files
 * what about trailing data in xp lnk files ?
 * what about shell items
 * what about ole properties
 * pylnk add functions
+
+File format:
+* Ignore the location information (ForceNoLinkInfo)
+* what is controlled by the has location info?
 
 Checks
 * compare environment variables string and unicode string
@@ -39,13 +44,17 @@ Release:
 * configure
  - check inclusion local library functions
 * update manuals
-* update macosx package files
 * automated tests
   - 2x open/close (bfio and normal)
 
 Bindings:
 * .net
 * java
+
+20130303
+* added PackageMaker files
+* added functions to retrieve drive type, drive serial number and volume label
+* fix trailing \ for local and network path when common path is an emtpy string
 
 20130202
 * improved handling of link information flags for Windows 95 LNK file

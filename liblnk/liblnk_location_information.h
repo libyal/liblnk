@@ -33,15 +33,6 @@
 extern "C" {
 #endif
 
-enum LIBLNK_LOCATION_INFORMATION_STRING_FLAGS
-{
-	LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE		= 0x01,
-	LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE		= 0x02,
-	LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE	= 0x04,
-	LIBLNK_LOCATION_INFORMATION_STRING_FLAG_DEVICE_NAME_IS_UNICODE		= 0x08,
-	LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE		= 0x10
-};
-
 typedef struct liblnk_location_information liblnk_location_information_t;
 
 struct liblnk_location_information
@@ -49,6 +40,14 @@ struct liblnk_location_information
 	/* The location flags
 	 */
 	uint32_t flags;
+
+	/* The drive type
+	 */
+	uint32_t drive_type;
+
+	/* The drive serial number
+	 */
+	uint32_t drive_serial_number;
 
 	/* The string flags
 	 */

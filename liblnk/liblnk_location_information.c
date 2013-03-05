@@ -500,6 +500,14 @@ ssize_t liblnk_location_information_read(
 		}
 #endif
 		byte_stream_copy_to_uint32_little_endian(
+		 ( (lnk_volume_information_t *) location_information_value_data )->drive_type,
+		 location_information->drive_type );
+
+		byte_stream_copy_to_uint32_little_endian(
+		 ( (lnk_volume_information_t *) location_information_value_data )->drive_serial_number,
+		 location_information->drive_serial_number );
+
+		byte_stream_copy_to_uint32_little_endian(
 		 ( (lnk_volume_information_t *) location_information_value_data )->volume_label_offset,
 		 volume_label_offset );
 
@@ -511,23 +519,17 @@ ssize_t liblnk_location_information_read(
 			 function,
 			 location_information_value_size );
 
-			byte_stream_copy_to_uint32_little_endian(
-			 ( (lnk_volume_information_t *) location_information_value_data )->drive_type,
-			 value_32bit );
-
 			libcnotify_printf(
-			 "%s: volume information drive type\t\t\t\t: 0x%08" PRIx32 "\n",
+			 "%s: volume information drive type\t\t\t\t: 0x%08" PRIx32 " (%s)\n",
 			 function,
-			 value_32bit );
-
-			byte_stream_copy_to_uint32_little_endian(
-			 ( (lnk_volume_information_t *) location_information_value_data )->drive_serial_number,
-			 value_32bit );
+			 location_information->drive_type,
+			 liblnk_debug_print_drive_type(
+			  location_information->drive_type ) );
 
 			libcnotify_printf(
 			 "%s: volume information drive serial number\t\t: 0x%08" PRIx32 "\n",
 			 function,
-			 value_32bit );
+			 location_information->drive_serial_number );
 
 			libcnotify_printf(
 			 "%s: volume information volume label offset\t\t: %" PRIu32 "\n",

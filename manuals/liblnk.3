@@ -1,4 +1,4 @@
-.Dd January 16, 2013
+.Dd March 4, 2013
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -79,8 +79,6 @@ Link information functions
 .Ft int
 .Fn liblnk_file_link_refers_to_file "liblnk_file_t *file, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_file_attribute_flags "liblnk_file_t *file, uint32_t *file_attribute_flags, liblnk_error_t **error"
-.Ft int
 .Fn liblnk_file_get_file_creation_time "liblnk_file_t *file, uint64_t *creation_time, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_get_file_modification_time "liblnk_file_t *file, uint64_t *modification_time, liblnk_error_t **error"
@@ -88,6 +86,20 @@ Link information functions
 .Fn liblnk_file_get_file_access_time "liblnk_file_t *file, uint64_t *access_time, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_get_file_size "liblnk_file_t *file, uint32_t *file_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_file_attribute_flags "liblnk_file_t *file, uint32_t *file_attribute_flags, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_drive_type "liblnk_file_t *file, uint32_t *drive_type, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_drive_serial_number "liblnk_file_t *file, uint32_t *drive_serial_number, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_volume_label_size "liblnk_file_t *file, size_t *utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf8_volume_label "liblnk_file_t *file, uint8_t *utf8_string, size_t utf8_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_volume_label_size "liblnk_file_t *file, size_t *utf16_string_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_utf16_volume_label "liblnk_file_t *file, uint16_t *utf16_string, size_t utf16_string_size, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_get_utf8_local_path_size "liblnk_file_t *file, size_t *utf8_string_size, liblnk_error_t **error"
 .Ft int

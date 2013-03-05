@@ -73,10 +73,12 @@ void usage_fprint(
 /* Signal handler for lnkinfo
  */
 void lnkinfo_signal_handler(
-      libcsystem_signal_t signal )
+      libcsystem_signal_t signal LIBCSYSTEM_ATTRIBUTE_UNUSED )
 {
 	libcerror_error_t *error = NULL;
 	static char *function   = "lnkinfo_signal_handler";
+
+	LIBCSYSTEM_UNREFERENCED_PARAMETER( signal )
 
 	lnkinfo_abort = 1;
 

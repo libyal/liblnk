@@ -44,12 +44,6 @@ int liblnk_file_link_refers_to_file(
      libcerror_error_t **error );
 
 LIBLNK_EXTERN \
-int liblnk_file_get_file_attribute_flags(
-     liblnk_file_t *file,
-     uint32_t *file_attribute_flags,
-     libcerror_error_t **error );
-
-LIBLNK_EXTERN \
 int liblnk_file_get_file_creation_time(
      liblnk_file_t *file,
      uint64_t *creation_time,
@@ -73,7 +67,51 @@ int liblnk_file_get_file_size(
      uint32_t *file_size,
      libcerror_error_t **error );
 
+LIBLNK_EXTERN \
+int liblnk_file_get_file_attribute_flags(
+     liblnk_file_t *file,
+     uint32_t *file_attribute_flags,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_file_get_drive_type(
+     liblnk_file_t *file,
+     uint32_t *drive_type,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_file_get_drive_serial_number(
+     liblnk_file_t *file,
+     uint32_t *drive_serial_number,
+     libcerror_error_t **error );
+
 /* TODO add raw string functions ? */
+
+LIBLNK_EXTERN \
+int liblnk_file_get_utf8_volume_label_size(
+     liblnk_file_t *file,
+     size_t *utf8_string_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_file_get_utf8_volume_label(
+     liblnk_file_t *file,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_file_get_utf16_volume_label_size(
+     liblnk_file_t *file,
+     size_t *utf16_string_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_file_get_utf16_volume_label(
+     liblnk_file_t *file,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_get_utf8_local_path_size(

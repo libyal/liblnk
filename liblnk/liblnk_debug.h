@@ -40,6 +40,9 @@ void liblnk_debug_print_data_flags(
 void liblnk_debug_print_file_attribute_flags(
       uint32_t file_attribute_flags );
 
+const char *liblnk_debug_print_drive_type(
+             uint32_t drive_type );
+
 const char *liblnk_debug_print_network_provider_type(
              uint32_t network_provider_type );
 

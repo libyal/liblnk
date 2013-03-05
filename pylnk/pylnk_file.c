@@ -138,6 +138,41 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  "\n"
 	  "Returns the access date and time as a 64-bit integer containing a FILETIME value" },
 
+	{ "get_file_size",
+	  (PyCFunction) pylnk_file_get_file_size,
+	  METH_NOARGS,
+	  "get_file_size() -> Integer\n"
+	  "\n"
+	  "Returns the size of the linked file" },
+
+	{ "get_file_attribute_flags",
+	  (PyCFunction) pylnk_file_get_file_attribute_flags,
+	  METH_NOARGS,
+	  "get_file_attribute_flags() -> Integer\n"
+	  "\n"
+	  "Returns the file attribute flags of the linked file" },
+
+	{ "get_drive_type",
+	  (PyCFunction) pylnk_file_get_drive_type,
+	  METH_NOARGS,
+	  "get_drive_type() -> Integer or None\n"
+	  "\n"
+	  "Returns the drive type" },
+
+	{ "get_drive_serial_number",
+	  (PyCFunction) pylnk_file_get_drive_serial_number,
+	  METH_NOARGS,
+	  "get_drive_serial_number() -> Integer or None\n"
+	  "\n"
+	  "Returns the drive serial number" },
+
+	{ "get_volume_label",
+	  (PyCFunction) pylnk_file_get_volume_label,
+	  METH_NOARGS,
+	  "get_volume_label() -> Unicode string or None\n"
+	  "\n"
+	  "Returns the volume label" },
+
 	{ "get_local_path",
 	  (PyCFunction) pylnk_file_get_local_path,
 	  METH_NOARGS,
@@ -222,6 +257,36 @@ PyGetSetDef pylnk_file_object_get_set_definitions[] = {
 	  (getter) pylnk_file_get_file_access_time,
 	  (setter) 0,
 	  "The access date and time of the linked file",
+	  NULL },
+
+	{ "file_size",
+	  (getter) pylnk_file_get_file_size,
+	  (setter) 0,
+	  "The size of the of the linked file",
+	  NULL },
+
+	{ "file_attribute_flags",
+	  (getter) pylnk_file_get_file_attribute_flags,
+	  (setter) 0,
+	  "The file attribute flags of the linked file",
+	  NULL },
+
+	{ "drive_type",
+	  (getter) pylnk_file_get_drive_type,
+	  (setter) 0,
+	  "The drive type",
+	  NULL },
+
+	{ "drive_serial_number",
+	  (getter) pylnk_file_get_drive_serial_number,
+	  (setter) 0,
+	  "The drive serial number",
+	  NULL },
+
+	{ "volume_label",
+	  (getter) pylnk_file_get_volume_label,
+	  (setter) 0,
+	  "The volume label",
 	  NULL },
 
 	{ "local_path",
@@ -1570,6 +1635,420 @@ PyObject *pylnk_file_get_file_access_time_as_integer(
 	return( PyLong_FromLong(
 	         (long) filetime ) );
 #endif
+}
+
+/* Retrieves the file size
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_file_size(
+           pylnk_file_t *pylnk_file )
+{
+	char error_string[ PYLNK_ERROR_STRING_SIZE ];
+
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_file_get_file_size";
+	uint32_t file_size       = 0;
+	int result               = 0;
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_TypeError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_file_size(
+	          pylnk_file->file,
+	          &file_size,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+                {
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve file size.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve file size.\n%s",
+			 function,
+			 error_string );
+		}
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	return( PyInt_FromLong(
+	         (long) file_size ) );
+}
+
+/* Retrieves the file attribute flags
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_file_attribute_flags(
+           pylnk_file_t *pylnk_file )
+{
+	char error_string[ PYLNK_ERROR_STRING_SIZE ];
+
+	libcerror_error_t *error      = NULL;
+	static char *function         = "pylnk_file_get_file_attribute_flags";
+	uint32_t file_attribute_flags = 0;
+	int result                    = 0;
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_TypeError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_file_attribute_flags(
+	          pylnk_file->file,
+	          &file_attribute_flags,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+                {
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve file attribute flags.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve file attribute flags.\n%s",
+			 function,
+			 error_string );
+		}
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	return( PyInt_FromLong(
+	         (long) file_attribute_flags ) );
+}
+
+/* Retrieves the drive type
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_drive_type(
+           pylnk_file_t *pylnk_file )
+{
+	char error_string[ PYLNK_ERROR_STRING_SIZE ];
+
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_file_get_drive_type";
+	uint32_t drive_type      = 0;
+	int result               = 0;
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_TypeError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_drive_type(
+	          pylnk_file->file,
+	          &drive_type,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+                {
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve drive type.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve drive type.\n%s",
+			 function,
+			 error_string );
+		}
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	return( PyInt_FromLong(
+	         (long) drive_type ) );
+}
+
+/* Retrieves the drive serial number
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_drive_serial_number(
+           pylnk_file_t *pylnk_file )
+{
+	char error_string[ PYLNK_ERROR_STRING_SIZE ];
+
+	libcerror_error_t *error     = NULL;
+	static char *function        = "pylnk_file_get_drive_serial_number";
+	uint32_t drive_serial_number = 0;
+	int result                   = 0;
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_TypeError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_drive_serial_number(
+	          pylnk_file->file,
+	          &drive_serial_number,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+                {
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve drive serial number.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve drive serial number.\n%s",
+			 function,
+			 error_string );
+		}
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	return( PyInt_FromLong(
+	         (long) drive_serial_number ) );
+}
+
+/* Retrieves the volume label of the linked file
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_volume_label(
+           pylnk_file_t *pylnk_file )
+{
+	char error_string[ PYLNK_ERROR_STRING_SIZE ];
+
+	libcerror_error_t *error = NULL;
+	PyObject *string_object  = NULL;
+	static char *function    = "pylnk_file_get_volume_label";
+	const char *errors       = NULL;
+	char *volume_label       = NULL;
+	size_t volume_label_size = 0;
+	int result               = 0;
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_utf8_volume_label_size(
+	          pylnk_file->file,
+	          &volume_label_size,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve UTF-8 volume label size.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve UTF-8 volume label size.\n%s",
+			 function,
+			 error_string );
+		}
+		libcerror_error_free(
+		 &error );
+
+		goto on_error;
+	}
+	/* Check if the volume label is present
+	 */
+	else if( ( result == 0 )
+	      || ( volume_label_size == 0 ) )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	volume_label = (char *) PyMem_Malloc(
+	                         sizeof( char ) * volume_label_size );
+
+	if( volume_label == NULL )
+	{
+		PyErr_Format(
+		 PyExc_MemoryError,
+		 "%s: unable to create volume label.",
+		 function );
+
+		goto on_error;
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_utf8_volume_label(
+	          pylnk_file->file,
+	          (uint8_t *) volume_label,
+	          volume_label_size,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve UTF-8 volume label.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve UTF-8 volume label.\n%s",
+			 function,
+			 error_string );
+		}
+		libcerror_error_free(
+		 &error );
+
+		goto on_error;
+	}
+	/* Check if the volume label is present
+	 */
+	else if( result == 0 )
+	{
+		PyMem_Free(
+		 volume_label );
+
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
+	 */
+	string_object = PyUnicode_DecodeUTF8(
+	                 volume_label,
+	                 (Py_ssize_t) volume_label_size - 1,
+	                 errors );
+
+	if( string_object == NULL )
+	{
+		PyErr_Format(
+		 PyExc_IOError,
+		 "%s: unable to convert UTF-8 volume label into Unicode.",
+		 function );
+
+		goto on_error;
+	}
+	PyMem_Free(
+	 volume_label );
+
+	return( string_object );
+
+on_error:
+	if( volume_label != NULL )
+	{
+		PyMem_Free(
+		 volume_label );
+	}
+	return( NULL );
 }
 
 /* Retrieves the local path of the linked file
