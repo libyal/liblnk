@@ -51,6 +51,9 @@ Bindings:
 * .net
 * java
 
+20120409
+* fixed codepage 949 and 950 restriction bug
+
 20120319
 * updated dependencies
 
