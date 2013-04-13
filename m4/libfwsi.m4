@@ -34,7 +34,7 @@ AC_DEFUN([AX_LIBFWSI_CHECK_LIB],
    ac_cv_libfwsi_LIBADD="$pkg_cv_libfwsi_LIBS"],
    [dnl Check for headers
    AC_CHECK_HEADERS([libfwsi.h])
- 
+
    AS_IF(
     [test "x$ac_cv_header_libfwsi_h" = xno],
     [ac_cv_libfwsi=no],
@@ -46,7 +46,7 @@ AC_DEFUN([AX_LIBFWSI_CHECK_LIB],
      libfwsi_get_version,
      [ac_cv_libfwsi_dummy=yes],
      [ac_cv_libfwsi=no])
-   
+
     dnl Item functions
     AC_CHECK_LIB(
      fwsi,
@@ -63,7 +63,7 @@ AC_DEFUN([AX_LIBFWSI_CHECK_LIB],
      libfwsi_item_copy_from_byte_stream,
      [ac_cv_libfwsi_dummy=yes],
      [ac_cv_libfwsi=no])
-   
+
     dnl Item list functions
     AC_CHECK_LIB(
      fwsi,
@@ -80,7 +80,7 @@ AC_DEFUN([AX_LIBFWSI_CHECK_LIB],
      libfwsi_item_list_copy_from_byte_stream,
      [ac_cv_libfwsi_dummy=yes],
      [ac_cv_libfwsi=no])
- 
+
     ac_cv_libfwsi_LIBADD="-lfwsi"
     ])
    ])

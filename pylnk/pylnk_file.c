@@ -37,6 +37,7 @@
 #include "pylnk_libcstring.h"
 #include "pylnk_liblnk.h"
 #include "pylnk_python.h"
+#include "pylnk_unused.h"
 
 #if !defined( LIBLNK_HAVE_BFIO )
 LIBLNK_EXTERN \
@@ -54,7 +55,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  METH_NOARGS,
 	  "signal_abort() -> None\n"
 	  "\n"
-	  "Signals the file to abort the current activity" },
+	  "Signals the file to abort the current activity." },
 
 	/* Functions to access the file */
 
@@ -63,36 +64,36 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  METH_VARARGS | METH_KEYWORDS,
 	  "open(filename, mode='r') -> None\n"
 	  "\n"
-	  "Opens a file" },
+	  "Opens a file." },
 
 	{ "open_file_object",
 	  (PyCFunction) pylnk_file_open_file_object,
 	  METH_VARARGS | METH_KEYWORDS,
 	  "open(file_object, mode='r') -> None\n"
 	  "\n"
-	  "Opens a file using a file-like object" },
+	  "Opens a file using a file-like object." },
 
 	{ "close",
 	  (PyCFunction) pylnk_file_close,
 	  METH_NOARGS,
 	  "close() -> None\n"
 	  "\n"
-	  "Closes a file" },
+	  "Closes a file." },
 
 	{ "get_ascii_codepage",
 	  (PyCFunction) pylnk_file_get_ascii_codepage,
 	  METH_NOARGS,
 	  "get_ascii_codepage() -> String\n"
 	  "\n"
-	  "Returns the codepage used for ASCII strings in the file" },
+	  "Returns the codepage used for ASCII strings in the file." },
 
 	{ "set_ascii_codepage",
 	  (PyCFunction) pylnk_file_set_ascii_codepage,
 	  METH_VARARGS | METH_KEYWORDS,
 	  "set_ascii_codepage(codepage) -> None\n"
 	  "\n"
-	  "Set the codepage used for ASCII strings in the file\n"
-	  "Expects the codepage to be a String containing a Python codec definition" },
+	  "Set the codepage used for ASCII strings in the file.\n"
+	  "Expects the codepage to be a String containing a Python codec definition." },
 
 	/* Functions to access the metadata */
 
@@ -101,133 +102,133 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  METH_NOARGS,
 	  "get_file_creation_time() -> Datetime\n"
 	  "\n"
-	  "Returns the creation date and time of the linked file" },
+	  "Returns the creation date and time of the linked file." },
 
 	{ "get_file_creation_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_creation_time_as_integer,
 	  METH_NOARGS,
 	  "get_file_creation_time_as_integer() -> Long\n"
 	  "\n"
-	  "Returns the creation date and time as a 64-bit integer containing a FILETIME value" },
+	  "Returns the creation date and time as a 64-bit integer containing a FILETIME value." },
 
 	{ "get_file_modification_time",
 	  (PyCFunction) pylnk_file_get_file_modification_time,
 	  METH_NOARGS,
 	  "get_file_modification_time() -> Datetime\n"
 	  "\n"
-	  "Returns the modification date and time of the linked file" },
+	  "Returns the modification date and time of the linked file." },
 
 	{ "get_file_modification_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_modification_time_as_integer,
 	  METH_NOARGS,
 	  "get_file_modification_time_as_integer() -> Long\n"
 	  "\n"
-	  "Returns the modification date and time as a 64-bit integer containing a FILETIME value" },
+	  "Returns the modification date and time as a 64-bit integer containing a FILETIME value." },
 
 	{ "get_file_access_time",
 	  (PyCFunction) pylnk_file_get_file_access_time,
 	  METH_NOARGS,
 	  "get_file_access_time() -> Datetime\n"
 	  "\n"
-	  "Returns the access date and time of the linked file" },
+	  "Returns the access date and time of the linked file." },
 
 	{ "get_file_access_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_access_time_as_integer,
 	  METH_NOARGS,
 	  "get_file_access_time_as_integer() -> Long\n"
 	  "\n"
-	  "Returns the access date and time as a 64-bit integer containing a FILETIME value" },
+	  "Returns the access date and time as a 64-bit integer containing a FILETIME value." },
 
 	{ "get_file_size",
 	  (PyCFunction) pylnk_file_get_file_size,
 	  METH_NOARGS,
 	  "get_file_size() -> Integer\n"
 	  "\n"
-	  "Returns the size of the linked file" },
+	  "Returns the size of the linked file." },
 
 	{ "get_file_attribute_flags",
 	  (PyCFunction) pylnk_file_get_file_attribute_flags,
 	  METH_NOARGS,
 	  "get_file_attribute_flags() -> Integer\n"
 	  "\n"
-	  "Returns the file attribute flags of the linked file" },
+	  "Returns the file attribute flags of the linked file." },
 
 	{ "get_drive_type",
 	  (PyCFunction) pylnk_file_get_drive_type,
 	  METH_NOARGS,
 	  "get_drive_type() -> Integer or None\n"
 	  "\n"
-	  "Returns the drive type" },
+	  "Returns the drive type." },
 
 	{ "get_drive_serial_number",
 	  (PyCFunction) pylnk_file_get_drive_serial_number,
 	  METH_NOARGS,
 	  "get_drive_serial_number() -> Integer or None\n"
 	  "\n"
-	  "Returns the drive serial number" },
+	  "Returns the drive serial number." },
 
 	{ "get_volume_label",
 	  (PyCFunction) pylnk_file_get_volume_label,
 	  METH_NOARGS,
 	  "get_volume_label() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the volume label" },
+	  "Returns the volume label." },
 
 	{ "get_local_path",
 	  (PyCFunction) pylnk_file_get_local_path,
 	  METH_NOARGS,
 	  "get_local_path() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the local path of the linked file" },
+	  "Returns the local path of the linked file." },
 
 	{ "get_network_path",
 	  (PyCFunction) pylnk_file_get_network_path,
 	  METH_NOARGS,
 	  "get_network_path() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the network path of the linked file" },
+	  "Returns the network path of the linked file." },
 
 	{ "get_description",
 	  (PyCFunction) pylnk_file_get_description,
 	  METH_NOARGS,
 	  "get_description() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the description of the linked file" },
+	  "Returns the description of the linked file." },
 
 	{ "get_relative_path",
 	  (PyCFunction) pylnk_file_get_relative_path,
 	  METH_NOARGS,
 	  "get_relative_path() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the relative path of the linked file" },
+	  "Returns the relative path of the linked file." },
 
 	{ "get_working_directory",
 	  (PyCFunction) pylnk_file_get_working_directory,
 	  METH_NOARGS,
 	  "get_working_directory() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the working directory of the linked file" },
+	  "Returns the working directory of the linked file." },
 
 	{ "get_command_line_arguments",
 	  (PyCFunction) pylnk_file_get_command_line_arguments,
 	  METH_NOARGS,
 	  "get_command_line_arguments() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the command line arguments of the linked file" },
+	  "Returns the command line arguments of the linked file." },
 
 	{ "get_icon_location",
 	  (PyCFunction) pylnk_file_get_icon_location,
 	  METH_NOARGS,
 	  "get_icon_location() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the icon location of the linked file" },
+	  "Returns the icon location of the linked file." },
 
 	{ "get_environment_variables_location",
 	  (PyCFunction) pylnk_file_get_environment_variables_location,
 	  METH_NOARGS,
 	  "get_environment_variables_location() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the environment variables location of the linked file" },
+	  "Returns the environment variables location of the linked file." },
 
 	/* Sentinel */
 	{ NULL, NULL, 0, NULL }
@@ -237,104 +238,104 @@ PyGetSetDef pylnk_file_object_get_set_definitions[] = {
 
 	{ "ascii_codepage",
 	  (getter) pylnk_file_get_ascii_codepage,
-	  (setter) pylnk_file_set_ascii_codepage,
-	  "The codepage used for ASCII strings in the file",
+	  (setter) pylnk_file_set_ascii_codepage_setter,
+	  "The codepage used for ASCII strings in the file.",
 	  NULL },
 
 	{ "file_creation_time",
 	  (getter) pylnk_file_get_file_creation_time,
 	  (setter) 0,
-	  "The creation date and time of the linked file",
+	  "The creation date and time of the linked file.",
 	  NULL },
 
 	{ "file_modification_time",
 	  (getter) pylnk_file_get_file_modification_time,
 	  (setter) 0,
-	  "The modification date and time of the linked file",
+	  "The modification date and time of the linked file.",
 	  NULL },
 
 	{ "file_access_time",
 	  (getter) pylnk_file_get_file_access_time,
 	  (setter) 0,
-	  "The access date and time of the linked file",
+	  "The access date and time of the linked file.",
 	  NULL },
 
 	{ "file_size",
 	  (getter) pylnk_file_get_file_size,
 	  (setter) 0,
-	  "The size of the of the linked file",
+	  "The size of the of the linked file.",
 	  NULL },
 
 	{ "file_attribute_flags",
 	  (getter) pylnk_file_get_file_attribute_flags,
 	  (setter) 0,
-	  "The file attribute flags of the linked file",
+	  "The file attribute flags of the linked file.",
 	  NULL },
 
 	{ "drive_type",
 	  (getter) pylnk_file_get_drive_type,
 	  (setter) 0,
-	  "The drive type",
+	  "The drive type.",
 	  NULL },
 
 	{ "drive_serial_number",
 	  (getter) pylnk_file_get_drive_serial_number,
 	  (setter) 0,
-	  "The drive serial number",
+	  "The drive serial number.",
 	  NULL },
 
 	{ "volume_label",
 	  (getter) pylnk_file_get_volume_label,
 	  (setter) 0,
-	  "The volume label",
+	  "The volume label.",
 	  NULL },
 
 	{ "local_path",
 	  (getter) pylnk_file_get_local_path,
 	  (setter) 0,
-	  "The local path of the linked file",
+	  "The local path of the linked file.",
 	  NULL },
 
 	{ "network_path",
 	  (getter) pylnk_file_get_network_path,
 	  (setter) 0,
-	  "The network path of the linked file",
+	  "The network path of the linked file.",
 	  NULL },
 
 	{ "description",
 	  (getter) pylnk_file_get_description,
 	  (setter) 0,
-	  "The descriptioni of the linked file",
+	  "The description of the linked file.",
 	  NULL },
 
 	{ "relative_path",
 	  (getter) pylnk_file_get_relative_path,
 	  (setter) 0,
-	  "The relative path of the linked file",
+	  "The relative path of the linked file.",
 	  NULL },
 
 	{ "working_directory",
 	  (getter) pylnk_file_get_working_directory,
 	  (setter) 0,
-	  "The working directory of the linked file",
+	  "The working directory of the linked file.",
 	  NULL },
 
 	{ "command_line_arguments",
 	  (getter) pylnk_file_get_command_line_arguments,
 	  (setter) 0,
-	  "The command line arguments of the linked file",
+	  "The command line arguments of the linked file.",
 	  NULL },
 
 	{ "icon_location",
 	  (getter) pylnk_file_get_icon_location,
 	  (setter) 0,
-	  "The icon location of the linked file",
+	  "The icon location of the linked file.",
 	  NULL },
 
 	{ "environment_variables_location",
 	  (getter) pylnk_file_get_environment_variables_location,
 	  (setter) 0,
-	  "The environment variables location of the linked file",
+	  "The environment variables location of the linked file.",
 	  NULL },
 
 	/* Sentinel */
@@ -661,13 +662,16 @@ void pylnk_file_free(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_signal_abort(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
 	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_signal_abort";
 	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -935,13 +939,16 @@ on_error:
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_close(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
 	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_close";
 	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -995,7 +1002,8 @@ PyObject *pylnk_file_close(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_ascii_codepage(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -1005,6 +1013,8 @@ PyObject *pylnk_file_get_ascii_codepage(
 	static char *function       = "pylnk_file_get_ascii_codepage";
 	int ascii_codepage          = 0;
 	int result                  = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -1078,19 +1088,16 @@ PyObject *pylnk_file_get_ascii_codepage(
 }
 
 /* Sets the codepage used for ASCII strings in the file
- * Returns a Python object if successful or NULL on error
+ * Returns 1 if successful or -1 on error
  */
-PyObject *pylnk_file_set_ascii_codepage(
-           pylnk_file_t *pylnk_file,
-           PyObject *arguments,
-           PyObject *keywords )
+int pylnk_file_set_ascii_codepage_from_string(
+     pylnk_file_t *pylnk_file,
+     const char *codepage_string )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
 	libcerror_error_t *error      = NULL;
-	char *codepage_string         = NULL;
-	static char *keyword_list[]   = { "codepage", NULL };
-	static char *function         = "pylnk_file_set_ascii_codepage";
+	static char *function         = "pylnk_file_set_ascii_codepage_from_string";
 	size_t codepage_string_length = 0;
 	uint32_t feature_flags        = 0;
 	int ascii_codepage            = 0;
@@ -1103,17 +1110,8 @@ PyObject *pylnk_file_set_ascii_codepage(
 		 "%s: invalid file.",
 		 function );
 
-		return( NULL );
+		return( -1 );
 	}
-	if( PyArg_ParseTupleAndKeywords(
-	     arguments,
-	     keywords,
-	     "s",
-	     keyword_list,
-	     &codepage_string ) == 0 )
-        {
-                return( NULL );
-        }
 	if( codepage_string == NULL )
 	{
 		PyErr_Format(
@@ -1121,13 +1119,12 @@ PyObject *pylnk_file_set_ascii_codepage(
 		 "%s: invalid codepage string.",
 		 function );
 
-		return( NULL );
+		return( -1 );
 	}
 	codepage_string_length = libcstring_narrow_string_length(
 	                          codepage_string );
 
-	feature_flags = LIBCLOCALE_CODEPAGE_FEATURE_FLAG_HAVE_KOI8
-	              | LIBCLOCALE_CODEPAGE_FEATURE_FLAG_HAVE_WINDOWS;
+	feature_flags = LIBCLOCALE_CODEPAGE_FEATURE_FLAG_HAVE_WINDOWS;
 
 	if( libclocale_codepage_copy_from_string(
 	     &ascii_codepage,
@@ -1157,7 +1154,7 @@ PyObject *pylnk_file_set_ascii_codepage(
 		libcerror_error_free(
 		 &error );
 
-		return( NULL );
+		return( -1 );
 	}
 	Py_BEGIN_ALLOW_THREADS
 
@@ -1191,6 +1188,38 @@ PyObject *pylnk_file_set_ascii_codepage(
 		libcerror_error_free(
 		 &error );
 
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Sets the codepage used for ASCII strings in the file
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_set_ascii_codepage(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments,
+           PyObject *keywords )
+{
+	static char *keyword_list[] = { "codepage", NULL };
+	char *codepage_string       = NULL;
+	int result                  = 0;
+
+	if( PyArg_ParseTupleAndKeywords(
+	     arguments,
+	     keywords,
+	     "s",
+	     keyword_list,
+	     &codepage_string ) == 0 )
+        {
+                return( NULL );
+        }
+	result = pylnk_file_set_ascii_codepage_from_string(
+	          pylnk_file,
+	          codepage_string );
+
+	if( result != 1 )
+	{
 		return( NULL );
 	}
 	Py_IncRef(
@@ -1199,11 +1228,43 @@ PyObject *pylnk_file_set_ascii_codepage(
 	return( Py_None );
 }
 
+/* Sets the codepage used for ASCII strings in the file
+ * Returns a Python object if successful or NULL on error
+ */
+int pylnk_file_set_ascii_codepage_setter(
+     pylnk_file_t *pylnk_file,
+     PyObject *value_object,
+     void *closure PYLNK_ATTRIBUTE_UNUSED )
+{
+	char *codepage_string = NULL;
+	int result            = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( closure )
+
+	codepage_string = PyString_AsString(
+	                   value_object );
+
+	if( codepage_string == NULL )
+	{
+		return( -1 );
+	}
+	result = pylnk_file_set_ascii_codepage_from_string(
+	          pylnk_file,
+	          codepage_string );
+
+	if( result != 1 )
+	{
+		return( -1 );
+	}
+	return( 0 );
+}
+
 /* Retrieves the creation date and time of the linked file
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_creation_time(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -1212,6 +1273,8 @@ PyObject *pylnk_file_get_file_creation_time(
 	static char *function      = "pylnk_file_get_file_creation_time";
 	uint64_t filetime          = 0;
 	int result                 = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -1266,7 +1329,8 @@ PyObject *pylnk_file_get_file_creation_time(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_creation_time_as_integer(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -1274,6 +1338,8 @@ PyObject *pylnk_file_get_file_creation_time_as_integer(
 	static char *function    = "pylnk_file_get_file_creation_time_as_integer";
 	uint64_t filetime        = 0;
 	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -1349,7 +1415,8 @@ PyObject *pylnk_file_get_file_creation_time_as_integer(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_modification_time(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -1358,6 +1425,8 @@ PyObject *pylnk_file_get_file_modification_time(
 	static char *function      = "pylnk_file_get_file_modification_time";
 	uint64_t filetime          = 0;
 	int result                 = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -1412,7 +1481,8 @@ PyObject *pylnk_file_get_file_modification_time(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_modification_time_as_integer(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -1420,6 +1490,8 @@ PyObject *pylnk_file_get_file_modification_time_as_integer(
 	static char *function    = "pylnk_file_get_file_modification_time_as_integer";
 	uint64_t filetime        = 0;
 	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -1495,7 +1567,8 @@ PyObject *pylnk_file_get_file_modification_time_as_integer(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_access_time(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -1504,6 +1577,8 @@ PyObject *pylnk_file_get_file_access_time(
 	static char *function      = "pylnk_file_get_file_access_time";
 	uint64_t filetime          = 0;
 	int result                 = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -1558,7 +1633,8 @@ PyObject *pylnk_file_get_file_access_time(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_access_time_as_integer(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -1566,6 +1642,8 @@ PyObject *pylnk_file_get_file_access_time_as_integer(
 	static char *function    = "pylnk_file_get_file_access_time_as_integer";
 	uint64_t filetime        = 0;
 	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -1641,7 +1719,8 @@ PyObject *pylnk_file_get_file_access_time_as_integer(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_size(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -1649,6 +1728,8 @@ PyObject *pylnk_file_get_file_size(
 	static char *function    = "pylnk_file_get_file_size";
 	uint32_t file_size       = 0;
 	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -1701,7 +1782,8 @@ PyObject *pylnk_file_get_file_size(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_attribute_flags(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -1709,6 +1791,8 @@ PyObject *pylnk_file_get_file_attribute_flags(
 	static char *function         = "pylnk_file_get_file_attribute_flags";
 	uint32_t file_attribute_flags = 0;
 	int result                    = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -1761,7 +1845,8 @@ PyObject *pylnk_file_get_file_attribute_flags(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_drive_type(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -1769,6 +1854,8 @@ PyObject *pylnk_file_get_drive_type(
 	static char *function    = "pylnk_file_get_drive_type";
 	uint32_t drive_type      = 0;
 	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -1828,7 +1915,8 @@ PyObject *pylnk_file_get_drive_type(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_drive_serial_number(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -1836,6 +1924,8 @@ PyObject *pylnk_file_get_drive_serial_number(
 	static char *function        = "pylnk_file_get_drive_serial_number";
 	uint32_t drive_serial_number = 0;
 	int result                   = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -1895,7 +1985,8 @@ PyObject *pylnk_file_get_drive_serial_number(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_volume_label(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -1906,6 +1997,8 @@ PyObject *pylnk_file_get_volume_label(
 	char *volume_label       = NULL;
 	size_t volume_label_size = 0;
 	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -2055,7 +2148,8 @@ on_error:
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_local_path(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -2066,6 +2160,8 @@ PyObject *pylnk_file_get_local_path(
 	char *local_path         = NULL;
 	size_t local_path_size   = 0;
 	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -2215,7 +2311,8 @@ on_error:
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_network_path(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -2226,6 +2323,8 @@ PyObject *pylnk_file_get_network_path(
 	char *network_path       = NULL;
 	size_t network_path_size = 0;
 	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -2375,7 +2474,8 @@ on_error:
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_description(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -2386,6 +2486,8 @@ PyObject *pylnk_file_get_description(
 	char *description        = NULL;
 	size_t description_size  = 0;
 	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -2535,7 +2637,8 @@ on_error:
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_relative_path(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -2546,6 +2649,8 @@ PyObject *pylnk_file_get_relative_path(
 	char *relative_path       = NULL;
 	size_t relative_path_size = 0;
 	int result                = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -2695,7 +2800,8 @@ on_error:
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_working_directory(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -2706,6 +2812,8 @@ PyObject *pylnk_file_get_working_directory(
 	char *working_directory       = NULL;
 	size_t working_directory_size = 0;
 	int result                    = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -2855,7 +2963,8 @@ on_error:
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_command_line_arguments(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -2866,6 +2975,8 @@ PyObject *pylnk_file_get_command_line_arguments(
 	char *command_line_arguments       = NULL;
 	size_t command_line_arguments_size = 0;
 	int result                         = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -3015,7 +3126,8 @@ on_error:
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_icon_location(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -3026,6 +3138,8 @@ PyObject *pylnk_file_get_icon_location(
 	char *icon_location       = NULL;
 	size_t icon_location_size = 0;
 	int result                = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{
@@ -3175,7 +3289,8 @@ on_error:
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_environment_variables_location(
-           pylnk_file_t *pylnk_file )
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
@@ -3186,6 +3301,8 @@ PyObject *pylnk_file_get_environment_variables_location(
 	char *environment_variables_location       = NULL;
 	size_t environment_variables_location_size = 0;
 	int result                                 = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	if( pylnk_file == NULL )
 	{

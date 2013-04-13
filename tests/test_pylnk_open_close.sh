@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Windows Shortcut File (LNK) format library Python-bindings testing script
+# Windows Shortcut File (LNK) format library Python-bindings open close testing script
 #
 # Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
 #
@@ -25,9 +25,36 @@ EXIT_FAILURE=1;
 EXIT_IGNORE=77;
 
 INPUT="input";
-TMP="tmp";
 
-#TODO call several python scripts
+PYTHON="/usr/bin/python";
+
+if ! test -x ${PYTHON};
+then
+	echo "Missing executable: ${PYTHON}";
+
+	exit ${EXIT_FAILURE};
+fi
+
+if ! test -d ${INPUT};
+then
+	echo "No input directory found, to test pylnk create a directory named input and fill it with test files.";
+
+	exit ${EXIT_IGNORE};
+fi
+
+OLDIFS=${IFS};
+IFS="
+";
+
+for FILENAME in ${INPUT}/*;
+do
+	if ! PYTHONPATH=../pylnk/.libs/ ${PYTHON} pylnk_test_open_close.py ${FILENAME};
+	then
+		exit ${EXIT_FAILURE};
+	fi
+done
+
+IFS=${OLDIFS};
 
 exit ${EXIT_SUCCESS};
 

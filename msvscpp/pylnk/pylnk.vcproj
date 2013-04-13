@@ -254,6 +254,10 @@
 				RelativePath="..\..\pylnk\pylnk_python.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_unused.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

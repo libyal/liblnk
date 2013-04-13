@@ -14,21 +14,29 @@ AM_CPPFLAGS = \
 
 if HAVE_PYTHON
 TESTS_PYLNK  = \
-	test_pylnk.sh
+	test_pylnk_set_ascii_codepage.sh \
+	test_pylnk_open_close.sh
 endif
 
 TESTS = \
+	test_set_ascii_codepage.sh \
 	test_open_close.sh \
 	$(TESTS_PYLNK)
 
 check_SCRIPTS = \
-	test_open_close.sh
+	pylnk_test_open_close.py \
+	pylnk_test_set_ascii_codepage.py \
+	test_open_close.sh \
+	test_pylnk_open_close.sh \
+	test_pylnk_set_ascii_codepage.sh \
+	test_set_ascii_codepage.sh
 
 EXTRA_DIST = \
 	$(check_SCRIPTS)
 
 check_PROGRAMS =  \
-	lnk_test_open_close
+	lnk_test_open_close \
+	lnk_test_set_ascii_codepage
 
 lnk_test_open_close_SOURCES = \
 	lnk_test_libcerror.h \
@@ -38,16 +46,29 @@ lnk_test_open_close_SOURCES = \
 
 lnk_test_open_close_LDADD = \
 	../liblnk/liblnk.la
-	@LIBCERROR_LIBADD@ \
-	@LIBCSTRING_LIBADD@ \
-	@LIBCDATA_LIBADD@ \
-	@LIBCLOCALE_LIBADD@ \
-	@LIBCNOTIFY_LIBADD@ \
-	@LIBCSPLIT_LIBADD@ \
-	@LIBUNA_LIBADD@ \
-	@LIBCFILE_LIBADD@ \
+	@LIBBFIO_LIBADD@ \
 	@LIBCPATH_LIBADD@ \
-	@LIBBFIO_LIBADD@
+	@LIBCFILE_LIBADD@ \
+	@LIBUNA_LIBADD@ \
+	@LIBCSPLIT_LIBADD@ \
+	@LIBCNOTIFY_LIBADD@ \
+	@LIBCLOCALE_LIBADD@ \
+	@LIBCDATA_LIBADD@ \
+	@LIBCERROR_LIBADD@ \
+	@LIBCSTRING_LIBADD@
+
+lnk_test_set_ascii_codepage_SOURCES = \
+	lnk_test_libcerror.h \
+	lnk_test_libclocale.h \
+	lnk_test_liblnk.h \
+	lnk_test_libcstring.h \
+	lnk_test_set_ascii_codepage.c
+
+lnk_test_set_ascii_codepage_LDADD = \
+	../liblnk/liblnk.la
+	@LIBCLOCALE_LIBADD@ \
+	@LIBCERROR_LIBADD@ \
+	@LIBCSTRING_LIBADD@
 
 MAINTAINERCLEANFILES = \
 	Makefile.in

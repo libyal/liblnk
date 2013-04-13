@@ -1,7 +1,7 @@
 /*
- * Date and time functions
+ * The internal unused definition
  *
- * Copyright (c) 2009-2019, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -19,29 +19,25 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _PYLNK_DATETIME_H )
-#define _PYLNK_DATETIME_H
+#if !defined( _PYLNK_INTERNAL_UNUSED_H )
+#define _PYLNK_INTERNAL_UNUSED_H
 
 #include <common.h>
-#include <types.h>
 
-#include "pylnk_python.h"
-
-#if defined( __cplusplus )
-extern "C" {
+#if !defined( PYLNK_ATTRIBUTE_UNUSED )
+#if defined( __GNUC__ ) && __GNUC__ >= 3
+#define PYLNK_ATTRIBUTE_UNUSED	__attribute__ ((__unused__))
+#else
+#define PYLNK_ATTRIBUTE_UNUSED
+#endif
 #endif
 
-PyObject *pylnk_datetime_new_from_fat_date_time(
-           uint32_t fat_date_time );
-
-PyObject *pylnk_datetime_new_from_filetime(
-           uint64_t filetime );
-
-PyObject *pylnk_datetime_new_from_posix_time(
-           uint32_t posix_time );
-
-#if defined( __cplusplus )
-}
+#if defined( _MSC_VER )
+#define PYLNK_UNREFERENCED_PARAMETER( parameter ) \
+	UNREFERENCED_PARAMETER( parameter );
+#else
+#define PYLNK_UNREFERENCED_PARAMETER( parameter ) \
+	/* parameter */
 #endif
 
 #endif

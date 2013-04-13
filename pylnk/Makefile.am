@@ -24,7 +24,8 @@ pylnk_la_SOURCES = \
 	pylnk_libclocale.h \
 	pylnk_libcstring.h \
 	pylnk_liblnk.h \
-	pylnk_python.h
+	pylnk_python.h \
+	pylnk_unused.h
 
 pylnk_la_LIBADD = \
 	@LIBCSTRING_LIBADD@ \

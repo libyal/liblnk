@@ -232,8 +232,7 @@ int info_handle_set_ascii_codepage(
 
 		return( -1 );
 	}
-	feature_flags = LIBCLOCALE_CODEPAGE_FEATURE_FLAG_HAVE_KOI8
-	              | LIBCLOCALE_CODEPAGE_FEATURE_FLAG_HAVE_WINDOWS;
+	feature_flags = LIBCLOCALE_CODEPAGE_FEATURE_FLAG_HAVE_WINDOWS;
 
 	string_length = libcstring_system_string_length(
 	                 string );

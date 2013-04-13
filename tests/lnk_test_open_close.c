@@ -31,22 +31,18 @@
 #include "lnk_test_libcstring.h"
 #include "lnk_test_liblnk.h"
 
-/* Tests single open and close of a file using the filename
+/* Tests single open and close of a file
  * Returns 1 if successful, 0 if not or -1 on error
  */
-int lnk_test_single_open_close_filename(
+int lnk_test_single_open_close_file(
      libcstring_system_character_t *filename,
      int access_flags,
      int expected_result )
 {
 	libcerror_error_t *error = NULL;
 	liblnk_file_t *file      = NULL;
-	static char *function    = "lnk_test_single_open_close_filename";
+	static char *function    = "lnk_test_single_open_close_file";
 	int result               = 0;
-
-	fprintf(
-	 stdout,
-	 "Testing open close: filename single\t" );
 
 	if( liblnk_file_initialize(
 	     &file,
@@ -135,22 +131,18 @@ int lnk_test_single_open_close_filename(
 	return( 1 );
 }
 
-/* Tests multiple open and close of a file using the filename
+/* Tests multiple open and close of a file
  * Returns 1 if successful, 0 if not or -1 on error
  */
-int lnk_test_multi_open_close_filename(
+int lnk_test_multi_open_close_file(
      libcstring_system_character_t *filename,
      int access_flags,
      int expected_result )
 {
 	libcerror_error_t *error = NULL;
 	liblnk_file_t *file      = NULL;
-	static char *function    = "lnk_test_multi_open_close_filename";
+	static char *function    = "lnk_test_multi_open_close_file";
 	int result               = 0;
-
-	fprintf(
-	 stdout,
-	 "Testing open close: filename multi\t" );
 
 	if( liblnk_file_initialize(
 	     &file,
@@ -284,51 +276,70 @@ int main( int argc, char * const argv[] )
 
 		return( EXIT_FAILURE );
 	}
-	/* Case 0: single open and close using filename
+	/* Case 0: single open and close of a file using filename
 	 */
-	if( lnk_test_single_open_close_filename(
+	fprintf(
+	 stdout,
+	 "Testing single open close of: %s with access: read\t",
+	 argv[ 1 ] );
+
+	if( lnk_test_single_open_close_file(
 	     argv[ 1 ],
 	     LIBLNK_OPEN_READ,
 	     1 ) != 1 )
 	{
 		fprintf(
 		 stderr,
-		 "Unable to test open close.\n" );
+		 "Unable to test single open close.\n" );
 
 		return( EXIT_FAILURE );
 	}
-	if( lnk_test_single_open_close_filename(
+	fprintf(
+	 stdout,
+	 "Testing single open close of: NULL with access: read\t" );
+
+	if( lnk_test_single_open_close_file(
 	     NULL,
 	     LIBLNK_OPEN_READ,
 	     -1 ) != 1 )
 	{
 		fprintf(
 		 stderr,
-		 "Unable to test open close.\n" );
+		 "Unable to test single open close.\n" );
 
 		return( EXIT_FAILURE );
 	}
-	if( lnk_test_single_open_close_filename(
+	fprintf(
+	 stdout,
+	 "Testing single open close of: %s with access: write\t",
+	 argv[ 1 ] );
+
+	if( lnk_test_single_open_close_file(
 	     argv[ 1 ],
 	     LIBLNK_OPEN_WRITE,
 	     -1 ) != 1 )
 	{
 		fprintf(
 		 stderr,
-		 "Unable to test open close.\n" );
+		 "Unable to test single open close.\n" );
 
 		return( EXIT_FAILURE );
 	}
-	/* Case 1: multiple open and close using filename
+	/* Case 1: multiple open and close of a file using filename
 	 */
-	if( lnk_test_multi_open_close_filename(
+	fprintf(
+	 stdout,
+	 "Testing multi open close of: %s with access: read\t",
+	 argv[ 1 ] );
+
+	if( lnk_test_multi_open_close_file(
 	     argv[ 1 ],
 	     LIBLNK_OPEN_READ,
 	     1 ) != 1 )
 	{
 		fprintf(
 		 stderr,
-		 "Unable to test open close.\n" );
+		 "Unable to test multi open close.\n" );
 
 		return( EXIT_FAILURE );
 	}

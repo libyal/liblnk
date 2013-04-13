@@ -68,7 +68,8 @@ void pylnk_file_free(
       pylnk_file_t *pylnk_file );
 
 PyObject *pylnk_file_signal_abort(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_open(
            pylnk_file_t *pylnk_file,
@@ -81,72 +82,102 @@ PyObject *pylnk_file_open_file_object(
            PyObject *keywords );
 
 PyObject *pylnk_file_close(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_ascii_codepage(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
+
+int pylnk_file_set_ascii_codepage_from_string(
+     pylnk_file_t *pylnk_file,
+     const char *codepage_string );
 
 PyObject *pylnk_file_set_ascii_codepage(
            pylnk_file_t *pylnk_file,
            PyObject *arguments,
            PyObject *keywords );
 
+int pylnk_file_set_ascii_codepage_setter(
+     pylnk_file_t *pylnk_file,
+     PyObject *value_object,
+     void *closure );
+
 PyObject *pylnk_file_get_file_creation_time(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_file_creation_time_as_integer(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_file_modification_time(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_file_modification_time_as_integer(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_file_access_time(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_file_access_time_as_integer(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_file_size(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_file_attribute_flags(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_drive_type(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_drive_serial_number(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_volume_label(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_local_path(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_network_path(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_description(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_relative_path(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_working_directory(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_command_line_arguments(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_icon_location(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_environment_variables_location(
-           pylnk_file_t *pylnk_file );
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 #if defined( __cplusplus )
 }

@@ -33,6 +33,7 @@
 #include "pylnk_libcstring.h"
 #include "pylnk_liblnk.h"
 #include "pylnk_python.h"
+#include "pylnk_unused.h"
 
 #if !defined( LIBLNK_HAVE_BFIO )
 LIBLNK_EXTERN \
@@ -49,35 +50,35 @@ PyMethodDef pylnk_module_methods[] = {
 	  METH_NOARGS,
 	  "get_version() -> String\n"
 	  "\n"
-	  "Retrieves the version" },
+	  "Retrieves the version." },
 
 	{ "check_file_signature",
 	  (PyCFunction) pylnk_check_file_signature,
 	  METH_VARARGS | METH_KEYWORDS,
 	  "check_file_signature(filename) -> Boolean\n"
 	  "\n"
-	  "Checks if a file has a Windows Shortcut File (LNK) signature" },
+	  "Checks if a file has a Windows Shortcut File (LNK) signature." },
 
 	{ "check_file_signature_file_object",
 	  (PyCFunction) pylnk_check_file_signature_file_object,
 	  METH_VARARGS | METH_KEYWORDS,
 	  "check_file_signature_file_object(file_object) -> Boolean\n"
 	  "\n"
-	  "Checks if a file has a Windows Shortcut File (LNK) signature using a file-like object" },
+	  "Checks if a file has a Windows Shortcut File (LNK) signature using a file-like object." },
 
 	{ "open",
 	  (PyCFunction) pylnk_file_new_open,
 	  METH_VARARGS | METH_KEYWORDS,
 	  "open(filename, mode='r') -> Object\n"
 	  "\n"
-	  "Opens a file" },
+	  "Opens a file." },
 
 	{ "open_file_object",
 	  (PyCFunction) pylnk_file_new_open_file_object,
 	  METH_VARARGS | METH_KEYWORDS,
 	  "open(file_object, mode='r') -> Object\n"
 	  "\n"
-	  "Opens a file using a file-like object" },
+	  "Opens a file using a file-like object." },
 
 	/* Sentinel */
 	{ NULL, NULL, 0, NULL }
@@ -87,11 +88,14 @@ PyMethodDef pylnk_module_methods[] = {
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_get_version(
-           PyObject *self )
+           PyObject *self,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	const char *errors           = NULL;
 	const char *version_string   = NULL;
 	size_t version_string_length = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	Py_BEGIN_ALLOW_THREADS
 

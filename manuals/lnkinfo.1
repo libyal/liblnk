@@ -1,4 +1,4 @@
-.Dd January 16, 2013
+.Dd April 13, 2013
 .Dt lnkinfo
 .Os liblnk
 .Sh NAME
@@ -6,7 +6,8 @@
 .Nd determines information about a Windows Shortcut File (LNK)
 .Sh SYNOPSIS
 .Nm lnkinfo
-.Op Fl ahvV
+.Op Fl c Ar codepage
+.Op Fl hvV
 .Va Ar source
 .Sh DESCRIPTION
 .Nm lnkinfo
@@ -24,8 +25,8 @@ is the source file.
 .Pp
 The options are as follows:
 .Bl -tag -width Ds
-.It Fl a
-shows allocation information
+.It Fl c Ar codepage
+specify the codepage of ASCII strings, options: ascii, windows-874, windows-932, windows-936, windows-949, windows-950, windows-1250, windows-1251, windows-1252 (default), windows-1253, windows-1254, windows-1255, windows-1256, windows-1257 or windows-1258
 .It Fl h
 shows this help
 .It Fl v

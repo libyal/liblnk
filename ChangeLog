@@ -51,8 +51,16 @@ Bindings:
 * .net
 * java
 
+20120413
+* updated dependencies
+* moved examples to project site
+* updated lnkinfo man page
+* worked on tests
+* fixed codepage 1255 restriction
+* updates and bug fixes in pylnk
+
 20120409
-* fixed codepage 949 and 950 restriction bug
+* fixed codepage 949 and 950 restriction
 
 20120319
 * updated dependencies
