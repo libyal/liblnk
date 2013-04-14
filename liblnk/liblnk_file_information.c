@@ -27,6 +27,7 @@
 #include "liblnk_libcerror.h"
 
 /* Creates file information
+ * Make sure the value file_information is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_information_initialize(

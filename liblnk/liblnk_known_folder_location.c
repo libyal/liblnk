@@ -33,7 +33,8 @@
 
 #include "lnk_data_blocks.h"
 
-/* Creates known folder location
+/* Creates a known folder location
+ * Make sure the value known_folder_location is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int liblnk_known_folder_location_initialize(
@@ -105,7 +106,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees known folder location
+/* Frees q known folder location
  * Returns 1 if successful or -1 on error
  */
 int liblnk_known_folder_location_free(

@@ -42,8 +42,8 @@
 #include "liblnk_location_information.h"
 #include "liblnk_special_folder_location.h"
 
-/* Initialize a file
- * Make sure the value file is pointing to is set to NULL
+/* Creates a file
+ * Make sure the value file is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_initialize(

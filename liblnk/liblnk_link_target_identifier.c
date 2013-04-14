@@ -31,7 +31,8 @@
 #include "liblnk_libfwsi.h"
 #include "liblnk_link_target_identifier.h"
 
-/* Creates link target identifier
+/* Creates a link target identifier
+ * Make sure the value link_target_identifier is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int liblnk_link_target_identifier_initialize(
@@ -103,7 +104,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees link target identifier
+/* Frees a link target identifier
  * Returns 1 if successful or -1 on error
  */
 int liblnk_link_target_identifier_free(

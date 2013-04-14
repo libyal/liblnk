@@ -31,7 +31,8 @@
 
 #include "lnk_data_blocks.h"
 
-/* Creates special folder location
+/* Creates a special folder location
+ * Make sure the value special_folder_location is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int liblnk_special_folder_location_initialize(
@@ -103,7 +104,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees special folder location
+/* Frees a special folder location
  * Returns 1 if successful or -1 on error
  */
 int liblnk_special_folder_location_free(

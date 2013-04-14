@@ -34,6 +34,7 @@
 #include "lnk_data_blocks.h"
 
 /* Creates distributed link tracker properties
+ * Make sure the value distributed_link_tracker_properties is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int liblnk_distributed_link_tracker_properties_initialize(
@@ -105,7 +106,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees distributed link tracker
+/* Frees distributed link tracker properties
  * Returns 1 if successful or -1 on error
  */
 int liblnk_distributed_link_tracker_properties_free(

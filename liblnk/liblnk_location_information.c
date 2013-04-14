@@ -36,6 +36,7 @@
 #include "lnk_location_information.h"
 
 /* Creates location information
+ * Make sure the value location_information is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int liblnk_location_information_initialize(

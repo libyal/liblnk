@@ -1,5 +1,5 @@
 /*
- * Library to support the Windows Shortcut File (LNK) format
+ * Library to access the Windows Shortcut File (LNK) format
  *
  * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -139,7 +139,7 @@ int liblnk_notify_stream_close(
  * Error functions
  * ------------------------------------------------------------------------- */
 
-/* Frees the error including elements
+/* Frees an error
  */
 LIBLNK_EXTERN \
 void liblnk_error_free(
@@ -185,8 +185,8 @@ int liblnk_error_backtrace_sprint(
  * File functions
  * ------------------------------------------------------------------------- */
 
-/* Initializes the file
- * Make sure the value file is pointing to is set to NULL
+/* Creates a file
+ * Make sure the value file is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
 LIBLNK_EXTERN \

@@ -31,7 +31,8 @@
 #include "liblnk_libcnotify.h"
 #include "liblnk_libuna.h"
 
-/* Creates data block
+/* Creates a data block
+ * Make sure the value data_block is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int liblnk_data_block_initialize(
@@ -103,7 +104,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees data block
+/* Frees a data block
  * Returns 1 if successful or -1 on error
  */
 int liblnk_data_block_free(

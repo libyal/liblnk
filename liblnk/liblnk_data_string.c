@@ -31,7 +31,8 @@
 #include "liblnk_libcnotify.h"
 #include "liblnk_libuna.h"
 
-/* Creates data string
+/* Creates a data string
+ * Make sure the value data_string is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int liblnk_data_string_initialize(
@@ -103,7 +104,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees data string
+/* Frees a data string
  * Returns 1 if successful or -1 on error
  */
 int liblnk_data_string_free(

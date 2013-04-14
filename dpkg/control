@@ -10,8 +10,8 @@ Package: liblnk
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Library to support the Windows Shortcut File (LNK) format
- liblnk is a library to support the Windows Shortcut File (LNK) format.
+Description: Library to access the Windows Shortcut File (LNK) format
+ liblnk is a library to access the Windows Shortcut File (LNK) format.
 
 Package: liblnk-dev
 Section: libdevel

@@ -43,8 +43,8 @@
 const uint8_t lnk_file_class_identifier[ 16 ] = \
 	{ 0x01, 0x14, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46 };
 
-/* Initialize an IO handle
- * Make sure the value io_handle is pointing to is set to NULL
+/* Creates an IO handle
+ * Make sure the value io_handle is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int liblnk_io_handle_initialize(
