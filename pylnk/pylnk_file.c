@@ -486,11 +486,13 @@ on_error:
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_new_open(
-           PyObject *self,
+           PyObject *self PYLNK_ATTRIBUTE_UNUSED,
            PyObject *arguments,
            PyObject *keywords )
 {
 	PyObject *pylnk_file = NULL;
+
+	PYLNK_UNREFERENCED_PARAMETER( self )
 
 	pylnk_file = pylnk_file_new();
 
@@ -506,11 +508,13 @@ PyObject *pylnk_file_new_open(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_new_open_file_object(
-           PyObject *self,
+           PyObject *self PYLNK_ATTRIBUTE_UNUSED,
            PyObject *arguments,
            PyObject *keywords )
 {
 	PyObject *pylnk_file = NULL;
+
+	PYLNK_UNREFERENCED_PARAMETER( self )
 
 	pylnk_file = pylnk_file_new();
 

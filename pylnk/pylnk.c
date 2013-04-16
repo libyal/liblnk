@@ -88,13 +88,14 @@ PyMethodDef pylnk_module_methods[] = {
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_get_version(
-           PyObject *self,
+           PyObject *self PYLNK_ATTRIBUTE_UNUSED,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	const char *errors           = NULL;
 	const char *version_string   = NULL;
 	size_t version_string_length = 0;
 
+	PYLNK_UNREFERENCED_PARAMETER( self )
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
 	Py_BEGIN_ALLOW_THREADS
@@ -120,7 +121,7 @@ PyObject *pylnk_get_version(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_check_file_signature(
-           PyObject *self,
+           PyObject *self PYLNK_ATTRIBUTE_UNUSED,
            PyObject *arguments,
            PyObject *keywords )
 {
@@ -131,6 +132,8 @@ PyObject *pylnk_check_file_signature(
 	static char *keyword_list[] = { "filename", NULL };
 	const char *filename        = NULL;
 	int result                  = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( self )
 
 	if( PyArg_ParseTupleAndKeywords(
 	     arguments,
@@ -185,7 +188,7 @@ PyObject *pylnk_check_file_signature(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_check_file_signature_file_object(
-           PyObject *self,
+           PyObject *self PYLNK_ATTRIBUTE_UNUSED,
            PyObject *arguments,
            PyObject *keywords )
 {
@@ -197,6 +200,8 @@ PyObject *pylnk_check_file_signature_file_object(
 	static char *function            = "pylnk_check_file_signature_file_object";
 	static char *keyword_list[]      = { "file_object", NULL };
 	int result                       = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( self )
 
 	if( PyArg_ParseTupleAndKeywords(
 	     arguments,
