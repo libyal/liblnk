@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Windows Shortcut File (LNK) format library Python-bindings set ASCII codepage testing script
+# Python-bindings set ASCII codepage testing script
 #
 # Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
 #

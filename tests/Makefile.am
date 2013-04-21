@@ -21,6 +21,7 @@ endif
 TESTS = \
 	test_set_ascii_codepage.sh \
 	test_open_close.sh \
+	test_lnkinfo.sh \
 	$(TESTS_PYLNK)
 
 check_SCRIPTS = \
@@ -29,6 +30,7 @@ check_SCRIPTS = \
 	test_open_close.sh \
 	test_pylnk_open_close.sh \
 	test_pylnk_set_ascii_codepage.sh \
+	test_lnkinfo.sh \
 	test_set_ascii_codepage.sh
 
 EXTRA_DIST = \

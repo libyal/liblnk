@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Python-bindings open close testing script
+# lnkinfo tool testing script
 #
 # Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
 #
@@ -24,11 +24,56 @@ EXIT_SUCCESS=0;
 EXIT_FAILURE=1;
 EXIT_IGNORE=77;
 
-PYTHON="/usr/bin/python";
+test_info()
+{ 
+	DIRNAME=$1;
+	INPUT_FILE=$2;
+	BASENAME=`basename ${INPUT_FILE}`;
 
-if ! test -x ${PYTHON};
+	if [ -d tmp ];
+	then
+		rm -rf tmp;
+	fi
+	mkdir tmp;
+
+	${LNKINFO} ${INPUT_FILE} | sed '1,2d' > tmp/${BASENAME}.log;
+
+	RESULT=$?;
+
+	if [ -f "input/.lnkinfo/${DIRNAME}/${BASENAME}.log.gz" ];
+	then
+		zdiff "input/.lnkinfo/${DIRNAME}/${BASENAME}.log.gz" "tmp/${BASENAME}.log";
+
+		RESULT=$?;
+	else
+		mv "tmp/${BASENAME}.log" "input/.lnkinfo/${DIRNAME}";
+
+		gzip "input/.lnkinfo/${DIRNAME}/${BASENAME}.log";
+	fi
+
+	rm -rf tmp;
+
+	echo -n "Testing lnkinfo of input: ${INPUT_FILE} ";
+
+	if test ${RESULT} -ne ${EXIT_SUCCESS};
+	then
+		echo " (FAIL)";
+	else
+		echo " (PASS)";
+	fi
+	return ${RESULT};
+}
+
+LNKINFO="../lnktools/lnkinfo";
+
+if ! test -x ${LNKINFO};
 then
-	echo "Missing executable: ${PYTHON}";
+	LNKINFO="../lnktools/lnkinfo.exe";
+fi
+
+if ! test -x ${LNKINFO};
+then
+	echo "Missing executable: ${LNKINFO}";
 
 	exit ${EXIT_FAILURE};
 fi
@@ -52,15 +97,24 @@ then
 
 	EXIT_RESULT=${EXIT_IGNORE};
 else
+	if ! test -d "input/.lnkinfo";
+	then
+		mkdir "input/.lnkinfo";
+	fi
+
 	for TESTDIR in input/*;
 	do
 		if [ -d "${TESTDIR}" ];
 		then
 			DIRNAME=`basename ${TESTDIR}`;
 
+			if [ ! -d "input/.lnkinfo/${DIRNAME}" ];
+			then
+				mkdir "input/.lnkinfo/${DIRNAME}";
+			fi
 			for TESTFILE in ${TESTDIR}/*;
 			do
-				if ! PYTHONPATH=../pylnk/.libs/ ${PYTHON} pylnk_test_open_close.py ${TESTFILE};
+				if ! test_info "${DIRNAME}" "${TESTFILE}";
 				then
 					exit ${EXIT_FAILURE};
 				fi
