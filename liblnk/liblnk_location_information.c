@@ -355,18 +355,23 @@ ssize_t liblnk_location_information_read(
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_location_information_t *) location_information_data )->header_size,
 	 location_information_header_size );
+
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_location_information_t *) location_information_data )->location_flags,
 	 location_information->flags );
+
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_location_information_t *) location_information_data )->volume_information_offset,
 	 volume_information_offset );
+
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_location_information_t *) location_information_data )->local_path_offset,
 	 local_path_offset );
+
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_location_information_t *) location_information_data )->network_share_information_offset,
 	 network_share_information_offset );
+
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_location_information_t *) location_information_data )->common_path_offset,
 	 common_path_offset );
@@ -378,22 +383,27 @@ ssize_t liblnk_location_information_read(
 		 "%s: location information header size\t\t\t: %" PRIu32 "\n",
 		 function,
 		 location_information_header_size );
+
 		libcnotify_printf(
 		 "%s: location information flags\t\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 location_information->flags );
+
 		libcnotify_printf(
 		 "%s: location information volume information offset\t: %" PRIu32 "\n",
 		 function,
 		 volume_information_offset );
+
 		libcnotify_printf(
 		 "%s: location information local path offset\t\t: %" PRIu32 "\n",
 		 function,
 		 local_path_offset );
+
 		libcnotify_printf(
 		 "%s: location information network share information offset\t: %" PRIu32 "\n",
 		 function,
 		 network_share_information_offset );
+
 		libcnotify_printf(
 		 "%s: location information common path offset\t\t: %" PRIu32 "\n",
 		 function,
@@ -587,6 +597,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: volume information volume label size\t\t\t: %" PRIu32 "\n",
 				 function,
 				 value_size );
+
 				libcnotify_printf(
 				 "%s: volume information volume label data:\n",
 				 function );
@@ -631,6 +642,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unicode volume information volume label size\t\t: %" PRIu32 "\n",
 				 function,
 				 unicode_value_size );
+
 				libcnotify_printf(
 				 "%s: unicode volume information volume label data:\n",
 				 function );
@@ -891,6 +903,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: local path data size\t\t\t\t\t: %" PRIu32 "\n",
 			 function,
 			 value_size );
+
 			libcnotify_printf(
 			 "%s: local path data:\n",
 			 function );
@@ -948,6 +961,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: unicode local path data size\t\t\t: %" PRIu32 "\n",
 			 function,
 			 value_size );
+
 			libcnotify_printf(
 			 "%s: unicode local path data:\n",
 			 function );
@@ -1269,6 +1283,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: network share information unicode network share name offset\t: %" PRIu32 "\n",
 				 function,
 				 unicode_network_share_name_offset );
+
 				libcnotify_printf(
 				 "%s: network share information unicode device name offset\t: %" PRIu32 "\n",
 				 function,
@@ -1309,6 +1324,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: network share information network share name size\t: %" PRIu32 "\n",
 				 function,
 				 value_size );
+
 				libcnotify_printf(
 				 "%s: network share information network share name data:\n",
 				 function );
@@ -1353,6 +1369,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unicode volume information network share name size\t\t: %" PRIu32 "\n",
 				 function,
 				 unicode_value_size );
+
 				libcnotify_printf(
 				 "%s: unicode volume information network share name data:\n",
 				 function );
@@ -1553,7 +1570,7 @@ ssize_t liblnk_location_information_read(
 				goto on_error;
 			}
 			libcnotify_printf(
-			 "%s: volume information network share name\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+			 "%s: volume information network share name\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
 			 function,
 			 value_string );
 
@@ -1596,6 +1613,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: network share information device name size\t: %" PRIu32 "\n",
 				 function,
 				 value_size );
+
 				libcnotify_printf(
 				 "%s: network share information device name data:\n",
 				 function );
@@ -1640,6 +1658,7 @@ ssize_t liblnk_location_information_read(
 				 "%s: unicode volume information device name size\t\t: %" PRIu32 "\n",
 				 function,
 				 unicode_value_size );
+
 				libcnotify_printf(
 				 "%s: unicode volume information device name data:\n",
 				 function );
@@ -1840,7 +1859,7 @@ ssize_t liblnk_location_information_read(
 				goto on_error;
 			}
 			libcnotify_printf(
-			 "%s: volume information device name\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+			 "%s: volume information device name\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
 			 function,
 			 value_string );
 
@@ -1899,6 +1918,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: common path data size\t\t\t\t\t: %" PRIu32 "\n",
 			 function,
 			 value_size );
+
 			libcnotify_printf(
 			 "%s: common path data:\n",
 			 function );
@@ -1956,6 +1976,7 @@ ssize_t liblnk_location_information_read(
 			 "%s: unicode common path data size\t\t\t: %" PRIu32 "\n",
 			 function,
 			 value_size );
+
 			libcnotify_printf(
 			 "%s: unicode common path data:\n",
 			 function );

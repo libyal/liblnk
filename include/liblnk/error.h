@@ -87,9 +87,6 @@ enum LIBLNK_ARGUMENT_ERROR
 	LIBLNK_ARGUMENT_ERROR_CONFLICTING_VALUE		= 9
 };
 
-/* TODO deprecated remove after a while */
-#define LIBLNK_ARGUMENT_ERROR_VALUE_OUT_OF_RANGE	LIBLNK_ARGUMENT_ERROR_VALUE_OUT_OF_BOUNDS
-
 /* The conversion error codes
  * to signify errors regarding conversions
  */
@@ -121,9 +118,6 @@ enum LIBLNK_COMPRESSION_ERROR
 	 */
 	LIBLNK_COMPRESSION_ERROR_DECOMPRESS_FAILED	= 2
 };
-
-/* TODO deprecated remove after a while */
-#define LIBERROR_COMPRESSION_ERROR_UNCOMPRESS_FAILED	LIBERROR_COMPRESSION_ERROR_DECOMPRESS_FAILED
 
 /* The input/output error codes
  * to signify errors regarding input/output
@@ -193,9 +187,6 @@ enum LIBLNK_INPUT_ERROR
 	 */
 	LIBLNK_INPUT_ERROR_VALUE_MISMATCH		= 4
 };
-
-/* TODO deprecated remove after a while */
-#define LIBLNK_INPUT_ERROR_CRC_MISMATCH			LIBLNK_INPUT_ERROR_CHECKSUM_MISMATCH
 
 /* The memory error codes
  * to signify errors regarding memory
@@ -284,9 +275,6 @@ enum LIBLNK_RUNTIME_ERROR
 	 */
 	LIBLNK_RUNTIME_ERROR_ABORT_REQUESTED		= 15
 };
-
-/* TODO deprecated remove after a while */
-#define LIBLNK_RUNTIME_ERROR_VALUE_OUT_OF_RANGE	LIBLNK_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS
 
 /* The output error codes
  */

@@ -33,5 +33,15 @@
 #define LIBLNK_HAVE_BFIO			1
 #endif
 
+#if !defined( LIBLNK_DEPRECATED )
+#if defined( __GNUC__ ) && __GNUC__ >= 3
+#define LIBLNK_DEPRECATED	__attribute__ ((__deprecated__))
+#elif defined( _MSC_VER )
+#define LIBLNK_DEPRECATED	__declspec(deprecated)
+#else
+#define LIBLNK_DEPRECATED
+#endif
+#endif
+
 #endif
 
