@@ -1060,6 +1060,7 @@ int liblnk_file_open_read(
 #endif
 		read_count = liblnk_link_target_identifier_read(
 		              internal_file->link_target_identifier,
+		              internal_file->io_handle,
 		              internal_file->file_io_handle,
 		              file_offset,
 		              error );

@@ -25,6 +25,7 @@
 #include <common.h>
 #include <types.h>
 
+#include "liblnk_io_handle.h"
 #include "liblnk_libbfio.h"
 #include "liblnk_libcerror.h"
 
@@ -55,6 +56,7 @@ int liblnk_link_target_identifier_free(
 
 ssize_t liblnk_link_target_identifier_read(
          liblnk_link_target_identifier_t *link_target_identifier,
+         liblnk_io_handle_t *io_handle,
          libbfio_handle_t *file_io_handle,
          off64_t link_target_identifier_offset,
          libcerror_error_t **error );

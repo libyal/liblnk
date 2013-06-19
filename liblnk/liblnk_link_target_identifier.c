@@ -25,6 +25,7 @@
 #include <types.h>
 
 #include "liblnk_definitions.h"
+#include "liblnk_io_handle.h"
 #include "liblnk_libbfio.h"
 #include "liblnk_libcerror.h"
 #include "liblnk_libcnotify.h"
@@ -144,6 +145,7 @@ int liblnk_link_target_identifier_free(
  */
 ssize_t liblnk_link_target_identifier_read(
          liblnk_link_target_identifier_t *link_target_identifier,
+         liblnk_io_handle_t *io_handle,
          libbfio_handle_t *file_io_handle,
          off64_t file_offset,
          libcerror_error_t **error )
@@ -175,6 +177,17 @@ ssize_t liblnk_link_target_identifier_read(
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid link target identifier - data value already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( io_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid IO handle.",
 		 function );
 
 		return( -1 );
@@ -283,6 +296,7 @@ ssize_t liblnk_link_target_identifier_read(
 		     shell_item_list,
 		     link_target_identifier->data,
 		     link_target_identifier->data_size,
+		     io_handle->ascii_codepage,
 		     error ) != 1 )
 		{
 			libcerror_error_set(

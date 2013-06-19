@@ -1907,6 +1907,7 @@ int info_handle_link_target_identifier_fprint(
 		     item_list,
 		     link_target_identifier_data,
 		     link_target_identifier_data_size,
+		     info_handle->ascii_codepage,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
