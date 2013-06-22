@@ -390,22 +390,22 @@ ssize_t liblnk_location_information_read(
 		 location_information->flags );
 
 		libcnotify_printf(
-		 "%s: location information volume information offset\t: %" PRIu32 "\n",
+		 "%s: location information volume information offset\t: 0x%08" PRIx32 "\n",
 		 function,
 		 volume_information_offset );
 
 		libcnotify_printf(
-		 "%s: location information local path offset\t\t: %" PRIu32 "\n",
+		 "%s: location information local path offset\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 local_path_offset );
 
 		libcnotify_printf(
-		 "%s: location information network share information offset\t: %" PRIu32 "\n",
+		 "%s: location information network share information offset\t: 0x%08" PRIx32 "\n",
 		 function,
 		 network_share_information_offset );
 
 		libcnotify_printf(
-		 "%s: location information common path offset\t\t: %" PRIu32 "\n",
+		 "%s: location information common path offset\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 common_path_offset );
 	}
@@ -856,323 +856,325 @@ ssize_t liblnk_location_information_read(
 	}
 	/* Local path
 	 */
-	if( ( ( location_information->flags & 0x00000001UL ) != 0 )
-	 && ( local_path_offset > 0 ) )
+	if( ( location_information->flags & 0x00000001UL ) != 0 )
 	{
-		if( local_path_offset < location_information_header_size )
+		if( local_path_offset > 0 )
 		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-			 "%s: local path information offset smaller than location information header size",
-			 function );
-
-			goto on_error;
-		}
-		local_path_offset -= 4;
-
-		if( local_path_offset > location_information_size )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-			 "%s: local path offset exceeds location information data.",
-			 function );
-
-			goto on_error;
-		}
-		location_information_value_data = &( location_information_data[ local_path_offset ] );
-
-		for( value_size = 0;
-		     value_size < ( location_information_size - local_path_offset );
-		     value_size++ )
-		{
-			if( location_information_value_data[ value_size ] == 0 )
-			{
-				break;
-			}
-		}
-		value_size++;
-
-#if defined( HAVE_DEBUG_OUTPUT )
-		if( libcnotify_verbose != 0 )
-		{
-			libcnotify_printf(
-			 "%s: local path data size\t\t\t\t\t: %" PRIu32 "\n",
-			 function,
-			 value_size );
-
-			libcnotify_printf(
-			 "%s: local path data:\n",
-			 function );
-			libcnotify_print_data(
-			 location_information_value_data,
-			 value_size,
-			 0 );
-		}
-#endif
-	}
-	if( unicode_local_path_offset > 0 )
-	{
-		if( unicode_local_path_offset < location_information_header_size )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-			 "%s: unicode local path information offset smaller than location information header size",
-			 function );
-
-			goto on_error;
-		}
-		unicode_local_path_offset -= 4;
-
-		if( unicode_local_path_offset > location_information_size )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-			 "%s: unicode local path offset exceeds location information data.",
-			 function );
-
-			goto on_error;
-		}
-		location_information_unicode_value_data = &( location_information_data[ unicode_local_path_offset ] );
-
-		for( unicode_value_size = 0;
-		     ( unicode_value_size + 1 ) < ( location_information_size - unicode_local_path_offset );
-		     unicode_value_size += 2 )
-		{
-			if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
-			 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
-			{
-				break;
-			}
-		}
-		unicode_value_size += 2;
-
-#if defined( HAVE_DEBUG_OUTPUT )
-		if( libcnotify_verbose != 0 )
-		{
-			libcnotify_printf(
-			 "%s: unicode local path data size\t\t\t: %" PRIu32 "\n",
-			 function,
-			 value_size );
-
-			libcnotify_printf(
-			 "%s: unicode local path data:\n",
-			 function );
-			libcnotify_print_data(
-			 location_information_unicode_value_data,
-			 unicode_value_size,
-			 0 );
-		}
-#endif
-		location_information->local_path = (uint8_t *) memory_allocate(
-		                                                sizeof( uint8_t ) * unicode_value_size );
-
-		if( location_information->local_path == NULL )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_MEMORY,
-			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create local path.",
-			 function );
-
-			goto on_error;
-		}
-		if( memory_copy(
-		     location_information->local_path,
-		     location_information_unicode_value_data,
-		     unicode_value_size ) == NULL )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_MEMORY,
-			 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
-			 "%s: unable to copy local path.",
-			 function );
-
-			goto on_error;
-		}
-		location_information->local_path_size = unicode_value_size;
-		location_information->string_flags   |= LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE;
-	}
-	else if( local_path_offset > 0 )
-	{
-		location_information->local_path = (uint8_t *) memory_allocate(
-		                                                sizeof( uint8_t ) * value_size );
-
-		if( location_information->local_path == NULL )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_MEMORY,
-			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create local path.",
-			 function );
-
-			goto on_error;
-		}
-		if( memory_copy(
-		     location_information->local_path,
-		     location_information_value_data,
-		     value_size ) == NULL )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_MEMORY,
-			 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
-			 "%s: unable to copy local path.",
-			 function );
-
-			goto on_error;
-		}
-		location_information->local_path_size = value_size;
-	}
-#if defined( HAVE_DEBUG_OUTPUT )
-	if( libcnotify_verbose != 0 )
-	{
-		if( ( local_path_offset > 0 )
-		 || ( unicode_local_path_offset > 0 ) )
-		{
-			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE ) != 0 )
-			{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-				result = libuna_utf16_string_size_from_utf16_stream(
-					  location_information->local_path,
-					  location_information->local_path_size,
-					  LIBUNA_ENDIAN_LITTLE,
-					  &value_string_size,
-					  error );
-#else
-				result = libuna_utf8_string_size_from_utf16_stream(
-					  location_information->local_path,
-					  location_information->local_path_size,
-					  LIBUNA_ENDIAN_LITTLE,
-					  &value_string_size,
-					  error );
-#endif
-			}
-			else
-			{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-				result = libuna_utf16_string_size_from_byte_stream(
-					  location_information->local_path,
-					  location_information->local_path_size,
-					  io_handle->ascii_codepage,
-					  &value_string_size,
-					  error );
-#else
-				result = libuna_utf8_string_size_from_byte_stream(
-					  location_information->local_path,
-					  location_information->local_path_size,
-					  io_handle->ascii_codepage,
-					  &value_string_size,
-					  error );
-#endif
-			}
-			if( result != 1 )
+			if( local_path_offset < location_information_header_size )
 			{
 				libcerror_error_set(
 				 error,
 				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-				 "%s: unable to determine size of local path string.",
+				 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+				 "%s: local path information offset smaller than location information header size",
 				 function );
 
 				goto on_error;
 			}
-			if( ( value_string_size > (size_t) SSIZE_MAX )
-			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
+			local_path_offset -= 4;
+
+			if( local_path_offset > location_information_size )
 			{
 				libcerror_error_set(
 				 error,
 				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
-				 "%s: invalid local path string size value exceeds maximum.",
+				 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+				 "%s: local path offset exceeds location information data.",
 				 function );
 
 				goto on_error;
 			}
-			value_string = libcstring_system_string_allocate(
-					value_string_size );
+			location_information_value_data = &( location_information_data[ local_path_offset ] );
 
-			if( value_string == NULL )
+			for( value_size = 0;
+			     value_size < ( location_information_size - local_path_offset );
+			     value_size++ )
+			{
+				if( location_information_value_data[ value_size ] == 0 )
+				{
+					break;
+				}
+			}
+			value_size++;
+
+#if defined( HAVE_DEBUG_OUTPUT )
+			if( libcnotify_verbose != 0 )
+			{
+				libcnotify_printf(
+				 "%s: local path data size\t\t\t\t\t: %" PRIu32 "\n",
+				 function,
+				 value_size );
+
+				libcnotify_printf(
+				 "%s: local path data:\n",
+				 function );
+				libcnotify_print_data(
+				 location_information_value_data,
+				 value_size,
+				 0 );
+			}
+#endif
+		}
+		if( unicode_local_path_offset > 0 )
+		{
+			if( unicode_local_path_offset < location_information_header_size )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+				 "%s: unicode local path information offset smaller than location information header size",
+				 function );
+
+				goto on_error;
+			}
+			unicode_local_path_offset -= 4;
+
+			if( unicode_local_path_offset > location_information_size )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+				 "%s: unicode local path offset exceeds location information data.",
+				 function );
+
+				goto on_error;
+			}
+			location_information_unicode_value_data = &( location_information_data[ unicode_local_path_offset ] );
+
+			for( unicode_value_size = 0;
+			     ( unicode_value_size + 1 ) < ( location_information_size - unicode_local_path_offset );
+			     unicode_value_size += 2 )
+			{
+				if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
+				 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
+				{
+					break;
+				}
+			}
+			unicode_value_size += 2;
+
+#if defined( HAVE_DEBUG_OUTPUT )
+			if( libcnotify_verbose != 0 )
+			{
+				libcnotify_printf(
+				 "%s: unicode local path data size\t\t\t: %" PRIu32 "\n",
+				 function,
+				 value_size );
+
+				libcnotify_printf(
+				 "%s: unicode local path data:\n",
+				 function );
+				libcnotify_print_data(
+				 location_information_unicode_value_data,
+				 unicode_value_size,
+				 0 );
+			}
+#endif
+			location_information->local_path = (uint8_t *) memory_allocate(
+			                                                sizeof( uint8_t ) * unicode_value_size );
+
+			if( location_information->local_path == NULL )
 			{
 				libcerror_error_set(
 				 error,
 				 LIBCERROR_ERROR_DOMAIN_MEMORY,
 				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-				 "%s: unable to create local path string.",
+				 "%s: unable to create local path.",
 				 function );
 
 				goto on_error;
 			}
-			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE ) != 0 )
-			{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-				result = libuna_utf16_string_copy_from_utf16_stream(
-					  (libuna_utf16_character_t *) value_string,
-					  value_string_size,
-					  location_information->local_path,
-					  location_information->local_path_size,
-					  LIBUNA_ENDIAN_LITTLE,
-					  error );
-#else
-				result = libuna_utf8_string_copy_from_utf16_stream(
-					  (libuna_utf8_character_t *) value_string,
-					  value_string_size,
-					  location_information->local_path,
-					  location_information->local_path_size,
-					  LIBUNA_ENDIAN_LITTLE,
-					  error );
-#endif
-			}
-			else
-			{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-				result = libuna_utf16_string_copy_from_byte_stream(
-					  (libuna_utf16_character_t *) value_string,
-					  value_string_size,
-					  location_information->local_path,
-					  location_information->local_path_size,
-					  io_handle->ascii_codepage,
-					  error );
-#else
-				result = libuna_utf8_string_copy_from_byte_stream(
-					  (libuna_utf8_character_t *) value_string,
-					  value_string_size,
-					  location_information->local_path,
-					  location_information->local_path_size,
-					  io_handle->ascii_codepage,
-					  error );
-#endif
-			}
-			if( result != 1 )
+			if( memory_copy(
+			     location_information->local_path,
+			     location_information_unicode_value_data,
+			     unicode_value_size ) == NULL )
 			{
 				libcerror_error_set(
 				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-				 "%s: unable to set local path string.",
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+				 "%s: unable to copy local path.",
 				 function );
 
 				goto on_error;
 			}
-			libcnotify_printf(
-			 "%s: local path\t\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
-			 function,
-			 value_string );
+			location_information->local_path_size = unicode_value_size;
+			location_information->string_flags   |= LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE;
+		}
+		else if( local_path_offset > 0 )
+		{
+			location_information->local_path = (uint8_t *) memory_allocate(
+			                                                sizeof( uint8_t ) * value_size );
 
-			memory_free(
-			 value_string );
+			if( location_information->local_path == NULL )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+				 "%s: unable to create local path.",
+				 function );
 
-			value_string = NULL;
+				goto on_error;
+			}
+			if( memory_copy(
+			     location_information->local_path,
+			     location_information_value_data,
+			     value_size ) == NULL )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+				 "%s: unable to copy local path.",
+				 function );
+
+				goto on_error;
+			}
+			location_information->local_path_size = value_size;
+		}
+#if defined( HAVE_DEBUG_OUTPUT )
+		if( libcnotify_verbose != 0 )
+		{
+			if( ( local_path_offset > 0 )
+			 || ( unicode_local_path_offset > 0 ) )
+			{
+				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE ) != 0 )
+				{
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+					result = libuna_utf16_string_size_from_utf16_stream(
+						  location_information->local_path,
+						  location_information->local_path_size,
+						  LIBUNA_ENDIAN_LITTLE,
+						  &value_string_size,
+						  error );
+#else
+					result = libuna_utf8_string_size_from_utf16_stream(
+						  location_information->local_path,
+						  location_information->local_path_size,
+						  LIBUNA_ENDIAN_LITTLE,
+						  &value_string_size,
+						  error );
+#endif
+				}
+				else
+				{
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+					result = libuna_utf16_string_size_from_byte_stream(
+						  location_information->local_path,
+						  location_information->local_path_size,
+						  io_handle->ascii_codepage,
+						  &value_string_size,
+						  error );
+#else
+					result = libuna_utf8_string_size_from_byte_stream(
+						  location_information->local_path,
+						  location_information->local_path_size,
+						  io_handle->ascii_codepage,
+						  &value_string_size,
+						  error );
+#endif
+				}
+				if( result != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+					 "%s: unable to determine size of local path string.",
+					 function );
+
+					goto on_error;
+				}
+				if( ( value_string_size > (size_t) SSIZE_MAX )
+				 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+					 "%s: invalid local path string size value exceeds maximum.",
+					 function );
+
+					goto on_error;
+				}
+				value_string = libcstring_system_string_allocate(
+						value_string_size );
+
+				if( value_string == NULL )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_MEMORY,
+					 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+					 "%s: unable to create local path string.",
+					 function );
+
+					goto on_error;
+				}
+				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE ) != 0 )
+				{
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+					result = libuna_utf16_string_copy_from_utf16_stream(
+						  (libuna_utf16_character_t *) value_string,
+						  value_string_size,
+						  location_information->local_path,
+						  location_information->local_path_size,
+						  LIBUNA_ENDIAN_LITTLE,
+						  error );
+#else
+					result = libuna_utf8_string_copy_from_utf16_stream(
+						  (libuna_utf8_character_t *) value_string,
+						  value_string_size,
+						  location_information->local_path,
+						  location_information->local_path_size,
+						  LIBUNA_ENDIAN_LITTLE,
+						  error );
+#endif
+				}
+				else
+				{
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+					result = libuna_utf16_string_copy_from_byte_stream(
+						  (libuna_utf16_character_t *) value_string,
+						  value_string_size,
+						  location_information->local_path,
+						  location_information->local_path_size,
+						  io_handle->ascii_codepage,
+						  error );
+#else
+					result = libuna_utf8_string_copy_from_byte_stream(
+						  (libuna_utf8_character_t *) value_string,
+						  value_string_size,
+						  location_information->local_path,
+						  location_information->local_path_size,
+						  io_handle->ascii_codepage,
+						  error );
+#endif
+				}
+				if( result != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+					 "%s: unable to set local path string.",
+					 function );
+
+					goto on_error;
+				}
+				libcnotify_printf(
+				 "%s: local path\t\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+				 function,
+				 value_string );
+
+				memory_free(
+				 value_string );
+
+				value_string = NULL;
+			}
 		}
 	}
 #endif
@@ -1610,7 +1612,7 @@ ssize_t liblnk_location_information_read(
 			if( libcnotify_verbose != 0 )
 			{
 				libcnotify_printf(
-				 "%s: network share information device name size\t: %" PRIu32 "\n",
+				 "%s: network share information device name size\t\t: %" PRIu32 "\n",
 				 function,
 				 value_size );
 
