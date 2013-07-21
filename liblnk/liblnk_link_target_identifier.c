@@ -154,6 +154,7 @@ ssize_t liblnk_link_target_identifier_read(
 
 	static char *function                = "liblnk_link_target_identifier_read";
 	ssize_t read_count                   = 0;
+	size_t shell_item_list_data_size     = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
 	libfwsi_item_list_t *shell_item_list = NULL;
@@ -240,7 +241,7 @@ ssize_t liblnk_link_target_identifier_read(
 	 link_target_identifier->data_size )
 	
 	link_target_identifier->data = (uint8_t *) memory_allocate(
-	                                            sizeof( uint8_t ) * ( link_target_identifier->data_size + 2 ) );
+	                                            sizeof( uint8_t ) * link_target_identifier->data_size );
 
 
 	if( link_target_identifier->data == NULL )
@@ -254,12 +255,9 @@ ssize_t liblnk_link_target_identifier_read(
 
 		goto on_error;
 	}
-	link_target_identifier->data[ 0 ] = size_data[ 0 ];
-	link_target_identifier->data[ 1 ] = size_data[ 1 ];
-
 	read_count = libbfio_handle_read_buffer(
 	              file_io_handle,
-	              &( link_target_identifier->data[ 2 ] ),
+	              link_target_identifier->data,
 	              link_target_identifier->data_size,
 	              error );
 
@@ -274,8 +272,6 @@ ssize_t liblnk_link_target_identifier_read(
 
 		goto on_error;
 	}
-	link_target_identifier->data_size += 2;
-
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
 	{
@@ -308,6 +304,20 @@ ssize_t liblnk_link_target_identifier_read(
 
 			goto on_error;
 		}
+		if( libfwsi_item_list_get_data_size(
+		     shell_item_list,
+		     &shell_item_list_data_size,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve shell item list data size.",
+			 function );
+
+			goto on_error;
+		}
 		if( libfwsi_item_list_free(
 		     &shell_item_list,
 		     error ) != 1 )
@@ -323,7 +333,22 @@ ssize_t liblnk_link_target_identifier_read(
 		}
 	}
 #endif
-	return( (ssize_t) link_target_identifier->data_size );
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( libcnotify_verbose != 0 )
+	{
+		if( shell_item_list_data_size < link_target_identifier->data_size )
+		{
+			libcnotify_printf(
+			 "%s: trailing data:\n",
+			 function );
+			libcnotify_print_data(
+			 &( link_target_identifier->data[ shell_item_list_data_size ] ),
+			 link_target_identifier->data_size - shell_item_list_data_size,
+			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
+		}
+	}
+#endif
+	return( (ssize_t) ( link_target_identifier->data_size + 2 ) );
 
 on_error:
 #if defined( HAVE_DEBUG_OUTPUT )

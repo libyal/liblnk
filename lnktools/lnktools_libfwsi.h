@@ -29,10 +29,13 @@
 #if defined( HAVE_LOCAL_LIBFWSI )
 
 #include <libfwsi_definitions.h>
+#include <libfwsi_file_entry.h>
 #include <libfwsi_folder_identifier.h>
 #include <libfwsi_item.h>
 #include <libfwsi_item_list.h>
+#include <libfwsi_root_folder.h>
 #include <libfwsi_types.h>
+#include <libfwsi_volume_entry.h>
 
 #else
 

@@ -99,7 +99,9 @@ int lnk_test_single_open_close_file(
 
 		result = -1;
 	}
-	if( result == expected_result )
+	result = ( expected_result == result );
+
+	if( result == 1 )
 	{
 		fprintf(
 		 stdout,
@@ -115,20 +117,18 @@ int lnk_test_single_open_close_file(
 	 stdout,
 	 "\n" );
 
-	if( result == -1 )
+	if( error != NULL )
 	{
-		libcerror_error_backtrace_fprint(
-		 error,
-		 stdout );
-
+		if( result != 1 )
+		{
+			libcerror_error_backtrace_fprint(
+			 error,
+			 stderr );
+		}
 		libcerror_error_free(
 		 &error );
 	}
-	if( result != expected_result )
-	{
-		return( -1 );
-	}
-	return( 1 );
+	return( result );
 }
 
 /* Tests multiple open and close of a file
@@ -228,7 +228,9 @@ int lnk_test_multi_open_close_file(
 
 		result = -1;
 	}
-	if( result == expected_result )
+	result = ( expected_result == result );
+
+	if( result == 1 )
 	{
 		fprintf(
 		 stdout,
@@ -244,20 +246,18 @@ int lnk_test_multi_open_close_file(
 	 stdout,
 	 "\n" );
 
-	if( result == -1 )
+	if( error != NULL )
 	{
-		libcerror_error_backtrace_fprint(
-		 error,
-		 stdout );
-
+		if( result != 1 )
+		{
+			libcerror_error_backtrace_fprint(
+			 error,
+			 stderr );
+		}
 		libcerror_error_free(
 		 &error );
 	}
-	if( result != expected_result )
-	{
-		return( -1 );
-	}
-	return( 1 );
+	return( result );
 }
 
 /* The main program

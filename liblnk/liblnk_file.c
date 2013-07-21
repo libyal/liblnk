@@ -1752,7 +1752,7 @@ int liblnk_file_open_read(
 			libcnotify_print_data(
 			 trailing_data,
 			 trailing_data_size,
-			 0 );
+			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 
 			memory_free(
 			 trailing_data );

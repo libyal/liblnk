@@ -37,20 +37,20 @@ def pylnk_test_multi_open_close_file( filename, mode ):
 	lnk_file.close()
 
 def pylnk_test_single_open_close_file_object( filename, mode ):
-	file_object = open(filename, mode)
+	file_object = open( filename, mode )
 	lnk_file = pylnk.file()
 	lnk_file.open_file_object( file_object, mode )
 	lnk_file.close()
 
 def pylnk_test_single_open_close_file_object_with_dereference( filename, mode ):
-	file_object = open(filename, mode)
+	file_object = open( filename, mode )
 	lnk_file = pylnk.file()
 	lnk_file.open_file_object( file_object, mode )
 	del file_object
 	lnk_file.close()
 
 def pylnk_test_multi_open_close_file_object( filename, mode ):
-	file_object = open(filename, mode)
+	file_object = open( filename, mode )
 	lnk_file = pylnk.file()
 	lnk_file.open_file_object( file_object, mode )
 	lnk_file.close()

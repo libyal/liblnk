@@ -1839,6 +1839,561 @@ on_error:
 	return( -1 );
 }
 
+/* Prints the shell item to the notify stream
+ * Returns 1 if successful or -1 on error
+ */
+int info_handle_shell_item_fprint(
+     info_handle_t *info_handle,
+     int shell_item_index,
+     libfwsi_item_t *shell_item,
+     libcerror_error_t **error )
+{
+	static char *function   = "info_handle_shell_item_fprint";
+	uint8_t shell_item_type = 0;
+	int result              = 0;
+
+	if( info_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid info handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( shell_item_index == 0 )
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tShell item\n" );
+	}
+	else
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tShell item: %d\n",
+		 shell_item_index );
+	}
+	if( libfwsi_item_get_type(
+	     shell_item,
+	     &shell_item_type,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve type.",
+		 function );
+
+		return( -1 );
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\t\tType\t\t\t: 0x%02" PRIx8 "",
+	 shell_item_type );
+
+	switch( shell_item_type )
+	{
+		case 0x1f:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (Root folder)" );
+			break;
+
+		case 0x23:
+		case 0x25:
+		case 0x29:
+		case 0x2a:
+		case 0x2e:
+		case 0x2f:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (Volume entry)" );
+			break;
+
+		case 0x30:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (File entry)" );
+			break;
+
+		case 0x31:
+		case 0x35:
+		case 0xb1:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (File entry: Directory)" );
+			break;
+
+		case 0x32:
+		case 0x36:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (File entry: File)" );
+			break;
+
+		default:
+			break;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\n" );
+
+	switch( shell_item_type )
+	{
+		case 0x1f:
+			if( info_handle_root_folder_shell_item_fprint(
+			     info_handle,
+			     shell_item,
+			     error ) == -1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+				 "%s: unable to print root folder shell item.",
+				 function );
+
+				return( -1 );
+			}
+			break;
+
+		case 0x23:
+		case 0x25:
+		case 0x29:
+		case 0x2a:
+		case 0x2e:
+		case 0x2f:
+			if( info_handle_volume_entry_shell_item_fprint(
+			     info_handle,
+			     shell_item,
+			     error ) == -1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+				 "%s: unable to print volume entry shell item.",
+				 function );
+
+				return( -1 );
+			}
+			break;
+
+		case 0x30:
+		case 0x31:
+		case 0x32:
+		case 0x35:
+		case 0x36:
+		case 0xb1:
+			if( info_handle_file_entry_shell_item_fprint(
+			     info_handle,
+			     shell_item,
+			     error ) == -1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+				 "%s: unable to print file entry shell item.",
+				 function );
+
+				return( -1 );
+			}
+			break;
+
+		default:
+			break;
+	}
+/* TODO check for extension blocks */
+	return( 1 );
+}
+
+/* Prints the root folder shell item to the notify stream
+ * Returns 1 if successful or -1 on error
+ */
+int info_handle_root_folder_shell_item_fprint(
+     info_handle_t *info_handle,
+     libfwsi_item_t *shell_item,
+     libcerror_error_t **error )
+{
+	uint8_t guid_data[ 16 ];
+
+	libcstring_system_character_t guid_string[ 48 ];
+
+	libfguid_identifier_t *guid = NULL;
+	static char *function       = "info_handle_root_folder_shell_item_fprint";
+	int result                  = 0;
+
+	if( info_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid info handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( libfguid_identifier_initialize(
+	     &guid,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 "%s: unable to create GUID.",
+		 function );
+
+		goto on_error;
+	}
+	if( libfwsi_root_folder_get_shell_folder_identifier(
+	     shell_item,
+	     guid_data,
+	     16,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve shell folder identifier.",
+		 function );
+
+		goto on_error;
+	}
+	if( libfguid_identifier_copy_from_byte_stream(
+	     guid,
+	     guid_data,
+	     16,
+	     LIBFGUID_ENDIAN_LITTLE,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+		 "%s: unable to copy byte stream to GUID.",
+		 function );
+
+		goto on_error;
+	}
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+	result = libfguid_identifier_copy_to_utf16_string(
+		  guid,
+		  (uint16_t *) guid_string,
+		  48,
+		  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
+		  error );
+#else
+	result = libfguid_identifier_copy_to_utf8_string(
+		  guid,
+		  (uint8_t *) guid_string,
+		  48,
+		  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
+		  error );
+#endif
+	if( result != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+		 "%s: unable to copy GUID to string.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\t\tShell folder identifier\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+	 guid_string );
+
+	if( libfguid_identifier_free(
+	     &guid,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+		 "%s: unable to free GUID.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\t\tShell folder name\t: %s\n",
+	 libfwsi_folder_identifier_get_name(
+	  guid_data ) );
+
+	return( 1 );
+
+on_error:
+	if( guid != NULL )
+	{
+		libfguid_identifier_free(
+		 &guid,
+		 NULL );
+	}
+	return( -1 );
+}
+
+/* Prints the volume entry shell item to the notify stream
+ * Returns 1 if successful or -1 on error
+ */
+int info_handle_volume_entry_shell_item_fprint(
+     info_handle_t *info_handle,
+     libfwsi_item_t *shell_item,
+     libcerror_error_t **error )
+{
+	libcstring_system_character_t *value_string = NULL;
+	static char *function                       = "info_handle_volume_entry_shell_item_fprint";
+	size_t value_string_size                    = 0;
+	int result                                  = 0;
+
+	if( info_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid info handle.",
+		 function );
+
+		return( -1 );
+	}
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+	result = libfwsi_volume_entry_get_utf16_name_size(
+		  shell_item,
+		  &value_string_size,
+		  error );
+#else
+	result = libfwsi_volume_entry_get_utf8_name_size(
+		  shell_item,
+		  &value_string_size,
+		  error );
+#endif
+	if( result != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve volume entry name size.",
+		 function );
+
+		goto on_error;
+	}
+	if( value_string_size > 0 )
+	{
+		value_string = libcstring_system_string_allocate(
+		                value_string_size );
+
+		if( value_string == NULL )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+			 "%s: unable to create value string.",
+			 function );
+
+			goto on_error;
+		}
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+		result = libfwsi_volume_entry_get_utf16_name(
+			  shell_item,
+			  (uint16_t *) value_string,
+			  value_string_size,
+			  error );
+#else
+		result = libfwsi_volume_entry_get_utf8_name(
+			  shell_item,
+			  (uint8_t *) value_string,
+			  value_string_size,
+			  error );
+#endif
+		if( result == -1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve volume entry name.",
+			 function );
+
+			goto on_error;
+		}
+		fprintf(
+		 info_handle->notify_stream,
+		 "\t\tVolume name\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 value_string );
+
+		memory_free(
+		 value_string );
+
+		value_string = NULL;
+	}
+	return( result );
+
+on_error:
+	if( value_string != NULL )
+	{
+		memory_free(
+		 value_string );
+	}
+	return( -1 );
+}
+
+/* Prints the file entry shell item to the notify stream
+ * Returns 1 if successful or -1 on error
+ */
+int info_handle_file_entry_shell_item_fprint(
+     info_handle_t *info_handle,
+     libfwsi_item_t *shell_item,
+     libcerror_error_t **error )
+{
+	libcstring_system_character_t *value_string = NULL;
+	static char *function                       = "info_handle_file_entry_shell_item_fprint";
+	size_t value_string_size                    = 0;
+	int result                                  = 0;
+
+	if( info_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid info handle.",
+		 function );
+
+		return( -1 );
+	}
+/* TODO */
+	return( 1 );
+}
+
+/* Prints the shell item list to the notify stream
+ * Returns 1 if successful or -1 on error
+ */
+int info_handle_shell_item_list_fprint(
+     info_handle_t *info_handle,
+     libfwsi_item_list_t *shell_item_list,
+     libcerror_error_t **error )
+{
+	libfwsi_item_t *shell_item = NULL;
+	static char *function      = "info_handle_shell_item_fprint";
+	int item_index             = 0;
+	int number_of_items        = 0;
+
+	if( info_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid info handle.",
+		 function );
+
+		return( -1 );
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\tShell item list\n" );
+
+	if( libfwsi_item_list_get_number_of_items(
+	     shell_item_list,
+	     &number_of_items,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve number of items.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\t\tNumber of items\t\t: %d\n",
+	 number_of_items );
+
+	for( item_index = 0;
+	     item_index < number_of_items;
+	     item_index++ )
+	{
+		if( libfwsi_item_list_get_item(
+		     shell_item_list,
+		     item_index,
+		     &shell_item,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve shell item: %d.",
+			 function,
+			 item_index );
+
+			goto on_error;
+		}
+		if( info_handle_shell_item_fprint(
+		     info_handle,
+		     item_index + 1,
+		     shell_item,
+		     error ) == -1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print shell item: %d.",
+			 function,
+			 item_index );
+
+			goto on_error;
+		}
+		if( libfwsi_item_free(
+		     &shell_item,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free shell item: %d.",
+			 function,
+			 item_index );
+
+			goto on_error;
+		}
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\n" );
+
+	return( 1 );
+
+on_error:
+	if( shell_item != NULL )
+	{
+		libfwsi_item_free(
+		 &shell_item,
+		 NULL );
+	}
+	return( -1 );
+}
+
 /* Prints the link target identifier
  * Returns 1 if successful or -1 on error
  */
@@ -1846,14 +2401,10 @@ int info_handle_link_target_identifier_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error )
 {
-	libfwsi_item_t *item                    = NULL;
-	libfwsi_item_list_t *item_list          = NULL;
+	libfwsi_item_list_t *shell_item_list    = NULL;
 	uint8_t *link_target_identifier_data    = NULL;
 	static char *function                   = "info_handle_link_target_identifier_fprint";
 	size_t link_target_identifier_data_size = 0;
-	uint8_t item_type                       = 0;
-	int item_index                          = 0;
-	int number_of_items                     = 0;
 	int result                              = 0;
 
 	if( info_handle == NULL )
@@ -1891,20 +2442,20 @@ int info_handle_link_target_identifier_fprint(
 		 "Link target identifier:\n" );
 
 		if( libfwsi_item_list_initialize(
-		     &item_list,
+		     &shell_item_list,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to create item list.",
+			 "%s: unable to create shell item list.",
 			 function );
 
 			goto on_error;
 		}
 		if( libfwsi_item_list_copy_from_byte_stream(
-		     item_list,
+		     shell_item_list,
 		     link_target_identifier_data,
 		     link_target_identifier_data_size,
 		     info_handle->ascii_codepage,
@@ -1914,87 +2465,34 @@ int info_handle_link_target_identifier_fprint(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy item list from byte stream.",
+			 "%s: unable to copy shell item list from byte stream.",
 			 function );
 
 			goto on_error;
 		}
-		if( libfwsi_item_list_get_number_of_items(
-		     item_list,
-		     &number_of_items,
-		     error ) != 1 )
+		if( info_handle_shell_item_list_fprint(
+		     info_handle,
+		     shell_item_list,
+		     error ) == -1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve number of items.",
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print shell item list.",
 			 function );
 
 			goto on_error;
 		}
-		for( item_index = 0;
-		     item_index < number_of_items;
-		     item_index++ )
-		{
-			if( libfwsi_item_list_get_item(
-			     item_list,
-			     item_index,
-			     &item,
-			     error ) != 1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-				 "%s: unable to retrieve item: %d.",
-				 function,
-				 item_index );
-
-				goto on_error;
-			}
-			if( libfwsi_item_get_type(
-			     item,
-			     &item_type,
-			     error ) != 1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-				 "%s: unable to retrieve item: %d type.",
-				 function,
-				 item_index );
-
-				goto on_error;
-			}
-/* TODO */
-/* TODO the item is currently managed by the list
-			if( libfwsi_item_free(
-			     &item,
-			     error ) != 1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-				 "%s: unable to free item: %d.",
-				 function,
-				 item_index );
-
-				goto on_error;
-			}
-*/
-		}
 		if( libfwsi_item_list_free(
-		     &item_list,
+		     &shell_item_list,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free item list.",
+			 "%s: unable to free shell item list.",
 			 function );
 
 			goto on_error;
@@ -2006,18 +2504,10 @@ int info_handle_link_target_identifier_fprint(
 	return( 1 );
 
 on_error:
-/* TODO the item is currently managed by the list
-	if( item != NULL )
-	{
-		libfwsi_item_free(
-		 &item,
-		 NULL );
-	}
-*/
-	if( item_list != NULL )
+	if( shell_item_list != NULL )
 	{
 		libfwsi_item_list_free(
-		 &item_list,
+		 &shell_item_list,
 		 NULL );
 	}
 	return( -1 );

@@ -69,7 +69,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "open_file_object",
 	  (PyCFunction) pylnk_file_open_file_object,
 	  METH_VARARGS | METH_KEYWORDS,
-	  "open(file_object, mode='r') -> None\n"
+	  "open_file_object(file_object, mode='r') -> None\n"
 	  "\n"
 	  "Opens a file using a file-like object." },
 
