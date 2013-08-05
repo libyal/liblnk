@@ -153,7 +153,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_file_attributes.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_file_entry.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_file_entry_values.c"
 				>
 			</File>
 			<File
@@ -169,7 +181,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_root_folder.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_root_folder_values.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_support.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_volume_entry.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_volume_entry_values.c"
 				>
 			</File>
 		</Filter>
@@ -187,11 +215,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_extern.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_file_attributes.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_file_entry.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_file_entry_values.h"
 				>
 			</File>
 			<File
@@ -235,6 +275,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_root_folder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_root_folder_values.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_support.h"
 				>
 			</File>
@@ -244,6 +292,14 @@
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_unused.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_volume_entry.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_volume_entry_values.h"
 				>
 			</File>
 		</Filter>

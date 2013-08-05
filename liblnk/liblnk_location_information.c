@@ -1176,8 +1176,8 @@ ssize_t liblnk_location_information_read(
 				value_string = NULL;
 			}
 		}
-	}
 #endif
+	}
 	/* Network share information
 	 */
 	if( ( ( location_information->flags & 0x00000002UL ) != 0 )

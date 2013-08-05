@@ -52,6 +52,10 @@ Bindings:
 * .net
 * java
 
+20120805
+* updated dependencies
+* bug fix in pymsiecf file object libbfio glue code
+
 20120626
 * worked on shell items
   - detection of delegate 0x2e item

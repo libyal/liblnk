@@ -2470,6 +2470,7 @@ int info_handle_link_target_identifier_fprint(
 
 			goto on_error;
 		}
+#ifdef TODO
 		if( info_handle_shell_item_list_fprint(
 		     info_handle,
 		     shell_item_list,
@@ -2484,6 +2485,7 @@ int info_handle_link_target_identifier_fprint(
 
 			goto on_error;
 		}
+#endif
 		if( libfwsi_item_list_free(
 		     &shell_item_list,
 		     error ) != 1 )
