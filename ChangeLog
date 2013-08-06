@@ -52,6 +52,9 @@ Bindings:
 * .net
 * java
 
+20120806
+* fixes for building with stand-alone libuna and libbfio
+
 20120805
 * updated dependencies
 * bug fix in pymsiecf file object libbfio glue code

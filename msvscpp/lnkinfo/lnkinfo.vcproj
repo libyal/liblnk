@@ -208,6 +208,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lnktools\lnktools_libbfio.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lnktools\lnktools_libcerror.h"
 				>
 			</File>
@@ -237,6 +241,10 @@
 			</File>
 			<File
 				RelativePath="..\..\lnktools\lnktools_liblnk.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lnktools\lnktools_libuna.h"
 				>
 			</File>
 		</Filter>

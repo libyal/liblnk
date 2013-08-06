@@ -26,6 +26,7 @@ lnkinfo_SOURCES = \
 	info_handle.c info_handle.h \
 	lnkinfo.c \
 	lnkoutput.c lnkoutput.h \
+	lnktools_libbfio.h \
 	lnktools_libcerror.h \
 	lnktools_libclocale.h \
 	lnktools_libcnotify.h \
@@ -34,7 +35,8 @@ lnkinfo_SOURCES = \
 	lnktools_libfdatetime.h \
 	lnktools_libfguid.h \
 	lnktools_libfwsi.h \
-	lnktools_liblnk.h
+	lnktools_liblnk.h \
+	lnktools_libuna.h
 
 lnkinfo_LDADD = \
 	@LIBCSYSTEM_LIBADD@ \
