@@ -2418,9 +2418,8 @@ int info_handle_link_target_identifier_fprint(
 
 		return( -1 );
 	}
-	result = liblnk_file_get_link_target_identifier_data(
+	result = liblnk_file_get_link_target_identifier_data_size(
 	          info_handle->input_file,
-	          &link_target_identifier_data,
 	          &link_target_identifier_data_size,
 	          error );
 
@@ -2430,13 +2429,44 @@ int info_handle_link_target_identifier_fprint(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve link target identifier data.",
+		 "%s: unable to retrieve link target identifier data size.",
 		 function );
 
 		goto on_error;
 	}
 	else if( result != 0 )
 	{
+		link_target_identifier_data = (uint8_t *) memory_allocate(
+		                                           sizeof( uint8_t ) * link_target_identifier_data_size );
+
+		if( link_target_identifier_data == NULL )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+			 "%s: unable to create link target identifier data.",
+			 function );
+
+			goto on_error;
+		}
+		result = liblnk_file_copy_link_target_identifier_data(
+			  info_handle->input_file,
+			  link_target_identifier_data,
+			  link_target_identifier_data_size,
+			  error );
+
+		if( result != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy link target identifier data.",
+			 function );
+
+			goto on_error;
+		}
 		fprintf(
 		 info_handle->notify_stream,
 		 "Link target identifier:\n" );
@@ -2502,6 +2532,11 @@ int info_handle_link_target_identifier_fprint(
 		fprintf(
 		 info_handle->notify_stream,
 		 "\n" );
+
+		memory_free(
+		 link_target_identifier_data );
+
+		link_target_identifier_data = NULL;
 	}
 	return( 1 );
 
@@ -2511,6 +2546,11 @@ on_error:
 		libfwsi_item_list_free(
 		 &shell_item_list,
 		 NULL );
+	}
+	if( link_target_identifier_data != NULL )
+	{
+		memory_free(
+		 link_target_identifier_data );
 	}
 	return( -1 );
 }

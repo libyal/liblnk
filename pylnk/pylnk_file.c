@@ -102,7 +102,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  METH_NOARGS,
 	  "get_file_creation_time() -> Datetime\n"
 	  "\n"
-	  "Returns the creation date and time of the linked file." },
+	  "Returns the creation date and time of the linked item." },
 
 	{ "get_file_creation_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_creation_time_as_integer,
@@ -116,7 +116,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  METH_NOARGS,
 	  "get_file_modification_time() -> Datetime\n"
 	  "\n"
-	  "Returns the modification date and time of the linked file." },
+	  "Returns the modification date and time of the linked item." },
 
 	{ "get_file_modification_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_modification_time_as_integer,
@@ -130,7 +130,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  METH_NOARGS,
 	  "get_file_access_time() -> Datetime\n"
 	  "\n"
-	  "Returns the access date and time of the linked file." },
+	  "Returns the access date and time of the linked item." },
 
 	{ "get_file_access_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_access_time_as_integer,
@@ -144,14 +144,14 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  METH_NOARGS,
 	  "get_file_size() -> Integer\n"
 	  "\n"
-	  "Returns the size of the linked file." },
+	  "Returns the size of the linked item." },
 
 	{ "get_file_attribute_flags",
 	  (PyCFunction) pylnk_file_get_file_attribute_flags,
 	  METH_NOARGS,
 	  "get_file_attribute_flags() -> Integer\n"
 	  "\n"
-	  "Returns the file attribute flags of the linked file." },
+	  "Returns the file attribute flags of the linked item." },
 
 	{ "get_drive_type",
 	  (PyCFunction) pylnk_file_get_drive_type,
@@ -179,56 +179,64 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  METH_NOARGS,
 	  "get_local_path() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the local path of the linked file." },
+	  "Returns the local path of the linked item." },
 
 	{ "get_network_path",
 	  (PyCFunction) pylnk_file_get_network_path,
 	  METH_NOARGS,
 	  "get_network_path() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the network path of the linked file." },
+	  "Returns the network path of the linked item." },
 
 	{ "get_description",
 	  (PyCFunction) pylnk_file_get_description,
 	  METH_NOARGS,
 	  "get_description() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the description of the linked file." },
+	  "Returns the description of the linked item." },
 
 	{ "get_relative_path",
 	  (PyCFunction) pylnk_file_get_relative_path,
 	  METH_NOARGS,
 	  "get_relative_path() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the relative path of the linked file." },
+	  "Returns the relative path of the linked item." },
 
 	{ "get_working_directory",
 	  (PyCFunction) pylnk_file_get_working_directory,
 	  METH_NOARGS,
 	  "get_working_directory() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the working directory of the linked file." },
+	  "Returns the working directory of the linked item." },
 
 	{ "get_command_line_arguments",
 	  (PyCFunction) pylnk_file_get_command_line_arguments,
 	  METH_NOARGS,
 	  "get_command_line_arguments() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the command line arguments of the linked file." },
+	  "Returns the command line arguments of the linked item." },
 
 	{ "get_icon_location",
 	  (PyCFunction) pylnk_file_get_icon_location,
 	  METH_NOARGS,
 	  "get_icon_location() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the icon location of the linked file." },
+	  "Returns the icon location of the linked item." },
 
 	{ "get_environment_variables_location",
 	  (PyCFunction) pylnk_file_get_environment_variables_location,
 	  METH_NOARGS,
 	  "get_environment_variables_location() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the environment variables location of the linked file." },
+	  "Returns the environment variables location of the linked item." },
+
+	{ "get_link_target_identifier_data",
+	  (PyCFunction) pylnk_file_get_link_target_identifier_data,
+	  METH_NOARGS,
+	  "get_link_target_identifier_data() -> String or None\n"
+	  "\n"
+	  "Returns the link target identifier data of the linked item.\n"
+          "The string contains a shell item (identifier) list.\n" },
 
 	/* Sentinel */
 	{ NULL, NULL, 0, NULL }
@@ -245,31 +253,31 @@ PyGetSetDef pylnk_file_object_get_set_definitions[] = {
 	{ "file_creation_time",
 	  (getter) pylnk_file_get_file_creation_time,
 	  (setter) 0,
-	  "The creation date and time of the linked file.",
+	  "The creation date and time of the linked item.",
 	  NULL },
 
 	{ "file_modification_time",
 	  (getter) pylnk_file_get_file_modification_time,
 	  (setter) 0,
-	  "The modification date and time of the linked file.",
+	  "The modification date and time of the linked item.",
 	  NULL },
 
 	{ "file_access_time",
 	  (getter) pylnk_file_get_file_access_time,
 	  (setter) 0,
-	  "The access date and time of the linked file.",
+	  "The access date and time of the linked item.",
 	  NULL },
 
 	{ "file_size",
 	  (getter) pylnk_file_get_file_size,
 	  (setter) 0,
-	  "The size of the of the linked file.",
+	  "The size of the of the linked item.",
 	  NULL },
 
 	{ "file_attribute_flags",
 	  (getter) pylnk_file_get_file_attribute_flags,
 	  (setter) 0,
-	  "The file attribute flags of the linked file.",
+	  "The file attribute flags of the linked item.",
 	  NULL },
 
 	{ "drive_type",
@@ -293,49 +301,56 @@ PyGetSetDef pylnk_file_object_get_set_definitions[] = {
 	{ "local_path",
 	  (getter) pylnk_file_get_local_path,
 	  (setter) 0,
-	  "The local path of the linked file.",
+	  "The local path of the linked item.",
 	  NULL },
 
 	{ "network_path",
 	  (getter) pylnk_file_get_network_path,
 	  (setter) 0,
-	  "The network path of the linked file.",
+	  "The network path of the linked item.",
 	  NULL },
 
 	{ "description",
 	  (getter) pylnk_file_get_description,
 	  (setter) 0,
-	  "The description of the linked file.",
+	  "The description of the linked item.",
 	  NULL },
 
 	{ "relative_path",
 	  (getter) pylnk_file_get_relative_path,
 	  (setter) 0,
-	  "The relative path of the linked file.",
+	  "The relative path of the linked item.",
 	  NULL },
 
 	{ "working_directory",
 	  (getter) pylnk_file_get_working_directory,
 	  (setter) 0,
-	  "The working directory of the linked file.",
+	  "The working directory of the linked item.",
 	  NULL },
 
 	{ "command_line_arguments",
 	  (getter) pylnk_file_get_command_line_arguments,
 	  (setter) 0,
-	  "The command line arguments of the linked file.",
+	  "The command line arguments of the linked item.",
 	  NULL },
 
 	{ "icon_location",
 	  (getter) pylnk_file_get_icon_location,
 	  (setter) 0,
-	  "The icon location of the linked file.",
+	  "The icon location of the linked item.",
 	  NULL },
 
 	{ "environment_variables_location",
 	  (getter) pylnk_file_get_environment_variables_location,
 	  (setter) 0,
-	  "The environment variables location of the linked file.",
+	  "The environment variables location of the linked item.",
+	  NULL },
+
+	{ "link_target_identifier_data",
+	  (getter) pylnk_file_get_link_target_identifier_data,
+	  (setter) 0,
+	  "The link target identifier data of the linked item.\n"
+          "The string contains a shell item (identifier) list.",
 	  NULL },
 
 	/* Sentinel */
@@ -1263,7 +1278,7 @@ int pylnk_file_set_ascii_codepage_setter(
 	return( 0 );
 }
 
-/* Retrieves the creation date and time of the linked file
+/* Retrieves the creation date and time of the linked item
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_creation_time(
@@ -1415,7 +1430,7 @@ PyObject *pylnk_file_get_file_creation_time_as_integer(
 #endif
 }
 
-/* Retrieves the modification date and time of the linked file
+/* Retrieves the modification date and time of the linked item
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_modification_time(
@@ -1567,7 +1582,7 @@ PyObject *pylnk_file_get_file_modification_time_as_integer(
 #endif
 }
 
-/* Retrieves the access date and time of the linked file
+/* Retrieves the access date and time of the linked item
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_access_time(
@@ -1985,7 +2000,7 @@ PyObject *pylnk_file_get_drive_serial_number(
 	         (long) drive_serial_number ) );
 }
 
-/* Retrieves the volume label of the linked file
+/* Retrieves the volume label of the linked item
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_volume_label(
@@ -2064,7 +2079,7 @@ PyObject *pylnk_file_get_volume_label(
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create volume label.",
+		 "%s: unable to create UTF-8 volume label.",
 		 function );
 
 		goto on_error;
@@ -2148,7 +2163,7 @@ on_error:
 	return( NULL );
 }
 
-/* Retrieves the local path of the linked file
+/* Retrieves the local path of the linked item
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_local_path(
@@ -2227,7 +2242,7 @@ PyObject *pylnk_file_get_local_path(
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create local path.",
+		 "%s: unable to create UTF-8 local path.",
 		 function );
 
 		goto on_error;
@@ -2311,7 +2326,7 @@ on_error:
 	return( NULL );
 }
 
-/* Retrieves the network path of the linked file
+/* Retrieves the network path of the linked item
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_network_path(
@@ -2390,7 +2405,7 @@ PyObject *pylnk_file_get_network_path(
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create network path.",
+		 "%s: unable to create UTF-8 network path.",
 		 function );
 
 		goto on_error;
@@ -2474,7 +2489,7 @@ on_error:
 	return( NULL );
 }
 
-/* Retrieves the description of the linked file
+/* Retrieves the description of the linked item
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_description(
@@ -2553,7 +2568,7 @@ PyObject *pylnk_file_get_description(
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create description.",
+		 "%s: unable to create UTF-8 description.",
 		 function );
 
 		goto on_error;
@@ -2637,7 +2652,7 @@ on_error:
 	return( NULL );
 }
 
-/* Retrieves the relative path of the linked file
+/* Retrieves the relative path of the linked item
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_relative_path(
@@ -2716,7 +2731,7 @@ PyObject *pylnk_file_get_relative_path(
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create relative path.",
+		 "%s: unable to create UTF-8 relative path.",
 		 function );
 
 		goto on_error;
@@ -2800,7 +2815,7 @@ on_error:
 	return( NULL );
 }
 
-/* Retrieves the working directory of the linked file
+/* Retrieves the working directory of the linked item
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_working_directory(
@@ -2879,7 +2894,7 @@ PyObject *pylnk_file_get_working_directory(
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create working directory.",
+		 "%s: unable to create UTF-8 working directory.",
 		 function );
 
 		goto on_error;
@@ -2963,7 +2978,7 @@ on_error:
 	return( NULL );
 }
 
-/* Retrieves the command line arguments of the linked file
+/* Retrieves the command line arguments of the linked item
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_command_line_arguments(
@@ -3042,7 +3057,7 @@ PyObject *pylnk_file_get_command_line_arguments(
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create command line arguments.",
+		 "%s: unable to create UTF-8 command line arguments.",
 		 function );
 
 		goto on_error;
@@ -3126,7 +3141,7 @@ on_error:
 	return( NULL );
 }
 
-/* Retrieves the icon location of the linked file
+/* Retrieves the icon location of the linked item
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_icon_location(
@@ -3205,7 +3220,7 @@ PyObject *pylnk_file_get_icon_location(
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create icon location.",
+		 "%s: unable to create UTF-8 icon location.",
 		 function );
 
 		goto on_error;
@@ -3289,7 +3304,7 @@ on_error:
 	return( NULL );
 }
 
-/* Retrieves the environment variables location of the linked file
+/* Retrieves the environment variables location of the linked item
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_environment_variables_location(
@@ -3368,7 +3383,7 @@ PyObject *pylnk_file_get_environment_variables_location(
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create environment variables location.",
+		 "%s: unable to create UTF-8 environment variables location.",
 		 function );
 
 		goto on_error;
@@ -3448,6 +3463,165 @@ on_error:
 	{
 		PyMem_Free(
 		 environment_variables_location );
+	}
+	return( NULL );
+}
+
+/* Retrieves the link target identifier data of the linked item
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_link_target_identifier_data(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	char error_string[ PYLNK_ERROR_STRING_SIZE ];
+
+	libcerror_error_t *error                = NULL;
+	PyObject *string_object                 = NULL;
+	static char *function                   = "pylnk_file_get_link_target_identifier_data";
+	char *link_target_identifier_data       = NULL;
+	size_t link_target_identifier_data_size = 0;
+	int result                              = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_link_target_identifier_data_size(
+	          pylnk_file->file,
+	          &link_target_identifier_data_size,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve link target identifier data size.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to retrieve link target identifier data size.\n%s",
+			 function,
+			 error_string );
+		}
+		libcerror_error_free(
+		 &error );
+
+		goto on_error;
+	}
+	/* Check if the link target identifier data is present
+	 */
+	else if( ( result == 0 )
+	      || ( link_target_identifier_data_size == 0 ) )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	link_target_identifier_data = (char *) PyMem_Malloc(
+	                                        sizeof( char ) * link_target_identifier_data_size );
+
+	if( link_target_identifier_data == NULL )
+	{
+		PyErr_Format(
+		 PyExc_MemoryError,
+		 "%s: unable to create link target identifier data.",
+		 function );
+
+		goto on_error;
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_copy_link_target_identifier_data(
+	          pylnk_file->file,
+	          (uint8_t *) link_target_identifier_data,
+	          link_target_identifier_data_size,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYLNK_ERROR_STRING_SIZE ) == -1 )
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to copy link target identifier data.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to copy link target identifier data.\n%s",
+			 function,
+			 error_string );
+		}
+		libcerror_error_free(
+		 &error );
+
+		goto on_error;
+	}
+	/* Check if the link target identifier data is present
+	 */
+	else if( result == 0 )
+	{
+		PyMem_Free(
+		 link_target_identifier_data );
+
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	/* This is a byte string so include the full size
+	 */
+	string_object = PyString_FromStringAndSize(
+	                 link_target_identifier_data,
+	                 (Py_ssize_t) link_target_identifier_data_size );
+
+	if( string_object == NULL )
+	{
+		PyErr_Format(
+		 PyExc_IOError,
+		 "%s: unable to convert link target identifier into string.",
+		 function );
+
+		goto on_error;
+	}
+	PyMem_Free(
+	 link_target_identifier_data );
+
+	return( string_object );
+
+on_error:
+	if( link_target_identifier_data != NULL )
+	{
+		PyMem_Free(
+		 link_target_identifier_data );
 	}
 	return( NULL );
 }

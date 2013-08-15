@@ -328,6 +328,19 @@ int liblnk_file_get_link_target_identifier_data(
      size_t *data_size,
      libcerror_error_t **error );
 
+LIBLNK_EXTERN \
+int liblnk_file_get_link_target_identifier_data_size(
+     liblnk_file_t *file,
+     size_t *data_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_file_copy_link_target_identifier_data(
+     liblnk_file_t *file,
+     uint8_t *data,
+     size_t data_size,
+     libcerror_error_t **error );
+
 #if defined( __cplusplus )
 }
 #endif

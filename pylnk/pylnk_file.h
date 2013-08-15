@@ -179,6 +179,10 @@ PyObject *pylnk_file_get_environment_variables_location(
            pylnk_file_t *pylnk_file,
            PyObject *arguments );
 
+PyObject *pylnk_file_get_link_target_identifier_data(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
+
 #if defined( __cplusplus )
 }
 #endif

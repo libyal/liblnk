@@ -3894,3 +3894,150 @@ int liblnk_file_get_link_target_identifier_data(
 	return( 1 );
 }
 
+/* Retrieves the link target identifier data size
+ * The link target identifier contains a shell item (identifier) list
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_get_link_target_identifier_data_size(
+     liblnk_file_t *file,
+     size_t *data_size,
+     libcerror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_link_target_identifier_data_size";
+
+	if( file == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_size == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data size.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->link_target_identifier == NULL )
+	{
+		return( 0 );
+	}
+	*data_size = internal_file->link_target_identifier->data_size;
+
+	return( 1 );
+}
+
+/* Retrieves the link target identifier data
+ * The link target identifier contains a shell item (identifier) list
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_file_copy_link_target_identifier_data(
+     liblnk_file_t *file,
+     uint8_t *data,
+     size_t data_size,
+     libcerror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_copy_link_target_identifier_data";
+
+	if( file == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid internal file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_size > (size_t) SSIZE_MAX )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid data size value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->link_target_identifier == NULL )
+	{
+		return( 0 );
+	}
+	if( data_size < internal_file->link_target_identifier->data_size )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 "%s: data value too small.",
+		 function );
+
+		return( -1 );
+	}
+	if( memory_copy(
+	     data,
+	     internal_file->link_target_identifier->data,
+	     internal_file->link_target_identifier->data_size ) == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+		 "%s: unable to copy link target identifier data.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
