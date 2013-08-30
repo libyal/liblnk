@@ -31,6 +31,7 @@ check_SCRIPTS = \
 	test_pylnk_open_close.sh \
 	test_pylnk_set_ascii_codepage.sh \
 	test_lnkinfo.sh \
+	test_runner.sh \
 	test_set_ascii_codepage.sh
 
 EXTRA_DIST = \

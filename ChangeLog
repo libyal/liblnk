@@ -52,31 +52,35 @@ Bindings:
 * .net
 * java
 
-20120815
+20130829
+* worked on automated tests
+* corrected versions in change log
+
+20130815
 * change to API to expose link target identifier data
 
-20120806
+20130806
 * fixes for building with stand-alone libuna and libbfio
 
-20120805
+20130805
 * updated dependencies
 * bug fix in pymsiecf file object libbfio glue code
 
-20120626
+20130626
 * worked on shell items
   - detection of delegate 0x2e item
 * fix in debug output for local path
 
-20120421
+20130421
 * worked on tests
 
-20120416
+20130416
 * code clean up
 
-20120414
+20130414
 * textual changes
 
-20120413
+20130413
 * updated dependencies
 * moved examples to project site
 * updated lnkinfo man page
@@ -84,10 +88,10 @@ Bindings:
 * fixed codepage 1255 restriction
 * updates and bug fixes in pylnk
 
-20120409
+20130409
 * fixed codepage 949 and 950 restriction
 
-20120319
+20130319
 * updated dependencies
 
 20130303
