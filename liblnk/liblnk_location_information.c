@@ -683,7 +683,7 @@ ssize_t liblnk_location_information_read(
 			location_information->volume_label_size = unicode_value_size;
 			location_information->string_flags     |= LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE;
 		}
-		else
+		else if( volume_label_offset > 0 )
 		{
 			location_information->volume_label = (uint8_t *) memory_allocate(
 			                                                  sizeof( uint8_t ) * value_size );
@@ -1412,7 +1412,7 @@ ssize_t liblnk_location_information_read(
 			location_information->network_share_name_size = unicode_value_size;
 			location_information->string_flags           |= LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE;
 		}
-		else
+		else if( network_share_name_offset > 0 )
 		{
 			location_information->network_share_name = (uint8_t *) memory_allocate(
 										sizeof( uint8_t ) * value_size );
@@ -1701,7 +1701,7 @@ ssize_t liblnk_location_information_read(
 			location_information->device_name_size = unicode_value_size;
 			location_information->string_flags    |= LIBLNK_LOCATION_INFORMATION_STRING_FLAG_DEVICE_NAME_IS_UNICODE;
 		}
-		else
+		else if( device_name_offset > 0 )
 		{
 			location_information->device_name = (uint8_t *) memory_allocate(
 			                                                 sizeof( uint8_t ) * value_size );

@@ -59,6 +59,15 @@ then
 	# Use the binary in combination with valgrind otherwise the shell binary is also tested.
 	file -bi ${EXECUTABLE} | sed 's/;.*$//' | grep "text/x-shellscript" > /dev/null 2>&1;
 
+	echo ${EXECUTABLE} | grep 'tools' > /dev/null 2>&1;
+
+	if test $? -eq 0;
+	then
+		LIBRARY=`dirname ${EXECUTABLE} | sed 's?.*/\(.*\)tools$?lib\1?'`;
+	else
+		LIBRARY=`basename ${EXECUTABLE} | sed 's/^\(.*\)_test_.*$/lib\1/'`;
+	fi
+
 	if test $? -eq 0;
 	then
 		DIRNAME=`dirname ${EXECUTABLE}`;
@@ -83,7 +92,7 @@ then
 	fi
 
 	IFS="
-"; valgrind --tool=memcheck --leak-check=full --track-origins=yes --show-reachable=yes --log-file=tmp/valgrind.log ${EXECUTABLE} $*;
+"; LD_LIBRARY_PATH="../${LIBRARY}/.libs/" valgrind --tool=memcheck --leak-check=full --track-origins=yes --show-reachable=yes --log-file=tmp/valgrind.log ${EXECUTABLE} $*;
 
 	EXIT_RESULT=$?;
 

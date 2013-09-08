@@ -291,8 +291,6 @@ ssize_t liblnk_data_block_read(
 
 			goto on_error;
 		}
-		data_block_offset += read_count;
-
 		read_count += 4;
 
 		byte_stream_copy_to_uint32_little_endian(
