@@ -31,13 +31,13 @@ Requires: liblnk = %{version}-%{release} @ax_libcsystem_spec_requires@
 Several tools for reading Windows Shortcut Files (LNK)
 
 %package python
-Summary: Python binding for liblnk
+Summary: Python bindings for liblnk
 Group: System Environment/Libraries
 Requires: liblnk = %{version}-%{release} python
 BuildRequires: python-devel
 
 %description python
-Python binding for liblnk
+Python bindings for liblnk
 
 %prep
 %setup -q

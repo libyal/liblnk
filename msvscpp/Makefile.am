@@ -9,14 +9,15 @@ MSVSCPP_FILES = \
 	libcsplit/libcsplit.vcproj \
 	libcstring/libcstring.vcproj \
 	libcsystem/libcsystem.vcproj \
+	libcthreads/libcthreads.vcproj \
 	libfdatetime/libfdatetime.vcproj \
 	libfguid/libfguid.vcproj \
 	libfwsi/libfwsi.vcproj \
 	liblnk_dll/liblnk_dll.vcproj \
 	libuna/libuna.vcproj \
-	liblnk.sln \
 	lnkinfo/lnkinfo.vcproj \
-	pylnk/pylnk.vcproj
+	pylnk/pylnk.vcproj \
+	liblnk.sln
 
 SCRIPT_FILES = \
 	scripts/vs2008_x64.sh \
