@@ -52,6 +52,9 @@ Bindings:
 * .net
 * java
 
+20130929
+* worked on setup.py, largely for MSI builds
+
 20130923
 * updated dependencies
 

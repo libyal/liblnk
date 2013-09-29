@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
- [20130923],
+ [20130929],
  [joachim.metz@gmail.com])
 
 AC_CONFIG_SRCDIR(
@@ -208,6 +208,7 @@ AC_CONFIG_FILES([macosx/liblnk.pmdoc/04share.xml])
 AC_CONFIG_FILES([macosx/liblnk.pmdoc/05python.xml])
 AC_CONFIG_FILES([macosx/liblnk.pmdoc/index.xml])
 AC_CONFIG_FILES([macosx/Introduction.rtf])
+AC_CONFIG_FILES([pylnk/setup.py])
 AC_CONFIG_FILES([liblnk.pc])
 AC_CONFIG_FILES([liblnk.spec])
 dnl Have configure write its configuration

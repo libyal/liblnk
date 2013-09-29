@@ -108,6 +108,7 @@ stamp-h1
 /macosx/liblnk.pmdoc/04share.xml
 /macosx/liblnk.pmdoc/05python.xml
 /macosx/liblnk.pmdoc/index.xml
+/pylnk/setup.py
 /tests/input
 /tests/lnk_test_open_close
 /tests/lnk_test_set_ascii_codepage
