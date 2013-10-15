@@ -52,6 +52,13 @@ Bindings:
 * .net
 * java
 
+20131015
+* updated dependencies
+* improved pyolecf as integer functions
+
+20131014
+* updated dependencies
+
 20130929
 * worked on setup.py, largely for MSI builds
 

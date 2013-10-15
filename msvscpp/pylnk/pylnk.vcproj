@@ -204,6 +204,10 @@
 				RelativePath="..\..\pylnk\pylnk_file_object_io_handle.c"
 				>
 			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_integer.c"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -228,6 +232,10 @@
 			</File>
 			<File
 				RelativePath="..\..\pylnk\pylnk_file_object_io_handle.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_integer.h"
 				>
 			</File>
 			<File

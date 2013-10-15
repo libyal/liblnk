@@ -1,7 +1,7 @@
 /*
- * The internal definitions
+ * Integer functions
  *
- * Copyright (c) 2012-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -19,36 +19,27 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( LIBCTHREADS_INTERNAL_DEFINITIONS_H )
-#define LIBCTHREADS_INTERNAL_DEFINITIONS_H
+#if !defined( _PYLNK_INTEGER_H )
+#define _PYLNK_INTEGER_H
 
 #include <common.h>
 #include <types.h>
 
-/* Define HAVE_LOCAL_LIBCTHREADS for local use of libcthreads
- */
-#if !defined( HAVE_LOCAL_LIBCTHREADS )
-#include <libcthreads/definitions.h>
+#include "pylnk_python.h"
 
-/* The definitions in <libcthreads/definitions.h> are copied here
- * for local use of libcthreads
- */
-#else
+#if defined( __cplusplus )
+extern "C" {
+#endif
 
-#define LIBCTHREADS_VERSION			20131003
+PyObject *pylnk_integer_signed_new_from_64bit(
+           int64_t value_64bit );
 
-/* The libcthreads version string
- */
-#define LIBCTHREADS_VERSION_STRING		"20131003"
+PyObject *pylnk_integer_unsigned_new_from_64bit(
+           uint64_t value_64bit );
 
-#endif /* !defined( HAVE_LOCAL_LIBCTHREADS ) */
-
-/* The status definitions
- */
-enum LIBCTHREADS_STATUS
-{
-	LIBCTHREADS_STATUS_EXIT			= 1
-};
+#if defined( __cplusplus )
+}
+#endif
 
 #endif
 

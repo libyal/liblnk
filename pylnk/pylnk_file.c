@@ -31,6 +31,7 @@
 #include "pylnk_datetime.h"
 #include "pylnk_file.h"
 #include "pylnk_file_object_io_handle.h"
+#include "pylnk_integer.h"
 #include "pylnk_libbfio.h"
 #include "pylnk_libcerror.h"
 #include "pylnk_libclocale.h"
@@ -107,7 +108,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_file_creation_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_creation_time_as_integer,
 	  METH_NOARGS,
-	  "get_file_creation_time_as_integer() -> Long\n"
+	  "get_file_creation_time_as_integer() -> Integer\n"
 	  "\n"
 	  "Returns the creation date and time as a 64-bit integer containing a FILETIME value." },
 
@@ -121,7 +122,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_file_modification_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_modification_time_as_integer,
 	  METH_NOARGS,
-	  "get_file_modification_time_as_integer() -> Long\n"
+	  "get_file_modification_time_as_integer() -> Integer\n"
 	  "\n"
 	  "Returns the modification date and time as a 64-bit integer containing a FILETIME value." },
 
@@ -135,7 +136,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_file_access_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_access_time_as_integer,
 	  METH_NOARGS,
-	  "get_file_access_time_as_integer() -> Long\n"
+	  "get_file_access_time_as_integer() -> Integer\n"
 	  "\n"
 	  "Returns the access date and time as a 64-bit integer containing a FILETIME value." },
 
@@ -1354,6 +1355,7 @@ PyObject *pylnk_file_get_file_creation_time_as_integer(
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
 	libcerror_error_t *error = NULL;
+	PyObject *integer_object = NULL;
 	static char *function    = "pylnk_file_get_file_creation_time_as_integer";
 	uint64_t filetime        = 0;
 	int result               = 0;
@@ -1403,31 +1405,10 @@ PyObject *pylnk_file_get_file_creation_time_as_integer(
 
 		return( NULL );
 	}
-#if defined( HAVE_LONG_LONG )
-	if( filetime > (uint64_t) LLONG_MAX )
-	{
-		PyErr_Format(
-		 PyExc_OverflowError,
-		 "%s: filetime value exceeds maximum.",
-		 function );
+	integer_object = pylnk_integer_unsigned_new_from_64bit(
+	                  (uint64_t) filetime );
 
-		return( NULL );
-	}
-	return( PyLong_FromLongLong(
-	         (long long) filetime ) );
-#else
-	if( filetime > (uint64_t) LONG_MAX )
-	{
-		PyErr_Format(
-		 PyExc_OverflowError,
-		 "%s: filetime value exceeds maximum.",
-		 function );
-
-		return( NULL );
-	}
-	return( PyLong_FromLong(
-	         (long) filetime ) );
-#endif
+	return( integer_object );
 }
 
 /* Retrieves the modification date and time of the linked item
@@ -1506,6 +1487,7 @@ PyObject *pylnk_file_get_file_modification_time_as_integer(
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
 	libcerror_error_t *error = NULL;
+	PyObject *integer_object = NULL;
 	static char *function    = "pylnk_file_get_file_modification_time_as_integer";
 	uint64_t filetime        = 0;
 	int result               = 0;
@@ -1555,31 +1537,10 @@ PyObject *pylnk_file_get_file_modification_time_as_integer(
 
 		return( NULL );
 	}
-#if defined( HAVE_LONG_LONG )
-	if( filetime > (uint64_t) LLONG_MAX )
-	{
-		PyErr_Format(
-		 PyExc_OverflowError,
-		 "%s: filetime value exceeds maximum.",
-		 function );
+	integer_object = pylnk_integer_unsigned_new_from_64bit(
+	                  (uint64_t) filetime );
 
-		return( NULL );
-	}
-	return( PyLong_FromLongLong(
-	         (long long) filetime ) );
-#else
-	if( filetime > (uint64_t) LONG_MAX )
-	{
-		PyErr_Format(
-		 PyExc_OverflowError,
-		 "%s: filetime value exceeds maximum.",
-		 function );
-
-		return( NULL );
-	}
-	return( PyLong_FromLong(
-	         (long) filetime ) );
-#endif
+	return( integer_object );
 }
 
 /* Retrieves the access date and time of the linked item
@@ -1658,6 +1619,7 @@ PyObject *pylnk_file_get_file_access_time_as_integer(
 	char error_string[ PYLNK_ERROR_STRING_SIZE ];
 
 	libcerror_error_t *error = NULL;
+	PyObject *integer_object = NULL;
 	static char *function    = "pylnk_file_get_file_access_time_as_integer";
 	uint64_t filetime        = 0;
 	int result               = 0;
@@ -1707,31 +1669,10 @@ PyObject *pylnk_file_get_file_access_time_as_integer(
 
 		return( NULL );
 	}
-#if defined( HAVE_LONG_LONG )
-	if( filetime > (uint64_t) LLONG_MAX )
-	{
-		PyErr_Format(
-		 PyExc_OverflowError,
-		 "%s: filetime value exceeds maximum.",
-		 function );
+	integer_object = pylnk_integer_unsigned_new_from_64bit(
+	                  (uint64_t) filetime );
 
-		return( NULL );
-	}
-	return( PyLong_FromLongLong(
-	         (long long) filetime ) );
-#else
-	if( filetime > (uint64_t) LONG_MAX )
-	{
-		PyErr_Format(
-		 PyExc_OverflowError,
-		 "%s: filetime value exceeds maximum.",
-		 function );
-
-		return( NULL );
-	}
-	return( PyLong_FromLong(
-	         (long) filetime ) );
-#endif
+	return( integer_object );
 }
 
 /* Retrieves the file size

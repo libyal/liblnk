@@ -100,7 +100,7 @@ stamp-h1
 /include/liblnk/features.h
 /include/liblnk/types.h
 /liblnk/liblnk.rc
-/liblnk/liblnk.h
+/liblnk/liblnk_definition.h
 /macosx/Introduction.rtf
 /macosx/liblnk.pmdoc/01bin.xml
 /macosx/liblnk.pmdoc/02include.xml

@@ -49,7 +49,7 @@ lnk_test_open_close_SOURCES = \
 	lnk_test_open_close.c
 
 lnk_test_open_close_LDADD = \
-	../liblnk/liblnk.la
+	../liblnk/liblnk.la \
 	@LIBBFIO_LIBADD@ \
 	@LIBCPATH_LIBADD@ \
 	@LIBCFILE_LIBADD@ \
@@ -69,7 +69,7 @@ lnk_test_set_ascii_codepage_SOURCES = \
 	lnk_test_set_ascii_codepage.c
 
 lnk_test_set_ascii_codepage_LDADD = \
-	../liblnk/liblnk.la
+	../liblnk/liblnk.la \
 	@LIBCLOCALE_LIBADD@ \
 	@LIBCERROR_LIBADD@ \
 	@LIBCSTRING_LIBADD@

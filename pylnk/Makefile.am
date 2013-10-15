@@ -19,6 +19,7 @@ pylnk_la_SOURCES = \
 	pylnk_datetime.c pylnk_datetime.h \
 	pylnk_file.c pylnk_file.h \
 	pylnk_file_object_io_handle.c pylnk_file_object_io_handle.h \
+	pylnk_integer.c pylnk_integer.h \
 	pylnk_libbfio.h \
 	pylnk_libcerror.h \
 	pylnk_libclocale.h \
