@@ -5,8 +5,8 @@
 	<description/>
 	<post-install type="none"/>
 	<requireAuthorization/>
-	<installFrom>/home/lordyesta/Projects/liblnk/macosx/tmp/lib64/python2.7/site-packages</installFrom>
-	<installTo mod="true">/usr/lib64/python2.7/site-packages</installTo>
+	<installFrom>/usr/local/google/home/jbmetz/Projects/liblnk/macosx/tmp/lib/python2.7/dist-packages</installFrom>
+	<installTo mod="true">/usr/lib/python2.7/dist-packages</installTo>
 	<flags>
 		<followSymbolicLinks/>
 	</flags>

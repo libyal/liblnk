@@ -1463,6 +1463,7 @@ PyObject *pylnk_file_get_file_size(
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	libcerror_error_t *error = NULL;
+	PyObject *integer_object = NULL;
 	static char *function    = "pylnk_file_get_file_size";
 	uint32_t file_size       = 0;
 	int result               = 0;
@@ -1500,8 +1501,10 @@ PyObject *pylnk_file_get_file_size(
 
 		return( NULL );
 	}
-	return( PyInt_FromLong(
-	         (long) file_size ) );
+	integer_object = pylnk_integer_unsigned_new_from_64bit(
+	                  (uint64_t) file_size );
+
+	return( integer_object );
 }
 
 /* Retrieves the file attribute flags
@@ -1512,6 +1515,7 @@ PyObject *pylnk_file_get_file_attribute_flags(
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	libcerror_error_t *error      = NULL;
+	PyObject *integer_object      = NULL;
 	static char *function         = "pylnk_file_get_file_attribute_flags";
 	uint32_t file_attribute_flags = 0;
 	int result                    = 0;
@@ -1549,8 +1553,10 @@ PyObject *pylnk_file_get_file_attribute_flags(
 
 		return( NULL );
 	}
-	return( PyInt_FromLong(
-	         (long) file_attribute_flags ) );
+	integer_object = pylnk_integer_unsigned_new_from_64bit(
+	                  (uint64_t) file_attribute_flags );
+
+	return( integer_object );
 }
 
 /* Retrieves the drive type
@@ -1561,6 +1567,7 @@ PyObject *pylnk_file_get_drive_type(
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	libcerror_error_t *error = NULL;
+	PyObject *integer_object = NULL;
 	static char *function    = "pylnk_file_get_drive_type";
 	uint32_t drive_type      = 0;
 	int result               = 0;
@@ -1605,8 +1612,10 @@ PyObject *pylnk_file_get_drive_type(
 
 		return( Py_None );
 	}
-	return( PyInt_FromLong(
-	         (long) drive_type ) );
+	integer_object = pylnk_integer_unsigned_new_from_64bit(
+	                  (uint64_t) drive_type );
+
+	return( integer_object );
 }
 
 /* Retrieves the drive serial number
@@ -1617,6 +1626,7 @@ PyObject *pylnk_file_get_drive_serial_number(
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
 	libcerror_error_t *error     = NULL;
+	PyObject *integer_object     = NULL;
 	static char *function        = "pylnk_file_get_drive_serial_number";
 	uint32_t drive_serial_number = 0;
 	int result                   = 0;
@@ -1661,8 +1671,10 @@ PyObject *pylnk_file_get_drive_serial_number(
 
 		return( Py_None );
 	}
-	return( PyInt_FromLong(
-	         (long) drive_serial_number ) );
+	integer_object = pylnk_integer_unsigned_new_from_64bit(
+	                  (uint64_t) drive_serial_number );
+
+	return( integer_object );
 }
 
 /* Retrieves the volume label of the linked item
