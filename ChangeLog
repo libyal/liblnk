@@ -52,6 +52,11 @@ Bindings:
 * .net
 * java
 
+20140107
+* 2014 update
+* updated dependencies
+* worked on Python bindings
+
 20131015
 * updated dependencies
 * improved pyolecf as integer functions

@@ -197,6 +197,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\pylnk\pylnk_error.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\pylnk\pylnk_file.c"
 				>
 			</File>
@@ -224,6 +228,10 @@
 			</File>
 			<File
 				RelativePath="..\..\pylnk\pylnk_datetime.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_error.h"
 				>
 			</File>
 			<File

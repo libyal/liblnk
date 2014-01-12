@@ -17,6 +17,7 @@ pylnk_la_SOURCES = \
 	pylnk.c pylnk.h \
 	pylnk_codepage.c pylnk_codepage.h \
 	pylnk_datetime.c pylnk_datetime.h \
+	pylnk_error.c pylnk_error.h \
 	pylnk_file.c pylnk_file.h \
 	pylnk_file_object_io_handle.c pylnk_file_object_io_handle.h \
 	pylnk_integer.c pylnk_integer.h \

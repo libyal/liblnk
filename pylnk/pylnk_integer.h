@@ -1,7 +1,7 @@
 /*
  * Integer functions
  *
- * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2014, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -25,6 +25,7 @@
 #include <common.h>
 #include <types.h>
 
+#include "pylnk_libcerror.h"
 #include "pylnk_python.h"
 
 #if defined( __cplusplus )
@@ -36,6 +37,16 @@ PyObject *pylnk_integer_signed_new_from_64bit(
 
 PyObject *pylnk_integer_unsigned_new_from_64bit(
            uint64_t value_64bit );
+
+int pylnk_integer_signed_copy_to_64bit(
+     PyObject *integer_object,
+     int64_t *value_64bit,
+     libcerror_error_t **error );
+
+int pylnk_integer_unsigned_copy_to_64bit(
+     PyObject *integer_object,
+     uint64_t *value_64bit,
+     libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }

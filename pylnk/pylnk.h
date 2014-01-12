@@ -31,8 +31,6 @@
 extern "C" {
 #endif
 
-#define PYLNK_ERROR_STRING_SIZE		512
-
 PyObject *pylnk_get_version(
            PyObject *self,
            PyObject *arguments );

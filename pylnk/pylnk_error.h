@@ -1,5 +1,5 @@
 /*
- * The internal libcstring header
+ * Error functions
  *
  * Copyright (c) 2009-2014, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,32 +19,29 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LNKTOOLS_LIBCSTRING_H )
-#define _LNKTOOLS_LIBCSTRING_H
+#if !defined( _PYLNK_ERROR_H )
+#define _PYLNK_ERROR_H
 
 #include <common.h>
+#include <types.h>
 
-/* Define HAVE_LOCAL_LIBCSTRING for local use of libcstring
- */
-#if defined( HAVE_LOCAL_LIBCSTRING )
+#include "pylnk_libcerror.h"
+#include "pylnk_python.h"
 
-#include <libcstring_definitions.h>
-#include <libcstring_narrow_string.h>
-#include <libcstring_system_string.h>
-#include <libcstring_types.h>
-#include <libcstring_wide_string.h>
+#define PYLNK_ERROR_STRING_SIZE		768
 
-#else
-
-/* If libtool DLL support is enabled set LIBCSTRING_DLL_IMPORT
- * before including libcstring.h
- */
-#if defined( _WIN32 ) && defined( DLL_IMPORT )
-#define LIBCSTRING_DLL_IMPORT
+#if defined( __cplusplus )
+extern "C" {
 #endif
 
-#include <libcstring.h>
+void pylnk_error_raise(
+      libcerror_error_t *error,
+      PyObject *exception_object,
+      const char *format_string,
+      ... );
 
+#if defined( __cplusplus )
+}
 #endif
 
 #endif

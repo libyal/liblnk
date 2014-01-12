@@ -26,9 +26,9 @@
 #include <stdlib.h>
 #endif
 
-#include "pylnk.h"
 #include "pylnk_codepage.h"
 #include "pylnk_datetime.h"
+#include "pylnk_error.h"
 #include "pylnk_file.h"
 #include "pylnk_file_object_io_handle.h"
 #include "pylnk_integer.h"
@@ -548,8 +548,6 @@ PyObject *pylnk_file_new_open_file_object(
 int pylnk_file_init(
      pylnk_file_t *pylnk_file )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	static char *function    = "pylnk_file_init";
 	libcerror_error_t *error = NULL;
 
@@ -570,24 +568,12 @@ int pylnk_file_init(
 	     &( pylnk_file->file ),
 	     &error ) != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-                {
-			PyErr_Format(
-			 PyExc_MemoryError,
-			 "%s: unable to initialize file.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_MemoryError,
-			 "%s: unable to initialize file.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_MemoryError,
+		 "%s: unable to initialize file.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -601,8 +587,6 @@ int pylnk_file_init(
 void pylnk_file_free(
       pylnk_file_t *pylnk_file )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_free";
 	int result               = 0;
@@ -653,24 +637,12 @@ void pylnk_file_free(
 
 	if( result != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-                {
-			PyErr_Format(
-			 PyExc_MemoryError,
-			 "%s: unable to free liblnk file.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_MemoryError,
-			 "%s: unable to free liblnk file.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_MemoryError,
+		 "%s: unable to free liblnk file.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 	}
@@ -685,8 +657,6 @@ PyObject *pylnk_file_signal_abort(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_signal_abort";
 	int result               = 0;
@@ -712,24 +682,12 @@ PyObject *pylnk_file_signal_abort(
 
 	if( result != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-                {
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to signal abort.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to signal abort.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to signal abort.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -749,8 +707,6 @@ PyObject *pylnk_file_open(
            PyObject *arguments,
            PyObject *keywords )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error    = NULL;
 	char *filename              = NULL;
 	char *mode                  = NULL;
@@ -800,24 +756,12 @@ PyObject *pylnk_file_open(
 
 	if( result != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-                {
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to open file.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to open file.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to open file.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -837,8 +781,6 @@ PyObject *pylnk_file_open_file_object(
            PyObject *arguments,
            PyObject *keywords )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	PyObject *file_object            = NULL;
 	libbfio_handle_t *file_io_handle = NULL;
 	libcerror_error_t *error         = NULL;
@@ -882,24 +824,12 @@ PyObject *pylnk_file_open_file_object(
 	     file_object,
 	     &error ) != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-                {
-			PyErr_Format(
-			 PyExc_MemoryError,
-			 "%s: unable to initialize file IO handle.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_MemoryError,
-			 "%s: unable to initialize file IO handle.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_MemoryError,
+		 "%s: unable to initialize file IO handle.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -917,24 +847,12 @@ PyObject *pylnk_file_open_file_object(
 
 	if( result != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-                {
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to open file.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to open file.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to open file.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -962,8 +880,6 @@ PyObject *pylnk_file_close(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_close";
 	int result               = 0;
@@ -989,24 +905,12 @@ PyObject *pylnk_file_close(
 
 	if( result != 0 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-                {
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to close file.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to close file.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to close file.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -1025,8 +929,6 @@ PyObject *pylnk_file_get_ascii_codepage(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error    = NULL;
 	PyObject *string_object     = NULL;
 	const char *codepage_string = NULL;
@@ -1056,24 +958,12 @@ PyObject *pylnk_file_get_ascii_codepage(
 
 	if( result != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve ASCII codepage.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve ASCII codepage.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve ASCII codepage.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -1114,8 +1004,6 @@ int pylnk_file_set_ascii_codepage_from_string(
      pylnk_file_t *pylnk_file,
      const char *codepage_string )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error      = NULL;
 	static char *function         = "pylnk_file_set_ascii_codepage_from_string";
 	size_t codepage_string_length = 0;
@@ -1153,24 +1041,12 @@ int pylnk_file_set_ascii_codepage_from_string(
 	     feature_flags,
 	     &error ) != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_RuntimeError,
-			 "%s: unable to determine ASCII codepage.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_RuntimeError,
-			 "%s: unable to determine ASCII codepage.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_RuntimeError,
+		 "%s: unable to determine ASCII codepage.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -1187,24 +1063,12 @@ int pylnk_file_set_ascii_codepage_from_string(
 
 	if( result != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to set ASCII codepage.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to set ASCII codepage.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to set ASCII codepage.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -1286,8 +1150,6 @@ PyObject *pylnk_file_get_file_creation_time(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error   = NULL;
 	PyObject *date_time_object = NULL;
 	static char *function      = "pylnk_file_get_file_creation_time";
@@ -1316,24 +1178,12 @@ PyObject *pylnk_file_get_file_creation_time(
 
 	if( result != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve file creation time.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve file creation time.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve file creation time.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -1352,8 +1202,6 @@ PyObject *pylnk_file_get_file_creation_time_as_integer(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error = NULL;
 	PyObject *integer_object = NULL;
 	static char *function    = "pylnk_file_get_file_creation_time_as_integer";
@@ -1382,24 +1230,12 @@ PyObject *pylnk_file_get_file_creation_time_as_integer(
 
 	if( result != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve creation time.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve creation time.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve creation time.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -1418,8 +1254,6 @@ PyObject *pylnk_file_get_file_modification_time(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error   = NULL;
 	PyObject *date_time_object = NULL;
 	static char *function      = "pylnk_file_get_file_modification_time";
@@ -1448,24 +1282,12 @@ PyObject *pylnk_file_get_file_modification_time(
 
 	if( result != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve file modification time.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve file modification time.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve file modification time.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -1484,8 +1306,6 @@ PyObject *pylnk_file_get_file_modification_time_as_integer(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error = NULL;
 	PyObject *integer_object = NULL;
 	static char *function    = "pylnk_file_get_file_modification_time_as_integer";
@@ -1514,24 +1334,12 @@ PyObject *pylnk_file_get_file_modification_time_as_integer(
 
 	if( result != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve modification time.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve modification time.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve modification time.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -1550,8 +1358,6 @@ PyObject *pylnk_file_get_file_access_time(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error   = NULL;
 	PyObject *date_time_object = NULL;
 	static char *function      = "pylnk_file_get_file_access_time";
@@ -1580,24 +1386,12 @@ PyObject *pylnk_file_get_file_access_time(
 
 	if( result != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve file access time.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve file access time.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve file access time.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -1616,8 +1410,6 @@ PyObject *pylnk_file_get_file_access_time_as_integer(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error = NULL;
 	PyObject *integer_object = NULL;
 	static char *function    = "pylnk_file_get_file_access_time_as_integer";
@@ -1646,24 +1438,12 @@ PyObject *pylnk_file_get_file_access_time_as_integer(
 
 	if( result != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve access time.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve access time.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve access time.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -1682,8 +1462,6 @@ PyObject *pylnk_file_get_file_size(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_get_file_size";
 	uint32_t file_size       = 0;
@@ -1711,24 +1489,12 @@ PyObject *pylnk_file_get_file_size(
 
 	if( result != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-                {
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve file size.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve file size.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve file size.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -1745,8 +1511,6 @@ PyObject *pylnk_file_get_file_attribute_flags(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error      = NULL;
 	static char *function         = "pylnk_file_get_file_attribute_flags";
 	uint32_t file_attribute_flags = 0;
@@ -1774,24 +1538,12 @@ PyObject *pylnk_file_get_file_attribute_flags(
 
 	if( result != 1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-                {
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve file attribute flags.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve file attribute flags.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve file attribute flags.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -1808,8 +1560,6 @@ PyObject *pylnk_file_get_drive_type(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_get_drive_type";
 	uint32_t drive_type      = 0;
@@ -1837,24 +1587,12 @@ PyObject *pylnk_file_get_drive_type(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-                {
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve drive type.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve drive type.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve drive type.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -1878,8 +1616,6 @@ PyObject *pylnk_file_get_drive_serial_number(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error     = NULL;
 	static char *function        = "pylnk_file_get_drive_serial_number";
 	uint32_t drive_serial_number = 0;
@@ -1907,24 +1643,12 @@ PyObject *pylnk_file_get_drive_serial_number(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-                {
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve drive serial number.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve drive serial number.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve drive serial number.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -1948,8 +1672,6 @@ PyObject *pylnk_file_get_volume_label(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error = NULL;
 	PyObject *string_object  = NULL;
 	static char *function    = "pylnk_file_get_volume_label";
@@ -1980,24 +1702,12 @@ PyObject *pylnk_file_get_volume_label(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 volume label size.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 volume label size.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 volume label size.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -2037,24 +1747,12 @@ PyObject *pylnk_file_get_volume_label(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 volume label.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 volume label.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 volume label.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -2111,8 +1809,6 @@ PyObject *pylnk_file_get_local_path(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error = NULL;
 	PyObject *string_object  = NULL;
 	static char *function    = "pylnk_file_get_local_path";
@@ -2143,24 +1839,12 @@ PyObject *pylnk_file_get_local_path(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 local path size.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 local path size.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 local path size.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -2200,24 +1884,12 @@ PyObject *pylnk_file_get_local_path(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 local path.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 local path.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 local path.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -2274,8 +1946,6 @@ PyObject *pylnk_file_get_network_path(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error = NULL;
 	PyObject *string_object  = NULL;
 	static char *function    = "pylnk_file_get_network_path";
@@ -2306,24 +1976,12 @@ PyObject *pylnk_file_get_network_path(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 network path size.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 network path size.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 network path size.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -2363,24 +2021,12 @@ PyObject *pylnk_file_get_network_path(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 network path.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 network path.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 network path.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -2437,8 +2083,6 @@ PyObject *pylnk_file_get_description(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error = NULL;
 	PyObject *string_object  = NULL;
 	static char *function    = "pylnk_file_get_description";
@@ -2469,24 +2113,12 @@ PyObject *pylnk_file_get_description(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 description size.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 description size.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 description size.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -2526,24 +2158,12 @@ PyObject *pylnk_file_get_description(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 description.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 description.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 description.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -2600,8 +2220,6 @@ PyObject *pylnk_file_get_relative_path(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error  = NULL;
 	PyObject *string_object   = NULL;
 	static char *function     = "pylnk_file_get_relative_path";
@@ -2632,24 +2250,12 @@ PyObject *pylnk_file_get_relative_path(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 relative path size.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 relative path size.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 relative path size.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -2689,24 +2295,12 @@ PyObject *pylnk_file_get_relative_path(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 relative path.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 relative path.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 relative path.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -2763,8 +2357,6 @@ PyObject *pylnk_file_get_working_directory(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error      = NULL;
 	PyObject *string_object       = NULL;
 	static char *function         = "pylnk_file_get_working_directory";
@@ -2795,24 +2387,12 @@ PyObject *pylnk_file_get_working_directory(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 working directory size.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 working directory size.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 working directory size.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -2852,24 +2432,12 @@ PyObject *pylnk_file_get_working_directory(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 working directory.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 working directory.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 working directory.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -2926,8 +2494,6 @@ PyObject *pylnk_file_get_command_line_arguments(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error           = NULL;
 	PyObject *string_object            = NULL;
 	static char *function              = "pylnk_file_get_command_line_arguments";
@@ -2958,24 +2524,12 @@ PyObject *pylnk_file_get_command_line_arguments(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 command line arguments size.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 command line arguments size.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 command line arguments size.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -3015,24 +2569,12 @@ PyObject *pylnk_file_get_command_line_arguments(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 command line arguments.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 command line arguments.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 command line arguments.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -3089,8 +2631,6 @@ PyObject *pylnk_file_get_icon_location(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error  = NULL;
 	PyObject *string_object   = NULL;
 	static char *function     = "pylnk_file_get_icon_location";
@@ -3121,24 +2661,12 @@ PyObject *pylnk_file_get_icon_location(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 icon location size.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 icon location size.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 icon location size.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -3178,24 +2706,12 @@ PyObject *pylnk_file_get_icon_location(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 icon location.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 icon location.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 icon location.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -3252,8 +2768,6 @@ PyObject *pylnk_file_get_environment_variables_location(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error                   = NULL;
 	PyObject *string_object                    = NULL;
 	static char *function                      = "pylnk_file_get_environment_variables_location";
@@ -3284,24 +2798,12 @@ PyObject *pylnk_file_get_environment_variables_location(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 environment variables location size.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 environment variables location size.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 environment variables location size.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -3341,24 +2843,12 @@ PyObject *pylnk_file_get_environment_variables_location(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 environment variables location.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve UTF-8 environment variables location.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 environment variables location.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -3415,8 +2905,6 @@ PyObject *pylnk_file_get_link_target_identifier_data(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	char error_string[ PYLNK_ERROR_STRING_SIZE ];
-
 	libcerror_error_t *error                = NULL;
 	PyObject *string_object                 = NULL;
 	static char *function                   = "pylnk_file_get_link_target_identifier_data";
@@ -3446,24 +2934,12 @@ PyObject *pylnk_file_get_link_target_identifier_data(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve link target identifier data size.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to retrieve link target identifier data size.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve link target identifier data size.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
@@ -3503,24 +2979,12 @@ PyObject *pylnk_file_get_link_target_identifier_data(
 
 	if( result == -1 )
 	{
-		if( libcerror_error_backtrace_sprint(
-		     error,
-		     error_string,
-		     PYLNK_ERROR_STRING_SIZE ) == -1 )
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to copy link target identifier data.",
-			 function );
-		}
-		else
-		{
-			PyErr_Format(
-			 PyExc_IOError,
-			 "%s: unable to copy link target identifier data.\n%s",
-			 function,
-			 error_string );
-		}
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to copy link target identifier data.",
+		 function );
+
 		libcerror_error_free(
 		 &error );
 
