@@ -1,12 +1,12 @@
 <pkgref spec="1.12" uuid="9ECFB3D2-9E23-4F80-8F98-D0DD1897F1C8">
 <config>
 	<identifier>com.google.code.p.liblnk.site-packages.pkg</identifier>
-	<version>20140107</version>
+	<version>20140112</version>
 	<description/>
 	<post-install type="none"/>
 	<requireAuthorization/>
-	<installFrom>/usr/local/google/home/jbmetz/Projects/liblnk/macosx/tmp/lib/python2.7/dist-packages</installFrom>
-	<installTo mod="true">/usr/lib/python2.7/dist-packages</installTo>
+	<installFrom>/home/lordyesta/Projects/liblnk/macosx/tmp/</installFrom>
+	<installTo mod="true"></installTo>
 	<flags>
 		<followSymbolicLinks/>
 	</flags>

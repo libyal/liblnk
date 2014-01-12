@@ -1,7 +1,7 @@
 <pkmkdoc spec="1.12">
 	<properties>
 		<title>liblnk</title>
-		<build>/usr/local/google/home/jbmetz/Projects/liblnk/macosx/liblnk.mpkg</build>
+		<build>/home/lordyesta/Projects/liblnk/macosx/liblnk.mpkg</build>
 		<organization>com.google.code.p</organization>
 		<userSees ui="both"/>
 		<min-target os="1"/>

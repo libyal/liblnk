@@ -1,11 +1,11 @@
 <pkgref spec="1.12" uuid="B3A5D8A0-F48E-4BFD-B638-B3BB98CD8E0A">
 <config>
 	<identifier>com.google.code.p.liblnk.include.pkg</identifier>
-	<version>20140107</version>
+	<version>20140112</version>
 	<description/>
 	<post-install type="none"/>
 	<requireAuthorization/>
-	<installFrom>/usr/local/google/home/jbmetz/Projects/liblnk/macosx/tmp/include</installFrom>
+	<installFrom>/home/lordyesta/Projects/liblnk/macosx/tmp/include</installFrom>
 	<installTo mod="true">/usr</installTo>
 	<flags>
 		<followSymbolicLinks/>
