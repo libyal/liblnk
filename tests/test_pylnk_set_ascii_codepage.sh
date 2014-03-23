@@ -33,7 +33,7 @@ then
 	exit ${EXIT_FAILURE};
 fi
 
-if ! PYTHONPATH=../pylnk/.libs/ ${PYTHON} pylnk_test_set_ascii_codepage.py ${FILENAME};
+if ! PYTHONPATH=../pylnk/.libs/ ${PYTHON} pylnk_test_set_ascii_codepage.py;
 then
 	exit ${EXIT_FAILURE};
 fi

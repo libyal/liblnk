@@ -1,5 +1,5 @@
 /*
- * Error functions
+ * Python object definition of the liblnk file attribute flags
  *
  * Copyright (C) 2009-2014, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,26 +19,41 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _PYLNK_ERROR_H )
-#define _PYLNK_ERROR_H
+#if !defined( _PYLNK_FILE_ATTRIBUTE_FLAGS_H )
+#define _PYLNK_FILE_ATTRIBUTE_FLAGS_H
 
 #include <common.h>
 #include <types.h>
 
-#include "pylnk_libcerror.h"
+#include "pylnk_liblnk.h"
 #include "pylnk_python.h"
-
-#define PYLNK_ERROR_STRING_SIZE		768
 
 #if defined( __cplusplus )
 extern "C" {
 #endif
 
-void pylnk_error_raise(
-      libcerror_error_t *error,
-      PyObject *exception_object,
-      const char *format_string,
-      ... );
+typedef struct pylnk_file_attribute_flags pylnk_file_attribute_flags_t;
+
+struct pylnk_file_attribute_flags
+{
+	/* Python object initialization
+	 */
+	PyObject_HEAD
+};
+
+extern PyTypeObject pylnk_file_attribute_flags_type_object;
+
+int pylnk_file_attribute_flags_init_type(
+     PyTypeObject *type_object );
+
+PyObject *pylnk_file_attribute_flags_new(
+           void );
+
+int pylnk_file_attribute_flags_init(
+     pylnk_file_attribute_flags_t *pylnk_file_attribute_flags );
+
+void pylnk_file_attribute_flags_free(
+      pylnk_file_attribute_flags_t *pylnk_file_attribute_flags );
 
 #if defined( __cplusplus )
 }

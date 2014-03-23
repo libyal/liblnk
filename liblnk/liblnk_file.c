@@ -614,10 +614,9 @@ int liblnk_file_open_file_io_handle(
 		}
 		internal_file->file_io_handle_opened_in_library = 1;
 	}
-	internal_file->file_io_handle = file_io_handle;
-
 	if( liblnk_file_open_read(
 	     internal_file,
+	     file_io_handle,
 	     error ) != 1 )
 	{
 		libcerror_error_set(
@@ -629,17 +628,21 @@ int liblnk_file_open_file_io_handle(
 
 		goto on_error;
 	}
+	internal_file->file_io_handle = file_io_handle;
+
 	return( 1 );
 
 on_error:
-	if( file_io_handle_is_open == 0 )
+	if( ( file_io_handle_is_open == 0 )
+	 && ( internal_file->file_io_handle_opened_in_library != 0 ) )
 	{
 		libbfio_handle_close(
 		 file_io_handle,
 		 error );
+
+		internal_file->file_io_handle_opened_in_library = 0;
 	}
-	internal_file->file_io_handle                   = NULL;
-	internal_file->file_io_handle_opened_in_library = 0;
+	internal_file->file_io_handle = NULL;
 
 	return( -1 );
 }
@@ -679,10 +682,10 @@ int liblnk_file_close(
 
 		return( -1 );
 	}
-	if( internal_file->file_io_handle_created_in_library != 0 )
-	{
 #if defined( HAVE_DEBUG_OUTPUT )
-		if( libcnotify_verbose != 0 )
+	if( libcnotify_verbose != 0 )
+	{
+		if( internal_file->file_io_handle_created_in_library != 0 )
 		{
 			if( liblnk_debug_print_read_offsets(
 			     internal_file->file_io_handle,
@@ -698,24 +701,27 @@ int liblnk_file_close(
 				result = -1;
 			}
 		}
+	}
 #endif
-		if( internal_file->file_io_handle_opened_in_library != 0 )
+	if( internal_file->file_io_handle_opened_in_library != 0 )
+	{
+		if( libbfio_handle_close(
+		     internal_file->file_io_handle,
+		     error ) != 0 )
 		{
-			if( libbfio_handle_close(
-			     internal_file->file_io_handle,
-			     error ) != 0 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_IO,
-				 LIBCERROR_IO_ERROR_CLOSE_FAILED,
-				 "%s: unable to close file IO handle.",
-				 function );
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_CLOSE_FAILED,
+			 "%s: unable to close file IO handle.",
+			 function );
 
-				result = -1;
-			}
-			internal_file->file_io_handle_opened_in_library = 0;
+			result = -1;
 		}
+		internal_file->file_io_handle_opened_in_library = 0;
+	}
+	if( internal_file->file_io_handle_created_in_library != 0 )
+	{
 		if( libbfio_handle_free(
 		     &( internal_file->file_io_handle ),
 		     error ) != 1 )
@@ -733,6 +739,19 @@ int liblnk_file_close(
 	}
 	internal_file->file_io_handle = NULL;
 
+	if( liblnk_io_handle_clear(
+	     internal_file->io_handle,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+		 "%s: unable to clear IO handle.",
+		 function );
+
+		result = -1;
+	}
 	if( internal_file->file_information != NULL )
 	{
 		if( liblnk_file_information_free(
@@ -949,6 +968,7 @@ int liblnk_file_close(
  */
 int liblnk_file_open_read(
      liblnk_internal_file_t *internal_file,
+     libbfio_handle_t *file_io_handle,
      libcerror_error_t **error )
 {
 	liblnk_data_block_t *data_block = NULL;
@@ -1017,7 +1037,7 @@ int liblnk_file_open_read(
 #endif
 	read_count = liblnk_io_handle_read_file_header(
 	              internal_file->io_handle,
-	              internal_file->file_io_handle,
+	              file_io_handle,
 	              internal_file->class_identifier,
 	              16,
 	              internal_file->file_information,
@@ -1061,7 +1081,7 @@ int liblnk_file_open_read(
 		read_count = liblnk_link_target_identifier_read(
 		              internal_file->link_target_identifier,
 		              internal_file->io_handle,
-		              internal_file->file_io_handle,
+		              file_io_handle,
 		              file_offset,
 		              error );
 
@@ -1103,7 +1123,7 @@ int liblnk_file_open_read(
 		read_count = liblnk_location_information_read(
 		              internal_file->location_information,
 		              internal_file->io_handle,
-		              internal_file->file_io_handle,
+		              file_io_handle,
 		              file_offset,
 		              error );
 
@@ -1145,7 +1165,7 @@ int liblnk_file_open_read(
 		read_count = liblnk_data_string_read(
 		              internal_file->description,
 		              internal_file->io_handle,
-		              internal_file->file_io_handle,
+		              file_io_handle,
 		              file_offset,
 		              error );
 
@@ -1187,7 +1207,7 @@ int liblnk_file_open_read(
 		read_count = liblnk_data_string_read(
 		              internal_file->relative_path,
 		              internal_file->io_handle,
-		              internal_file->file_io_handle,
+		              file_io_handle,
 		              file_offset,
 		              error );
 
@@ -1229,7 +1249,7 @@ int liblnk_file_open_read(
 		read_count = liblnk_data_string_read(
 		              internal_file->working_directory,
 		              internal_file->io_handle,
-		              internal_file->file_io_handle,
+		              file_io_handle,
 		              file_offset,
 		              error );
 
@@ -1271,7 +1291,7 @@ int liblnk_file_open_read(
 		read_count = liblnk_data_string_read(
 		              internal_file->command_line_arguments,
 		              internal_file->io_handle,
-		              internal_file->file_io_handle,
+		              file_io_handle,
 		              file_offset,
 		              error );
 
@@ -1313,7 +1333,7 @@ int liblnk_file_open_read(
 		read_count = liblnk_data_string_read(
 		              internal_file->icon_location,
 		              internal_file->io_handle,
-		              internal_file->file_io_handle,
+		              file_io_handle,
 		              file_offset,
 		              error );
 
@@ -1363,7 +1383,7 @@ int liblnk_file_open_read(
 			read_count = liblnk_data_block_read(
 			              data_block,
 			              internal_file->io_handle,
-			              internal_file->file_io_handle,
+			              file_io_handle,
 			              file_offset,
 			              error );
 
@@ -1725,7 +1745,7 @@ int liblnk_file_open_read(
 				goto on_error;
 			}
 			read_count = libbfio_handle_read_buffer(
-				      internal_file->file_io_handle,
+				      file_io_handle,
 				      trailing_data,
 				      trailing_data_size,
 				      error );

@@ -560,9 +560,8 @@ int pylnk_file_init(
 
 		return( -1 );
 	}
-	/* Make sure liblnk file is set to NULL
-	 */
-	pylnk_file->file = NULL;
+	pylnk_file->file           = NULL;
+	pylnk_file->file_io_handle = NULL;
 
 	if( liblnk_file_initialize(
 	     &( pylnk_file->file ),
@@ -781,13 +780,12 @@ PyObject *pylnk_file_open_file_object(
            PyObject *arguments,
            PyObject *keywords )
 {
-	PyObject *file_object            = NULL;
-	libbfio_handle_t *file_io_handle = NULL;
-	libcerror_error_t *error         = NULL;
-	char *mode                       = NULL;
-	static char *keyword_list[]      = { "file_object", "mode", NULL };
-	static char *function            = "pylnk_file_open_file_object";
-	int result                       = 0;
+	PyObject *file_object       = NULL;
+	libcerror_error_t *error    = NULL;
+	char *mode                  = NULL;
+	static char *keyword_list[] = { "file_object", "mode", NULL };
+	static char *function       = "pylnk_file_open_file_object";
+	int result                  = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -820,7 +818,7 @@ PyObject *pylnk_file_open_file_object(
 		return( NULL );
 	}
 	if( pylnk_file_object_initialize(
-	     &file_io_handle,
+	     &( pylnk_file->file_io_handle ),
 	     file_object,
 	     &error ) != 1 )
 	{
@@ -839,7 +837,7 @@ PyObject *pylnk_file_open_file_object(
 
 	result = liblnk_file_open_file_io_handle(
 	          pylnk_file->file,
-                  file_io_handle,
+                  pylnk_file->file_io_handle,
                   LIBLNK_OPEN_READ,
 	          &error );
 
@@ -864,10 +862,10 @@ PyObject *pylnk_file_open_file_object(
 	return( Py_None );
 
 on_error:
-	if( file_io_handle != NULL )
+	if( pylnk_file->file_io_handle != NULL )
 	{
 		libbfio_handle_free(
-		 &file_io_handle,
+		 &( pylnk_file->file_io_handle ),
 		 NULL );
 	}
 	return( NULL );
@@ -915,6 +913,30 @@ PyObject *pylnk_file_close(
 		 &error );
 
 		return( NULL );
+	}
+	if( pylnk_file->file_io_handle != NULL )
+	{
+		Py_BEGIN_ALLOW_THREADS
+
+		result = libbfio_handle_free(
+		          &( pylnk_file->file_io_handle ),
+		          &error );
+
+		Py_END_ALLOW_THREADS
+
+		if( result != 1 )
+		{
+			pylnk_error_raise(
+			 error,
+			 PyExc_IOError,
+			 "%s: unable to free libbfio file IO handle.",
+			 function );
+
+			libcerror_error_free(
+			 &error );
+
+			return( NULL );
+		}
 	}
 	Py_IncRef(
 	 Py_None );

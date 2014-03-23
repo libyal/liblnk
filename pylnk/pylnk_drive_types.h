@@ -1,5 +1,5 @@
 /*
- * Error functions
+ * Python object definition of the liblnk drive types
  *
  * Copyright (C) 2009-2014, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,26 +19,41 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _PYLNK_ERROR_H )
-#define _PYLNK_ERROR_H
+#if !defined( _PYLNK_DRIVE_TYPES_H )
+#define _PYLNK_DRIVE_TYPEs_H
 
 #include <common.h>
 #include <types.h>
 
-#include "pylnk_libcerror.h"
+#include "pylnk_liblnk.h"
 #include "pylnk_python.h"
-
-#define PYLNK_ERROR_STRING_SIZE		768
 
 #if defined( __cplusplus )
 extern "C" {
 #endif
 
-void pylnk_error_raise(
-      libcerror_error_t *error,
-      PyObject *exception_object,
-      const char *format_string,
-      ... );
+typedef struct pylnk_drive_types pylnk_drive_types_t;
+
+struct pylnk_drive_types
+{
+	/* Python object initialization
+	 */
+	PyObject_HEAD
+};
+
+extern PyTypeObject pylnk_drive_types_type_object;
+
+int pylnk_drive_types_init_type(
+     PyTypeObject *type_object );
+
+PyObject *pylnk_drive_types_new(
+           void );
+
+int pylnk_drive_types_init(
+     pylnk_drive_types_t *pylnk_drive_types );
+
+void pylnk_drive_types_free(
+      pylnk_drive_types_t *pylnk_drive_types );
 
 #if defined( __cplusplus )
 }

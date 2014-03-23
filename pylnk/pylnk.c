@@ -28,7 +28,10 @@
 
 #include "pylnk.h"
 #include "pylnk_error.h"
+#include "pylnk_data_flags.h"
+#include "pylnk_drive_types.h"
 #include "pylnk_file.h"
+#include "pylnk_file_attribute_flags.h"
 #include "pylnk_file_object_io_handle.h"
 #include "pylnk_libcerror.h"
 #include "pylnk_libcstring.h"
@@ -276,9 +279,12 @@ on_error:
 PyMODINIT_FUNC initpylnk(
                 void )
 {
-	PyObject *module               = NULL;
-	PyTypeObject *file_type_object = NULL;
-	PyGILState_STATE gil_state     = 0;
+	PyObject *module                               = NULL;
+	PyTypeObject *data_flags_type_object           = NULL;
+	PyTypeObject *drive_types_type_object          = NULL;
+	PyTypeObject *file_type_object                 = NULL;
+	PyTypeObject *file_attribute_flags_type_object = NULL;
+	PyGILState_STATE gil_state                     = 0;
 
 	/* Create the module
 	 * This function must be called before grabbing the GIL
@@ -309,8 +315,80 @@ PyMODINIT_FUNC initpylnk(
 
 	PyModule_AddObject(
 	 module,
-	"file",
-	(PyObject *) file_type_object );
+	 "file",
+	 (PyObject *) file_type_object );
+
+	/* Setup the data flags type object
+	 */
+	pylnk_data_flags_type_object.tp_new = PyType_GenericNew;
+
+	if( pylnk_data_flags_init_type(
+             &pylnk_data_flags_type_object ) != 1 )
+	{
+		goto on_error;
+	}
+	if( PyType_Ready(
+	     &pylnk_data_flags_type_object ) < 0 )
+	{
+		goto on_error;
+	}
+	Py_IncRef(
+	 (PyObject *) &pylnk_data_flags_type_object );
+
+	data_flags_type_object = &pylnk_data_flags_type_object;
+
+	PyModule_AddObject(
+	 module,
+	 "data_flags",
+	 (PyObject *) data_flags_type_object );
+
+	/* Setup the drive types type object
+	 */
+	pylnk_drive_types_type_object.tp_new = PyType_GenericNew;
+
+	if( pylnk_drive_types_init_type(
+             &pylnk_drive_types_type_object ) != 1 )
+	{
+		goto on_error;
+	}
+	if( PyType_Ready(
+	     &pylnk_drive_types_type_object ) < 0 )
+	{
+		goto on_error;
+	}
+	Py_IncRef(
+	 (PyObject *) &pylnk_drive_types_type_object );
+
+	drive_types_type_object = &pylnk_drive_types_type_object;
+
+	PyModule_AddObject(
+	 module,
+	 "drive_types",
+	 (PyObject *) drive_types_type_object );
+
+	/* Setup the file attribute flags type object
+	 */
+	pylnk_file_attribute_flags_type_object.tp_new = PyType_GenericNew;
+
+	if( pylnk_file_attribute_flags_init_type(
+             &pylnk_file_attribute_flags_type_object ) != 1 )
+	{
+		goto on_error;
+	}
+	if( PyType_Ready(
+	     &pylnk_file_attribute_flags_type_object ) < 0 )
+	{
+		goto on_error;
+	}
+	Py_IncRef(
+	 (PyObject *) &pylnk_file_attribute_flags_type_object );
+
+	file_attribute_flags_type_object = &pylnk_file_attribute_flags_type_object;
+
+	PyModule_AddObject(
+	 module,
+	 "file_attribute_flags",
+	 (PyObject *) file_attribute_flags_type_object );
 
 on_error:
 	PyGILState_Release(

@@ -173,6 +173,7 @@ int liblnk_file_close(
 
 int liblnk_file_open_read(
      liblnk_internal_file_t *internal_file,
+     libbfio_handle_t *file_io_handle,
      libcerror_error_t **error );
 
 LIBLNK_EXTERN \

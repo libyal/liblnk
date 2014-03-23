@@ -64,6 +64,10 @@ int liblnk_io_handle_free(
      liblnk_io_handle_t **io_handle,
      libcerror_error_t **error );
 
+int liblnk_io_handle_clear(
+     liblnk_io_handle_t *io_handle,
+     libcerror_error_t **error );
+
 ssize_t liblnk_io_handle_read_file_header(
          liblnk_io_handle_t *io_handle,
          libbfio_handle_t *file_io_handle,

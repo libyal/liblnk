@@ -193,6 +193,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\pylnk\pylnk_data_flags.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_drive_types.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\pylnk\pylnk_datetime.c"
 				>
 			</File>
@@ -202,6 +210,10 @@
 			</File>
 			<File
 				RelativePath="..\..\pylnk\pylnk_file.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_file_attribute_flags.c"
 				>
 			</File>
 			<File
@@ -227,6 +239,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\pylnk\pylnk_data_flags.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_drive_types.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\pylnk\pylnk_datetime.h"
 				>
 			</File>
@@ -236,6 +256,10 @@
 			</File>
 			<File
 				RelativePath="..\..\pylnk\pylnk_file.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_file_attribute_flags.h"
 				>
 			</File>
 			<File

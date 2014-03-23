@@ -1,5 +1,5 @@
 /*
- * Error functions
+ * Python object definition of the liblnk data flags
  *
  * Copyright (C) 2009-2014, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,26 +19,41 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _PYLNK_ERROR_H )
-#define _PYLNK_ERROR_H
+#if !defined( _PYLNK_DATA_FLAGS_H )
+#define _PYLNK_DATA_FLAGS_H
 
 #include <common.h>
 #include <types.h>
 
-#include "pylnk_libcerror.h"
+#include "pylnk_liblnk.h"
 #include "pylnk_python.h"
-
-#define PYLNK_ERROR_STRING_SIZE		768
 
 #if defined( __cplusplus )
 extern "C" {
 #endif
 
-void pylnk_error_raise(
-      libcerror_error_t *error,
-      PyObject *exception_object,
-      const char *format_string,
-      ... );
+typedef struct pylnk_data_flags pylnk_data_flags_t;
+
+struct pylnk_data_flags
+{
+	/* Python object initialization
+	 */
+	PyObject_HEAD
+};
+
+extern PyTypeObject pylnk_data_flags_type_object;
+
+int pylnk_data_flags_init_type(
+     PyTypeObject *type_object );
+
+PyObject *pylnk_data_flags_new(
+           void );
+
+int pylnk_data_flags_init(
+     pylnk_data_flags_t *pylnk_data_flags );
+
+void pylnk_data_flags_free(
+      pylnk_data_flags_t *pylnk_data_flags );
 
 #if defined( __cplusplus )
 }

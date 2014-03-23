@@ -25,6 +25,7 @@
 #include <common.h>
 #include <types.h>
 
+#include "pylnk_libbfio.h"
 #include "pylnk_liblnk.h"
 #include "pylnk_python.h"
 
@@ -43,6 +44,10 @@ struct pylnk_file
 	/* The liblnk file
 	 */
 	liblnk_file_t *file;
+
+	/* The libbfio file IO handle
+	 */
+	libbfio_handle_t *file_io_handle;
 };
 
 extern PyMethodDef pylnk_file_object_methods[];
