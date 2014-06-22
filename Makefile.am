@@ -16,6 +16,8 @@ SUBDIRS = \
 	libbfio \
 	libfdatetime \
 	libfguid \
+	libfole \
+	libfwps \
 	libfwsi \
 	liblnk \
 	libcsystem \
@@ -24,7 +26,6 @@ SUBDIRS = \
 	po \
 	manuals \
 	tests \
-	macosx \
 	msvscpp
 
 DPKG_FILES = \
@@ -85,6 +86,8 @@ library:
 	(cd $(srcdir)/libbfio && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libfdatetime && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libfguid && $(MAKE) $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libfole && $(MAKE) $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libfwps && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libfwsi && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/liblnk && $(MAKE) $(AM_MAKEFLAGS))
 	(cd $(srcdir)/po && $(MAKE) $(AM_MAKEFLAGS))
@@ -115,10 +118,13 @@ splint:
 	(cd $(srcdir)/libbfio && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libfdatetime && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libfguid && $(MAKE) splint $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libfole && $(MAKE) splint $(AM_MAKEFLAGS))
+	(cd $(srcdir)/libfwps && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libfwsi && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/liblnk && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libcsystem && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/lnktools && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/pylnk && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/po && $(MAKE) splint $(AM_MAKEFLAGS))
+	(cd $(srcdir)/tests && $(MAKE) splint $(AM_MAKEFLAGS))
 

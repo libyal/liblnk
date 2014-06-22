@@ -478,8 +478,8 @@ int info_handle_link_information_fprint(
 {
 	libcstring_system_character_t filetime_string[ 48 ];
 
-	libfdatetime_filetime_t *filetime           = NULL;
 	libcstring_system_character_t *value_string = NULL;
+	libfdatetime_filetime_t *filetime           = NULL;
 	static char *function                       = "info_handle_link_information_fprint";
 	size_t value_string_size                    = 0;
 	uint64_t value_64bit                        = 0;

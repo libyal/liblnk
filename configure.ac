@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
- [20140323],
+ [20140622],
  [joachim.metz@gmail.com])
 
 AC_CONFIG_SRCDIR(
@@ -93,6 +93,12 @@ AX_LIBFDATETIME_CHECK_ENABLE
 dnl Check for enabling libfguid for file GUID/UUID support
 AX_LIBFGUID_CHECK_ENABLE
 
+dnl Check for enabling libfole for file OLE types support
+AX_LIBFOLE_CHECK_ENABLE
+
+dnl Check for enabling libfwps for Windows Property Store support
+AX_LIBFWPS_CHECK_ENABLE
+
 dnl Check for enabling libfwsi for Windows Shell identifier support
 AX_LIBFWSI_CHECK_ENABLE
 
@@ -114,15 +120,36 @@ AX_COMMON_CHECK_ENABLE_DEBUG_OUTPUT
 dnl Check if liblnk python bindings (pylnk) should be build
 AX_PYTHON_CHECK_ENABLE
 
-dnl Check if DLL support is needed in lnktools
+dnl Headers included in various places
+AC_CHECK_HEADERS([stdarg.h varargs.h])
+
 AS_IF(
- [test "x$enable_shared" = xyes && test "x$ac_cv_enable_static_executables" = xno],
+ [test "x$ac_cv_header_stdarg_h" != xyes && test "x$ac_cv_header_varargs_h" != xyes],
+ [AC_MSG_FAILURE(
+  [Missing headers: stdarg.h and varargs.h],
+  [1])
+ ])
+
+dnl Check if DLL support is needed
+AS_IF(
+ [test "x$enable_shared" = xyes],
  [AS_CASE(
   [$host],
   [*cygwin* | *mingw*],
-  [AC_SUBST(
-   [LIBLNK_DLL_IMPORT],
-   ["-DLIBLNK_DLL_IMPORT"])
+  [AC_DEFINE(
+   [HAVE_DLLMAIN],
+   [1],
+   [Define to 1 to enable the DllMain function.])
+  AC_SUBST(
+   [HAVE_DLLMAIN],
+   [1])
+
+  AS_IF(
+   [test "x$ac_cv_enable_static_executables" = xno],
+   [AC_SUBST(
+    [LIBLNK_DLL_IMPORT],
+    ["-DLIBLNK_DLL_IMPORT"])
+   ])
   ])
  ])
 
@@ -131,7 +158,7 @@ CFLAGS="$CFLAGS -Wall";
 
 dnl Check if requires and build requires should be set in spec file
 AS_IF(
- [test "x$ac_cv_libcstring" = xyes || test "x$ac_cv_libcerror" = xyes || test "x$ac_cv_libcthreads" = xyes || test "x$ac_cv_libcdata" = xyes ||  test "x$ac_cv_libclocale" = xyes || test "x$ac_cv_libcnotify" = xyes || test "x$ac_cv_libcsplit" = xyes || test "x$ac_cv_libuna" = xyes || test "x$ac_cv_libcfile" = xyes || test "x$ac_cv_libcpath" = xyes || test "x$ac_cv_libbfio" = xyes || test "x$ac_cv_libfdatetime" = xyes || test "x$ac_cv_libfguid" = xyes || test "x$ac_cv_libfwsi" = xyes],
+ [test "x$ac_cv_libcstring" = xyes || test "x$ac_cv_libcerror" = xyes || test "x$ac_cv_libcthreads" = xyes || test "x$ac_cv_libcdata" = xyes ||  test "x$ac_cv_libclocale" = xyes || test "x$ac_cv_libcnotify" = xyes || test "x$ac_cv_libcsplit" = xyes || test "x$ac_cv_libuna" = xyes || test "x$ac_cv_libcfile" = xyes || test "x$ac_cv_libcpath" = xyes || test "x$ac_cv_libbfio" = xyes || test "x$ac_cv_libfdatetime" = xyes || test "x$ac_cv_libfguid" = xyes || test "x$ac_cv_libfole" = xyes || test "x$ac_cv_libfwps" = xyes || test "x$ac_cv_libfwsi" = xyes],
  [AC_SUBST(
   [liblnk_spec_requires],
   [Requires:])
@@ -179,6 +206,8 @@ AC_CONFIG_FILES([libcpath/Makefile])
 AC_CONFIG_FILES([libbfio/Makefile])
 AC_CONFIG_FILES([libfdatetime/Makefile])
 AC_CONFIG_FILES([libfguid/Makefile])
+AC_CONFIG_FILES([libfole/Makefile])
+AC_CONFIG_FILES([libfwps/Makefile])
 AC_CONFIG_FILES([libfwsi/Makefile])
 AC_CONFIG_FILES([liblnk/Makefile])
 AC_CONFIG_FILES([libcsystem/Makefile])
@@ -188,7 +217,6 @@ AC_CONFIG_FILES([po/Makefile.in])
 AC_CONFIG_FILES([po/Makevars])
 AC_CONFIG_FILES([manuals/Makefile])
 AC_CONFIG_FILES([tests/Makefile])
-AC_CONFIG_FILES([macosx/Makefile])
 AC_CONFIG_FILES([msvscpp/Makefile])
 dnl Have configure make the include files
 AC_CONFIG_FILES([include/liblnk.h])
@@ -201,13 +229,6 @@ AC_CONFIG_FILES([common/types.h])
 AC_CONFIG_FILES([dpkg/changelog])
 AC_CONFIG_FILES([dpkg/copyright])
 AC_CONFIG_FILES([liblnk/liblnk.rc])
-AC_CONFIG_FILES([macosx/liblnk.pmdoc/01bin.xml])
-AC_CONFIG_FILES([macosx/liblnk.pmdoc/02include.xml])
-AC_CONFIG_FILES([macosx/liblnk.pmdoc/03lib.xml])
-AC_CONFIG_FILES([macosx/liblnk.pmdoc/04share.xml])
-AC_CONFIG_FILES([macosx/liblnk.pmdoc/05python.xml])
-AC_CONFIG_FILES([macosx/liblnk.pmdoc/index.xml])
-AC_CONFIG_FILES([macosx/Introduction.rtf])
 AC_CONFIG_FILES([pylnk/setup.py])
 AC_CONFIG_FILES([liblnk.pc])
 AC_CONFIG_FILES([liblnk.spec])
@@ -232,6 +253,8 @@ Building:
    libbfio support:                          $ac_cv_libbfio
    libfdatetime support:                     $ac_cv_libfdatetime
    libfguid support:                         $ac_cv_libfguid
+   libfole support:                          $ac_cv_libfole
+   libfwps support:                          $ac_cv_libfwps
    libfwsi support:                          $ac_cv_libfwsi
    libcsystem support:                       $ac_cv_libcsystem
 

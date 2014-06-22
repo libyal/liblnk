@@ -72,7 +72,7 @@ PyTypeObject pylnk_data_flags_type_object = {
 	0,
 	/* tp_as_buffer */
 	0,
-        /* tp_flags */
+	/* tp_flags */
 	Py_TPFLAGS_DEFAULT,
 	/* tp_doc */
 	"pylnk data flags object (wraps LIBLNK_DATA_FLAGS)",
@@ -145,148 +145,148 @@ int pylnk_data_flags_init_type(
 		return( -1 );
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "HAS_LINK_TARGET_IDENTIFIER",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) ) != 0 )
+	     type_object->tp_dict,
+	     "HAS_LINK_TARGET_IDENTIFIER",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "HAS_LOCATION_INFORMATION",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) ) != 0 )
+	     type_object->tp_dict,
+	     "HAS_LOCATION_INFORMATION",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "HAS_DESCRIPTION_STRING",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) ) != 0 )
+	     type_object->tp_dict,
+	     "HAS_DESCRIPTION_STRING",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "HAS_RELATIVE_PATH_STRING",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) ) != 0 )
+	     type_object->tp_dict,
+	     "HAS_RELATIVE_PATH_STRING",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "HAS_WORKING_DIRECTORY_STRING",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) ) != 0 )
+	     type_object->tp_dict,
+	     "HAS_WORKING_DIRECTORY_STRING",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "HAS_COMMAND_LINE_ARGUMENTS_STRING",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) ) != 0 )
+	     type_object->tp_dict,
+	     "HAS_COMMAND_LINE_ARGUMENTS_STRING",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "HAS_ICON_LOCATION_STRING",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) ) != 0 )
+	     type_object->tp_dict,
+	     "HAS_ICON_LOCATION_STRING",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "IS_UNICODE",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_IS_UNICODE ) ) != 0 )
+	     type_object->tp_dict,
+	     "IS_UNICODE",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_IS_UNICODE ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "FORCE_NO_LOCATION_INFORMATION",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_FORCE_NO_LOCATION_INFORMATION ) ) != 0 )
+	     type_object->tp_dict,
+	     "FORCE_NO_LOCATION_INFORMATION",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_FORCE_NO_LOCATION_INFORMATION ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "HAS_ENVIRONMENT_VARIABLES_LOCATION_BLOCK",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_HAS_ENVIRONMENT_VARIABLES_LOCATION_BLOCK ) ) != 0 )
+	     type_object->tp_dict,
+	     "HAS_ENVIRONMENT_VARIABLES_LOCATION_BLOCK",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_HAS_ENVIRONMENT_VARIABLES_LOCATION_BLOCK ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "RUN_IN_SEPARATE_PROCESS",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_RUN_IN_SEPARATE_PROCESS ) ) != 0 )
-	{
-		goto on_error;
-	}
-
-	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "HAS_DARWIN_IDENTIFIER",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_HAS_DARWIN_IDENTIFIER ) ) != 0 )
-	{
-		goto on_error;
-	}
-	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "RUN_AS_USER",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_RUN_AS_USER ) ) != 0 )
-	{
-		goto on_error;
-	}
-	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "HAS_ICON_LOCATION_BLOCK",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_BLOCK ) ) != 0 )
-	{
-		goto on_error;
-	}
-	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "NO_PIDL_ALIAS",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_NO_PIDL_ALIAS ) ) != 0 )
+	     type_object->tp_dict,
+	     "RUN_IN_SEPARATE_PROCESS",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_RUN_IN_SEPARATE_PROCESS ) ) != 0 )
 	{
 		goto on_error;
 	}
 
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "RUN_WITH_SHIM_LAYER",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_RUN_WITH_SHIM_LAYER ) ) != 0 )
+	     type_object->tp_dict,
+	     "HAS_DARWIN_IDENTIFIER",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_HAS_DARWIN_IDENTIFIER ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK ) ) != 0 )
+	     type_object->tp_dict,
+	     "RUN_AS_USER",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_RUN_AS_USER ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "HAS_METADATA_PROPERTY_STORE_DATA_BLOCK",
-             PyInt_FromLong(
-              LIBLNK_DATA_FLAG_HAS_METADATA_PROPERTY_STORE_DATA_BLOCK ) ) != 0 )
+	     type_object->tp_dict,
+	     "HAS_ICON_LOCATION_BLOCK",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_BLOCK ) ) != 0 )
+	{
+		goto on_error;
+	}
+	if( PyDict_SetItemString(
+	     type_object->tp_dict,
+	     "NO_PIDL_ALIAS",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_NO_PIDL_ALIAS ) ) != 0 )
+	{
+		goto on_error;
+	}
+
+	if( PyDict_SetItemString(
+	     type_object->tp_dict,
+	     "RUN_WITH_SHIM_LAYER",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_RUN_WITH_SHIM_LAYER ) ) != 0 )
+	{
+		goto on_error;
+	}
+	if( PyDict_SetItemString(
+	     type_object->tp_dict,
+	     "NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK ) ) != 0 )
+	{
+		goto on_error;
+	}
+	if( PyDict_SetItemString(
+	     type_object->tp_dict,
+	     "HAS_METADATA_PROPERTY_STORE_DATA_BLOCK",
+	     PyInt_FromLong(
+	      LIBLNK_DATA_FLAG_HAS_METADATA_PROPERTY_STORE_DATA_BLOCK ) ) != 0 )
 	{
 		goto on_error;
 	}

@@ -121,6 +121,200 @@ PyObject *pylnk_get_version(
 	         errors ) );
 }
 
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+
+/* Checks if the file has a Windows Shortcut File (LNK) signature
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_check_file_signature(
+           PyObject *self PYLNK_ATTRIBUTE_UNUSED,
+           PyObject *arguments,
+           PyObject *keywords )
+{
+	PyObject *exception_string    = NULL;
+	PyObject *exception_traceback = NULL;
+	PyObject *exception_type      = NULL;
+	PyObject *exception_value     = NULL;
+	PyObject *string_object       = NULL;
+	libcerror_error_t *error      = NULL;
+	static char *function         = "pylnk_check_file_signature";
+	static char *keyword_list[]   = { "filename", NULL };
+	const wchar_t *filename_wide  = NULL;
+	const char *filename_narrow   = NULL;
+	char *error_string            = NULL;
+	int result                    = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( self )
+
+	/* Note that PyArg_ParseTupleAndKeywords with "s" will force Unicode strings to be converted to narrow character string.
+	 * On Windows the narrow character strings contains an extended ASCII string with a codepage. Hence we get a conversion
+	 * exception. We cannot use "u" here either since that does not allow us to pass non Unicode string objects and
+	 * Python (at least 2.7) does not seems to automatically upcast them.
+	 */
+	if( PyArg_ParseTupleAndKeywords(
+	     arguments,
+	     keywords,
+	     "|O",
+	     keyword_list,
+	     &string_object ) == 0 )
+	{
+		return( NULL );
+	}
+	PyErr_Clear();
+
+	result = PyObject_IsInstance(
+	          string_object,
+	          (PyObject *) &PyUnicode_Type );
+
+	if( result == -1 )
+	{
+		PyErr_Fetch(
+		 &exception_type,
+		 &exception_value,
+		 &exception_traceback );
+
+		exception_string = PyObject_Repr(
+		                    exception_value );
+
+		error_string = PyString_AsString(
+		                exception_string );
+
+		if( error_string != NULL )
+		{
+			PyErr_Format(
+		         PyExc_RuntimeError,
+			 "%s: unable to determine if string object is of type unicode with error: %s.",
+			 function,
+			 error_string );
+		}
+		else
+		{
+			PyErr_Format(
+		         PyExc_RuntimeError,
+			 "%s: unable to determine if string object is of type unicode.",
+			 function );
+		}
+		Py_DecRef(
+		 exception_string );
+
+		return( NULL );
+	}
+	else if( result != 0 )
+	{
+		PyErr_Clear();
+
+		filename_wide = (wchar_t *) PyUnicode_AsUnicode(
+		                             string_object );
+		Py_BEGIN_ALLOW_THREADS
+
+		result = liblnk_check_file_signature_wide(
+		          filename_wide,
+		          &error );
+
+		Py_END_ALLOW_THREADS
+
+		if( result == -1 )
+		{
+			pylnk_error_raise(
+			 error,
+			 PyExc_IOError,
+			 "%s: unable to check file signature.",
+			 function );
+
+			libcerror_error_free(
+			 &error );
+
+			return( NULL );
+		}
+		if( result != 0 )
+		{
+			return( Py_True );
+		}
+		return( Py_False );
+	}
+	PyErr_Clear();
+
+	result = PyObject_IsInstance(
+		  string_object,
+		  (PyObject *) &PyString_Type );
+
+	if( result == -1 )
+	{
+		PyErr_Fetch(
+		 &exception_type,
+		 &exception_value,
+		 &exception_traceback );
+
+		exception_string = PyObject_Repr(
+				    exception_value );
+
+		error_string = PyString_AsString(
+				exception_string );
+
+		if( error_string != NULL )
+		{
+			PyErr_Format(
+		         PyExc_RuntimeError,
+			 "%s: unable to determine if string object is of type string with error: %s.",
+			 function,
+			 error_string );
+		}
+		else
+		{
+			PyErr_Format(
+		         PyExc_RuntimeError,
+			 "%s: unable to determine if string object is of type string.",
+			 function );
+		}
+		Py_DecRef(
+		 exception_string );
+
+		return( NULL );
+	}
+	else if( result != 0 )
+	{
+		PyErr_Clear();
+
+		filename_narrow = PyString_AsString(
+				   string_object );
+
+		Py_BEGIN_ALLOW_THREADS
+
+		result = liblnk_check_file_signature(
+		          filename_narrow,
+		          &error );
+
+		Py_END_ALLOW_THREADS
+
+		if( result == -1 )
+		{
+			pylnk_error_raise(
+			 error,
+			 PyExc_IOError,
+			 "%s: unable to check file signature.",
+			 function );
+
+			libcerror_error_free(
+			 &error );
+
+			return( NULL );
+		}
+		if( result != 0 )
+		{
+			return( Py_True );
+		}
+		return( Py_False );
+	}
+	PyErr_Format(
+	 PyExc_TypeError,
+	 "%s: unsupported string object type",
+	 function );
+
+	return( NULL );
+}
+
+#else
+
 /* Checks if the file has a Windows Shortcut File (LNK) signature
  * Returns a Python object if successful or NULL on error
  */
@@ -173,6 +367,8 @@ PyObject *pylnk_check_file_signature(
 	}
 	return( Py_False );
 }
+
+#endif /* defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER ) */
 
 /* Checks if the file has a Windows Shortcut File (LNK) signature using a file-like object
  * Returns a Python object if successful or NULL on error
@@ -323,7 +519,7 @@ PyMODINIT_FUNC initpylnk(
 	pylnk_data_flags_type_object.tp_new = PyType_GenericNew;
 
 	if( pylnk_data_flags_init_type(
-             &pylnk_data_flags_type_object ) != 1 )
+	     &pylnk_data_flags_type_object ) != 1 )
 	{
 		goto on_error;
 	}
@@ -347,7 +543,7 @@ PyMODINIT_FUNC initpylnk(
 	pylnk_drive_types_type_object.tp_new = PyType_GenericNew;
 
 	if( pylnk_drive_types_init_type(
-             &pylnk_drive_types_type_object ) != 1 )
+	     &pylnk_drive_types_type_object ) != 1 )
 	{
 		goto on_error;
 	}
@@ -371,7 +567,7 @@ PyMODINIT_FUNC initpylnk(
 	pylnk_file_attribute_flags_type_object.tp_new = PyType_GenericNew;
 
 	if( pylnk_file_attribute_flags_init_type(
-             &pylnk_file_attribute_flags_type_object ) != 1 )
+	     &pylnk_file_attribute_flags_type_object ) != 1 )
 	{
 		goto on_error;
 	}

@@ -300,6 +300,17 @@ int libcthreads_thread_pool_create(
 		return( -1 );
 	}
 #endif
+	if( maximum_number_of_values <= 0 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_ZERO_OR_LESS,
+		 "%s: invalid maximum number of values value zero or less.",
+		 function );
+
+		return( -1 );
+	}
 #if SIZEOF_INT <= SIZEOF_SIZE_T
 	if( (size_t) maximum_number_of_values > (size_t) ( SSIZE_MAX / sizeof( intptr_t * ) ) )
 #else

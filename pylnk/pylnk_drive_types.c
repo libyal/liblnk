@@ -72,7 +72,7 @@ PyTypeObject pylnk_drive_types_type_object = {
 	0,
 	/* tp_as_buffer */
 	0,
-        /* tp_flags */
+	/* tp_flags */
 	Py_TPFLAGS_DEFAULT,
 	/* tp_doc */
 	"pylnk drive types object (wraps LIBLNK_DRIVE_TYPES)",
@@ -145,58 +145,58 @@ int pylnk_drive_types_init_type(
 		return( -1 );
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "UNKNOWN",
-             PyInt_FromLong(
-              LIBLNK_DRIVE_TYPE_UNKNOWN ) ) != 0 )
+	     type_object->tp_dict,
+	     "UNKNOWN",
+	     PyInt_FromLong(
+	      LIBLNK_DRIVE_TYPE_UNKNOWN ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "NO_ROOT_DIR",
-             PyInt_FromLong(
-              LIBLNK_DRIVE_TYPE_NO_ROOT_DIR ) ) != 0 )
+	     type_object->tp_dict,
+	     "NO_ROOT_DIR",
+	     PyInt_FromLong(
+	      LIBLNK_DRIVE_TYPE_NO_ROOT_DIR ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "REMOVABLE",
-             PyInt_FromLong(
-              LIBLNK_DRIVE_TYPE_REMOVABLE ) ) != 0 )
+	     type_object->tp_dict,
+	     "REMOVABLE",
+	     PyInt_FromLong(
+	      LIBLNK_DRIVE_TYPE_REMOVABLE ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "FIXED",
-             PyInt_FromLong(
-              LIBLNK_DRIVE_TYPE_FIXED ) ) != 0 )
+	     type_object->tp_dict,
+	     "FIXED",
+	     PyInt_FromLong(
+	      LIBLNK_DRIVE_TYPE_FIXED ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "REMOTE",
-             PyInt_FromLong(
-              LIBLNK_DRIVE_TYPE_REMOTE ) ) != 0 )
+	     type_object->tp_dict,
+	     "REMOTE",
+	     PyInt_FromLong(
+	      LIBLNK_DRIVE_TYPE_REMOTE ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "CDROM",
-             PyInt_FromLong(
-              LIBLNK_DRIVE_TYPE_CDROM ) ) != 0 )
+	     type_object->tp_dict,
+	     "CDROM",
+	     PyInt_FromLong(
+	      LIBLNK_DRIVE_TYPE_CDROM ) ) != 0 )
 	{
 		goto on_error;
 	}
 	if( PyDict_SetItemString(
-             type_object->tp_dict,
-             "RAMDISK",
-             PyInt_FromLong(
-              LIBLNK_DRIVE_TYPE_RAMDISK ) ) != 0 )
+	     type_object->tp_dict,
+	     "RAMDISK",
+	     PyInt_FromLong(
+	      LIBLNK_DRIVE_TYPE_RAMDISK ) ) != 0 )
 	{
 		goto on_error;
 	}

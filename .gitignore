@@ -101,13 +101,6 @@ stamp-h1
 /include/liblnk/types.h
 /liblnk/liblnk.rc
 /liblnk/liblnk_definition.h
-/macosx/Introduction.rtf
-/macosx/liblnk.pmdoc/01bin.xml
-/macosx/liblnk.pmdoc/02include.xml
-/macosx/liblnk.pmdoc/03lib.xml
-/macosx/liblnk.pmdoc/04share.xml
-/macosx/liblnk.pmdoc/05python.xml
-/macosx/liblnk.pmdoc/index.xml
 /pylnk/setup.py
 /tests/input
 /tests/lnk_test_open_close
@@ -125,5 +118,7 @@ stamp-h1
 /libcthreads
 /libfdatetime
 /libfguid
+/libfole
+/libfwps
 /libfwsi
 /libuna
