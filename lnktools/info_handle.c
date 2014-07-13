@@ -32,8 +32,109 @@
 #include "lnktools_libfguid.h"
 #include "lnktools_libfwsi.h"
 #include "lnktools_liblnk.h"
+#include "shell_items.h"
 
 #define INFO_HANDLE_NOTIFY_STREAM	stdout
+
+/* Prints the file attribute flags to the notify stream
+ */
+void info_handle_file_attribute_flags_fprint(
+      uint32_t file_attribute_flags,
+      FILE *notify_stream )
+{
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_READ_ONLY ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tIs read-only (FILE_ATTRIBUTE_READ_ONLY)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_HIDDEN ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tIs hidden (FILE_ATTRIBUTE_HIDDEN)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_SYSTEM ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tIs system (FILE_ATTRIBUTE_SYSTEM)\n" );
+	}
+
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_DIRECTORY ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tIs directory (FILE_ATTRIBUTE_DIRECTORY)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_ARCHIVE ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tShould be archived (FILE_ATTRIBUTE_ARCHIVE)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_DEVICE ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tIs device (FILE_ATTRIBUTE_DEVICE)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_NORMAL ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tIs normal (FILE_ATTRIBUTE_NORMAL)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_TEMPORARY ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tIs temporary (FILE_ATTRIBUTE_TEMPORARY)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_SPARSE_FILE ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tIs a sparse file (FILE_ATTRIBUTE_SPARSE_FILE)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_REPARSE_POINT ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tIs a reparse point or symbolic link (FILE_ATTRIBUTE_FLAG_REPARSE_POINT)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_COMPRESSED ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tIs compressed (FILE_ATTRIBUTE_COMPRESSED)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_OFFLINE ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tIs offline (FILE_ATTRIBUTE_OFFLINE)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_NOT_CONTENT_INDEXED ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tContent should not be indexed (FILE_ATTRIBUTE_NOT_CONTENT_INDEXED)\n" );
+	}
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_ENCRYPTED ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tIs encrypted (FILE_ATTRIBUTE_ENCRYPTED)\n" );
+	}
+
+	if( ( file_attribute_flags & LIBLNK_FILE_ATTRIBUTE_FLAG_VIRTUAL ) != 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\t\tIs virtual (FILE_ATTRIBUTE_VIRTUAL)\n" );
+	}
+}
 
 /* Creates an info handle
  * Make sure the value info_handle is referencing, is set to NULL
@@ -476,7 +577,7 @@ int info_handle_link_information_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error )
 {
-	libcstring_system_character_t filetime_string[ 48 ];
+	libcstring_system_character_t date_time_string[ 48 ];
 
 	libcstring_system_character_t *value_string = NULL;
 	libfdatetime_filetime_t *filetime           = NULL;
@@ -530,51 +631,59 @@ int info_handle_link_information_fprint(
 
 		goto on_error;
 	}
-	if( libfdatetime_filetime_copy_from_64bit(
-	     filetime,
-	     value_64bit,
-	     error ) != 1 )
+	if( value_64bit != 0 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-		 "%s: unable to copy 64-bit value to filetime.",
-		 function );
+		if( libfdatetime_filetime_copy_from_64bit(
+		     filetime,
+		     value_64bit,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy 64-bit value to filetime.",
+			 function );
 
-		goto on_error;
-	}
+			goto on_error;
+		}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-	result = libfdatetime_filetime_copy_to_utf16_string(
-		  filetime,
-		  (uint16_t *) filetime_string,
-		  48,
-		  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
-		  error );
+		result = libfdatetime_filetime_copy_to_utf16_string(
+			  filetime,
+			  (uint16_t *) date_time_string,
+			  48,
+			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
+			  error );
 #else
-	result = libfdatetime_filetime_copy_to_utf8_string(
-		  filetime,
-		  (uint8_t *) filetime_string,
-		  48,
-		  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
-		  error );
+		result = libfdatetime_filetime_copy_to_utf8_string(
+			  filetime,
+			  (uint8_t *) date_time_string,
+			  48,
+			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
+			  error );
 #endif
-	if( result != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-		 "%s: unable to copy filetime to string.",
-		 function );
+		if( result != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy filetime to string.",
+			 function );
 
-		goto on_error;
+			goto on_error;
+		}
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tCreation time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+		 date_time_string );
 	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "\tCreation time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
-	 filetime_string );
-
+	else
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tCreation time\t\t\t: 0 (not set)\n" );
+	}
 	/* Modification time
 	 */
 	if( liblnk_file_get_file_modification_time(
@@ -591,51 +700,59 @@ int info_handle_link_information_fprint(
 
 		goto on_error;
 	}
-	if( libfdatetime_filetime_copy_from_64bit(
-	     filetime,
-	     value_64bit,
-	     error ) != 1 )
+	if( value_64bit != 0 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-		 "%s: unable to copy 64-bit value to filetime.",
-		 function );
+		if( libfdatetime_filetime_copy_from_64bit(
+		     filetime,
+		     value_64bit,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy 64-bit value to filetime.",
+			 function );
 
-		goto on_error;
-	}
+			goto on_error;
+		}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-	result = libfdatetime_filetime_copy_to_utf16_string(
-		  filetime,
-		  (uint16_t *) filetime_string,
-		  48,
-		  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
-		  error );
+		result = libfdatetime_filetime_copy_to_utf16_string(
+			  filetime,
+			  (uint16_t *) date_time_string,
+			  48,
+			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
+			  error );
 #else
-	result = libfdatetime_filetime_copy_to_utf8_string(
-		  filetime,
-		  (uint8_t *) filetime_string,
-		  48,
-		  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
-		  error );
+		result = libfdatetime_filetime_copy_to_utf8_string(
+			  filetime,
+			  (uint8_t *) date_time_string,
+			  48,
+			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
+			  error );
 #endif
-	if( result != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-		 "%s: unable to copy filetime to string.",
-		 function );
+		if( result != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy filetime to string.",
+			 function );
 
-		goto on_error;
+			goto on_error;
+		}
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tModification time\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+		 date_time_string );
 	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "\tModification time\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
-	 filetime_string );
-
+	else
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tModification time\t\t: 0 (not set)\n" );
+	}
 	/* Access time
 	 */
 	if( liblnk_file_get_file_access_time(
@@ -652,51 +769,59 @@ int info_handle_link_information_fprint(
 
 		goto on_error;
 	}
-	if( libfdatetime_filetime_copy_from_64bit(
-	     filetime,
-	     value_64bit,
-	     error ) != 1 )
+	if( value_64bit != 0 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-		 "%s: unable to copy 64-bit value to filetime.",
-		 function );
+		if( libfdatetime_filetime_copy_from_64bit(
+		     filetime,
+		     value_64bit,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy 64-bit value to filetime.",
+			 function );
 
-		goto on_error;
-	}
+			goto on_error;
+		}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-	result = libfdatetime_filetime_copy_to_utf16_string(
-		  filetime,
-		  (uint16_t *) filetime_string,
-		  48,
-		  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
-		  error );
+		result = libfdatetime_filetime_copy_to_utf16_string(
+			  filetime,
+			  (uint16_t *) date_time_string,
+			  48,
+			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
+			  error );
 #else
-	result = libfdatetime_filetime_copy_to_utf8_string(
-		  filetime,
-		  (uint8_t *) filetime_string,
-		  48,
-		  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
-		  error );
+		result = libfdatetime_filetime_copy_to_utf8_string(
+			  filetime,
+			  (uint8_t *) date_time_string,
+			  48,
+			  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
+			  error );
 #endif
-	if( result != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-		 "%s: unable to copy filetime to string.",
-		 function );
+		if( result != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy filetime to string.",
+			 function );
 
-		goto on_error;
+			goto on_error;
+		}
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tAccess time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+		 date_time_string );
 	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "\tAccess time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
-	 filetime_string );
-
+	else
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tAccess time\t\t\t: 0 (not set)\n" );
+	}
 	if( libfdatetime_filetime_free(
 	     &filetime,
 	     error ) != 1 )
@@ -743,11 +868,13 @@ int info_handle_link_information_fprint(
 
 		goto on_error;
 	}
-/* TODO print file attribute flags description */
 	fprintf(
 	 info_handle->notify_stream,
 	 "\tFile attribute flags\t\t: 0x%08" PRIx32 "\n",
 	 value_32bit );
+	info_handle_file_attribute_flags_fprint(
+	 value_32bit,
+	 info_handle->notify_stream );
 
 	result = liblnk_file_get_drive_type(
 	          info_handle->input_file,
@@ -1839,561 +1966,6 @@ on_error:
 	return( -1 );
 }
 
-/* Prints the shell item to the notify stream
- * Returns 1 if successful or -1 on error
- */
-int info_handle_shell_item_fprint(
-     info_handle_t *info_handle,
-     int shell_item_index,
-     libfwsi_item_t *shell_item,
-     libcerror_error_t **error )
-{
-	static char *function   = "info_handle_shell_item_fprint";
-	uint8_t shell_item_type = 0;
-	int result              = 0;
-
-	if( info_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid info handle.",
-		 function );
-
-		return( -1 );
-	}
-	if( shell_item_index == 0 )
-	{
-		fprintf(
-		 info_handle->notify_stream,
-		 "\tShell item\n" );
-	}
-	else
-	{
-		fprintf(
-		 info_handle->notify_stream,
-		 "\tShell item: %d\n",
-		 shell_item_index );
-	}
-	if( libfwsi_item_get_type(
-	     shell_item,
-	     &shell_item_type,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve type.",
-		 function );
-
-		return( -1 );
-	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "\t\tType\t\t\t: 0x%02" PRIx8 "",
-	 shell_item_type );
-
-	switch( shell_item_type )
-	{
-		case 0x1f:
-			fprintf(
-			 info_handle->notify_stream,
-			 " (Root folder)" );
-			break;
-
-		case 0x23:
-		case 0x25:
-		case 0x29:
-		case 0x2a:
-		case 0x2e:
-		case 0x2f:
-			fprintf(
-			 info_handle->notify_stream,
-			 " (Volume entry)" );
-			break;
-
-		case 0x30:
-			fprintf(
-			 info_handle->notify_stream,
-			 " (File entry)" );
-			break;
-
-		case 0x31:
-		case 0x35:
-		case 0xb1:
-			fprintf(
-			 info_handle->notify_stream,
-			 " (File entry: Directory)" );
-			break;
-
-		case 0x32:
-		case 0x36:
-			fprintf(
-			 info_handle->notify_stream,
-			 " (File entry: File)" );
-			break;
-
-		default:
-			break;
-	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "\n" );
-
-	switch( shell_item_type )
-	{
-		case 0x1f:
-			if( info_handle_root_folder_shell_item_fprint(
-			     info_handle,
-			     shell_item,
-			     error ) == -1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-				 "%s: unable to print root folder shell item.",
-				 function );
-
-				return( -1 );
-			}
-			break;
-
-		case 0x23:
-		case 0x25:
-		case 0x29:
-		case 0x2a:
-		case 0x2e:
-		case 0x2f:
-			if( info_handle_volume_entry_shell_item_fprint(
-			     info_handle,
-			     shell_item,
-			     error ) == -1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-				 "%s: unable to print volume entry shell item.",
-				 function );
-
-				return( -1 );
-			}
-			break;
-
-		case 0x30:
-		case 0x31:
-		case 0x32:
-		case 0x35:
-		case 0x36:
-		case 0xb1:
-			if( info_handle_file_entry_shell_item_fprint(
-			     info_handle,
-			     shell_item,
-			     error ) == -1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-				 "%s: unable to print file entry shell item.",
-				 function );
-
-				return( -1 );
-			}
-			break;
-
-		default:
-			break;
-	}
-/* TODO check for extension blocks */
-	return( 1 );
-}
-
-/* Prints the root folder shell item to the notify stream
- * Returns 1 if successful or -1 on error
- */
-int info_handle_root_folder_shell_item_fprint(
-     info_handle_t *info_handle,
-     libfwsi_item_t *shell_item,
-     libcerror_error_t **error )
-{
-	uint8_t guid_data[ 16 ];
-
-	libcstring_system_character_t guid_string[ 48 ];
-
-	libfguid_identifier_t *guid = NULL;
-	static char *function       = "info_handle_root_folder_shell_item_fprint";
-	int result                  = 0;
-
-	if( info_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid info handle.",
-		 function );
-
-		return( -1 );
-	}
-	if( libfguid_identifier_initialize(
-	     &guid,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-		 "%s: unable to create GUID.",
-		 function );
-
-		goto on_error;
-	}
-	if( libfwsi_root_folder_get_shell_folder_identifier(
-	     shell_item,
-	     guid_data,
-	     16,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve shell folder identifier.",
-		 function );
-
-		goto on_error;
-	}
-	if( libfguid_identifier_copy_from_byte_stream(
-	     guid,
-	     guid_data,
-	     16,
-	     LIBFGUID_ENDIAN_LITTLE,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-		 "%s: unable to copy byte stream to GUID.",
-		 function );
-
-		goto on_error;
-	}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-	result = libfguid_identifier_copy_to_utf16_string(
-		  guid,
-		  (uint16_t *) guid_string,
-		  48,
-		  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
-		  error );
-#else
-	result = libfguid_identifier_copy_to_utf8_string(
-		  guid,
-		  (uint8_t *) guid_string,
-		  48,
-		  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
-		  error );
-#endif
-	if( result != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-		 "%s: unable to copy GUID to string.",
-		 function );
-
-		goto on_error;
-	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "\t\tShell folder identifier\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
-	 guid_string );
-
-	if( libfguid_identifier_free(
-	     &guid,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-		 "%s: unable to free GUID.",
-		 function );
-
-		goto on_error;
-	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "\t\tShell folder name\t: %s\n",
-	 libfwsi_folder_identifier_get_name(
-	  guid_data ) );
-
-	return( 1 );
-
-on_error:
-	if( guid != NULL )
-	{
-		libfguid_identifier_free(
-		 &guid,
-		 NULL );
-	}
-	return( -1 );
-}
-
-/* Prints the volume entry shell item to the notify stream
- * Returns 1 if successful or -1 on error
- */
-int info_handle_volume_entry_shell_item_fprint(
-     info_handle_t *info_handle,
-     libfwsi_item_t *shell_item,
-     libcerror_error_t **error )
-{
-	libcstring_system_character_t *value_string = NULL;
-	static char *function                       = "info_handle_volume_entry_shell_item_fprint";
-	size_t value_string_size                    = 0;
-	int result                                  = 0;
-
-	if( info_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid info handle.",
-		 function );
-
-		return( -1 );
-	}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-	result = libfwsi_volume_entry_get_utf16_name_size(
-		  shell_item,
-		  &value_string_size,
-		  error );
-#else
-	result = libfwsi_volume_entry_get_utf8_name_size(
-		  shell_item,
-		  &value_string_size,
-		  error );
-#endif
-	if( result != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve volume entry name size.",
-		 function );
-
-		goto on_error;
-	}
-	if( value_string_size > 0 )
-	{
-		value_string = libcstring_system_string_allocate(
-		                value_string_size );
-
-		if( value_string == NULL )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_MEMORY,
-			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create value string.",
-			 function );
-
-			goto on_error;
-		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libfwsi_volume_entry_get_utf16_name(
-			  shell_item,
-			  (uint16_t *) value_string,
-			  value_string_size,
-			  error );
-#else
-		result = libfwsi_volume_entry_get_utf8_name(
-			  shell_item,
-			  (uint8_t *) value_string,
-			  value_string_size,
-			  error );
-#endif
-		if( result == -1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve volume entry name.",
-			 function );
-
-			goto on_error;
-		}
-		fprintf(
-		 info_handle->notify_stream,
-		 "\t\tVolume name\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
-		 value_string );
-
-		memory_free(
-		 value_string );
-
-		value_string = NULL;
-	}
-	return( result );
-
-on_error:
-	if( value_string != NULL )
-	{
-		memory_free(
-		 value_string );
-	}
-	return( -1 );
-}
-
-/* Prints the file entry shell item to the notify stream
- * Returns 1 if successful or -1 on error
- */
-int info_handle_file_entry_shell_item_fprint(
-     info_handle_t *info_handle,
-     libfwsi_item_t *shell_item,
-     libcerror_error_t **error )
-{
-	libcstring_system_character_t *value_string = NULL;
-	static char *function                       = "info_handle_file_entry_shell_item_fprint";
-	size_t value_string_size                    = 0;
-	int result                                  = 0;
-
-	if( info_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid info handle.",
-		 function );
-
-		return( -1 );
-	}
-/* TODO */
-	return( 1 );
-}
-
-/* Prints the shell item list to the notify stream
- * Returns 1 if successful or -1 on error
- */
-int info_handle_shell_item_list_fprint(
-     info_handle_t *info_handle,
-     libfwsi_item_list_t *shell_item_list,
-     libcerror_error_t **error )
-{
-	libfwsi_item_t *shell_item = NULL;
-	static char *function      = "info_handle_shell_item_fprint";
-	int item_index             = 0;
-	int number_of_items        = 0;
-
-	if( info_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid info handle.",
-		 function );
-
-		return( -1 );
-	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "\tShell item list\n" );
-
-	if( libfwsi_item_list_get_number_of_items(
-	     shell_item_list,
-	     &number_of_items,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve number of items.",
-		 function );
-
-		goto on_error;
-	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "\t\tNumber of items\t\t: %d\n",
-	 number_of_items );
-
-	for( item_index = 0;
-	     item_index < number_of_items;
-	     item_index++ )
-	{
-		if( libfwsi_item_list_get_item(
-		     shell_item_list,
-		     item_index,
-		     &shell_item,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve shell item: %d.",
-			 function,
-			 item_index );
-
-			goto on_error;
-		}
-		if( info_handle_shell_item_fprint(
-		     info_handle,
-		     item_index + 1,
-		     shell_item,
-		     error ) == -1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-			 "%s: unable to print shell item: %d.",
-			 function,
-			 item_index );
-
-			goto on_error;
-		}
-		if( libfwsi_item_free(
-		     &shell_item,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free shell item: %d.",
-			 function,
-			 item_index );
-
-			goto on_error;
-		}
-	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "\n" );
-
-	return( 1 );
-
-on_error:
-	if( shell_item != NULL )
-	{
-		libfwsi_item_free(
-		 &shell_item,
-		 NULL );
-	}
-	return( -1 );
-}
-
 /* Prints the link target identifier
  * Returns 1 if successful or -1 on error
  */
@@ -2500,10 +2072,9 @@ int info_handle_link_target_identifier_fprint(
 
 			goto on_error;
 		}
-#ifdef TODO
-		if( info_handle_shell_item_list_fprint(
-		     info_handle,
+		if( shell_items_item_list_fprint(
 		     shell_item_list,
+		     info_handle->notify_stream,
 		     error ) == -1 )
 		{
 			libcerror_error_set(
@@ -2515,7 +2086,6 @@ int info_handle_link_target_identifier_fprint(
 
 			goto on_error;
 		}
-#endif
 		if( libfwsi_item_list_free(
 		     &shell_item_list,
 		     error ) != 1 )

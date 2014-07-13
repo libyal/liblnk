@@ -13,6 +13,7 @@ AM_CPPFLAGS = \
 	@LIBBFIO_CPPFLAGS@ \
 	@LIBFDATETIME_CPPFLAGS@ \
 	@LIBFGUID_CPPFLAGS@ \
+	@LIBFWPS_CPPFLAGS@ \
 	@LIBFWSI_CPPFLAGS@ \
 	@LIBCSYSTEM_CPPFLAGS@ \
 	@LIBLNK_DLL_IMPORT@
@@ -36,11 +37,13 @@ lnkinfo_SOURCES = \
 	lnktools_libfguid.h \
 	lnktools_libfwsi.h \
 	lnktools_liblnk.h \
-	lnktools_libuna.h
+	lnktools_libuna.h \
+	shell_items.c shell_items.h
 
 lnkinfo_LDADD = \
 	@LIBCSYSTEM_LIBADD@ \
 	@LIBFWSI_LIBADD@ \
+	@LIBFWPS_LIBADD@ \
 	@LIBFGUID_LIBADD@ \
 	@LIBFDATETIME_LIBADD@ \
 	@LIBUNA_LIBADD@ \

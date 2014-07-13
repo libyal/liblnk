@@ -284,7 +284,7 @@ int liblnk_known_folder_location_read(
 		libcnotify_printf(
 		 "%s: folder name\t\t\t\t: %s\n",
 		 function,
-		 libfwsi_folder_identifier_get_name(
+		 libfwsi_shell_folder_identifier_get_name(
 		  known_folder_location->folder_identifier ) );
 
 		libcnotify_printf(

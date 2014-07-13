@@ -29,7 +29,6 @@
 #include "lnktools_libcerror.h"
 #include "lnktools_libcstring.h"
 #include "lnktools_liblnk.h"
-#include "lnktools_libfwsi.h"
 
 #if defined( __cplusplus )
 extern "C" {
@@ -55,6 +54,10 @@ struct info_handle
 	 */
 	int abort;
 };
+
+void info_handle_file_attribute_flags_fprint(
+      uint32_t file_attribute_flags,
+      FILE *notify_stream );
 
 int info_handle_initialize(
      info_handle_t **info_handle,
@@ -108,32 +111,6 @@ int info_handle_command_line_arguments_fprint(
 
 int info_handle_icon_location_fprint(
      info_handle_t *info_handle,
-     libcerror_error_t **error );
-
-int info_handle_shell_item_fprint(
-     info_handle_t *info_handle,
-     int shell_item_index,
-     libfwsi_item_t *shell_item,
-     libcerror_error_t **error );
-
-int info_handle_root_folder_shell_item_fprint(
-     info_handle_t *info_handle,
-     libfwsi_item_t *shell_item,
-     libcerror_error_t **error );
-
-int info_handle_volume_entry_shell_item_fprint(
-     info_handle_t *info_handle,
-     libfwsi_item_t *shell_item,
-     libcerror_error_t **error );
-
-int info_handle_file_entry_shell_item_fprint(
-     info_handle_t *info_handle,
-     libfwsi_item_t *shell_item,
-     libcerror_error_t **error );
-
-int info_handle_shell_item_list_fprint(
-     info_handle_t *info_handle,
-     libfwsi_item_list_t *shell_item_list,
      libcerror_error_t **error );
 
 int info_handle_link_target_identifier_fprint(

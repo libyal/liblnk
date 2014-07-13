@@ -12,8 +12,10 @@ MSVSCPP_FILES = \
 	libcthreads/libcthreads.vcproj \
 	libfdatetime/libfdatetime.vcproj \
 	libfguid/libfguid.vcproj \
+	libfole/libfole.vcproj \
+	libfwps/libfwps.vcproj \
 	libfwsi/libfwsi.vcproj \
-	liblnk_dll/liblnk_dll.vcproj \
+	liblnk/liblnk.vcproj \
 	libuna/libuna.vcproj \
 	lnkinfo/lnkinfo.vcproj \
 	pylnk/pylnk.vcproj \
