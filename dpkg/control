@@ -13,6 +13,13 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Library to access the Windows Shortcut File (LNK) format
  liblnk is a library to access the Windows Shortcut File (LNK) format.
 
+Package: liblnk-dbg
+Architecture: any
+Section: debug
+Depends: liblnk (= ${Source-Version}), ${misc:Depends}
+Description: Debugging symbols for liblnk
+ Debugging symbols for liblnk.
+
 Package: liblnk-dev
 Section: libdevel
 Architecture: any
@@ -33,4 +40,11 @@ Architecture: any
 Depends: liblnk (= ${Source-Version}), ${shlibs:Depends}
 Description: Python bindings for liblnk
  Python bindings for liblnk.
+
+Package: liblnk-python-dbg
+Section: debug
+Architecture: any
+Depends: liblnk-python (= ${Source-Version})
+Description: Debugging symbols for liblnk-python
+ Debugging symbols for liblnk-python.
 

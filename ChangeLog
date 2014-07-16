@@ -52,7 +52,10 @@ Bindings:
 * .net
 * java
 
-20140713
+20140715
+* worked on dpkg debug packages support
+
+20140714
 * worked on shell items support
 
 20140622
