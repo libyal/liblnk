@@ -7,8 +7,6 @@
 # This has to be exported to make some magic below work.
 export DH_OPTIONS
 
-# TODO: fix source format warning.
-
 %:
 	dh  $@
 
@@ -86,8 +84,6 @@ override_dh_strip:
 ifeq (,$(filter nostrip,$(DEB_BUILD_OPTIONS)))
 	dh_strip -pliblnk --dbg-package=liblnk-dbg
 	dh_strip -pliblnk-python --dbg-package=liblnk-python-dbg
-	# Move and rename the debug Python module to the right location.
-	cd debian/liblnk-python-dbg/usr/lib/debug/usr/lib/python*/*-packages && mv pylnk.so pylnk_d.so
 endif
 
 .PHONY: override_dh_shlibdeps
