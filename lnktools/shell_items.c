@@ -23,11 +23,11 @@
 #include <file_stream.h>
 #include <types.h>
 
-#include "lnktools_libcerror.h"
-#include "lnktools_libfdatetime.h"
-#include "lnktools_libfguid.h"
-#include "lnktools_libfwsi.h"
-#include "lnktools_libuna.h"
+#include "lnkgtools_libcerror.h"
+#include "lnkgtools_libfdatetime.h"
+#include "lnkgtools_libfguid.h"
+#include "lnkgtools_libfwsi.h"
+#include "lnkgtools_libuna.h"
 #include "shell_items.h"
 
 /* Prints the file attribute flags to the notify stream
@@ -582,6 +582,7 @@ int shell_items_item_fprint(
 {
 	libfwsi_extension_block_t *extension_block = NULL;
 	static char *function                      = "shell_items_item_fprint";
+	uint32_t signature                         = 0;
 	uint8_t class_type                         = 0;
 	int extension_block_index                  = 0;
 	int number_of_extension_blocks             = 0;
@@ -613,156 +614,176 @@ int shell_items_item_fprint(
 
 		goto on_error;
 	}
+	if( libfwsi_item_get_signature(
+	     shell_item,
+	     &signature,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve signature.",
+		 function );
+
+		goto on_error;
+	}
 	fprintf(
 	 notify_stream,
 	 "\t\tClass type\t\t: 0x%02" PRIx8 "",
 	 class_type );
 
-	switch( class_type )
+	if( signature == 0 )
 	{
-		case 0x1f:
-			fprintf(
-			 notify_stream,
-			 " (Root folder)" );
-			break;
+		switch( class_type )
+		{
+			case 0x1f:
+				fprintf(
+				 notify_stream,
+				 " (Root folder)" );
+				break;
 
-		case 0x23:
-		case 0x25:
-		case 0x29:
-		case 0x2a:
-		case 0x2e:
-		case 0x2f:
-			fprintf(
-			 notify_stream,
-			 " (Volume)" );
-			break;
+			case 0x23:
+			case 0x25:
+			case 0x29:
+			case 0x2a:
+			case 0x2e:
+			case 0x2f:
+				fprintf(
+				 notify_stream,
+				 " (Volume)" );
+				break;
 
-		case 0x30:
-			fprintf(
-			 notify_stream,
-			 " (File entry)" );
-			break;
+			case 0x30:
+				fprintf(
+				 notify_stream,
+				 " (File entry)" );
+				break;
 
-		case 0x31:
-		case 0x35:
-		case 0xb1:
-			fprintf(
-			 notify_stream,
-			 " (File entry: Directory)" );
-			break;
+			case 0x31:
+			case 0x35:
+			case 0xb1:
+				fprintf(
+				 notify_stream,
+				 " (File entry: Directory)" );
+				break;
 
-		case 0x32:
-		case 0x36:
-			fprintf(
-			 notify_stream,
-			 " (File entry: File)" );
-			break;
+			case 0x32:
+			case 0x36:
+				fprintf(
+				 notify_stream,
+				 " (File entry: File)" );
+				break;
 
-		case 0x41:
-		case 0x42:
-		case 0x46:
-		case 0x47:
-		case 0x4c:
-		case 0xc3:
-			fprintf(
-			 notify_stream,
-			 " (Network location)" );
-			break;
+			case 0x41:
+			case 0x42:
+			case 0x46:
+			case 0x47:
+			case 0x4c:
+			case 0xc3:
+				fprintf(
+				 notify_stream,
+				 " (Network location)" );
+				break;
 
-		default:
-			break;
+			default:
+				break;
+		}
 	}
 	fprintf(
 	 notify_stream,
 	 "\n" );
 
-	switch( class_type )
+	if( signature == 0 )
 	{
-		case 0x1f:
-			if( shell_items_root_folder_fprint(
-			     shell_item,
-			     notify_stream,
-			     error ) == -1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-				 "%s: unable to print root folder shell item.",
-				 function );
+		switch( class_type )
+		{
+			case 0x1f:
+				if( shell_items_root_folder_fprint(
+				     shell_item,
+				     notify_stream,
+				     error ) == -1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+					 "%s: unable to print root folder shell item.",
+					 function );
 
-				goto on_error;
-			}
-			break;
+					goto on_error;
+				}
+				break;
 
-		case 0x23:
-		case 0x25:
-		case 0x29:
-		case 0x2a:
-		case 0x2e:
-		case 0x2f:
-			if( shell_items_volume_fprint(
-			     shell_item,
-			     notify_stream,
-			     error ) == -1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-				 "%s: unable to print volume shell item.",
-				 function );
+			case 0x23:
+			case 0x25:
+			case 0x29:
+			case 0x2a:
+			case 0x2e:
+			case 0x2f:
+				if( shell_items_volume_fprint(
+				     shell_item,
+				     notify_stream,
+				     error ) == -1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+					 "%s: unable to print volume shell item.",
+					 function );
 
-				goto on_error;
-			}
-			break;
+					goto on_error;
+				}
+				break;
 
-		case 0x30:
-		case 0x31:
-		case 0x32:
-		case 0x35:
-		case 0x36:
-		case 0xb1:
-			if( shell_items_file_entry_fprint(
-			     shell_item,
-			     notify_stream,
-			     error ) == -1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-				 "%s: unable to print file entry shell item.",
-				 function );
+			case 0x30:
+			case 0x31:
+			case 0x32:
+			case 0x35:
+			case 0x36:
+			case 0xb1:
+				if( shell_items_file_entry_fprint(
+				     shell_item,
+				     notify_stream,
+				     error ) == -1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+					 "%s: unable to print file entry shell item.",
+					 function );
 
-				goto on_error;
-			}
-			break;
+					goto on_error;
+				}
+				break;
 
-		case 0x41:
-		case 0x42:
-		case 0x46:
-		case 0x47:
-		case 0x4c:
-		case 0xc3:
-			if( shell_items_network_location_fprint(
-			     shell_item,
-			     notify_stream,
-			     error ) == -1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-				 "%s: unable to print file entry shell item.",
-				 function );
+			case 0x41:
+			case 0x42:
+			case 0x46:
+			case 0x47:
+			case 0x4c:
+			case 0xc3:
+				if( shell_items_network_location_fprint(
+				     shell_item,
+				     notify_stream,
+				     error ) == -1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+					 "%s: unable to print file entry shell item.",
+					 function );
 
-				goto on_error;
-			}
-			break;
+					goto on_error;
+				}
+				break;
 
-		default:
-			break;
+			default:
+				break;
+		}
 	}
 	if( libfwsi_item_get_number_of_extension_blocks(
 	     shell_item,

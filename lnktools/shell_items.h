@@ -26,8 +26,8 @@
 #include <file_stream.h>
 #include <types.h>
 
-#include "lnktools_libcstring.h"
-#include "lnktools_libfwsi.h"
+#include "lnkgtools_libcstring.h"
+#include "lnkgtools_libfwsi.h"
 
 #if defined( __cplusplus )
 extern "C" {

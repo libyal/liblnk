@@ -682,7 +682,7 @@ int info_handle_link_information_fprint(
 	{
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tCreation time\t\t\t: 0 (not set)\n" );
+		 "\tCreation time\t\t\t: Not set (0)\n" );
 	}
 	/* Modification time
 	 */
@@ -751,7 +751,7 @@ int info_handle_link_information_fprint(
 	{
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tModification time\t\t: 0 (not set)\n" );
+		 "\tModification time\t\t: Not set (0)\n" );
 	}
 	/* Access time
 	 */
@@ -820,7 +820,7 @@ int info_handle_link_information_fprint(
 	{
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tAccess time\t\t\t: 0 (not set)\n" );
+		 "\tAccess time\t\t\t: Not set (0)\n" );
 	}
 	if( libfdatetime_filetime_free(
 	     &filetime,
@@ -900,6 +900,12 @@ int info_handle_link_information_fprint(
 
 		switch( value_32bit )
 		{
+			case LIBLNK_DRIVE_TYPE_UNKNOWN:
+				fprintf(
+				 info_handle->notify_stream,
+				 "Not set" );
+				break;
+
 			case LIBLNK_DRIVE_TYPE_NO_ROOT_DIR:
 				fprintf(
 				 info_handle->notify_stream,
@@ -936,7 +942,6 @@ int info_handle_link_information_fprint(
 				 "RAM disk" );
 				break;
 
-			case LIBLNK_DRIVE_TYPE_UNKNOWN:
 			default:
 				fprintf(
 				 info_handle->notify_stream,
@@ -945,7 +950,7 @@ int info_handle_link_information_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 " (0x%08" PRIx32 ")\n",
+		 " (%" PRIu32 ")\n",
 		 value_32bit );
 	}
 	result = liblnk_file_get_drive_serial_number(
