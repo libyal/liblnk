@@ -23,11 +23,11 @@
 #include <file_stream.h>
 #include <types.h>
 
-#include "lnkgtools_libcerror.h"
-#include "lnkgtools_libfdatetime.h"
-#include "lnkgtools_libfguid.h"
-#include "lnkgtools_libfwsi.h"
-#include "lnkgtools_libuna.h"
+#include "lnktools_libcerror.h"
+#include "lnktools_libfdatetime.h"
+#include "lnktools_libfguid.h"
+#include "lnktools_libfwsi.h"
+#include "lnktools_libuna.h"
 #include "shell_items.h"
 
 /* Prints the file attribute flags to the notify stream
@@ -448,7 +448,7 @@ int shell_items_file_entry_extension_fprint(
 	{
 		fprintf(
 		 notify_stream,
-		 "\t\tCreation time\t\t: 0 (not set)\n" );
+		 "\t\tCreation time\t\t: Not set (0)\n" );
 	}
 	if( libfwsi_file_entry_extension_get_access_time(
 	     extension_block,
@@ -515,7 +515,7 @@ int shell_items_file_entry_extension_fprint(
 	{
 		fprintf(
 		 notify_stream,
-		 "\t\tAccess time\t\t: 0 (not set)\n" );
+		 "\t\tAccess time\t\t: Not set (0)\n" );
 	}
 	if( libfdatetime_fat_date_time_free(
 	     &fat_date_time,
@@ -1258,7 +1258,7 @@ int shell_items_file_entry_fprint(
 	{
 		fprintf(
 		 notify_stream,
-		 "\t\tModification time\t: 0 (not set)\n" );
+		 "\t\tModification time\t: Not set (0)\n" );
 	}
 	if( libfdatetime_fat_date_time_free(
 	     &fat_date_time,

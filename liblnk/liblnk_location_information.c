@@ -1447,139 +1447,142 @@ ssize_t liblnk_location_information_read(
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libcnotify_verbose != 0 )
 		{
-			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE ) != 0 )
+			if( location_information->network_share_name != NULL )
 			{
+				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE ) != 0 )
+				{
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-				result = libuna_utf16_string_size_from_utf16_stream(
-					  location_information->network_share_name,
-					  location_information->network_share_name_size,
-					  LIBUNA_ENDIAN_LITTLE,
-					  &value_string_size,
-					  error );
+					result = libuna_utf16_string_size_from_utf16_stream(
+						  location_information->network_share_name,
+						  location_information->network_share_name_size,
+						  LIBUNA_ENDIAN_LITTLE,
+						  &value_string_size,
+						  error );
 #else
-				result = libuna_utf8_string_size_from_utf16_stream(
-					  location_information->network_share_name,
-					  location_information->network_share_name_size,
-					  LIBUNA_ENDIAN_LITTLE,
-					  &value_string_size,
-					  error );
+					result = libuna_utf8_string_size_from_utf16_stream(
+						  location_information->network_share_name,
+						  location_information->network_share_name_size,
+						  LIBUNA_ENDIAN_LITTLE,
+						  &value_string_size,
+						  error );
 #endif
-			}
-			else
-			{
+				}
+				else
+				{
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-				result = libuna_utf16_string_size_from_byte_stream(
-					  location_information->network_share_name,
-					  location_information->network_share_name_size,
-					  io_handle->ascii_codepage,
-					  &value_string_size,
-					  error );
+					result = libuna_utf16_string_size_from_byte_stream(
+						  location_information->network_share_name,
+						  location_information->network_share_name_size,
+						  io_handle->ascii_codepage,
+						  &value_string_size,
+						  error );
 #else
-				result = libuna_utf8_string_size_from_byte_stream(
-					  location_information->network_share_name,
-					  location_information->network_share_name_size,
-					  io_handle->ascii_codepage,
-					  &value_string_size,
-					  error );
+					result = libuna_utf8_string_size_from_byte_stream(
+						  location_information->network_share_name,
+						  location_information->network_share_name_size,
+						  io_handle->ascii_codepage,
+						  &value_string_size,
+						  error );
 #endif
-			}
-			if( result != 1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-				 "%s: unable to determine size of network share name string.",
-				 function );
+				}
+				if( result != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+					 "%s: unable to determine size of network share name string.",
+					 function );
 
-				goto on_error;
-			}
-			if( ( value_string_size > (size_t) SSIZE_MAX )
-			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
-				 "%s: invalid network share string size value exceeds maximum.",
-				 function );
+					goto on_error;
+				}
+				if( ( value_string_size > (size_t) SSIZE_MAX )
+				 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+					 "%s: invalid network share string size value exceeds maximum.",
+					 function );
 
-				goto on_error;
-			}
-			value_string = libcstring_system_string_allocate(
-					value_string_size );
+					goto on_error;
+				}
+				value_string = libcstring_system_string_allocate(
+						value_string_size );
 
-			if( value_string == NULL )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_MEMORY,
-				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-				 "%s: unable to create network share name string.",
-				 function );
+				if( value_string == NULL )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_MEMORY,
+					 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+					 "%s: unable to create network share name string.",
+					 function );
 
-				goto on_error;
-			}
-			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE ) != 0 )
-			{
+					goto on_error;
+				}
+				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE ) != 0 )
+				{
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-				result = libuna_utf16_string_copy_from_utf16_stream(
-					  (libuna_utf16_character_t *) value_string,
-					  value_string_size,
-					  location_information->network_share_name,
-					  location_information->network_share_name_size,
-					  LIBUNA_ENDIAN_LITTLE,
-					  error );
+					result = libuna_utf16_string_copy_from_utf16_stream(
+						  (libuna_utf16_character_t *) value_string,
+						  value_string_size,
+						  location_information->network_share_name,
+						  location_information->network_share_name_size,
+						  LIBUNA_ENDIAN_LITTLE,
+						  error );
 #else
-				result = libuna_utf8_string_copy_from_utf16_stream(
-					  (libuna_utf8_character_t *) value_string,
-					  value_string_size,
-					  location_information->network_share_name,
-					  location_information->network_share_name_size,
-					  LIBUNA_ENDIAN_LITTLE,
-					  error );
+					result = libuna_utf8_string_copy_from_utf16_stream(
+						  (libuna_utf8_character_t *) value_string,
+						  value_string_size,
+						  location_information->network_share_name,
+						  location_information->network_share_name_size,
+						  LIBUNA_ENDIAN_LITTLE,
+						  error );
 #endif
-			}
-			else
-			{
+				}
+				else
+				{
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-				result = libuna_utf16_string_copy_from_byte_stream(
-					  (libuna_utf16_character_t *) value_string,
-					  value_string_size,
-					  location_information->network_share_name,
-					  location_information->network_share_name_size,
-					  io_handle->ascii_codepage,
-					  error );
+					result = libuna_utf16_string_copy_from_byte_stream(
+						  (libuna_utf16_character_t *) value_string,
+						  value_string_size,
+						  location_information->network_share_name,
+						  location_information->network_share_name_size,
+						  io_handle->ascii_codepage,
+						  error );
 #else
-				result = libuna_utf8_string_copy_from_byte_stream(
-					  (libuna_utf8_character_t *) value_string,
-					  value_string_size,
-					  location_information->network_share_name,
-					  location_information->network_share_name_size,
-					  io_handle->ascii_codepage,
-					  error );
+					result = libuna_utf8_string_copy_from_byte_stream(
+						  (libuna_utf8_character_t *) value_string,
+						  value_string_size,
+						  location_information->network_share_name,
+						  location_information->network_share_name_size,
+						  io_handle->ascii_codepage,
+						  error );
 #endif
+				}
+				if( result != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+					 "%s: unable to set network share name string.",
+					 function );
+
+					goto on_error;
+				}
+				libcnotify_printf(
+				 "%s: volume information network share name\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+				 function,
+				 value_string );
+
+				memory_free(
+				 value_string );
+
+				value_string = NULL;
 			}
-			if( result != 1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-				 "%s: unable to set network share name string.",
-				 function );
-
-				goto on_error;
-			}
-			libcnotify_printf(
-			 "%s: volume information network share name\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
-			 function,
-			 value_string );
-
-			memory_free(
-			 value_string );
-
-			value_string = NULL;
 		}
 #endif
 		if( device_name_offset > 0 )
@@ -1736,139 +1739,142 @@ ssize_t liblnk_location_information_read(
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libcnotify_verbose != 0 )
 		{
-			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_DEVICE_NAME_IS_UNICODE ) != 0 )
+			if( location_information->device_name != NULL )
 			{
+				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_DEVICE_NAME_IS_UNICODE ) != 0 )
+				{
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-				result = libuna_utf16_string_size_from_utf16_stream(
-					  location_information->device_name,
-					  location_information->device_name_size,
-					  LIBUNA_ENDIAN_LITTLE,
-					  &value_string_size,
-					  error );
+					result = libuna_utf16_string_size_from_utf16_stream(
+					          location_information->device_name,
+					          location_information->device_name_size,
+					          LIBUNA_ENDIAN_LITTLE,
+					          &value_string_size,
+					          error );
 #else
-				result = libuna_utf8_string_size_from_utf16_stream(
-					  location_information->device_name,
-					  location_information->device_name_size,
-					  LIBUNA_ENDIAN_LITTLE,
-					  &value_string_size,
-					  error );
+					result = libuna_utf8_string_size_from_utf16_stream(
+					          location_information->device_name,
+					          location_information->device_name_size,
+					          LIBUNA_ENDIAN_LITTLE,
+					          &value_string_size,
+					          error );
 #endif
-			}
-			else
-			{
+				}
+				else
+				{
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-				result = libuna_utf16_string_size_from_byte_stream(
-					  location_information->device_name,
-					  location_information->device_name_size,
-					  io_handle->ascii_codepage,
-					  &value_string_size,
-					  error );
+					result = libuna_utf16_string_size_from_byte_stream(
+					          location_information->device_name,
+					          location_information->device_name_size,
+					          io_handle->ascii_codepage,
+					          &value_string_size,
+					          error );
 #else
-				result = libuna_utf8_string_size_from_byte_stream(
-					  location_information->device_name,
-					  location_information->device_name_size,
-					  io_handle->ascii_codepage,
-					  &value_string_size,
-					  error );
+					result = libuna_utf8_string_size_from_byte_stream(
+					          location_information->device_name,
+					          location_information->device_name_size,
+					          io_handle->ascii_codepage,
+					          &value_string_size,
+					          error );
 #endif
-			}
-			if( result != 1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-				 "%s: unable to determine size of device name string.",
-				 function );
+				}
+				if( result != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+					 "%s: unable to determine size of device name string.",
+					 function );
 
-				goto on_error;
-			}
-			if( ( value_string_size > (size_t) SSIZE_MAX )
-			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
-				 "%s: invalid device name string size value exceeds maximum.",
-				 function );
+					goto on_error;
+				}
+				if( ( value_string_size > (size_t) SSIZE_MAX )
+				 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+					 "%s: invalid device name string size value exceeds maximum.",
+					 function );
 
-				goto on_error;
-			}
-			value_string = libcstring_system_string_allocate(
-					value_string_size );
+					goto on_error;
+				}
+				value_string = libcstring_system_string_allocate(
+						value_string_size );
 
-			if( value_string == NULL )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_MEMORY,
-				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-				 "%s: unable to create device name string.",
-				 function );
+				if( value_string == NULL )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_MEMORY,
+					 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+					 "%s: unable to create device name string.",
+					 function );
 
-				goto on_error;
-			}
-			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_DEVICE_NAME_IS_UNICODE ) != 0 )
-			{
+					goto on_error;
+				}
+				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_DEVICE_NAME_IS_UNICODE ) != 0 )
+				{
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-				result = libuna_utf16_string_copy_from_utf16_stream(
-					  (libuna_utf16_character_t *) value_string,
-					  value_string_size,
-					  location_information->device_name,
-					  location_information->device_name_size,
-					  LIBUNA_ENDIAN_LITTLE,
-					  error );
+					result = libuna_utf16_string_copy_from_utf16_stream(
+					          (libuna_utf16_character_t *) value_string,
+					          value_string_size,
+					          location_information->device_name,
+					          location_information->device_name_size,
+					          LIBUNA_ENDIAN_LITTLE,
+					          error );
 #else
-				result = libuna_utf8_string_copy_from_utf16_stream(
-					  (libuna_utf8_character_t *) value_string,
-					  value_string_size,
-					  location_information->device_name,
-					  location_information->device_name_size,
-					  LIBUNA_ENDIAN_LITTLE,
-					  error );
+					result = libuna_utf8_string_copy_from_utf16_stream(
+					          (libuna_utf8_character_t *) value_string,
+					          value_string_size,
+					          location_information->device_name,
+					          location_information->device_name_size,
+					          LIBUNA_ENDIAN_LITTLE,
+					          error );
 #endif
-			}
-			else
-			{
+				}
+				else
+				{
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-				result = libuna_utf16_string_copy_from_byte_stream(
-					  (libuna_utf16_character_t *) value_string,
-					  value_string_size,
-					  location_information->device_name,
-					  location_information->device_name_size,
-					  io_handle->ascii_codepage,
-					  error );
+					result = libuna_utf16_string_copy_from_byte_stream(
+					          (libuna_utf16_character_t *) value_string,
+					          value_string_size,
+					          location_information->device_name,
+					          location_information->device_name_size,
+					          io_handle->ascii_codepage,
+					          error );
 #else
-				result = libuna_utf8_string_copy_from_byte_stream(
-					  (libuna_utf8_character_t *) value_string,
-					  value_string_size,
-					  location_information->device_name,
-					  location_information->device_name_size,
-					  io_handle->ascii_codepage,
-					  error );
+					result = libuna_utf8_string_copy_from_byte_stream(
+					          (libuna_utf8_character_t *) value_string,
+					          value_string_size,
+					          location_information->device_name,
+					          location_information->device_name_size,
+					          io_handle->ascii_codepage,
+					          error );
 #endif
+				}
+				if( result != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+					 "%s: unable to set device name string.",
+					 function );
+
+					goto on_error;
+				}
+				libcnotify_printf(
+				 "%s: volume information device name\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+				 function,
+				 value_string );
+
+				memory_free(
+				 value_string );
+
+				value_string = NULL;
 			}
-			if( result != 1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-				 "%s: unable to set device name string.",
-				 function );
-
-				goto on_error;
-			}
-			libcnotify_printf(
-			 "%s: volume information device name\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
-			 function,
-			 value_string );
-
-			memory_free(
-			 value_string );
-
-			value_string = NULL;
 		}
 #endif
 	}

@@ -52,6 +52,10 @@ Bindings:
 * .net
 * java
 
+20140730
+* worked on shell items support
+* small changes in debug output
+
 20140729
 * small changes in lnkinfo output
 
