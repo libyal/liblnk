@@ -58,7 +58,7 @@ int liblnk_file_has_distributed_link_tracking_data(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal file - missing IO handle.",
+		 "%s: invalid file - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -101,7 +101,7 @@ int liblnk_file_get_utf8_machine_identifier_size(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal file - missing IO handle.",
+		 "%s: invalid file - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -112,7 +112,7 @@ int liblnk_file_get_utf8_machine_identifier_size(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal file - missing distributed link tracker properties.",
+		 "%s: invalid file - missing distributed link tracker properties.",
 		 function );
 
 		return( -1 );
@@ -168,7 +168,7 @@ int liblnk_file_get_utf8_machine_identifier(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal file - missing IO handle.",
+		 "%s: invalid file - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -179,7 +179,7 @@ int liblnk_file_get_utf8_machine_identifier(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal file - missing distributed link tracker properties.",
+		 "%s: invalid file - missing distributed link tracker properties.",
 		 function );
 
 		return( -1 );
@@ -235,7 +235,7 @@ int liblnk_file_get_utf16_machine_identifier_size(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal file - missing IO handle.",
+		 "%s: invalid file - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -246,7 +246,7 @@ int liblnk_file_get_utf16_machine_identifier_size(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal file - missing distributed link tracker properties.",
+		 "%s: invalid file - missing distributed link tracker properties.",
 		 function );
 
 		return( -1 );
@@ -302,7 +302,7 @@ int liblnk_file_get_utf16_machine_identifier(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal file - missing IO handle.",
+		 "%s: invalid file - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -313,7 +313,7 @@ int liblnk_file_get_utf16_machine_identifier(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal file - missing distributed link tracker properties.",
+		 "%s: invalid file - missing distributed link tracker properties.",
 		 function );
 
 		return( -1 );
@@ -369,7 +369,7 @@ int liblnk_file_get_droid_volume_identifier(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal file - missing distributed link tracker properties.",
+		 "%s: invalid file - missing distributed link tracker properties.",
 		 function );
 
 		return( -1 );
@@ -455,7 +455,7 @@ int liblnk_file_get_droid_file_identifier(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal file - missing distributed link tracker properties.",
+		 "%s: invalid file - missing distributed link tracker properties.",
 		 function );
 
 		return( -1 );
@@ -541,7 +541,7 @@ int liblnk_file_get_birth_droid_volume_identifier(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal file - missing distributed link tracker properties.",
+		 "%s: invalid file - missing distributed link tracker properties.",
 		 function );
 
 		return( -1 );
@@ -627,7 +627,7 @@ int liblnk_file_get_birth_droid_file_identifier(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal file - missing distributed link tracker properties.",
+		 "%s: invalid file - missing distributed link tracker properties.",
 		 function );
 
 		return( -1 );

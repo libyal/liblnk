@@ -34,7 +34,7 @@
 /* The following type definitions hide internal data structures
  */
 #if defined( HAVE_DEBUG_OUTPUT ) && !defined( WINAPI )
-typedef struct liblnk_file {}	liblnk_file_t;
+typedef struct liblnk_file {}		liblnk_file_t;
 
 #else
 typedef intptr_t liblnk_file_t;
