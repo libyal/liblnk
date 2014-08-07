@@ -155,7 +155,7 @@ int liblnk_data_block_strings_read(
 		libcnotify_print_data(
 		 data_block_strings_data->string,
 		 260,
-		 0 );
+		 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libuna_utf16_string_size_from_byte_stream(
@@ -284,7 +284,7 @@ int liblnk_data_block_strings_read(
 		libcnotify_print_data(
 		 data_block_strings_data->unicode_string,
 		 520,
-		 0 );
+		 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libuna_utf16_string_size_from_utf16_stream(
@@ -459,7 +459,7 @@ int liblnk_data_block_strings_read(
 			libcnotify_print_data(
 			 &( data_block->data[ sizeof( lnk_data_block_strings_t ) ] ),
 			 data_block->data_size - sizeof( lnk_data_block_strings_t ),
-			 0 );
+			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 		}
 	}
 #endif

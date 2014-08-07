@@ -38,6 +38,7 @@
 #include "liblnk_libcerror.h"
 #include "liblnk_libcnotify.h"
 #include "liblnk_libcstring.h"
+#include "liblnk_libfwps.h"
 #include "liblnk_link_target_identifier.h"
 #include "liblnk_location_information.h"
 #include "liblnk_special_folder_location.h"
@@ -985,15 +986,17 @@ int liblnk_file_open_read(
      libbfio_handle_t *file_io_handle,
      libcerror_error_t **error )
 {
-	liblnk_data_block_t *data_block = NULL;
-	static char *function           = "liblnk_file_open_read";
-	off64_t file_offset             = 0;
-	size_t data_block_data_size     = 0;
-	ssize_t read_count              = 0;
+	liblnk_data_block_t *data_block     = NULL;
+	static char *function               = "liblnk_file_open_read";
+	off64_t file_offset                 = 0;
+	size_t data_block_data_size         = 0;
+	ssize_t read_count                  = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	uint8_t *trailing_data          = NULL;
-	size_t trailing_data_size       = 0;
+        libfwps_storage_t *property_storage = NULL;
+
+	uint8_t *trailing_data              = NULL;
+	size_t trailing_data_size           = 0;
 #endif
 
 	if( internal_file == NULL )
@@ -1706,6 +1709,67 @@ int liblnk_file_open_read(
 						}
 						break;
 
+					case LIBLNK_DATA_BLOCK_SIGNATURE_METADATA_PROPERTY_STORE:
+#if defined( HAVE_DEBUG_OUTPUT )
+						if( libcnotify_verbose != 0 )
+						{
+							if( data_block == NULL )
+							{
+								libcerror_error_set(
+								 error,
+								 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+								 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+								 "%s: missing data block.",
+								 function );
+
+								goto on_error;
+							}
+							if( libfwps_storage_initialize(
+							     &property_storage,
+							     error ) != 1 )
+							{
+								libcerror_error_set(
+								 error,
+								 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+								 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+								 "%s: unable to create property storage.",
+								 function );
+
+								goto on_error;
+							}
+							if( libfwps_storage_copy_from_byte_stream(
+							     property_storage,
+							     data_block->data,
+							     data_block->data_size,
+							     internal_file->io_handle->ascii_codepage,
+							     error ) != 1 )
+							{
+								libcerror_error_set(
+								 error,
+								 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+								 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+								 "%s: unable to copy byte stream to property storage.",
+								 function );
+
+								goto on_error;
+							}
+							if( libfwps_storage_free(
+							     &property_storage,
+							     error ) != 1 )
+							{
+								libcerror_error_set(
+								 error,
+								 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+								 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+								 "%s: unable to free property storage.",
+								 function );
+
+								goto on_error;
+							}
+						}
+#endif
+						break;
+
 					default:
 #if defined( HAVE_DEBUG_OUTPUT )
 						if( libcnotify_verbose != 0 )
@@ -1803,6 +1867,12 @@ on_error:
 	{
 		memory_free(
 		 trailing_data );
+	}
+	if( property_storage != NULL )
+	{
+		libfwps_storage_free(
+		 &property_storage,
+		 NULL );
 	}
 #endif
 	if( data_block != NULL )

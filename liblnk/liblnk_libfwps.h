@@ -1,5 +1,5 @@
 /*
- * The libfwsi header wrapper
+ * The libfwps header wrapper
  *
  * Copyright (c) 2009-2014, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,38 +19,29 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LNKTOOLS_LIBFWSI_H )
-#define _LNKTOOLS_LIBFWSI_H
+#if !defined( _LIBLNK_LIBFWPS_H )
+#define _LIBLNK_LIBFWPS_H
 
 #include <common.h>
 
-/* Define HAVE_LOCAL_LIBFWSI for local use of libfwsi
+/* Define HAVE_LOCAL_LIBFWPS for local use of libfwps
  */
-#if defined( HAVE_LOCAL_LIBFWSI )
+#if defined( HAVE_LOCAL_LIBFWPS )
 
-#include <libfwsi_definitions.h>
-#include <libfwsi_extension_block.h>
-#include <libfwsi_file_entry.h>
-#include <libfwsi_file_entry_extension.h>
-#include <libfwsi_item.h>
-#include <libfwsi_item_list.h>
-#include <libfwsi_known_folder_identifier.h>
-#include <libfwsi_network_location.h>
-#include <libfwsi_root_folder.h>
-#include <libfwsi_shell_folder_identifier.h>
-#include <libfwsi_types.h>
-#include <libfwsi_volume.h>
+#include <libfwps_definitions.h>
+#include <libfwps_storage.h>
+#include <libfwps_types.h>
 
 #else
 
-/* If libtool DLL support is enabled set LIBFWSI_DLL_IMPORT
- * before including libfwsi.h
+/* If libtool DLL support is enabled set LIBFWPS_DLL_IMPORT
+ * before including libfwps.h
  */
 #if defined( _WIN32 ) && defined( DLL_IMPORT )
-#define LIBFWSI_DLL_IMPORT
+#define LIBFWPS_DLL_IMPORT
 #endif
 
-#include <libfwsi.h>
+#include <libfwps.h>
 
 #endif
 

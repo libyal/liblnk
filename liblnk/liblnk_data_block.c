@@ -313,7 +313,7 @@ ssize_t liblnk_data_block_read(
 				libcnotify_print_data(
 				 &( data_block->data[ 4 ] ),
 				 data_block->data_size - 4,
-				 0 );
+				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
 		}
 #endif

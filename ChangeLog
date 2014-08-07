@@ -6,6 +6,7 @@ TODO
 * what about shell items
 * what about ole properties
 * pylnk add functions
+* add support for 0xa0000009
 
 File format:
 * Ignore the location information (ForceNoLinkInfo)
@@ -51,6 +52,9 @@ Release:
 Bindings:
 * .net
 * java
+
+20140807
+* worked on property store data block support
 
 20140731
 * bug fix in Python-bindings
