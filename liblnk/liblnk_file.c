@@ -624,7 +624,7 @@ int liblnk_file_open_file_io_handle(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_IO,
 		 LIBCERROR_IO_ERROR_READ_FAILED,
-		 "%s: unable to read from file handle.",
+		 "%s: unable to read from file IO handle.",
 		 function );
 
 		goto on_error;
@@ -1724,6 +1724,7 @@ int liblnk_file_open_read(
 
 								goto on_error;
 							}
+/* TODO add support for more than one store */
 							if( libfwps_storage_initialize(
 							     &property_storage,
 							     error ) != 1 )
@@ -1739,8 +1740,8 @@ int liblnk_file_open_read(
 							}
 							if( libfwps_storage_copy_from_byte_stream(
 							     property_storage,
-							     data_block->data,
-							     data_block->data_size,
+							     &( data_block->data[ 4 ] ),
+							     data_block->data_size - 4,
 							     internal_file->io_handle->ascii_codepage,
 							     error ) != 1 )
 							{

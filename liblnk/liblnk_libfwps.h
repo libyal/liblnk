@@ -29,7 +29,10 @@
 #if defined( HAVE_LOCAL_LIBFWPS )
 
 #include <libfwps_definitions.h>
+#include <libfwps_format_class_identifier.h>
 #include <libfwps_storage.h>
+#include <libfwps_property_identifier.h>
+#include <libfwps_value.h>
 #include <libfwps_types.h>
 
 #else
