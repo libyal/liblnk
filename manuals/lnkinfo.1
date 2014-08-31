@@ -1,4 +1,4 @@
-.Dd July 29, 2014
+.Dd August 31, 2014
 .Dt lnkinfo
 .Os liblnk
 .Sh NAME
@@ -41,7 +41,7 @@ None
 .Sh EXAMPLES
 .Bd -literal
 # lnkinfo Calculator.lnk
-lnkinfo 20140729
+lnkinfo 20140831
 
 Windows Shortcut information:
 	Contains a link target identifier
@@ -69,16 +69,19 @@ Link target identifier:
 		Number of items		: 5
 
 	Shell item: 1
-		Class type		: 0x1f (Root folder)
+		Item type		: Root folder
+		Class type indicator	: 0x1f (Root folder)
 		Shell folder identifier	: 20d04fe0-3aea-1069-a2d8-08002b30309d
 		Shell folder name	: My Computer
 
 	Shell item: 2
-		Class type		: 0x2f (Volume)
+		Item type		: Volume
+		Class type indicator	: 0x2f (Volume)
 		Volume name		: C:\
 
 	Shell item: 3
-		Class type		: 0x31 (File entry: Directory)
+		Item type		: File entry
+		Class type indicator	: 0x31 (File entry: Directory)
 		Name			: WINDOWS
 		Modification time	: Dec 17, 2006 20:55:44
 		File attribute flags	: 0x00000010
@@ -90,7 +93,8 @@ Link target identifier:
 		Access time		: Dec 17, 2006 20:55:48
 
 	Shell item: 4
-		Class type		: 0x31 (File entry: Directory)
+		Item type		: File entry
+		Class type indicator	: 0x31 (File entry: Directory)
 		Name			: system32
 		Modification time	: Nov 26, 2006 19:56:54
 		File attribute flags	: 0x00000030
@@ -103,7 +107,8 @@ Link target identifier:
 		Access time		: Dec 17, 2006 20:49:46
 
 	Shell item: 5
-		Class type		: 0x32 (File entry: File)
+		Item type		: File entry
+		Class type indicator	: 0x32 (File entry: File)
 		Name			: calc.exe
 		Modification time	: Aug 04, 2004 14:00:00
 		File attribute flags	: 0x00000020

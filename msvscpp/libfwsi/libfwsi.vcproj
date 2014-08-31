@@ -39,8 +39,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\libcstring;..\..\libcerror;..\..\libcdata;..\..\libcnotify;..\..\libuna;..\..\libfdatetime;..\..\libfguid;..\..\libfwps"
-				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBCSTRING;HAVE_LOCAL_LIBCERROR;HAVE_LOCAL_LIBCDATA;HAVE_LOCAL_LIBCNOTIFY;HAVE_LOCAL_LIBUNA;HAVE_LOCAL_LIBFDATETIME;HAVE_LOCAL_LIBFGUID;HAVE_LOCAL_LIBFWPS;HAVE_LOCAL_LIBFWSI"
+				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\libcstring;..\..\libcerror;..\..\libcdata;..\..\libcnotify;..\..\libuna;..\..\libfdatetime;..\..\libfguid;..\..\libfole;..\..\libfwps"
+				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBCSTRING;HAVE_LOCAL_LIBCERROR;HAVE_LOCAL_LIBCDATA;HAVE_LOCAL_LIBCNOTIFY;HAVE_LOCAL_LIBUNA;HAVE_LOCAL_LIBFDATETIME;HAVE_LOCAL_LIBFGUID;HAVE_LOCAL_LIBFOLE;HAVE_LOCAL_LIBFWPS;HAVE_LOCAL_LIBFWSI"
 				RuntimeLibrary="2"
 				WarningLevel="4"
 				CompileAs="1"
@@ -101,8 +101,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\libcstring;..\..\libcerror;..\..\libcdata;..\..\libcnotify;..\..\libuna;..\..\libfdatetime;..\..\libfguid;..\..\libfwps"
-				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBCSTRING;HAVE_LOCAL_LIBCERROR;HAVE_LOCAL_LIBCDATA;HAVE_LOCAL_LIBCNOTIFY;HAVE_LOCAL_LIBUNA;HAVE_LOCAL_LIBFDATETIME;HAVE_LOCAL_LIBFGUID;HAVE_LOCAL_LIBFWPS;HAVE_LOCAL_LIBFWSI"
+				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\libcstring;..\..\libcerror;..\..\libcdata;..\..\libcnotify;..\..\libuna;..\..\libfdatetime;..\..\libfguid;..\..\libfole;..\..\libfwps"
+				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBCSTRING;HAVE_LOCAL_LIBCERROR;HAVE_LOCAL_LIBCDATA;HAVE_LOCAL_LIBCNOTIFY;HAVE_LOCAL_LIBUNA;HAVE_LOCAL_LIBFDATETIME;HAVE_LOCAL_LIBFGUID;HAVE_LOCAL_LIBFOLE;HAVE_LOCAL_LIBFWPS;HAVE_LOCAL_LIBFWSI"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="true"
 				RuntimeLibrary="3"
@@ -151,11 +151,71 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_cdburn_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_compressed_folder_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_category_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_cpl_file_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_identifier.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_debug.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_delegate_values.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_error.c"
 				>
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_extension_block.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0000_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0001_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0003_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0005_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0006_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0014_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0019_values.c"
 				>
 			</File>
 			<File
@@ -179,11 +239,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_game_folder_values.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_item.c"
 				>
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_item_list.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_known_folder_identifier.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_mtp_file_entry_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_mtp_volume_values.c"
 				>
 			</File>
 			<File
@@ -211,6 +287,18 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_unknown_0x74_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_uri_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_users_property_view_values.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_volume.c"
 				>
 			</File>
@@ -225,11 +313,43 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_cdburn_values.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_codepage.h"
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_compressed_folder_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_category_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_cpl_file_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_identifier.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_debug.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_definitions.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_delegate_values.h"
 				>
 			</File>
 			<File
@@ -238,6 +358,34 @@
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_extension_block.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0000_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0001_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0003_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0005_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0006_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0014_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0019_values.h"
 				>
 			</File>
 			<File
@@ -265,11 +413,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_game_folder_values.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_item.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_item_list.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_known_folder_identifier.h"
 				>
 			</File>
 			<File
@@ -297,11 +453,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_libfole.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_libfwps.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_libuna.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_mtp_file_entry_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_mtp_volume_values.h"
 				>
 			</File>
 			<File
@@ -333,7 +501,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_unknown_0x74_values.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_unused.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_uri_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_users_property_view_values.h"
 				>
 			</File>
 			<File

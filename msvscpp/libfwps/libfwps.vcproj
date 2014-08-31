@@ -39,8 +39,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\libcstring;..\..\libcerror;..\..\libcnotify;..\..\libuna;..\..\libfguid"
-				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBCSTRING;HAVE_LOCAL_LIBCERROR;HAVE_LOCAL_LIBCNOTIFY;HAVE_LOCAL_LIBUNA;HAVE_LOCAL_LIBFGUID;HAVE_LOCAL_LIBFWPS"
+				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\libcstring;..\..\libcerror;..\..\libcnotify;..\..\libuna;..\..\libfdatetime;..\..\libfguid;..\..\libfole"
+				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBCSTRING;HAVE_LOCAL_LIBCERROR;HAVE_LOCAL_LIBCNOTIFY;HAVE_LOCAL_LIBUNA;HAVE_LOCAL_LIBFDATETIME;HAVE_LOCAL_LIBFGUID;HAVE_LOCAL_LIBFOLE;HAVE_LOCAL_LIBFWPS"
 				RuntimeLibrary="2"
 				WarningLevel="4"
 				CompileAs="1"
@@ -101,8 +101,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\libcstring;..\..\libcerror;..\..\libcnotify;..\..\libuna;..\..\libfguid"
-				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBCSTRING;HAVE_LOCAL_LIBCERROR;HAVE_LOCAL_LIBCNOTIFY;HAVE_LOCAL_LIBUNA;HAVE_LOCAL_LIBFGUID;HAVE_LOCAL_LIBFWPS"
+				AdditionalIncludeDirectories="..\..\include;..\..\common;..\..\libcstring;..\..\libcerror;..\..\libcnotify;..\..\libuna;..\..\libfdatetime;..\..\libfguid;..\..\libfole"
+				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE;HAVE_LOCAL_LIBCSTRING;HAVE_LOCAL_LIBCERROR;HAVE_LOCAL_LIBCNOTIFY;HAVE_LOCAL_LIBUNA;HAVE_LOCAL_LIBFDATETIME;HAVE_LOCAL_LIBFGUID;HAVE_LOCAL_LIBFOLE;HAVE_LOCAL_LIBFWPS"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="true"
 				RuntimeLibrary="3"
@@ -155,6 +155,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwps\libfwps_format_class_identifier.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwps\libfwps_property_identifier.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwps\libfwps_storage.c"
 				>
 			</File>
@@ -185,6 +193,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwps\libfwps_format_class_identifier.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwps\libfwps_libcerror.h"
 				>
 			</File>
@@ -201,7 +213,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwps\libfwps_libfole.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwps\libfwps_libuna.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwps\libfwps_property_identifier.h"
 				>
 			</File>
 			<File

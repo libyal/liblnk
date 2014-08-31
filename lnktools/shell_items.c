@@ -643,11 +643,124 @@ int shell_items_item_fprint(
 
 		goto on_error;
 	}
+	fprintf(
+	 notify_stream,
+	 "\t\tItem type\t\t: " );
+
+	switch( item_type )
+	{
+		case LIBFWSI_ITEM_TYPE_CDBURN:
+			fprintf(
+			 notify_stream,
+			 "CD burn" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_COMPRESSED_FOLDER:
+			fprintf(
+			 notify_stream,
+			 "Compressed folder" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_CONTROL_PANEL:
+			fprintf(
+			 notify_stream,
+			 "Control panel" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_CONTROL_PANEL_CATEGORY:
+			fprintf(
+			 notify_stream,
+			 "Control panel category" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_CONTROL_PANEL_CPL_FILE:
+			fprintf(
+			 notify_stream,
+			 "Control panel CPL file" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_DELEGATE:
+			fprintf(
+			 notify_stream,
+			 "Delegate" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_FILE_ENTRY:
+			fprintf(
+			 notify_stream,
+			 "File entry" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_NETWORK_LOCATION:
+			fprintf(
+			 notify_stream,
+			 "Network location" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_GAME_FOLDER:
+			fprintf(
+			 notify_stream,
+			 "Game folder" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_MTP_FILE_ENTRY:
+			fprintf(
+			 notify_stream,
+			 "MTP file entry" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_MTP_VOLUME:
+			fprintf(
+			 notify_stream,
+			 "MTP volume" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_ROOT_FOLDER:
+			fprintf(
+			 notify_stream,
+			 "Root folder" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_URI:
+			fprintf(
+			 notify_stream,
+			 "URI" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_USERS_PROPERTY_VIEW:
+			fprintf(
+			 notify_stream,
+			 "Users property view" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_VOLUME:
+			fprintf(
+			 notify_stream,
+			 "Volume" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_UNKNOWN_0x74:
+			fprintf(
+			 notify_stream,
+			 "Unknown 0x74" );
+			break;
+
+		case LIBFWSI_ITEM_TYPE_UNKNOWN:
+		default:
+			fprintf(
+			 notify_stream,
+			 "Unknown" );
+			break;
+	}
+	fprintf(
+	 notify_stream,
+	 "\n" );
+
 	if( class_type != 0 )
 	{
 		fprintf(
 		 notify_stream,
-		 "\t\tClass type\t\t: 0x%02" PRIx8 "",
+		 "\t\tClass type indicator\t: 0x%02" PRIx8 "",
 		 class_type );
 
 		switch( item_type )
@@ -684,6 +797,11 @@ int shell_items_item_fprint(
 				 notify_stream,
 				 " (Root folder)" );
 				break;
+
+			case LIBFWSI_ITEM_TYPE_URI:
+				fprintf(
+				 notify_stream,
+				 " (URI)" );
 
 			case LIBFWSI_ITEM_TYPE_VOLUME:
 				fprintf(
