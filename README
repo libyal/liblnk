@@ -1,4 +1,6 @@
-See:
-* http://code.google.com/p/liblnk/wiki/Building
-* README.macosx
+liblnk is a library to access the Windows Shortcut File (LNK) format.
+
+For more information see:
+* Project documentation: https://github.com/libyal/liblnk/wiki/Home
+* How to build from source: https://github.com/libyal/liblnk/wiki/Building
 
