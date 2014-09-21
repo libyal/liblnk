@@ -102,6 +102,7 @@ stamp-h1
 /liblnk/liblnk.rc
 /liblnk/liblnk_definition.h
 /pylnk/setup.py
+/lnktools/lnkinfo
 /tests/input
 /tests/lnk_test_open_close
 /tests/lnk_test_set_ascii_codepage
@@ -115,6 +116,8 @@ stamp-h1
 /libcnotify
 /libcpath
 /libcsplit
+/libcstring
+/libcsystem
 /libcthreads
 /libfdatetime
 /libfguid

@@ -962,7 +962,7 @@ PyObject *pylnk_file_open(
 	}
 	PyErr_Format(
 	 PyExc_TypeError,
-	 "%s: unsupported string object type",
+	 "%s: unsupported string object type.",
 	 function );
 
 	return( NULL );

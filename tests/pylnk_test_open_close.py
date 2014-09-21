@@ -83,7 +83,7 @@ def main( argc, argv ):
 	try:
 		pylnk_test_single_open_close_file( None, "r" )
 	except TypeError, exception:
-		if exception.message == "pylnk_file_open: unsupported string object type":
+		if exception.message == "pylnk_file_open: unsupported string object type.":
 			result = 0
 	except:
 		pass
