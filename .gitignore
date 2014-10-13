@@ -1,12 +1,13 @@
 # Files to ignore by git
 #
-# Version: 20130922
+# Version: 20141004
 
 # Generic auto-generated build files
 *~
 *.a
 *.la
 *.lai
+*.lineno
 *.lo
 *.Plo
 *.Po
@@ -100,12 +101,14 @@ stamp-h1
 /include/liblnk/features.h
 /include/liblnk/types.h
 /liblnk/liblnk.rc
-/liblnk/liblnk_definition.h
+/liblnk/liblnk_definitions.h
+/lnktools/lnkinfo
 /pylnk/setup.py
 /lnktools/lnkinfo
 /tests/input
 /tests/lnk_test_open_close
 /tests/lnk_test_set_ascii_codepage
+/tests/tmp
 
 # Local library dependencies specific files
 /libbfio

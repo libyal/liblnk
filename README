@@ -1,5 +1,9 @@
 liblnk is a library to access the Windows Shortcut File (LNK) format.
 
+Project information:
+* Status: alpha
+* Licence: LGPLv3+
+
 Work in progress:
 * Shell item support
 
