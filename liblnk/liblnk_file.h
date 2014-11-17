@@ -151,13 +151,15 @@ int liblnk_file_open(
      libcerror_error_t **error );
 
 #if defined( HAVE_WIDE_CHARACTER_TYPE )
+
 LIBLNK_EXTERN \
 int liblnk_file_open_wide(
      liblnk_file_t *file,
      const wchar_t *filename,
      int access_flags,
      libcerror_error_t **error );
-#endif
+
+#endif /* defined( HAVE_WIDE_CHARACTER_TYPE ) */
 
 LIBLNK_EXTERN \
 int liblnk_file_open_file_io_handle(
