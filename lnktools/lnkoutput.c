@@ -26,6 +26,7 @@
 
 #include "lnkoutput.h"
 #include "lnktools_libbfio.h"
+#include "lnktools_libcsystem.h"
 #include "lnktools_libfdatetime.h"
 #include "lnktools_libfguid.h"
 #include "lnktools_libfwsi.h"
@@ -41,11 +42,26 @@ void lnkoutput_copyright_fprint(
 	{
 		return;
 	}
+	/* TRANSLATORS: This is a proper name.
+	 */
 	fprintf(
 	 stream,
-	 "Copyright (c) 2009-2014, Joachim Metz, <%s>.\n"
-	 "This is free software; see the source for copying conditions. There is NO\n"
-	 "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n",
+	 _( "Copyright (c) 2009-2014, %s.\n" ),
+	 _( "Joachim Metz" ) );
+
+	fprintf(
+	 stream,
+	 _( "This is free software; see the source for copying conditions. There is NO\n"
+	    "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n" ) );
+
+	/* TRANSLATORS: The placeholder indicates the bug-reporting address
+	 * for this package.  Please add _another line_ saying
+	 * "Report translation bugs to <...>\n" with the address for translation
+	 * bugs (typically your translation team's web or email address).
+	 */
+	fprintf(
+	 stream,
+	 _( "Report bugs to <%s>.\n" ),
 	 PACKAGE_BUGREPORT );
 }
 

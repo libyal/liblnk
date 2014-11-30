@@ -73,7 +73,7 @@ int liblnk_set_codepage(
      int codepage,
      liblnk_error_t **error );
 
-/* Determines if a file is a Windows Shortcut File file (check for the file signature)
+/* Determines if a file contains a LNK file signature
  * Returns 1 if true, 0 if not or -1 on error
  */
 LIBLNK_EXTERN \
@@ -82,24 +82,28 @@ int liblnk_check_file_signature(
      liblnk_error_t **error );
 
 #if defined( LIBLNK_HAVE_WIDE_CHARACTER_TYPE )
-/* Determines if a file is a Windows Shortcut File file (check for the file signature)
+
+/* Determines if a file contains a LNK file signature
  * Returns 1 if true, 0 if not or -1 on error
  */
 LIBLNK_EXTERN \
 int liblnk_check_file_signature_wide(
      const wchar_t *filename,
      liblnk_error_t **error );
-#endif
+
+#endif /* defined( LIBLNK_HAVE_WIDE_CHARACTER_TYPE ) */
 
 #if defined( LIBLNK_HAVE_BFIO )
-/* Determines if a file is a Windows Shortcut File file (check for the file signature) using a Basic File IO (bfio) handle
+
+/* Determines if a file contains a LNK file signature using a Basic File IO (bfio) handle
  * Returns 1 if true, 0 if not or -1 on error
  */
 LIBLNK_EXTERN \
 int liblnk_check_file_signature_file_io_handle(
      libbfio_handle_t *file_io_handle,
      liblnk_error_t **error );
-#endif
+
+#endif /* defined( LIBLNK_HAVE_BFIO ) */
 
 /* -------------------------------------------------------------------------
  * Notify functions
@@ -221,6 +225,7 @@ int liblnk_file_open(
      liblnk_error_t **error );
 
 #if defined( LIBLNK_HAVE_WIDE_CHARACTER_TYPE )
+
 /* Opens a file
  * Returns 1 if successful or -1 on error
  */
@@ -230,9 +235,11 @@ int liblnk_file_open_wide(
      const wchar_t *filename,
      int access_flags,
      liblnk_error_t **error );
-#endif
+
+#endif /* defined( LIBLNK_HAVE_WIDE_CHARACTER_TYPE ) */
 
 #if defined( LIBLNK_HAVE_BFIO )
+
 /* Opens a file using a Basic File IO (bfio) handle
  * Returns 1 if successful or -1 on error
  */
@@ -242,7 +249,8 @@ int liblnk_file_open_file_io_handle(
      libbfio_handle_t *file_io_handle,
      int access_flags,
      liblnk_error_t **error );
-#endif
+
+#endif /* defined( LIBLNK_HAVE_BFIO ) */
 
 /* Closes a file
  * Returns 0 if successful or -1 on error
