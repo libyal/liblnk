@@ -664,6 +664,9 @@ PyMODINIT_FUNC initpylnk(
 	 "file_attribute_flags",
 	 (PyObject *) file_attribute_flags_type_object );
 
+	PyGILState_Release(
+	 gil_state );
+
 #if PY_MAJOR_VERSION >= 3
 	return( module );
 #else
