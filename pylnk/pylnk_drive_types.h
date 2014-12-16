@@ -20,7 +20,7 @@
  */
 
 #if !defined( _PYLNK_DRIVE_TYPES_H )
-#define _PYLNK_DRIVE_TYPEs_H
+#define _PYLNK_DRIVE_TYPES_H
 
 #include <common.h>
 #include <types.h>

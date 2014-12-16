@@ -563,7 +563,11 @@ PyMODINIT_FUNC initpylnk(
 #endif
 	if( module == NULL )
 	{
+#if PY_MAJOR_VERSION >= 3
 		return( NULL );
+#else
+		return;
+#endif
 	}
 	PyEval_InitThreads();
 
@@ -663,7 +667,7 @@ PyMODINIT_FUNC initpylnk(
 #if PY_MAJOR_VERSION >= 3
 	return( module );
 #else
-	return
+	return;
 #endif
 
 on_error:
@@ -673,7 +677,7 @@ on_error:
 #if PY_MAJOR_VERSION >= 3
 	return( NULL );
 #else
-	return
+	return;
 #endif
 }
 
