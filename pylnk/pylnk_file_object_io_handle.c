@@ -468,9 +468,13 @@ ssize_t pylnk_file_object_read_buffer(
 	}
 	if( size > 0 )
 	{
+#if PY_MAJOR_VERSION >= 3
+		method_name = PyBytes_FromString(
+			       "read" );
+#else
 		method_name = PyString_FromString(
 			       "read" );
-
+#endif
 		argument_size = PyLong_FromSize_t(
 				 size );
 
@@ -492,9 +496,13 @@ ssize_t pylnk_file_object_read_buffer(
 			exception_string = PyObject_Repr(
 					    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+			error_string = PyBytes_AsString(
+					exception_string );
+#else
 			error_string = PyString_AsString(
 					exception_string );
-
+#endif
 			if( error_string != NULL )
 			{
 				libcerror_error_set(
@@ -519,11 +527,17 @@ ssize_t pylnk_file_object_read_buffer(
 
 			goto on_error;
 		}
+#if PY_MAJOR_VERSION >= 3
+		result = PyBytes_AsStringAndSize(
+			  method_result,
+			  &safe_buffer,
+			  &safe_read_count );
+#else
 		result = PyString_AsStringAndSize(
 			  method_result,
 			  &safe_buffer,
 			  &safe_read_count );
-
+#endif
 		if( result == -1 )
 		{
 			PyErr_Fetch(
@@ -534,9 +548,13 @@ ssize_t pylnk_file_object_read_buffer(
 			exception_string = PyObject_Repr(
 					    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+			error_string = PyBytes_AsString(
+					exception_string );
+#else
 			error_string = PyString_AsString(
 					exception_string );
-
+#endif
 			if( error_string != NULL )
 			{
 				libcerror_error_set(
@@ -732,13 +750,22 @@ ssize_t pylnk_file_object_write_buffer(
 	}
 	if( size > 0 )
 	{
+#if PY_MAJOR_VERSION >= 3
+		method_name = PyBytes_FromString(
+			       "write" );
+#else
 		method_name = PyString_FromString(
 			       "write" );
-
+#endif
+#if PY_MAJOR_VERSION >= 3
+		argument_string = PyBytes_FromStringAndSize(
+		                   (char *) buffer,
+		                   size );
+#else
 		argument_string = PyString_FromStringAndSize(
 		                   (char *) buffer,
 		                   size );
-
+#endif
 		PyErr_Clear();
 
 		method_result = PyObject_CallMethodObjArgs(
@@ -757,9 +784,13 @@ ssize_t pylnk_file_object_write_buffer(
 			exception_string = PyObject_Repr(
 					    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+			error_string = PyBytes_AsString(
+					exception_string );
+#else
 			error_string = PyString_AsString(
 					exception_string );
-
+#endif
 			if( error_string != NULL )
 			{
 				libcerror_error_set(
@@ -929,9 +960,13 @@ int pylnk_file_object_seek_offset(
 
 		return( -1 );
 	}
+#if PY_MAJOR_VERSION >= 3
+	method_name = PyBytes_FromString(
+	               "seek" );
+#else
 	method_name = PyString_FromString(
 	               "seek" );
-
+#endif
 #if defined( HAVE_LONG_LONG )
 	argument_offset = PyLong_FromLongLong(
 	                   (PY_LONG_LONG) offset );
@@ -939,9 +974,13 @@ int pylnk_file_object_seek_offset(
 	argument_offset = PyLong_FromLongLong(
 	                   (long) offset );
 #endif
+#if PY_MAJOR_VERSION >= 3
+	argument_whence = PyLong_FromLong(
+	                   (long) whence );
+#else
 	argument_whence = PyInt_FromLong(
 	                   (long) whence );
-
+#endif
 	PyErr_Clear();
 
 	method_result = PyObject_CallMethodObjArgs(
@@ -961,9 +1000,13 @@ int pylnk_file_object_seek_offset(
 		exception_string = PyObject_Repr(
 		                    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+		error_string = PyBytes_AsString(
+		                exception_string );
+#else
 		error_string = PyString_AsString(
 		                exception_string );
-
+#endif
 		if( error_string != NULL )
 		{
 			libcerror_error_set(
@@ -1067,9 +1110,13 @@ int pylnk_file_object_get_offset(
 
 		return( -1 );
 	}
+#if PY_MAJOR_VERSION >= 3
+	method_name = PyBytes_FromString(
+	               "get_offset" );
+#else
 	method_name = PyString_FromString(
 	               "get_offset" );
-
+#endif
 	PyErr_Clear();
 
 	/* Determine if the file object has the get_offset method
@@ -1085,8 +1132,13 @@ int pylnk_file_object_get_offset(
 
 		/* Fall back to the tell method
 		 */
+#if PY_MAJOR_VERSION >= 3
+		method_name = PyBytes_FromString(
+		               "tell" );
+#else
 		method_name = PyString_FromString(
 		               "tell" );
+#endif
 	}
 	PyErr_Clear();
 
@@ -1105,9 +1157,13 @@ int pylnk_file_object_get_offset(
 		exception_string = PyObject_Repr(
 		                    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+		error_string = PyBytes_AsString(
+		                exception_string );
+#else
 		error_string = PyString_AsString(
 		                exception_string );
-
+#endif
 		if( error_string != NULL )
 		{
 			libcerror_error_set(
@@ -1337,9 +1393,13 @@ int pylnk_file_object_get_size(
 
 		return( -1 );
 	}
+#if PY_MAJOR_VERSION >= 3
+	method_name = PyBytes_FromString(
+	               "get_size" );
+#else
 	method_name = PyString_FromString(
 	               "get_size" );
-
+#endif
 	PyErr_Clear();
 
 	method_result = PyObject_CallMethodObjArgs(
@@ -1357,9 +1417,13 @@ int pylnk_file_object_get_size(
 		exception_string = PyObject_Repr(
 		                    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+		error_string = PyBytes_AsString(
+		                exception_string );
+#else
 		error_string = PyString_AsString(
 		                exception_string );
-
+#endif
 		if( error_string != NULL )
 		{
 			libcerror_error_set(
@@ -1458,9 +1522,13 @@ int pylnk_file_object_io_handle_get_size(
 	}
 	gil_state = PyGILState_Ensure();
 
+#if PY_MAJOR_VERSION >= 3
+	method_name = PyBytes_FromString(
+	               "get_size" );
+#else
 	method_name = PyString_FromString(
 	               "get_size" );
-
+#endif
 	PyErr_Clear();
 
 	/* Determine if the file object has the get_size method

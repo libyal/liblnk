@@ -150,9 +150,13 @@ int pylnk_integer_signed_copy_to_64bit(
 		exception_string = PyObject_Repr(
 		                    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+		error_string = PyBytes_AsString(
+		                exception_string );
+#else
 		error_string = PyString_AsString(
 		                exception_string );
-
+#endif
 		if( error_string != NULL )
 		{
 			libcerror_error_set(
@@ -189,6 +193,7 @@ int pylnk_integer_signed_copy_to_64bit(
 		              integer_object );
 #endif
 	}
+#if PY_MAJOR_VERSION < 3
 	if( result == 0 )
 	{
 		PyErr_Clear();
@@ -207,9 +212,13 @@ int pylnk_integer_signed_copy_to_64bit(
 			exception_string = PyObject_Repr(
 					    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+			error_string = PyBytes_AsString(
+					exception_string );
+#else
 			error_string = PyString_AsString(
 					exception_string );
-
+#endif
 			if( error_string != NULL )
 			{
 				libcerror_error_set(
@@ -242,6 +251,7 @@ int pylnk_integer_signed_copy_to_64bit(
 			              integer_object );
 		}
 	}
+#endif /* PY_MAJOR_VERSION < 3 */
 	if( result == 0 )
 	{
 		libcerror_error_set(
@@ -263,9 +273,13 @@ int pylnk_integer_signed_copy_to_64bit(
 		exception_string = PyObject_Repr(
 				    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+		error_string = PyBytes_AsString(
+				exception_string );
+#else
 		error_string = PyString_AsString(
 				exception_string );
-
+#endif
 		if( error_string != NULL )
 		{
 			libcerror_error_set(
@@ -371,9 +385,13 @@ int pylnk_integer_unsigned_copy_to_64bit(
 		exception_string = PyObject_Repr(
 		                    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+		error_string = PyBytes_AsString(
+		                exception_string );
+#else
 		error_string = PyString_AsString(
 		                exception_string );
-
+#endif
 		if( error_string != NULL )
 		{
 			libcerror_error_set(
@@ -410,6 +428,7 @@ int pylnk_integer_unsigned_copy_to_64bit(
 		              integer_object );
 #endif
 	}
+#if PY_MAJOR_VERSION < 3
 	if( result == 0 )
 	{
 		PyErr_Clear();
@@ -428,9 +447,13 @@ int pylnk_integer_unsigned_copy_to_64bit(
 			exception_string = PyObject_Repr(
 					    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+			error_string = PyBytes_AsString(
+					exception_string );
+#else
 			error_string = PyString_AsString(
 					exception_string );
-
+#endif
 			if( error_string != NULL )
 			{
 				libcerror_error_set(
@@ -468,6 +491,7 @@ int pylnk_integer_unsigned_copy_to_64bit(
 #endif
 		}
 	}
+#endif /* PY_MAJOR_VERSION < 3 */
 	if( result == 0 )
 	{
 		libcerror_error_set(
@@ -489,9 +513,13 @@ int pylnk_integer_unsigned_copy_to_64bit(
 		exception_string = PyObject_Repr(
 				    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+		error_string = PyBytes_AsString(
+				exception_string );
+#else
 		error_string = PyString_AsString(
 				exception_string );
-
+#endif
 		if( error_string != NULL )
 		{
 			libcerror_error_set(

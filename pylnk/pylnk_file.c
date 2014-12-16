@@ -359,10 +359,8 @@ PyGetSetDef pylnk_file_object_get_set_definitions[] = {
 };
 
 PyTypeObject pylnk_file_type_object = {
-	PyObject_HEAD_INIT( NULL )
+	PyVarObject_HEAD_INIT( NULL, 0 )
 
-	/* ob_size */
-	0,
 	/* tp_name */
 	"pylnk.file",
 	/* tp_basicsize */
@@ -586,9 +584,10 @@ int pylnk_file_init(
 void pylnk_file_free(
       pylnk_file_t *pylnk_file )
 {
-	libcerror_error_t *error = NULL;
-	static char *function    = "pylnk_file_free";
-	int result               = 0;
+	libcerror_error_t *error    = NULL;
+	struct _typeobject *ob_type = NULL;
+	static char *function       = "pylnk_file_free";
+	int result                  = 0;
 
 	if( pylnk_file == NULL )
 	{
@@ -599,29 +598,32 @@ void pylnk_file_free(
 
 		return;
 	}
-	if( pylnk_file->ob_type == NULL )
-	{
-		PyErr_Format(
-		 PyExc_ValueError,
-		 "%s: invalid file - missing ob_type.",
-		 function );
-
-		return;
-	}
-	if( pylnk_file->ob_type->tp_free == NULL )
-	{
-		PyErr_Format(
-		 PyExc_ValueError,
-		 "%s: invalid file - invalid ob_type - missing tp_free.",
-		 function );
-
-		return;
-	}
 	if( pylnk_file->file == NULL )
 	{
 		PyErr_Format(
 		 PyExc_ValueError,
 		 "%s: invalid file - missing liblnk file.",
+		 function );
+
+		return;
+	}
+	ob_type = Py_TYPE(
+	           pylnk_file );
+
+	if( ob_type == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: missing ob_type.",
+		 function );
+
+		return;
+	}
+	if( ob_type->tp_free == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid ob_type - missing tp_free.",
 		 function );
 
 		return;
@@ -645,7 +647,7 @@ void pylnk_file_free(
 		libcerror_error_free(
 		 &error );
 	}
-	pylnk_file->ob_type->tp_free(
+	ob_type->tp_free(
 	 (PyObject*) pylnk_file );
 }
 
@@ -776,9 +778,13 @@ PyObject *pylnk_file_open(
 		exception_string = PyObject_Repr(
 		                    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+		error_string = PyBytes_AsString(
+		                exception_string );
+#else
 		error_string = PyString_AsString(
 		                exception_string );
-
+#endif
 		if( error_string != NULL )
 		{
 			PyErr_Format(
@@ -829,9 +835,13 @@ PyObject *pylnk_file_open(
 			exception_string = PyObject_Repr(
 					    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+			error_string = PyBytes_AsString(
+					exception_string );
+#else
 			error_string = PyString_AsString(
 					exception_string );
-
+#endif
 			if( error_string != NULL )
 			{
 				PyErr_Format(
@@ -852,9 +862,13 @@ PyObject *pylnk_file_open(
 
 			return( NULL );
 		}
+#if PY_MAJOR_VERSION >= 3
+		filename_narrow = PyBytes_AsString(
+				   utf8_string_object );
+#else
 		filename_narrow = PyString_AsString(
 				   utf8_string_object );
-
+#endif
 		Py_BEGIN_ALLOW_THREADS
 
 		result = liblnk_file_open(
@@ -888,10 +902,15 @@ PyObject *pylnk_file_open(
 	}
 	PyErr_Clear();
 
+#if PY_MAJOR_VERSION >= 3
+	result = PyObject_IsInstance(
+		  string_object,
+		  (PyObject *) &PyBytes_Type );
+#else
 	result = PyObject_IsInstance(
 		  string_object,
 		  (PyObject *) &PyString_Type );
-
+#endif
 	if( result == -1 )
 	{
 		PyErr_Fetch(
@@ -902,9 +921,13 @@ PyObject *pylnk_file_open(
 		exception_string = PyObject_Repr(
 				    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+		error_string = PyBytes_AsString(
+				exception_string );
+#else
 		error_string = PyString_AsString(
 				exception_string );
-
+#endif
 		if( error_string != NULL )
 		{
 			PyErr_Format(
@@ -929,9 +952,13 @@ PyObject *pylnk_file_open(
 	{
 		PyErr_Clear();
 
+#if PY_MAJOR_VERSION >= 3
+		filename_narrow = PyBytes_AsString(
+				   string_object );
+#else
 		filename_narrow = PyString_AsString(
 				   string_object );
-
+#endif
 		Py_BEGIN_ALLOW_THREADS
 
 		result = liblnk_file_open(
@@ -1200,9 +1227,13 @@ PyObject *pylnk_file_get_ascii_codepage(
 
 		return( NULL );
 	}
+#if PY_MAJOR_VERSION >= 3
+	string_object = PyBytes_FromString(
+	                 codepage_string );
+#else
 	string_object = PyString_FromString(
 	                 codepage_string );
-
+#endif
 	if( string_object == NULL )
 	{
 		PyErr_Format(
@@ -1343,9 +1374,13 @@ int pylnk_file_set_ascii_codepage_setter(
 
 	PYLNK_UNREFERENCED_PARAMETER( closure )
 
+#if PY_MAJOR_VERSION >= 3
+	codepage_string = PyBytes_AsString(
+	                   value_object );
+#else
 	codepage_string = PyString_AsString(
 	                   value_object );
-
+#endif
 	if( codepage_string == NULL )
 	{
 		return( -1 );
@@ -3234,10 +3269,15 @@ PyObject *pylnk_file_get_link_target_identifier_data(
 	}
 	/* This is a byte string so include the full size
 	 */
+#if PY_MAJOR_VERSION >= 3
+	string_object = PyBytes_FromStringAndSize(
+	                 link_target_identifier_data,
+	                 (Py_ssize_t) link_target_identifier_data_size );
+#else
 	string_object = PyString_FromStringAndSize(
 	                 link_target_identifier_data,
 	                 (Py_ssize_t) link_target_identifier_data_size );
-
+#endif
 	if( string_object == NULL )
 	{
 		PyErr_Format(

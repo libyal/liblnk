@@ -32,10 +32,8 @@
 #include "pylnk_unused.h"
 
 PyTypeObject pylnk_file_attribute_flags_type_object = {
-	PyObject_HEAD_INIT( NULL )
+	PyVarObject_HEAD_INIT( NULL, 0 )
 
-	/* ob_size */
-	0,
 	/* tp_name */
 	"pylnk.file_attribute_flags",
 	/* tp_basicsize */
@@ -134,6 +132,8 @@ PyTypeObject pylnk_file_attribute_flags_type_object = {
 int pylnk_file_attribute_flags_init_type(
      PyTypeObject *type_object )
 {
+	PyObject *value_object = NULL;
+
 	if( type_object == NULL )
 	{
 		return( -1 );
@@ -144,149 +144,215 @@ int pylnk_file_attribute_flags_init_type(
 	{
 		return( -1 );
 	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_READ_ONLY );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_READ_ONLY );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
-	     "HAS_LINK_TARGET_IDENTIFIER",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) ) != 0 )
+	     "READ_ONLY",
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_HIDDEN );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_HIDDEN );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
-	     "HAS_LOCATION_INFORMATION",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) ) != 0 )
+	     "HIDDEN",
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_SYSTEM );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_SYSTEM );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
-	     "HAS_DESCRIPTION_STRING",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_HAS_DESCRIPTION_STRING ) ) != 0 )
-	{
-		goto on_error;
-	}
-	if( PyDict_SetItemString(
-	     type_object->tp_dict,
-	     "HAS_RELATIVE_PATH_STRING",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) ) != 0 )
-	{
-		goto on_error;
-	}
-	if( PyDict_SetItemString(
-	     type_object->tp_dict,
-	     "HAS_WORKING_DIRECTORY_STRING",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) ) != 0 )
-	{
-		goto on_error;
-	}
-	if( PyDict_SetItemString(
-	     type_object->tp_dict,
-	     "HAS_COMMAND_LINE_ARGUMENTS_STRING",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) ) != 0 )
-	{
-		goto on_error;
-	}
-	if( PyDict_SetItemString(
-	     type_object->tp_dict,
-	     "HAS_ICON_LOCATION_STRING",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) ) != 0 )
-	{
-		goto on_error;
-	}
-	if( PyDict_SetItemString(
-	     type_object->tp_dict,
-	     "IS_UNICODE",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_IS_UNICODE ) ) != 0 )
-	{
-		goto on_error;
-	}
-	if( PyDict_SetItemString(
-	     type_object->tp_dict,
-	     "FORCE_NO_LOCATION_INFORMATION",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_FORCE_NO_LOCATION_INFORMATION ) ) != 0 )
-	{
-		goto on_error;
-	}
-	if( PyDict_SetItemString(
-	     type_object->tp_dict,
-	     "HAS_ENVIRONMENT_VARIABLES_LOCATION_BLOCK",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_HAS_ENVIRONMENT_VARIABLES_LOCATION_BLOCK ) ) != 0 )
-	{
-		goto on_error;
-	}
-	if( PyDict_SetItemString(
-	     type_object->tp_dict,
-	     "RUN_IN_SEPARATE_PROCESS",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_RUN_IN_SEPARATE_PROCESS ) ) != 0 )
+	     "SYSTEM",
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
 
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_DIRECTORY );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_DIRECTORY );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
-	     "HAS_DARWIN_IDENTIFIER",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_HAS_DARWIN_IDENTIFIER ) ) != 0 )
+	     "DIRECTORY",
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_ARCHIVE );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_ARCHIVE );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
-	     "RUN_AS_USER",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_RUN_AS_USER ) ) != 0 )
+	     "ARCHIVE",
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_DEVICE );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_DEVICE );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
-	     "HAS_ICON_LOCATION_BLOCK",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_BLOCK ) ) != 0 )
+	     "DEVICE",
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_NORMAL );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_NORMAL );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
-	     "NO_PIDL_ALIAS",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_NO_PIDL_ALIAS ) ) != 0 )
+	     "NORMAL",
+	     value_object ) != 0 )
+	{
+		goto on_error;
+	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_TEMPORARY );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_TEMPORARY );
+#endif
+	if( PyDict_SetItemString(
+	     type_object->tp_dict,
+	     "TEMPORARY",
+	     value_object ) != 0 )
+	{
+		goto on_error;
+	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_SPARSE_FILE );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_SPARSE_FILE );
+#endif
+	if( PyDict_SetItemString(
+	     type_object->tp_dict,
+	     "SPARSE_FILE",
+	     value_object ) != 0 )
+	{
+		goto on_error;
+	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_REPARSE_POINT );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_REPARSE_POINT );
+#endif
+	if( PyDict_SetItemString(
+	     type_object->tp_dict,
+	     "REPARSE_POINT",
+	     value_object ) != 0 )
+	{
+		goto on_error;
+	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_COMPRESSED );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_COMPRESSED );
+#endif
+	if( PyDict_SetItemString(
+	     type_object->tp_dict,
+	     "COMPRESSED",
+	     value_object ) != 0 )
+	{
+		goto on_error;
+	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_OFFLINE );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_OFFLINE );
+#endif
+	if( PyDict_SetItemString(
+	     type_object->tp_dict,
+	     "NORMAL",
+	     value_object ) != 0 )
+	{
+		goto on_error;
+	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_NOT_CONTENT_INDEXED );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_NOT_CONTENT_INDEXED );
+#endif
+	if( PyDict_SetItemString(
+	     type_object->tp_dict,
+	     "NOT_CONTENT_INDEXED",
+	     value_object ) != 0 )
+	{
+		goto on_error;
+	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_ENCRYPTED );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_ENCRYPTED );
+#endif
+	if( PyDict_SetItemString(
+	     type_object->tp_dict,
+	     "ENCRYPTED",
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
 
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_VIRTUAL );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_FILE_ATTRIBUTE_FLAG_VIRTUAL );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
-	     "RUN_WITH_SHIM_LAYER",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_RUN_WITH_SHIM_LAYER ) ) != 0 )
-	{
-		goto on_error;
-	}
-	if( PyDict_SetItemString(
-	     type_object->tp_dict,
-	     "NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK ) ) != 0 )
-	{
-		goto on_error;
-	}
-	if( PyDict_SetItemString(
-	     type_object->tp_dict,
-	     "HAS_METADATA_PROPERTY_STORE_DATA_BLOCK",
-	     PyInt_FromLong(
-	      LIBLNK_DATA_FLAG_HAS_METADATA_PROPERTY_STORE_DATA_BLOCK ) ) != 0 )
+	     "VIRTUAL",
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
@@ -371,7 +437,8 @@ int pylnk_file_attribute_flags_init(
 void pylnk_file_attribute_flags_free(
       pylnk_file_attribute_flags_t *pylnk_file_attribute_flags )
 {
-	static char *function = "pylnk_file_attribute_flags_free";
+	struct _typeobject *ob_type = NULL;
+	static char *function       = "pylnk_file_attribute_flags_free";
 
 	if( pylnk_file_attribute_flags == NULL )
 	{
@@ -382,25 +449,28 @@ void pylnk_file_attribute_flags_free(
 
 		return;
 	}
-	if( pylnk_file_attribute_flags->ob_type == NULL )
+	ob_type = Py_TYPE(
+	           pylnk_file_attribute_flags );
+
+	if( ob_type == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
-		 "%s: invalid file attribute flags - missing ob_type.",
+		 PyExc_ValueError,
+		 "%s: missing ob_type.",
 		 function );
 
 		return;
 	}
-	if( pylnk_file_attribute_flags->ob_type->tp_free == NULL )
+	if( ob_type->tp_free == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
-		 "%s: invalid file attribute flags - invalid ob_type - missing tp_free.",
+		 PyExc_ValueError,
+		 "%s: invalid ob_type - missing tp_free.",
 		 function );
 
 		return;
 	}
-	pylnk_file_attribute_flags->ob_type->tp_free(
+	ob_type->tp_free(
 	 (PyObject*) pylnk_file_attribute_flags );
 }
 

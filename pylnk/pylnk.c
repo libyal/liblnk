@@ -179,9 +179,13 @@ PyObject *pylnk_check_file_signature(
 		exception_string = PyObject_Repr(
 		                    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+		error_string = PyBytes_AsString(
+		                exception_string );
+#else
 		error_string = PyString_AsString(
 		                exception_string );
-
+#endif
 		if( error_string != NULL )
 		{
 			PyErr_Format(
@@ -230,9 +234,13 @@ PyObject *pylnk_check_file_signature(
 			exception_string = PyObject_Repr(
 					    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+			error_string = PyBytes_AsString(
+					exception_string );
+#else
 			error_string = PyString_AsString(
 					exception_string );
-
+#endif
 			if( error_string != NULL )
 			{
 				PyErr_Format(
@@ -253,9 +261,13 @@ PyObject *pylnk_check_file_signature(
 
 			return( NULL );
 		}
+#if PY_MAJOR_VERSION >= 3
+		filename_narrow = PyBytes_AsString(
+				   utf8_string_object );
+#else
 		filename_narrow = PyString_AsString(
 				   utf8_string_object );
-
+#endif
 		Py_BEGIN_ALLOW_THREADS
 
 		result = liblnk_check_file_signature(
@@ -294,10 +306,15 @@ PyObject *pylnk_check_file_signature(
 	}
 	PyErr_Clear();
 
+#if PY_MAJOR_VERSION >= 3
+	result = PyObject_IsInstance(
+		  string_object,
+		  (PyObject *) &PyBytes_Type );
+#else
 	result = PyObject_IsInstance(
 		  string_object,
 		  (PyObject *) &PyString_Type );
-
+#endif
 	if( result == -1 )
 	{
 		PyErr_Fetch(
@@ -308,9 +325,13 @@ PyObject *pylnk_check_file_signature(
 		exception_string = PyObject_Repr(
 				    exception_value );
 
+#if PY_MAJOR_VERSION >= 3
+		error_string = PyBytes_AsString(
+				exception_string );
+#else
 		error_string = PyString_AsString(
 				exception_string );
-
+#endif
 		if( error_string != NULL )
 		{
 			PyErr_Format(
@@ -335,9 +356,13 @@ PyObject *pylnk_check_file_signature(
 	{
 		PyErr_Clear();
 
+#if PY_MAJOR_VERSION >= 3
+		filename_narrow = PyBytes_AsString(
+				   string_object );
+#else
 		filename_narrow = PyString_AsString(
 				   string_object );
-
+#endif
 		Py_BEGIN_ALLOW_THREADS
 
 		result = liblnk_check_file_signature(
@@ -479,16 +504,42 @@ on_error:
 	return( NULL );
 }
 
-/* Declarations for DLL import/export
+#if PY_MAJOR_VERSION >= 3
+
+/* The pylnk module definition
  */
-#ifndef PyMODINIT_FUNC
-#define PyMODINIT_FUNC void
-#endif
+PyModuleDef pylnk_module_definition = {
+	PyModuleDef_HEAD_INIT,
+
+	/* m_name */
+	"pylnk",
+	/* m_doc */
+	"Python liblnk module (pylnk).",
+	/* m_size */
+	-1,
+	/* m_methods */
+	pylnk_module_methods,
+	/* m_reload */
+	NULL,
+	/* m_traverse */
+	NULL,
+	/* m_clear */
+	NULL,
+	/* m_free */
+	NULL,
+};
+
+#endif /* PY_MAJOR_VERSION >= 3 */
 
 /* Initializes the pylnk module
  */
+#if PY_MAJOR_VERSION >= 3
+PyMODINIT_FUNC PyInit_pylnk(
+                void )
+#else
 PyMODINIT_FUNC initpylnk(
                 void )
+#endif
 {
 	PyObject *module                               = NULL;
 	PyTypeObject *data_flags_type_object           = NULL;
@@ -501,11 +552,19 @@ PyMODINIT_FUNC initpylnk(
 	 * This function must be called before grabbing the GIL
 	 * otherwise the module will segfault on a version mismatch
 	 */
+#if PY_MAJOR_VERSION >= 3
+	module = PyModule_Create(
+	          &pylnk_module_definition );
+#else
 	module = Py_InitModule3(
 	          "pylnk",
 	          pylnk_module_methods,
 	          "Python liblnk module (pylnk)." );
-
+#endif
+	if( module == NULL )
+	{
+		return( NULL );
+	}
 	PyEval_InitThreads();
 
 	gil_state = PyGILState_Ensure();
@@ -601,8 +660,20 @@ PyMODINIT_FUNC initpylnk(
 	 "file_attribute_flags",
 	 (PyObject *) file_attribute_flags_type_object );
 
+#if PY_MAJOR_VERSION >= 3
+	return( module );
+#else
+	return
+#endif
+
 on_error:
 	PyGILState_Release(
 	 gil_state );
+
+#if PY_MAJOR_VERSION >= 3
+	return( NULL );
+#else
+	return
+#endif
 }
 

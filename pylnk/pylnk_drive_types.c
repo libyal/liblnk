@@ -32,10 +32,8 @@
 #include "pylnk_unused.h"
 
 PyTypeObject pylnk_drive_types_type_object = {
-	PyObject_HEAD_INIT( NULL )
+	PyVarObject_HEAD_INIT( NULL, 0 )
 
-	/* ob_size */
-	0,
 	/* tp_name */
 	"pylnk.drive_types",
 	/* tp_basicsize */
@@ -134,6 +132,8 @@ PyTypeObject pylnk_drive_types_type_object = {
 int pylnk_drive_types_init_type(
      PyTypeObject *type_object )
 {
+	PyObject *value_object = NULL;
+
 	if( type_object == NULL )
 	{
 		return( -1 );
@@ -144,59 +144,101 @@ int pylnk_drive_types_init_type(
 	{
 		return( -1 );
 	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_DRIVE_TYPE_UNKNOWN );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_DRIVE_TYPE_UNKNOWN );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
 	     "UNKNOWN",
-	     PyInt_FromLong(
-	      LIBLNK_DRIVE_TYPE_UNKNOWN ) ) != 0 )
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_DRIVE_TYPE_NO_ROOT_DIR );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_DRIVE_TYPE_NO_ROOT_DIR );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
 	     "NO_ROOT_DIR",
-	     PyInt_FromLong(
-	      LIBLNK_DRIVE_TYPE_NO_ROOT_DIR ) ) != 0 )
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_DRIVE_TYPE_REMOVABLE );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_DRIVE_TYPE_REMOVABLE );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
 	     "REMOVABLE",
-	     PyInt_FromLong(
-	      LIBLNK_DRIVE_TYPE_REMOVABLE ) ) != 0 )
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_DRIVE_TYPE_FIXED );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_DRIVE_TYPE_FIXED );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
 	     "FIXED",
-	     PyInt_FromLong(
-	      LIBLNK_DRIVE_TYPE_FIXED ) ) != 0 )
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_DRIVE_TYPE_REMOTE );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_DRIVE_TYPE_REMOTE );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
 	     "REMOTE",
-	     PyInt_FromLong(
-	      LIBLNK_DRIVE_TYPE_REMOTE ) ) != 0 )
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_DRIVE_TYPE_CDROM );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_DRIVE_TYPE_CDROM );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
 	     "CDROM",
-	     PyInt_FromLong(
-	      LIBLNK_DRIVE_TYPE_CDROM ) ) != 0 )
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
+#if PY_MAJOR_VERSION >= 3
+	value_object = PyLong_FromLong(
+	                LIBLNK_DRIVE_TYPE_RAMDISK );
+#else
+	value_object = PyInt_FromLong(
+	                LIBLNK_DRIVE_TYPE_RAMDISK );
+#endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
 	     "RAMDISK",
-	     PyInt_FromLong(
-	      LIBLNK_DRIVE_TYPE_RAMDISK ) ) != 0 )
+	     value_object ) != 0 )
 	{
 		goto on_error;
 	}
@@ -281,7 +323,8 @@ int pylnk_drive_types_init(
 void pylnk_drive_types_free(
       pylnk_drive_types_t *pylnk_drive_types )
 {
-	static char *function = "pylnk_drive_types_free";
+	struct _typeobject *ob_type = NULL;
+	static char *function       = "pylnk_drive_types_free";
 
 	if( pylnk_drive_types == NULL )
 	{
@@ -292,25 +335,28 @@ void pylnk_drive_types_free(
 
 		return;
 	}
-	if( pylnk_drive_types->ob_type == NULL )
+	ob_type = Py_TYPE(
+	           pylnk_drive_types );
+
+	if( ob_type == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
-		 "%s: invalid drive types - missing ob_type.",
+		 PyExc_ValueError,
+		 "%s: missing ob_type.",
 		 function );
 
 		return;
 	}
-	if( pylnk_drive_types->ob_type->tp_free == NULL )
+	if( ob_type->tp_free == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
-		 "%s: invalid drive types - invalid ob_type - missing tp_free.",
+		 PyExc_ValueError,
+		 "%s: invalid ob_type - missing tp_free.",
 		 function );
 
 		return;
 	}
-	pylnk_drive_types->ob_type->tp_free(
+	ob_type->tp_free(
 	 (PyObject*) pylnk_drive_types );
 }
 

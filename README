@@ -6,10 +6,10 @@ Project information:
 
 Work in progress:
 * Shell item support
+* Python 3 support
 
 Planned:
 * Multi-threading support
-* Python 3 support
 
 For more information see:
 * Project documentation: https://github.com/libyal/liblnk/wiki/Home
