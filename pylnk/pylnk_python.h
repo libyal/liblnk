@@ -62,6 +62,10 @@
 
 #endif /* !defined( PyVarObject_HEAD_INIT ) */
 
+#if PY_MAJOR_VERSION >= 3
+#define Py_TPFLAGS_HAVE_ITER		0
+#endif
+
 #if !defined( Py_TYPE )
 #define Py_TYPE( object ) \
 	( ( (PyObject *) object )->ob_type )
