@@ -105,7 +105,7 @@ PyObject *pylnk_file_set_ascii_codepage(
 
 int pylnk_file_set_ascii_codepage_setter(
      pylnk_file_t *pylnk_file,
-     PyObject *value_object,
+     PyObject *string_object,
      void *closure );
 
 PyObject *pylnk_file_get_file_creation_time(

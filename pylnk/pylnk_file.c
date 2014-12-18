@@ -1366,34 +1366,206 @@ PyObject *pylnk_file_set_ascii_codepage(
  */
 int pylnk_file_set_ascii_codepage_setter(
      pylnk_file_t *pylnk_file,
-     PyObject *value_object,
+     PyObject *string_object,
      void *closure PYLNK_ATTRIBUTE_UNUSED )
 {
-	char *codepage_string = NULL;
-	int result            = 0;
+	PyObject *exception_string    = NULL;
+	PyObject *exception_traceback = NULL;
+	PyObject *exception_type      = NULL;
+	PyObject *exception_value     = NULL;
+	PyObject *utf8_string_object  = NULL;
+	static char *function         = "pylnk_file_set_ascii_codepage_setter";
+	char *codepage_string         = NULL;
+	char *error_string            = NULL;
+	int result                    = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( closure )
 
-#if PY_MAJOR_VERSION >= 3
-	codepage_string = PyBytes_AsString(
-	                   value_object );
-#else
-	codepage_string = PyString_AsString(
-	                   value_object );
-#endif
-	if( codepage_string == NULL )
-	{
-		return( -1 );
-	}
-	result = pylnk_file_set_ascii_codepage_from_string(
-	          pylnk_file,
-	          codepage_string );
+	PyErr_Clear();
 
-	if( result != 1 )
+	result = PyObject_IsInstance(
+	          string_object,
+	          (PyObject *) &PyUnicode_Type );
+
+	if( result == -1 )
 	{
+		PyErr_Fetch(
+		 &exception_type,
+		 &exception_value,
+		 &exception_traceback );
+
+		exception_string = PyObject_Repr(
+		                    exception_value );
+
+#if PY_MAJOR_VERSION >= 3
+		error_string = PyBytes_AsString(
+		                exception_string );
+#else
+		error_string = PyString_AsString(
+		                exception_string );
+#endif
+		if( error_string != NULL )
+		{
+			PyErr_Format(
+		         PyExc_RuntimeError,
+			 "%s: unable to determine if string object is of type unicode with error: %s.",
+			 function,
+			 error_string );
+		}
+		else
+		{
+			PyErr_Format(
+		         PyExc_RuntimeError,
+			 "%s: unable to determine if string object is of type unicode.",
+			 function );
+		}
+		Py_DecRef(
+		 exception_string );
+
 		return( -1 );
 	}
-	return( 0 );
+	else if( result != 0 )
+	{
+		/* The codepage string should only contain ASCII characters.
+		 */
+		utf8_string_object = PyUnicode_AsUTF8String(
+		                      string_object );
+
+		if( utf8_string_object == NULL )
+		{
+			PyErr_Fetch(
+			 &exception_type,
+			 &exception_value,
+			 &exception_traceback );
+
+			exception_string = PyObject_Repr(
+					    exception_value );
+
+#if PY_MAJOR_VERSION >= 3
+			error_string = PyBytes_AsString(
+					exception_string );
+#else
+			error_string = PyString_AsString(
+					exception_string );
+#endif
+			if( error_string != NULL )
+			{
+				PyErr_Format(
+				 PyExc_RuntimeError,
+				 "%s: unable to convert unicode string to UTF-8 with error: %s.",
+				 function,
+				 error_string );
+			}
+			else
+			{
+				PyErr_Format(
+				 PyExc_RuntimeError,
+				 "%s: unable to convert unicode string to UTF-8.",
+				 function );
+			}
+			Py_DecRef(
+			 exception_string );
+
+			return( -1 );
+		}
+#if PY_MAJOR_VERSION >= 3
+		codepage_string = PyBytes_AsString(
+				   utf8_string_object );
+#else
+		codepage_string = PyString_AsString(
+				   utf8_string_object );
+#endif
+		if( codepage_string == NULL )
+		{
+			return( -1 );
+		}
+		result = pylnk_file_set_ascii_codepage_from_string(
+		          pylnk_file,
+		          codepage_string );
+
+		if( result != 1 )
+		{
+			return( -1 );
+		}
+		return( 0 );
+	}
+	PyErr_Clear();
+
+#if PY_MAJOR_VERSION >= 3
+	result = PyObject_IsInstance(
+		  string_object,
+		  (PyObject *) &PyBytes_Type );
+#else
+	result = PyObject_IsInstance(
+		  string_object,
+		  (PyObject *) &PyString_Type );
+#endif
+	if( result == -1 )
+	{
+		PyErr_Fetch(
+		 &exception_type,
+		 &exception_value,
+		 &exception_traceback );
+
+		exception_string = PyObject_Repr(
+				    exception_value );
+
+#if PY_MAJOR_VERSION >= 3
+		error_string = PyBytes_AsString(
+				exception_string );
+#else
+		error_string = PyString_AsString(
+				exception_string );
+#endif
+		if( error_string != NULL )
+		{
+			PyErr_Format(
+		         PyExc_RuntimeError,
+			 "%s: unable to determine if string object is of type string with error: %s.",
+			 function,
+			 error_string );
+		}
+		else
+		{
+			PyErr_Format(
+		         PyExc_RuntimeError,
+			 "%s: unable to determine if string object is of type string.",
+			 function );
+		}
+		Py_DecRef(
+		 exception_string );
+
+		return( -1 );
+	}
+	else if( result != 0 )
+	{
+#if PY_MAJOR_VERSION >= 3
+		codepage_string = PyBytes_AsString(
+		                   string_object );
+#else
+		codepage_string = PyString_AsString(
+		                   string_object );
+#endif
+		if( codepage_string == NULL )
+		{
+			return( -1 );
+		}
+		result = pylnk_file_set_ascii_codepage_from_string(
+			  pylnk_file,
+			  codepage_string );
+
+		if( result != 1 )
+		{
+			return( -1 );
+		}
+		return( 0 );
+	}
+	PyErr_Format(
+	 PyExc_TypeError,
+	 "%s: unsupported string object type.",
+	 function );
+
+	return( -1 );
 }
 
 /* Retrieves the creation date and time of the linked item

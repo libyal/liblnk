@@ -43,8 +43,8 @@ def pylnk_test_single_open_close_file(filename, mode):
   else:
     filename_string = filename
 
-  print "Testing single open close of: {0:s} with access: {1:s}\t".format(
-      filename_string, get_mode_string(mode))
+  print("Testing single open close of: {0:s} with access: {1:s}\t".format(
+      filename_string, get_mode_string(mode)))
 
   try:
     lnk_file = pylnk.file()
@@ -52,35 +52,41 @@ def pylnk_test_single_open_close_file(filename, mode):
     lnk_file.open(filename, mode)
     lnk_file.close()
 
-  except TypeError, exception:
-    if (not filename and
-        exception.message == "pylnk_file_open: unsupported string object type."):
+  except TypeError as exception:
+    expected_message = (
+        "{0:s}: unsupported string object type.").format(
+            "pylnk_file_open")
+
+    if not filename and str(exception) == expected_message:
       pass
 
     else:
-      print "(FAIL)"
+      print("(FAIL)")
       return False
 
-  except ValueError, exception:
-    if (mode == "w" and
-        exception.message == "pylnk_file_open: unsupported mode: w."):
+  except ValueError as exception:
+    expected_message = (
+        "{0:s}: unsupported mode: w.").format(
+            "pylnk_file_open")
+
+    if mode == "w" and str(exception) == expected_message:
       pass
 
     else:
-      print "(FAIL)"
+      print("(FAIL)")
       return False
 
   except:
-    print "(FAIL)"
+    print("(FAIL)")
     return False
 
-  print "(PASS)"
+  print("(PASS)")
   return True
 
 
 def pylnk_test_multi_open_close_file(filename, mode):
-  print "Testing multi open close of: {0:s} with access: {1:s}\t".format(
-      filename, get_mode_string(mode))
+  print("Testing multi open close of: {0:s} with access: {1:s}\t".format(
+      filename, get_mode_string(mode)))
 
   try:
     lnk_file = pylnk.file()
@@ -91,16 +97,16 @@ def pylnk_test_multi_open_close_file(filename, mode):
     lnk_file.close()
 
   except:
-    print "(FAIL)"
+    print("(FAIL)")
     return False
 
-  print "(PASS)"
+  print("(PASS)")
   return True
 
 
 def pylnk_test_single_open_close_file_object(filename, mode):
-  print ("Testing single open close of file-like object of: {0:s} with access: "
-         "{1:s}\t").format(filename, get_mode_string(mode))
+  print(("Testing single open close of file-like object of: {0:s} "
+         "with access: {1:s}\t").format(filename, get_mode_string(mode)))
 
   try:
     file_object = open(filename, mode)
@@ -110,17 +116,18 @@ def pylnk_test_single_open_close_file_object(filename, mode):
     lnk_file.close()
 
   except:
-    print "(FAIL)"
+    print("(FAIL)")
     return False
 
-  print "(PASS)"
+  print("(PASS)")
   return True
 
 
 def pylnk_test_single_open_close_file_object_with_dereference(
     filename, mode):
-  print ("Testing single open close of file-like object with dereference of: "
-         "{0:s} with access: {1:s}\t").format(filename, get_mode_string(mode))
+  print(("Testing single open close of file-like object with dereference "
+         "of: {0:s} with access: {1:s}\t").format(
+      filename, get_mode_string(mode)))
 
   try:
     file_object = open(filename, mode)
@@ -131,16 +138,16 @@ def pylnk_test_single_open_close_file_object_with_dereference(
     lnk_file.close()
 
   except:
-    print "(FAIL)"
+    print("(FAIL)")
     return False
 
-  print "(PASS)"
+  print("(PASS)")
   return True
 
 
 def pylnk_test_multi_open_close_file_object(filename, mode):
-  print ("Testing multi open close of file-like object of: {0:s} with access: "
-         "{1:s}\t").format(filename, get_mode_string(mode))
+  print(("Testing multi open close of file-like object of: {0:s} "
+         "with access: {1:s}\t").format(filename, get_mode_string(mode)))
 
   try:
     file_object = open(filename, mode)
@@ -151,10 +158,10 @@ def pylnk_test_multi_open_close_file_object(filename, mode):
     lnk_file.open_file_object(file_object, mode)
     lnk_file.close()
   except:
-    print "(FAIL)"
+    print("(FAIL)")
     return False
 
-  print "(PASS)"
+  print("(PASS)")
   return True
 
 
@@ -169,10 +176,10 @@ def main():
   options = args_parser.parse_args()
 
   if not options.source:
-    print u"Source value is missing."
-    print u""
+    print("Source value is missing.")
+    print("")
     args_parser.print_help()
-    print u""
+    print("")
     return False
 
   if not pylnk_test_single_open_close_file(options.source, "r"):
