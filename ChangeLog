@@ -53,6 +53,10 @@ Bindings:
 * .net
 * java
 
+20141220
+* worked on Python 3 support
+* worked on tests
+
 20141218
 * worked on Python 3 support
 

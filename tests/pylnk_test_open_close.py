@@ -46,6 +46,7 @@ def pylnk_test_single_open_close_file(filename, mode):
   print("Testing single open close of: {0:s} with access: {1:s}\t".format(
       filename_string, get_mode_string(mode)))
 
+  result = True
   try:
     lnk_file = pylnk.file()
 
@@ -61,33 +62,34 @@ def pylnk_test_single_open_close_file(filename, mode):
       pass
 
     else:
-      print("(FAIL)")
-      return False
+      print(str(exception))
+      result = False
 
   except ValueError as exception:
     expected_message = (
         "{0:s}: unsupported mode: w.").format(
             "pylnk_file_open")
 
-    if mode == "w" and str(exception) == expected_message:
-      pass
+    if mode != "w" or str(exception) != expected_message:
+      print(str(exception))
+      result = False
 
-    else:
-      print("(FAIL)")
-      return False
+  except Exception as exception:
+    print(str(exception))
+    result = False
 
-  except:
+  if not result:
     print("(FAIL)")
-    return False
-
-  print("(PASS)")
-  return True
+  else:
+    print("(PASS)")
+  return result
 
 
 def pylnk_test_multi_open_close_file(filename, mode):
   print("Testing multi open close of: {0:s} with access: {1:s}\t".format(
       filename, get_mode_string(mode)))
 
+  result = True
   try:
     lnk_file = pylnk.file()
 
@@ -96,31 +98,38 @@ def pylnk_test_multi_open_close_file(filename, mode):
     lnk_file.open(filename, mode)
     lnk_file.close()
 
-  except:
-    print("(FAIL)")
-    return False
+  except Exception as exception:
+    print(str(exception))
+    result = False
 
-  print("(PASS)")
-  return True
+  if not result:
+    print("(FAIL)")
+  else:
+    print("(PASS)")
+  return result
 
 
 def pylnk_test_single_open_close_file_object(filename, mode):
   print(("Testing single open close of file-like object of: {0:s} "
          "with access: {1:s}\t").format(filename, get_mode_string(mode)))
 
+  result = True
   try:
-    file_object = open(filename, mode)
+    file_object = open(filename, "rb")
     lnk_file = pylnk.file()
 
     lnk_file.open_file_object(file_object, mode)
     lnk_file.close()
 
-  except:
-    print("(FAIL)")
-    return False
+  except Exception as exception:
+    print(str(exception))
+    result = False
 
-  print("(PASS)")
-  return True
+  if not result:
+    print("(FAIL)")
+  else:
+    print("(PASS)")
+  return result
 
 
 def pylnk_test_single_open_close_file_object_with_dereference(
@@ -129,40 +138,49 @@ def pylnk_test_single_open_close_file_object_with_dereference(
          "of: {0:s} with access: {1:s}\t").format(
       filename, get_mode_string(mode)))
 
+  result = True
   try:
-    file_object = open(filename, mode)
+    file_object = open(filename, "rb")
     lnk_file = pylnk.file()
 
     lnk_file.open_file_object(file_object, mode)
     del file_object
     lnk_file.close()
 
-  except:
-    print("(FAIL)")
-    return False
+  except Exception as exception:
+    print(str(exception))
+    result = False
 
-  print("(PASS)")
-  return True
+  if not result:
+    print("(FAIL)")
+  else:
+    print("(PASS)")
+  return result
 
 
 def pylnk_test_multi_open_close_file_object(filename, mode):
   print(("Testing multi open close of file-like object of: {0:s} "
          "with access: {1:s}\t").format(filename, get_mode_string(mode)))
 
+  result = True
   try:
-    file_object = open(filename, mode)
+    file_object = open(filename, "rb")
     lnk_file = pylnk.file()
 
     lnk_file.open_file_object(file_object, mode)
     lnk_file.close()
     lnk_file.open_file_object(file_object, mode)
     lnk_file.close()
-  except:
-    print("(FAIL)")
-    return False
 
-  print("(PASS)")
-  return True
+  except Exception as exception:
+    print(str(exception))
+    result = False
+
+  if not result:
+    print("(FAIL)")
+  else:
+    print("(PASS)")
+  return result
 
 
 def main():
@@ -206,6 +224,7 @@ def main():
     return False
 
   return True
+
 
 if __name__ == "__main__":
   if not main():
