@@ -1,13 +1,12 @@
 Source: liblnk
-Section: unknown
+Section: libs
 Priority: extra
 Maintainer: Joachim Metz <joachim.metz@gmail.com>
 Build-Depends: debhelper (>= 7), autotools-dev, python-dev
-Standards-Version: 3.8.3
+Standards-Version: 3.9.5
 Homepage: https://github.com/libyal/liblnk/
 
 Package: liblnk
-Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: liblnk-dbg
@@ -17,28 +16,28 @@ Description: Library to access the Windows Shortcut File (LNK) format
 Package: liblnk-dbg
 Architecture: any
 Section: debug
-Depends: liblnk (= ${Source-Version}), ${misc:Depends}
+Depends: liblnk (= ${binary:Version}), ${misc:Depends}
 Description: Debugging symbols for liblnk
  Debugging symbols for liblnk.
 
 Package: liblnk-dev
 Section: libdevel
 Architecture: any
-Depends: liblnk (= ${Source-Version})
+Depends: liblnk (= ${binary:Version}), ${misc:Depends}
 Description: Header files and libraries for developing applications for liblnk
  Header files and libraries for developing applications for liblnk.
 
 Package: liblnk-tools
 Section: utils
 Architecture: any
-Depends: liblnk (= ${Source-Version}), ${shlibs:Depends}
+Depends: liblnk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
 Description: Several tools for reading Windows Shortcut Files (LNK)
  Several tools for reading Windows Shortcut Files (LNK).
 
 Package: liblnk-python
 Section: python
 Architecture: any
-Depends: liblnk (= ${Source-Version}), ${shlibs:Depends}, python
+Depends: liblnk (= ${binary:Version}), ${shlibs:Depends}, python, ${misc:Depends}
 Suggests: liblnk-python-dbg
 Description: Python bindings for liblnk
  Python bindings for liblnk.
@@ -46,7 +45,7 @@ Description: Python bindings for liblnk
 Package: liblnk-python-dbg
 Section: debug
 Architecture: any
-Depends: liblnk-python (= ${Source-Version})
+Depends: liblnk-python (= ${binary:Version}), ${misc:Depends}
 Description: Debugging symbols for liblnk-python
  Debugging symbols for liblnk-python.
 

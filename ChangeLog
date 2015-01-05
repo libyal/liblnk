@@ -1,7 +1,6 @@
 TODO
 * lnkinfo: : should be before \t
 * check behavior of liblnk_file_link_refers_to_file() seems to block certain time values from being printed.
-* update msvscpp files
 * what about trailing data in xp lnk files ?
 * what about shell items
 * what about ole properties
@@ -41,17 +40,8 @@ API
   - for special and/or known folder identifier
 * remove liblnk_file_get_link_target_identifier_data
 
-Release:
-* check TODOs
-* configure
- - check inclusion local library functions
-* update manuals
-* automated tests
-  - 2x open/close (bfio and normal)
-
-Bindings:
-* .net
-* java
+20150105
+* 2015 update
 
 20141222
 * worked on Python 3 support
