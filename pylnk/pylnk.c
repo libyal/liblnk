@@ -459,6 +459,14 @@ PyMODINIT_FUNC initpylnk(
 	PyTypeObject *file_attribute_flags_type_object = NULL;
 	PyGILState_STATE gil_state                     = 0;
 
+#if defined( HAVE_DEBUG_OUTPUT )
+	liblnk_notify_set_stream(
+	 stderr,
+	 NULL );
+	liblnk_notify_set_verbose(
+	 1 );
+#endif
+
 	/* Create the module
 	 * This function must be called before grabbing the GIL
 	 * otherwise the module will segfault on a version mismatch
