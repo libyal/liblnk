@@ -737,13 +737,13 @@ See `[LIBFWSI]`
 |===
 
 == Windows definitions
-=== [[file_attribute_flag]]File attribute flags
+=== [[file_attribute_flags]]File attribute flags
 The file attribute flags consist of the following values:
 
 [cols="1,1,5",options="header"]
 |===
 | Value | Identifier | Description
-| 0x00000001 | FILE_ATTRIBUTE_READONLY | Is read-Only
+| 0x00000001 | FILE_ATTRIBUTE_READONLY | Is read-only
 | 0x00000002 | FILE_ATTRIBUTE_HIDDEN | Is hidden
 | 0x00000004 | FILE_ATTRIBUTE_SYSTEM | Is a system file or directory
 | 0x00000008 | | Reserved, not used by the LNK format +
