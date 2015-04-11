@@ -4,6 +4,7 @@ Analysis of the Windows Shortcut File (LNK) format
 :toc:
 :toc-placement: manual
 :toclevels: 4
+:toc-position: right
 
 :numbered!:
 [abstract]
