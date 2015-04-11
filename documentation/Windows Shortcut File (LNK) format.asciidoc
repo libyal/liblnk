@@ -60,6 +60,10 @@ in the section entitled "GNU Free Documentation License".
 | 0.0.18 | J.B. Metz | October 2014 | Switched to asccidoc format.
 |===
 
+:toc:
+:toc-placement: preamble
+:icons:
+
 :numbered:
 == Overview
 A Windows Shortcut File (LNK) is used by Microsoft Windows to link to multiple 
