@@ -3,8 +3,8 @@ Analysis of the Windows Shortcut File (LNK) format
 
 :toc:
 :toc-placement: manual
+:toc-title: 
 :toclevels: 4
-:toc-position: right
 
 :numbered!:
 [abstract]
@@ -41,6 +41,10 @@ in the section entitled "GNU Free Documentation License".
 ....
 
 [preface]
+== Table of contents
+toc::[]
+
+[preface]
 == Revision history
 [cols="1,1,1,5",options="header"]
 |===
@@ -64,8 +68,6 @@ in the section entitled "GNU Free Documentation License".
 | 0.0.17 | J.B. Metz | October 2014 | Corrected format GUID with thanks to J. Sylve.
 | 0.0.18 | J.B. Metz | October 2014 | Switched to asccidoc format.
 |===
-
-toc::[]
 
 :numbered:
 == Overview
