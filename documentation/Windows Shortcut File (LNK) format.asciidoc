@@ -1,6 +1,9 @@
 = Windows Shortcut File format specification
 Analysis of the Windows Shortcut File (LNK) format
 
+:toc:
+:toc-placement: manual
+
 :numbered!:
 [abstract]
 == Summary
@@ -60,9 +63,7 @@ in the section entitled "GNU Free Documentation License".
 | 0.0.18 | J.B. Metz | October 2014 | Switched to asccidoc format.
 |===
 
-:toc:
-:toc-placement: preamble
-:icons:
+toc::[]
 
 :numbered:
 == Overview
