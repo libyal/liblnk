@@ -434,7 +434,7 @@ ssize_t liblnk_location_information_read(
 		if( libcnotify_verbose != 0 )
 		{
 			libcnotify_printf(
-			 "%s: location information unicode local path offset\t\t: %" PRIu32 "\n",
+			 "%s: location information unicode local path offset\t: %" PRIu32 "\n",
 			 function,
 			 unicode_local_path_offset );
 		}
@@ -450,7 +450,7 @@ ssize_t liblnk_location_information_read(
 		if( libcnotify_verbose != 0 )
 		{
 			libcnotify_printf(
-			 "%s: location information unicode common path offset\t\t: %" PRIu32 "\n",
+			 "%s: location information unicode common path offset\t: %" PRIu32 "\n",
 			 function,
 			 unicode_common_path_offset );
 		}
@@ -959,7 +959,7 @@ ssize_t liblnk_location_information_read(
 			if( libcnotify_verbose != 0 )
 			{
 				libcnotify_printf(
-				 "%s: unicode local path data size\t\t\t: %" PRIu32 "\n",
+				 "%s: unicode local path data size\t\t\t\t: %" PRIu32 "\n",
 				 function,
 				 value_size );
 
@@ -1981,7 +1981,7 @@ ssize_t liblnk_location_information_read(
 		if( libcnotify_verbose != 0 )
 		{
 			libcnotify_printf(
-			 "%s: unicode common path data size\t\t\t: %" PRIu32 "\n",
+			 "%s: unicode common path data size\t\t\t\t: %" PRIu32 "\n",
 			 function,
 			 value_size );
 

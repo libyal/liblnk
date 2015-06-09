@@ -658,7 +658,7 @@ int liblnk_file_get_utf8_volume_label(
 	{
 		return( 0 );
 	}
-	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE ) != 0 )
+	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
 	{
 		result = libuna_utf8_string_with_index_copy_from_utf16_stream(
 			  utf8_string,
@@ -853,7 +853,7 @@ int liblnk_file_get_utf16_volume_label(
 	{
 		return( 0 );
 	}
-	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE ) != 0 )
+	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
 	{
 		result = libuna_utf16_string_with_index_copy_from_utf16_stream(
 			  utf16_string,
