@@ -311,7 +311,6 @@ ssize_t liblnk_location_information_read(
 	location_information_data = (uint8_t *) memory_allocate(
 	                                         sizeof( uint8_t ) * location_information_size );
 
-
 	if( location_information_data == NULL )
 	{
 		libcerror_error_set(
@@ -481,7 +480,8 @@ ssize_t liblnk_location_information_read(
 		}
 		volume_information_offset -= 4;
 
-		if( volume_information_offset > location_information_size )
+		if( ( location_information_size < 4 )
+		 || ( volume_information_offset > ( location_information_size - 4 ) ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -498,6 +498,17 @@ ssize_t liblnk_location_information_read(
 		 ( (lnk_volume_information_t *) location_information_value_data )->size,
 		 location_information_value_size );
 
+		if( location_information_value_size > ( location_information_size - volume_information_offset ) )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: location information value size exceeds location information size.",
+			 function );
+
+			goto on_error;
+		}
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libcnotify_verbose != 0 )
 		{
