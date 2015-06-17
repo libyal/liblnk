@@ -480,14 +480,24 @@ ssize_t liblnk_location_information_read(
 		}
 		volume_information_offset -= 4;
 
-		if( ( location_information_size < 4 )
-		 || ( volume_information_offset > ( location_information_size - 4 ) ) )
+		if( location_information_size < 4 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-			 "%s: volume information offset exceeds location information data.",
+			 "%s: location information size value out of bounds.",
+			 function );
+
+			goto on_error;
+		}
+		if( volume_information_offset > ( location_information_size - 4 ) )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: volume information offset exceeds location information size.",
 			 function );
 
 			goto on_error;
@@ -521,6 +531,17 @@ ssize_t liblnk_location_information_read(
 			 0 );
 		}
 #endif
+		if( location_information_value_size < 16 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: location information value size value out of bounds.",
+			 function );
+
+			goto on_error;
+		}
 		byte_stream_copy_to_uint32_little_endian(
 		 ( (lnk_volume_information_t *) location_information_value_data )->drive_type,
 		 location_information->drive_type );
@@ -1207,13 +1228,24 @@ ssize_t liblnk_location_information_read(
 		}
 		network_share_information_offset -= 4;
 
-		if( network_share_information_offset > location_information_size )
+		if( location_information_value_size < 4 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-			 "%s: network share information offset exceeds location information data.",
+			 "%s: location information value size value out of bounds.",
+			 function );
+
+			goto on_error;
+		}
+		if( network_share_information_offset > ( location_information_size - 4 ) )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: network share information offset exceeds location information size.",
 			 function );
 
 			goto on_error;
@@ -1236,9 +1268,21 @@ ssize_t liblnk_location_information_read(
 			 0 );
 		}
 #endif
+		if( location_information_value_size < 16 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: location information value size value out of bounds.",
+			 function );
+
+			goto on_error;
+		}
 		byte_stream_copy_to_uint32_little_endian(
 		 ( (lnk_network_share_information_t *) location_information_value_data )->network_share_name_offset,
 		 network_share_name_offset );
+
 		byte_stream_copy_to_uint32_little_endian(
 		 ( (lnk_network_share_information_t *) location_information_value_data )->device_name_offset,
 		 device_name_offset );
@@ -1285,6 +1329,7 @@ ssize_t liblnk_location_information_read(
 			byte_stream_copy_to_uint32_little_endian(
 			 ( (lnk_network_share_information_t *) location_information_value_data )->unicode_network_share_name_offset,
 			 unicode_network_share_name_offset );
+
 			byte_stream_copy_to_uint32_little_endian(
 			 ( (lnk_network_share_information_t *) location_information_value_data )->unicode_device_name_offset,
 			 unicode_device_name_offset );
