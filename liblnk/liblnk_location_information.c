@@ -348,7 +348,7 @@ ssize_t liblnk_location_information_read(
 		libcnotify_print_data(
 		 location_information_data,
 		 location_information_size,
-		 0 );
+		 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 	}
 #endif
 	byte_stream_copy_to_uint32_little_endian(
@@ -514,7 +514,7 @@ ssize_t liblnk_location_information_read(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-			 "%s: location information value size exceeds location information size.",
+			 "%s: volume information data size value out of bounds.",
 			 function );
 
 			goto on_error;
@@ -528,7 +528,7 @@ ssize_t liblnk_location_information_read(
 			libcnotify_print_data(
 			 location_information_value_data,
 			 location_information_value_size,
-			 0 );
+			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 		}
 #endif
 		if( location_information_value_size < 16 )
@@ -636,7 +636,7 @@ ssize_t liblnk_location_information_read(
 				libcnotify_print_data(
 				 location_information_value_data,
 				 value_size,
-				 0 );
+				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
 #endif
 		}
@@ -681,7 +681,7 @@ ssize_t liblnk_location_information_read(
 				libcnotify_print_data(
 				 location_information_unicode_value_data,
 				 unicode_value_size,
-				 0 );
+				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
 #endif
 			location_information->volume_label = (uint8_t *) memory_allocate(
@@ -943,7 +943,7 @@ ssize_t liblnk_location_information_read(
 				libcnotify_print_data(
 				 location_information_value_data,
 				 value_size,
-				 0 );
+				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
 #endif
 		}
@@ -1001,7 +1001,7 @@ ssize_t liblnk_location_information_read(
 				libcnotify_print_data(
 				 location_information_unicode_value_data,
 				 unicode_value_size,
-				 0 );
+				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
 #endif
 			location_information->local_path = (uint8_t *) memory_allocate(
@@ -1256,6 +1256,17 @@ ssize_t liblnk_location_information_read(
 		 ( (lnk_network_share_information_t *) location_information_value_data )->size,
 		 location_information_value_size );
 
+		if( location_information_value_size > ( location_information_size - network_share_information_offset ) )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: network share information data size value out of bounds.",
+			 function );
+
+			goto on_error;
+		}
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libcnotify_verbose != 0 )
 		{
@@ -1265,7 +1276,7 @@ ssize_t liblnk_location_information_read(
 			libcnotify_print_data(
 			 location_information_value_data,
 			 location_information_value_size,
-			 0 );
+			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 		}
 #endif
 		if( location_information_value_size < 16 )
@@ -1389,7 +1400,7 @@ ssize_t liblnk_location_information_read(
 				libcnotify_print_data(
 				 location_information_value_data,
 				 value_size,
-				 0 );
+				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
 #endif
 		}
@@ -1434,7 +1445,7 @@ ssize_t liblnk_location_information_read(
 				libcnotify_print_data(
 				 location_information_unicode_value_data,
 				 unicode_value_size,
-				 0 );
+				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
 #endif
 			location_information->network_share_name = (uint8_t *) memory_allocate(
@@ -1681,7 +1692,7 @@ ssize_t liblnk_location_information_read(
 				libcnotify_print_data(
 				 location_information_value_data,
 				 value_size,
-				 0 );
+				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
 #endif
 		}
@@ -1726,7 +1737,7 @@ ssize_t liblnk_location_information_read(
 				libcnotify_print_data(
 				 location_information_unicode_value_data,
 				 unicode_value_size,
-				 0 );
+				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
 #endif
 			location_information->device_name = (uint8_t *) memory_allocate(
@@ -1989,7 +2000,7 @@ ssize_t liblnk_location_information_read(
 			libcnotify_print_data(
 			 location_information_value_data,
 			 value_size,
-			 0 );
+			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 		}
 #endif
 	}
@@ -2047,7 +2058,7 @@ ssize_t liblnk_location_information_read(
 			libcnotify_print_data(
 			 location_information_unicode_value_data,
 			 unicode_value_size,
-			 0 );
+			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 		}
 #endif
 		location_information->common_path = (uint8_t *) memory_allocate(
