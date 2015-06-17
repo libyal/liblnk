@@ -1228,13 +1228,13 @@ ssize_t liblnk_location_information_read(
 		}
 		network_share_information_offset -= 4;
 
-		if( location_information_value_size < 4 )
+		if( location_information_size < 4 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-			 "%s: location information value size value out of bounds.",
+			 "%s: location information size value out of bounds.",
 			 function );
 
 			goto on_error;
