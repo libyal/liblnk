@@ -900,7 +900,7 @@ The Hot Key values consists of 2 bytes each bytes contains part of the correspon
 | Title: | Windows Shell Item format
 | Author(s): | Joachim Metz
 | Date: | June 2010
-| URL: | https://googledrive.com/host/0B3fBvzttpiiSajVqblZQT3FYZzg/Windows%20Shell%20Item%20format.pdf
+| URL: | https://github.com/libyal/libfwsi/blob/master/documentation/Windows%20Shell%20Item%20format.asciidoc
 |===
 
 `[LIBFWPS]`
@@ -910,7 +910,7 @@ The Hot Key values consists of 2 bytes each bytes contains part of the correspon
 | Title: | Windows Property Store format
 | Author(s): | Joachim Metz
 | Date: | June 2013
-| URL: | https://googledrive.com/host/0B3fBvzttpiiSc3VuS1J1QmtEYzA/Windows%20Property%20Store%20format.pdf
+| URL: | https://github.com/libyal/libfwps/blob/master/documentation/Windows%20Property%20Store%20format.asciidoc
 |===
 
 [appendix]
