@@ -127,7 +127,7 @@ The following version of programs were used to test the information within this 
 * Windows 7
 * Windows 8
 * [yellow-background]*TODO: Windows 2012*
-* [yellow-background]*TODO: Windows 10*
+* Windows 10
 
 == File header
 The file header is 76 bytes of size and consists of:
