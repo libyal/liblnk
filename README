@@ -1,17 +1,21 @@
 liblnk is a library to access the Windows Shortcut File (LNK) format.
 
 Project information:
+
 * Status: alpha
 * Licence: LGPLv3+
 
 Work in progress:
+
 * Shell item support
 * Python 3 support
 
 Planned:
+
 * Multi-threading support
 
 For more information see:
+
 * Project documentation: https://github.com/libyal/liblnk/wiki/Home
 * How to build from source: https://github.com/libyal/liblnk/wiki/Building
 

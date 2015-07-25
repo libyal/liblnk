@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
- [20150617],
+ [20150725],
  [joachim.metz@gmail.com])
 
 AC_CONFIG_SRCDIR(
@@ -229,7 +229,6 @@ AC_CONFIG_FILES([common/types.h])
 AC_CONFIG_FILES([dpkg/changelog])
 AC_CONFIG_FILES([dpkg/copyright])
 AC_CONFIG_FILES([liblnk/liblnk.rc])
-AC_CONFIG_FILES([pylnk/setup.py])
 AC_CONFIG_FILES([liblnk.pc])
 AC_CONFIG_FILES([liblnk.spec])
 dnl Have configure write its configuration

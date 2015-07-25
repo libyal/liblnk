@@ -1,6 +1,6 @@
 # Files to ignore by git
 #
-# Version: 20141227
+# Version: 20150725
 
 # Generic auto-generated build files
 *~
@@ -40,7 +40,9 @@ stamp-h[1-9]
 /config.status
 /config.sub
 /configure
+/build
 /depcomp
+/dist
 /install-sh
 /libtool
 /ltmain.sh
@@ -110,13 +112,14 @@ stamp-h[1-9]
 /include/liblnk/types.h
 /liblnk/liblnk.rc
 /liblnk/liblnk_definitions.h
+/LICENSE.pylnk
 /lnktools/lnkinfo
 /pylnk/setup.py
 /lnktools/lnkinfo
 /tests/input
 /tests/lnk_test_open_close
 /tests/lnk_test_set_ascii_codepage
-/tests/tmp
+/tests/tmp*
 
 # Local library dependencies specific files
 /libbfio
