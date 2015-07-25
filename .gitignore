@@ -33,6 +33,7 @@ stamp-h[1-9]
 /ABOUT-NLS
 /aclocal.m4
 /autom4te.cache/
+/build
 /compile
 /config.guess
 /config.log
@@ -40,7 +41,6 @@ stamp-h[1-9]
 /config.status
 /config.sub
 /configure
-/build
 /depcomp
 /dist
 /install-sh
