@@ -40,6 +40,9 @@ API
   - for special and/or known folder identifier
 * remove liblnk_file_get_link_target_identifier_data
 
+20150726
+* worked on tests
+
 20150725
 * worked on setup.py
 

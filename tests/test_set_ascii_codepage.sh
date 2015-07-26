@@ -24,16 +24,18 @@ EXIT_SUCCESS=0;
 EXIT_FAILURE=1;
 EXIT_IGNORE=77;
 
-LNK_TEST_SET_ASCII_CODEPAGE="lnk_test_set_ascii_codepage";
+TEST_PREFIX="lnk";
 
-if ! test -x ${LNK_TEST_SET_ASCII_CODEPAGE};
+TEST_SET_ASCII_CODEPAGE="${TEST_PREFIX}_test_set_ascii_codepage";
+
+if ! test -x ${TEST_SET_ASCII_CODEPAGE};
 then
-	LNK_TEST_SET_ASCII_CODEPAGE="lnk_test_set_ascii_codepage.exe";
+	TEST_SET_ASCII_CODEPAGE="${TEST_PREFIX}_test_set_ascii_codepage.exe";
 fi
 
-if ! test -x ${LNK_TEST_SET_ASCII_CODEPAGE};
+if ! test -x ${TEST_SET_ASCII_CODEPAGE};
 then
-	echo "Missing executable: ${LNK_TEST_SET_ASCII_CODEPAGE}";
+	echo "Missing executable: ${TEST_SET_ASCII_CODEPAGE}";
 
 	exit ${EXIT_FAILURE};
 fi
@@ -58,14 +60,16 @@ for CODEPAGE in ${CODEPAGES};
 do
 	echo -n -e "Testing setting supported ASCII codepage: ${CODEPAGE}\t"
 
-	rm -rf tmp;
-	mkdir tmp;
+	TMPDIR="tmp$$";
 
-	${TEST_RUNNER} ./${LNK_TEST_SET_ASCII_CODEPAGE} ${CODEPAGE};
+	rm -rf ${TMPDIR};
+	mkdir ${TMPDIR};
+
+	${TEST_RUNNER} ${TMPDIR} ./${TEST_SET_ASCII_CODEPAGE} ${CODEPAGE};
 
 	RESULT=$?;
 
-	rm -rf tmp;
+	rm -rf ${TMPDIR};
 
 	if test ${RESULT} -ne 0;
 	then
@@ -87,14 +91,16 @@ for CODEPAGE in ${CODEPAGES};
 do
 	echo -n -e "Testing setting unsupported ASCII codepage: ${CODEPAGE}\t"
 
-	rm -rf tmp;
-	mkdir tmp;
+	TMPDIR="tmp$$";
 
-	${TEST_RUNNER} ./${LNK_TEST_SET_ASCII_CODEPAGE} ${CODEPAGE};
+	rm -rf ${TMPDIR};
+	mkdir ${TMPDIR};
+
+	${TEST_RUNNER} ${TMPDIR} ./${TEST_SET_ASCII_CODEPAGE} ${CODEPAGE};
 
 	RESULT=$?;
 
-	rm -rf tmp;
+	rm -rf ${TMPDIR};
 
 	if test ${RESULT} -eq 0;
 	then
