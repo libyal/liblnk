@@ -188,6 +188,26 @@ PyObject *pylnk_file_get_link_target_identifier_data(
            pylnk_file_t *pylnk_file,
            PyObject *arguments );
 
+PyObject *pylnk_file_get_machine_identifier(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
+
+PyObject *pylnk_file_get_droid_volume_identifier(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
+
+PyObject *pylnk_file_get_droid_file_identifier(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
+
+PyObject *pylnk_file_get_birth_droid_volume_identifier(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
+
+PyObject *pylnk_file_get_birth_droid_file_identifier(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
+
 #if defined( __cplusplus )
 }
 #endif

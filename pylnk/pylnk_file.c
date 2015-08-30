@@ -31,6 +31,7 @@
 #include "pylnk_error.h"
 #include "pylnk_file.h"
 #include "pylnk_file_object_io_handle.h"
+#include "pylnk_guid.h"
 #include "pylnk_integer.h"
 #include "pylnk_libbfio.h"
 #include "pylnk_libcerror.h"
@@ -239,6 +240,41 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  "Returns the link target identifier data of the linked item.\n"
 	  "The string contains a shell item (identifier) list.\n" },
 
+	{ "get_droid_volume_identifier",
+	  (PyCFunction) pylnk_file_get_droid_volume_identifier,
+	  METH_NOARGS,
+	  "get_droid_volume_identifier() -> Unicode string or None\n"
+	  "\n"
+	  "Returns the droid volume identifier of the linked item." },
+
+	{ "get_machine_identifier",
+	  (PyCFunction) pylnk_file_get_machine_identifier,
+	  METH_NOARGS,
+	  "get_machine_identifier() -> Unicode string or None\n"
+	  "\n"
+	  "Returns the machine identifier of the linked item." },
+
+	{ "get_droid_file_identifier",
+	  (PyCFunction) pylnk_file_get_droid_file_identifier,
+	  METH_NOARGS,
+	  "get_droid_file_identifier() -> Unicode string or None\n"
+	  "\n"
+	  "Returns the droid file identifier of the linked item." },
+
+	{ "get_birth_droid_volume_identifier",
+	  (PyCFunction) pylnk_file_get_birth_droid_volume_identifier,
+	  METH_NOARGS,
+	  "get_droid_birth_volume_identifier() -> Unicode string or None\n"
+	  "\n"
+	  "Returns the birth droid volume identifier of the linked item." },
+
+	{ "get_birth_droid_file_identifier",
+	  (PyCFunction) pylnk_file_get_birth_droid_file_identifier,
+	  METH_NOARGS,
+	  "get_birth_droid_file_identifier() -> Unicode string or None\n"
+	  "\n"
+	  "Returns the birth droid file identifier of the linked item." },
+
 	/* Sentinel */
 	{ NULL, NULL, 0, NULL }
 };
@@ -352,6 +388,36 @@ PyGetSetDef pylnk_file_object_get_set_definitions[] = {
 	  (setter) 0,
 	  "The link target identifier data of the linked item.\n"
 	  "The string contains a shell item (identifier) list.",
+	  NULL },
+
+	{ "droid_volume_identifier",
+	  (getter) pylnk_file_get_droid_volume_identifier,
+	  (setter) 0,
+	  "The droid volume identifier of the linked item.",
+	  NULL },
+
+	{ "machine_identifier",
+	  (getter) pylnk_file_get_machine_identifier,
+	  (setter) 0,
+	  "The machine identifier of the linked item.",
+	  NULL },
+
+	{ "droid_file_identifier",
+	  (getter) pylnk_file_get_droid_file_identifier,
+	  (setter) 0,
+	  "The droid file identifier of the linked item.",
+	  NULL },
+
+	{ "birth_droid_volume_identifier",
+	  (getter) pylnk_file_get_birth_droid_volume_identifier,
+	  (setter) 0,
+	  "The birth droid volume identifier of the linked item.",
+	  NULL },
+
+	{ "birth_droid_file_identifier",
+	  (getter) pylnk_file_get_birth_droid_file_identifier,
+	  (setter) 0,
+	  "The birth droid file identifier of the linked item.",
 	  NULL },
 
 	/* Sentinel */
@@ -3293,5 +3359,501 @@ on_error:
 		 link_target_identifier_data );
 	}
 	return( NULL );
+}
+
+/* Retrieves the machine identifier of the linked item
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_machine_identifier(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	libcerror_error_t *error       = NULL;
+	PyObject *string_object        = NULL;
+	static char *function          = "pylnk_file_get_machine_identifier";
+	const char *errors             = NULL;
+	char *machine_identifier       = NULL;
+	size_t machine_identifier_size = 0;
+	int result                     = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_has_distributed_link_tracking_data(
+	          pylnk_file->file,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to determine if file has distributed link tracking data.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_utf8_machine_identifier_size(
+	          pylnk_file->file,
+	          &machine_identifier_size,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 mschine identifier size.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		goto on_error;
+	}
+	/* Check if the machine identifier is present
+	 */
+	else if( machine_identifier_size == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	machine_identifier = (char *) PyMem_Malloc(
+	                               sizeof( char ) * machine_identifier_size );
+
+	if( machine_identifier == NULL )
+	{
+		PyErr_Format(
+		 PyExc_MemoryError,
+		 "%s: unable to create UTF-8 machine identifier.",
+		 function );
+
+		goto on_error;
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_utf8_machine_identifier(
+	          pylnk_file->file,
+	          (uint8_t *) machine_identifier,
+	          machine_identifier_size,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 machine identifier.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		goto on_error;
+	}
+	/* Check if the machine identifier is present
+	 */
+	else if( result == 0 )
+	{
+		PyMem_Free(
+		 machine_identifier );
+
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
+	 */
+	string_object = PyUnicode_DecodeUTF8(
+	                 machine_identifier,
+	                 (Py_ssize_t) machine_identifier_size - 1,
+	                 errors );
+
+	if( string_object == NULL )
+	{
+		PyErr_Format(
+		 PyExc_IOError,
+		 "%s: unable to convert UTF-8 machine identifier into Unicode.",
+		 function );
+
+		goto on_error;
+	}
+	PyMem_Free(
+	 machine_identifier );
+
+	return( string_object );
+
+on_error:
+	if( machine_identifier != NULL )
+	{
+		PyMem_Free(
+		 machine_identifier );
+	}
+	return( NULL );
+}
+
+/* Retrieves the droid volume identifier of the linked item
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_droid_volume_identifier(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	uint8_t guid_data[ 16 ];
+
+	libcerror_error_t *error = NULL;
+	PyObject *string_object  = NULL;
+	static char *function    = "pylnk_file_get_droid_volume_identifier";
+	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_TypeError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_has_distributed_link_tracking_data(
+	          pylnk_file->file,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to determine if file has distributed link tracking data.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_droid_volume_identifier(
+	          pylnk_file->file,
+	          guid_data,
+	          16,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve droid volume identifier.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	string_object = pylnk_string_new_from_guid(
+			 guid_data,
+			 16 );
+
+	return( string_object );
+}
+
+/* Retrieves the droid file identifier of the linked item
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_droid_file_identifier(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	uint8_t guid_data[ 16 ];
+
+	libcerror_error_t *error = NULL;
+	PyObject *string_object  = NULL;
+	static char *function    = "pylnk_file_get_droid_file_identifier";
+	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_TypeError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_has_distributed_link_tracking_data(
+	          pylnk_file->file,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to determine if file has distributed link tracking data.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_droid_file_identifier(
+	          pylnk_file->file,
+	          guid_data,
+	          16,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve droid file identifier.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	string_object = pylnk_string_new_from_guid(
+			 guid_data,
+			 16 );
+
+	return( string_object );
+}
+
+/* Retrieves the birth droid volume identifier of the linked item
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_birth_droid_volume_identifier(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	uint8_t guid_data[ 16 ];
+
+	libcerror_error_t *error = NULL;
+	PyObject *string_object  = NULL;
+	static char *function    = "pylnk_file_get_birth_droid_volume_identifier";
+	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_TypeError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_has_distributed_link_tracking_data(
+	          pylnk_file->file,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to determine if file has distributed link tracking data.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_birth_droid_volume_identifier(
+	          pylnk_file->file,
+	          guid_data,
+	          16,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve birth droid volume identifier.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	string_object = pylnk_string_new_from_guid(
+			 guid_data,
+			 16 );
+
+	return( string_object );
+}
+
+/* Retrieves the birth droid file identifier of the linked item
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_birth_droid_file_identifier(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	uint8_t guid_data[ 16 ];
+
+	libcerror_error_t *error = NULL;
+	PyObject *string_object  = NULL;
+	static char *function    = "pylnk_file_get_birth_droid_file_identifier";
+	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_TypeError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_has_distributed_link_tracking_data(
+	          pylnk_file->file,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to determine if file has distributed link tracking data.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_birth_droid_file_identifier(
+	          pylnk_file->file,
+	          guid_data,
+	          16,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve birth droid file identifier.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	string_object = pylnk_string_new_from_guid(
+			 guid_data,
+			 16 );
+
+	return( string_object );
 }
 
