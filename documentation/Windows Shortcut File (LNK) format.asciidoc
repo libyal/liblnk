@@ -209,7 +209,7 @@ The link target identifier is variable of size and consists of:
 | Offset | Size | Value | Description
 | 0 | 2 | | The size of the link target identifier shell item identifiers list
 | 2 | ... | | The shell item identifiers list +
-See `[LIBFWSI]`
+See: https://github.com/libyal/libfwsi/blob/master/documentation/Windows%20Shell%20Item%20format.asciidoc[[LIBFWSI\]].
 |===
 
 == Location information
@@ -580,6 +580,8 @@ GUID containing an NTFS object identifier
 GUID containing an NTFS object identifier
 |===
 
+Droid in this context refers to CDomainRelativeObjId.
+
 The droid volume identifier can be found in the NTFS $OBJECT_ID attribute of 
 the $Volume file system metadata file. [yellow-background]*The LSB in the droid 
 volume identifier contains the cross volume move flag. This flag is set if a 
@@ -696,12 +698,13 @@ The value should be >= 12
 | 4 | 4 | 0xa0000009 | The extra block signature
 | 8 | ... | | Property store data +
 Contains one or more property stores +
-See: `[LIBFWPS]`
+See: https://github.com/libyal/libfwps/blob/master/documentation/Windows%20Property%20Store%20format.asciidoc[[LIBFWPS\]].
 |===
 
 ==== The property set class identifier
 The following property set identifiers are known to be used.
-For more information about the property sets and values see: `[LIBFWPS]`.
+For more information about the property sets and values see:
+https://github.com/libyal/libfwps/blob/master/documentation/Windows%20Property%20Store%20format.asciidoc[[LIBFWPS\]].
 
 [cols="1,1",options="header"]
 |===
@@ -743,7 +746,7 @@ Includes 4 bytes of the size +
 The value should be >= 10
 | 4 | 4 | 0xa000000c | The extra block signature
 | 8 | ... | | The shell item identifiers list +
-See `[LIBFWSI]`
+See: https://github.com/libyal/libfwsi/blob/master/documentation/Windows%20Shell%20Item%20format.asciidoc[[LIBFWSI\]].
 |===
 
 == Windows definitions
