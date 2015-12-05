@@ -28,7 +28,7 @@
 #include "pylnk_libcerror.h"
 #include "pylnk_python.h"
 
-#define PYLNK_ERROR_STRING_SIZE		768
+#define PYLNK_ERROR_STRING_SIZE		2048
 
 #if defined( __cplusplus )
 extern "C" {

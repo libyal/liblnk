@@ -45,8 +45,13 @@ PyObject *pylnk_check_file_signature_file_object(
            PyObject *arguments,
            PyObject *keywords );
 
+#if PY_MAJOR_VERSION >= 3
+PyMODINIT_FUNC PyInit_pylnk(
+                void );
+#else
 PyMODINIT_FUNC initpylnk(
                 void );
+#endif
 
 #if defined( __cplusplus )
 }

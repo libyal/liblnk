@@ -40,6 +40,9 @@ API
   - for special and/or known folder identifier
 * remove liblnk_file_get_link_target_identifier_data
 
+20151205
+* worked on Python bindings
+
 20150830
 * worked on Python 3 support
   - added support for distributed link tracker functions
