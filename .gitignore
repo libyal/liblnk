@@ -115,8 +115,6 @@ stamp-h[1-9]
 /liblnk/liblnk_definitions.h
 /LICENSE.pylnk
 /lnktools/lnkinfo
-/pylnk/setup.py
-/lnktools/lnkinfo
 /tests/input
 /tests/lnk_test_open_close
 /tests/lnk_test_set_ascii_codepage
