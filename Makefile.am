@@ -38,8 +38,10 @@ DPKG_FILES = \
 	dpkg/copyright \
 	dpkg/copyright.in \
 	dpkg/rules \
-	dpkg/liblnk-dev.docs \
 	dpkg/liblnk.docs \
+	dpkg/liblnk-dev.docs \
+	dpkg/liblnk-python.docs \
+	dpkg/liblnk-python3.docs \
 	dpkg/liblnk-tools.docs \
 	dpkg/source/format
 
