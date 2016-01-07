@@ -24,7 +24,7 @@ BEGIN
       VALUE "FileDescription",		"Library to access the Windows Shortcut File (LNK) format\0"
       VALUE "FileVersion",		"@VERSION@" "\0"
       VALUE "InternalName",		"liblnk.dll\0"
-      VALUE "LegalCopyright",		"(C) 2009-2015, Joachim Metz <joachim.metz@gmail.com>\0"
+      VALUE "LegalCopyright",		"(C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>\0"
       VALUE "OriginalFilename",		"liblnk.dll\0"
       VALUE "ProductName",		"liblnk\0"
       VALUE "ProductVersion",		"@VERSION@" "\0"
