@@ -2,7 +2,7 @@ Source: liblnk
 Section: libs
 Priority: extra
 Maintainer: Joachim Metz <joachim.metz@gmail.com>
-Build-Depends: debhelper (>= 7), autotools-dev, python-dev
+Build-Depends: debhelper (>= 7), autotools-dev, python-dev, python3-dev
 Standards-Version: 3.9.5
 Homepage: https://github.com/libyal/liblnk/
 
@@ -37,10 +37,10 @@ Description: Several tools for reading Windows Shortcut Files (LNK)
 Package: liblnk-python
 Section: python
 Architecture: any
-Depends: liblnk (= ${binary:Version}), ${shlibs:Depends}, python, ${misc:Depends}
+Depends: liblnk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
 Suggests: liblnk-python-dbg
-Description: Python bindings for liblnk
- Python bindings for liblnk.
+Description: Python 2 bindings for liblnk
+ Python 2 bindings for liblnk.
 
 Package: liblnk-python-dbg
 Section: debug
@@ -48,4 +48,19 @@ Architecture: any
 Depends: liblnk-python (= ${binary:Version}), ${misc:Depends}
 Description: Debugging symbols for liblnk-python
  Debugging symbols for liblnk-python.
+
+Package: liblnk-python3
+Section: python
+Architecture: any
+Depends: liblnk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Suggests: liblnk-python3-dbg
+Description: Python 3 bindings for liblnk
+ Python 3 bindings for liblnk.
+
+Package: liblnk-python3-dbg
+Section: debug
+Architecture: any
+Depends: liblnk-python3 (= ${binary:Version}), ${misc:Depends}
+Description: Debugging symbols for liblnk-python3
+ Debugging symbols for liblnk-python3.
 

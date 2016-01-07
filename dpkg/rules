@@ -12,7 +12,7 @@ export DH_OPTIONS
 
 .PHONY: override_dh_auto_configure
 override_dh_auto_configure:
-	dh_auto_configure -- --enable-python CFLAGS="-g"
+	dh_auto_configure -- --enable-python2 --enable-python3 CFLAGS="-g"
 
 .PHONY: override_dh_auto_test
 override_dh_auto_test:
@@ -33,8 +33,11 @@ override_dh_install:
 	dh_install "debian/tmp/usr/bin/*" -p liblnk-tools
 	dh_install "debian/tmp/usr/share/man/man1/*" -p liblnk-tools
 	# Create the liblnk-python package.
-	dh_install -X"*_d.so" "debian/tmp/usr/lib/python*/*" -p liblnk-python
-	# The liblnk-dbg and liblnk-python-dbg packages are created by dh_strip.
+	dh_install -X"*_d.so" "debian/tmp/usr/lib/python2*/*" -p liblnk-python
+	# Create the liblnk-python3 package.
+	dh_install -X"*_d.so" "debian/tmp/usr/lib/python3*/*" -p liblnk-python3
+	# The liblnk-dbg, liblnk-python-dbg and liblnk-python3-dbg packages
+	# are created by dh_strip.
 	dh_install
 
 .PHONY: override_dh_installmenu
@@ -84,6 +87,7 @@ override_dh_strip:
 ifeq (,$(filter nostrip,$(DEB_BUILD_OPTIONS)))
 	dh_strip -pliblnk --dbg-package=liblnk-dbg
 	dh_strip -pliblnk-python --dbg-package=liblnk-python-dbg
+	dh_strip -pliblnk-python3 --dbg-package=liblnk-python3-dbg
 endif
 
 .PHONY: override_dh_shlibdeps
