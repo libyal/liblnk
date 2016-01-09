@@ -117,7 +117,6 @@ stamp-h[1-9]
 /liblnk/liblnk.rc
 /liblnk/liblnk_definitions.h
 /pylnk[23]/*.[ch]
-/LICENSE.pylnk
 /lnktools/lnkinfo
 /tests/input
 /tests/lnk_test_open_close

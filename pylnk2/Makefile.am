@@ -60,15 +60,15 @@ pylnk_la_CPPFLAGS = $(PYTHON2_CPPFLAGS)
 pylnk_la_LDFLAGS  = -module -avoid-version $(PYTHON2_LDFLAGS)
 
 $(BUILT_SOURCES):
-	/bin/cp -f $(top_srcdir)/pylnk/pylnk*.[ch] .
-
-clean-local:
-	/bin/rm -f pylnk*.[ch]
+	/bin/cp -f $(top_srcdir)/pylnk/$@ $@
 
 endif
 
 MAINTAINERCLEANFILES = \
 	Makefile.in
+
+clean-local:
+	/bin/rm -f pylnk*.[ch]
 
 distclean: clean
 	/bin/rm -f Makefile

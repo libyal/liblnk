@@ -40,6 +40,9 @@ API
   - for special and/or known folder identifier
 * remove liblnk_file_get_link_target_identifier_data
 
+20160109
+* fixes for rpmbuild
+
 20160107
 * worked on Python 3 support
 * 2016 update
