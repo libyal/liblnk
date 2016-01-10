@@ -116,7 +116,7 @@ stamp-h[1-9]
 /include/liblnk/types.h
 /liblnk/liblnk.rc
 /liblnk/liblnk_definitions.h
-/pylnk[23]/*.[ch]
+/pylnk-python[23]/*.[ch]
 /lnktools/lnkinfo
 /tests/input
 /tests/lnk_test_open_close

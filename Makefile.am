@@ -23,8 +23,8 @@ SUBDIRS = \
 	libcsystem \
 	lnktools \
 	pylnk \
-	pylnk2 \
-	pylnk3 \
+	pylnk-python2 \
+	pylnk-python3 \
 	po \
 	manuals \
 	tests \
