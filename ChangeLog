@@ -40,6 +40,10 @@ API
   - for special and/or known folder identifier
 * remove liblnk_file_get_link_target_identifier_data
 
+20160126
+* worked on tests
+* applied updates
+
 20160109
 * fixes for rpmbuild
 
