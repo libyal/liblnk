@@ -11,9 +11,11 @@ AM_CPPFLAGS = \
 	@LIBCFILE_CPPFLAGS@ \
 	@LIBCPATH_CPPFLAGS@ \
 	@LIBBFIO_CPPFLAGS@ \
+	@LIBCSYSTEM_CPPFLAGS@ \
+	@PTHREAD_CPPFLAGS@ \
 	@LIBLNK_DLL_IMPORT@
 
-if HAVE_PYTHON
+if HAVE_PYTHON_TESTS
 TESTS_PYLNK  = \
 	test_pylnk_set_ascii_codepage.sh \
 	test_pylnk_open_close.sh
@@ -46,20 +48,16 @@ lnk_test_open_close_SOURCES = \
 	lnk_test_libcerror.h \
 	lnk_test_liblnk.h \
 	lnk_test_libcstring.h \
+	lnk_test_libcsystem.h \
 	lnk_test_open_close.c
 
 lnk_test_open_close_LDADD = \
+	@LIBCSYSTEM_LIBADD@ \
 	../liblnk/liblnk.la \
-	@LIBBFIO_LIBADD@ \
-	@LIBCPATH_LIBADD@ \
-	@LIBCFILE_LIBADD@ \
-	@LIBUNA_LIBADD@ \
-	@LIBCSPLIT_LIBADD@ \
-	@LIBCNOTIFY_LIBADD@ \
-	@LIBCLOCALE_LIBADD@ \
-	@LIBCDATA_LIBADD@ \
+	@LIBCTHREADS_LIBADD@ \
 	@LIBCERROR_LIBADD@ \
-	@LIBCSTRING_LIBADD@
+	@LIBCSTRING_LIBADD@ \
+	@PTHREAD_LIBADD@
 
 lnk_test_set_ascii_codepage_SOURCES = \
 	lnk_test_libcerror.h \

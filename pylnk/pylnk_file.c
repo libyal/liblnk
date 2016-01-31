@@ -42,13 +42,15 @@
 #include "pylnk_unused.h"
 
 #if !defined( LIBLNK_HAVE_BFIO )
+
 LIBLNK_EXTERN \
 int liblnk_file_open_file_io_handle(
      liblnk_file_t *file,
      libbfio_handle_t *file_io_handle,
      int access_flags,
      liblnk_error_t **error );
-#endif
+
+#endif /* !defined( LIBLNK_HAVE_BFIO ) */
 
 PyMethodDef pylnk_file_object_methods[] = {
 

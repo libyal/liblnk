@@ -40,11 +40,13 @@
 #include "pylnk_unused.h"
 
 #if !defined( LIBLNK_HAVE_BFIO )
+
 LIBLNK_EXTERN \
 int liblnk_check_file_signature_file_io_handle(
      libbfio_handle_t *file_io_handle,
      liblnk_error_t **error );
-#endif
+
+#endif /* !defined( LIBLNK_HAVE_BFIO ) */
 
 /* The pylnk module methods
  */
