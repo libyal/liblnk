@@ -38,5 +38,5 @@ const char *pylnk_codepage_to_string(
 }
 #endif
 
-#endif
+#endif /* !defined( _PYLNK_CODEPAGE_H */
 

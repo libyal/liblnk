@@ -40,5 +40,5 @@
 	/* parameter */
 #endif
 
-#endif
+#endif /* !defined( _PYLNK_INTERNAL_UNUSED_H ) */
 

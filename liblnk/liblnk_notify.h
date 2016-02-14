@@ -23,9 +23,8 @@
 #define _LIBLNK_NOTIFY_H
 
 #include <common.h>
+#include <file_stream.h>
 #include <types.h>
-
-#include <stdio.h>
 
 #include "liblnk_extern.h"
 #include "liblnk_libcerror.h"
@@ -54,11 +53,11 @@ LIBLNK_EXTERN \
 int liblnk_notify_stream_close(
      libcerror_error_t **error );
 
-#endif
+#endif /* !defined( HAVE_LOCAL_LIBLNK ) */
 
 #if defined( __cplusplus )
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBLNK_NOTIFY_H ) */
 

@@ -52,5 +52,5 @@ int pylnk_integer_unsigned_copy_to_64bit(
 }
 #endif
 
-#endif
+#endif /* !defined( _PYLNK_INTEGER_H ) */
 

@@ -16,7 +16,7 @@ AM_CPPFLAGS = \
 	@LIBLNK_DLL_IMPORT@
 
 if HAVE_PYTHON_TESTS
-TESTS_PYLNK  = \
+TESTS_PYLNK = \
 	test_pylnk_set_ascii_codepage.sh \
 	test_pylnk_open_close.sh
 endif
@@ -40,15 +40,15 @@ check_SCRIPTS = \
 EXTRA_DIST = \
 	$(check_SCRIPTS)
 
-check_PROGRAMS =  \
+check_PROGRAMS = \
 	lnk_test_open_close \
 	lnk_test_set_ascii_codepage
 
 lnk_test_open_close_SOURCES = \
 	lnk_test_libcerror.h \
-	lnk_test_liblnk.h \
 	lnk_test_libcstring.h \
 	lnk_test_libcsystem.h \
+	lnk_test_liblnk.h \
 	lnk_test_open_close.c
 
 lnk_test_open_close_LDADD = \
@@ -62,8 +62,8 @@ lnk_test_open_close_LDADD = \
 lnk_test_set_ascii_codepage_SOURCES = \
 	lnk_test_libcerror.h \
 	lnk_test_libclocale.h \
-	lnk_test_liblnk.h \
 	lnk_test_libcstring.h \
+	lnk_test_liblnk.h \
 	lnk_test_set_ascii_codepage.c
 
 lnk_test_set_ascii_codepage_LDADD = \

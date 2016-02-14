@@ -1,13 +1,13 @@
 include_HEADERS = \
-        liblnk.h
+	liblnk.h
 
 pkginclude_HEADERS = \
-        liblnk/codepage.h \
-        liblnk/definitions.h \
-        liblnk/error.h \
-        liblnk/extern.h \
-        liblnk/features.h \
-        liblnk/types.h
+	liblnk/codepage.h \
+	liblnk/definitions.h \
+	liblnk/error.h \
+	liblnk/extern.h \
+	liblnk/features.h \
+	liblnk/types.h
 
 EXTRA_DIST = \
 	liblnk.h.in \
