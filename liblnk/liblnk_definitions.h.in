@@ -127,6 +127,15 @@ enum LIBLNK_DRIVE_TYPE
 
 #endif
 
+/* The IO handle flags
+ */
+enum LIBLNK_IO_HANDLE_FLAGS
+{
+	/* The file is corrupted
+	 */
+	LIBLNK_IO_HANDLE_FLAG_IS_CORRUPTED					= 0x01
+};
+
 /* The location flags
  */
 enum LIBLNK_LOCATION_FLAGS

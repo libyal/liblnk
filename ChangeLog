@@ -1,4 +1,5 @@
 TODO
+* lnkinfo: show corrupted information
 * lnkinfo: : should be before \t
 * check behavior of liblnk_file_link_refers_to_file() seems to block certain time values from being printed.
 * what about trailing data in xp lnk files ?
@@ -39,6 +40,9 @@ API
   - for icon location block ?
   - for special and/or known folder identifier
 * remove liblnk_file_get_link_target_identifier_data
+
+20160218
+* worked on support for emtpy location information corruption scenario
 
 20160126
 * worked on tests

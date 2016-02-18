@@ -355,6 +355,12 @@ ssize_t liblnk_location_information_read(
 	 ( (lnk_location_information_t *) location_information_data )->header_size,
 	 location_information_header_size );
 
+	if( location_information_header_size == 0 )
+	{
+		io_handle->flags |= LIBLNK_IO_HANDLE_FLAG_IS_CORRUPTED;
+
+		return( read_count + 4 );
+	}
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_location_information_t *) location_information_data )->location_flags,
 	 location_information->flags );

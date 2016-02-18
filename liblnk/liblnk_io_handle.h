@@ -47,6 +47,10 @@ struct liblnk_io_handle
 	 */
 	uint32_t data_flags;
 
+	/* Flags
+	 */
+	uint8_t flags;
+
 	/* The codepage of the extended ASCII strings
 	 */
 	int ascii_codepage;
