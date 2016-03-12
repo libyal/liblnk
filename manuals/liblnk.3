@@ -1,4 +1,4 @@
-.Dd January  5, 2015
+.Dd February 14, 2016
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -167,8 +167,6 @@ Link information functions
 .Ft int
 .Fn liblnk_file_get_utf16_environment_variables_location "liblnk_file_t *file, uint16_t *utf16_string, size_t utf16_string_size, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_link_target_identifier_data "liblnk_file_t *file, uint8_t **data, size_t *data_size, liblnk_error_t **error"
-.Ft int
 .Fn liblnk_file_get_link_target_identifier_data_size "liblnk_file_t *file, size_t *data_size, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_copy_link_target_identifier_data "liblnk_file_t *file, uint8_t *data, size_t data_size, liblnk_error_t **error"
@@ -203,6 +201,7 @@ For the actual return values see "liblnk.h".
 None
 .Sh FILES
 None
+.Sh NOTES
 liblnk allows to be compiled with wide character support (wchar_t).
 
 To compile liblnk with wide character support use:
