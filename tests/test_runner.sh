@@ -1,7 +1,7 @@
 #!/bin/bash
 # Bash functions to run an executable for testing.
 #
-# Version: 20160326
+# Version: 20160327
 #
 # When CHECK_WITH_GDB is set to a non-empty value the test executable
 # is run with gdb, otherwise it is run without.
@@ -286,7 +286,7 @@ read_option_file()
 run_test_with_arguments()
 { 
 	local TEST_EXECUTABLE=$1;
-	shift;
+	shift 1;
 	local ARGUMENTS=$@;
 
 	local RESULT=0;
@@ -356,6 +356,8 @@ run_test_on_input_file()
 	local OPTION_SET=$3;
 	local TEST_EXECUTABLE=$4;
 	local INPUT_FILE=$5;
+	shift 5;
+	local ARGUMENTS=$@;
 
 	local INPUT_NAME=`basename ${INPUT_FILE}`;
 	local OPTIONS=();
@@ -380,14 +382,14 @@ run_test_on_input_file()
 		LIBRARY=$( find_binary_library_path ${TEST_EXECUTABLE} );
 		TEST_EXECUTABLE=$( find_binary_executable ${TEST_EXECUTABLE} );
 
-		LD_LIBRARY_PATH="../${LIBRARY}/.libs/" gdb -ex r --args "${TEST_EXECUTABLE}" ${OPTIONS[*]} "${INPUT_FILE}";
+		LD_LIBRARY_PATH="../${LIBRARY}/.libs/" gdb -ex r --args "${TEST_EXECUTABLE}" ${ARGUMENTS[*]} ${OPTIONS[*]} "${INPUT_FILE}";
 		RESULT=$?;
 
 	elif ! test -z ${CHECK_WITH_REFERENCE_FILE};
 	then
 		local TEST_RESULTS="${TMPDIR}/${TEST_OUTPUT}.log";
 
-		${TEST_EXECUTABLE} ${OPTIONS[*]} ${INPUT_FILE} | sed '1,2d' > ${TEST_RESULTS};
+		${TEST_EXECUTABLE} ${ARGUMENTS[*]} ${OPTIONS[*]} ${INPUT_FILE} | sed '1,2d' > ${TEST_RESULTS};
 		RESULT=$?;
 
 		local STORED_TEST_RESULTS="${TEST_SET_DIRECTORY}/${TEST_OUTPUT}.log.gz";
@@ -410,7 +412,7 @@ run_test_on_input_file()
 		LIBRARY=$( find_binary_library_path ${TEST_EXECUTABLE} );
 		TEST_EXECUTABLE=$( find_binary_executable ${TEST_EXECUTABLE} );
 
-		LD_LIBRARY_PATH="../${LIBRARY}/.libs/" valgrind --tool=memcheck --leak-check=full --track-origins=yes --show-reachable=yes --log-file=${VALGRIND_LOG} "${TEST_EXECUTABLE}" ${OPTIONS[*]} "${INPUT_FILE}";
+		LD_LIBRARY_PATH="../${LIBRARY}/.libs/" valgrind --tool=memcheck --leak-check=full --track-origins=yes --show-reachable=yes --log-file=${VALGRIND_LOG} "${TEST_EXECUTABLE}" ${ARGUMENTS[*]} ${OPTIONS[*]} "${INPUT_FILE}";
 		RESULT=$?;
 
 		if test ${RESULT} -eq 0;
@@ -429,7 +431,7 @@ run_test_on_input_file()
 		rm -f ${VALGRIND_LOG};
 
 	else
-		${TEST_EXECUTABLE} ${OPTIONS[*]} ${INPUT_FILE} 2> /dev/null;
+		${TEST_EXECUTABLE} ${ARGUMENTS[*]} ${OPTIONS[*]} ${INPUT_FILE} 2> /dev/null;
 		RESULT=$?;
 	fi
 
@@ -465,6 +467,7 @@ run_test_on_input_file()
 #   a string containing the path of the test executable
 #   a string containing the path of the test input directory
 #   a string containing the input glob
+#   an array containing the arguments for the test executable
 #
 # Returns:
 #   an integer containg the exit status of the test executable
@@ -477,6 +480,8 @@ run_test_on_input_directory()
 	local TEST_EXECUTABLE=$4;
 	local TEST_INPUT_DIRECTORY=$5;
 	local INPUT_GLOB=$6;
+	shift 6;
+	local ARGUMENTS=$@;
 
 	check_availability_binary cat;
 	check_availability_binary diff;
@@ -554,7 +559,7 @@ run_test_on_input_directory()
 					continue
 				fi
 
-				if ! run_test_on_input_file "${TEST_SET_DIRECTORY}" "${TEST_DESCRIPTION}" "${OPTION_SET}" "${TEST_EXECUTABLE}" "${INPUT_FILE}";
+				if ! run_test_on_input_file "${TEST_SET_DIRECTORY}" "${TEST_DESCRIPTION}" "${OPTION_SET}" "${TEST_EXECUTABLE}" "${INPUT_FILE}" ${ARGUMENTS[*]};
 				then
 					return ${EXIT_FAILURE};
 				fi
@@ -563,7 +568,7 @@ run_test_on_input_directory()
 
 			if test ${TESTED_WITH_OPTIONS} -eq 0;
 			then
-				if ! run_test_on_input_file "${TEST_SET_DIRECTORY}" "${TEST_DESCRIPTION}" "" "${TEST_EXECUTABLE}" "${INPUT_FILE}";
+				if ! run_test_on_input_file "${TEST_SET_DIRECTORY}" "${TEST_DESCRIPTION}" "" "${TEST_EXECUTABLE}" "${INPUT_FILE}" ${ARGUMENTS[*]};
 				then
 					return ${EXIT_FAILURE};
 				fi
