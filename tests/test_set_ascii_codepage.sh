@@ -59,7 +59,7 @@ test_set_unsupported_ascii_codepage()
 	return ${RESULT};
 }
 
-if ! test -z ${SKIP_TOOLS_TESTS};
+if ! test -z ${SKIP_LIBRARY_TESTS};
 then
 	exit ${EXIT_IGNORE};
 fi

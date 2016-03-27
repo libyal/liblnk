@@ -19,7 +19,7 @@ TEST_TOOL="${TEST_PREFIX}_test_open_close";
 INPUT_DIRECTORY="input";
 INPUT_GLOB="*";
 
-if ! test -z ${SKIP_TOOLS_TESTS};
+if ! test -z ${SKIP_LIBRARY_TESTS};
 then
 	exit ${EXIT_IGNORE};
 fi
