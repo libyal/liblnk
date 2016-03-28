@@ -48,7 +48,7 @@
 
 #include <libcsystem.h>
 
-#endif
+#endif /* defined( HAVE_LOCAL_LIBCSYSTEM ) */
 
-#endif
+#endif /* !defined( _LNK_TEST_LIBCSYSTEM_H ) */
 

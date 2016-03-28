@@ -1,5 +1,5 @@
 /*
- * The internal libcerror header
+ * Library get version test program
  *
  * Copyright (C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,32 +19,43 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LNK_TEST_LIBCERROR_H )
-#define _LNK_TEST_LIBCERROR_H
-
 #include <common.h>
+#include <file_stream.h>
 
-/* Define HAVE_LOCAL_LIBCERROR for local use of libcerror
- */
-#if defined( HAVE_LOCAL_LIBCERROR )
-
-#include <libcerror_definitions.h>
-#include <libcerror_error.h>
-#include <libcerror_system.h>
-#include <libcerror_types.h>
-
-#else
-
-/* If libtool DLL support is enabled set LIBCERROR_DLL_IMPORT
- * before including libcerror.h
- */
-#if defined( _WIN32 ) && defined( DLL_IMPORT )
-#define LIBCERROR_DLL_IMPORT
+#if defined( HAVE_STDLIB_H ) || defined( WINAPI )
+#include <stdlib.h>
 #endif
 
-#include <libcerror.h>
+#include "lnk_test_libcstring.h"
+#include "lnk_test_liblnk.h"
 
-#endif /* defined( HAVE_LOCAL_LIBCERROR ) */
+/* The main program
+ */
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+int wmain( int argc, wchar_t * const argv[] )
+#else
+int main( int argc, char * const argv[] )
+#endif
+{
+	const char *version_string = NULL;
 
-#endif /* !defined( _LNK_TEST_LIBCERROR_H ) */
+	if( argc != 1 )
+	{
+		fprintf(
+		 stderr,
+		 "Unsupported number of arguments.\n" );
+
+		return( EXIT_FAILURE );
+	}
+	version_string = liblnk_get_version();
+
+	if( libcstring_narrow_string_compare(
+	     version_string,
+	     LIBLNK_VERSION_STRING,
+	     9 ) != 0 )
+	{
+		return( EXIT_FAILURE );
+	}
+	return( EXIT_SUCCESS );
+}
 

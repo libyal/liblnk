@@ -1,7 +1,7 @@
 #!/bin/bash
 # Library set ASCII codepage testing script
 #
-# Version: 20160326
+# Version: 20160328
 
 EXIT_SUCCESS=0;
 EXIT_FAILURE=1;
@@ -103,7 +103,7 @@ do
 
 	if test ${RESULT} -ne 0;
 	then
-		exit ${EXIT_FAILURE};
+		exit ${RESULT};
 	fi
 done
 
@@ -116,7 +116,7 @@ do
 
 	if test ${RESULT} -ne 0;
 	then
-		exit ${EXIT_FAILURE};
+		exit ${RESULT};
 	fi
 done
 

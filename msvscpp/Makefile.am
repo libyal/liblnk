@@ -17,6 +17,7 @@ MSVSCPP_FILES = \
 	libfwsi/libfwsi.vcproj \
 	liblnk/liblnk.vcproj \
 	libuna/libuna.vcproj \
+	lnk_test_get_version/lnk_test_get_version.vcproj \
 	lnk_test_open_close/lnk_test_open_close.vcproj \
 	lnk_test_set_ascii_codepage/lnk_test_set_ascii_codepage.vcproj \
 	lnkinfo/lnkinfo.vcproj \

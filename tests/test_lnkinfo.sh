@@ -1,7 +1,7 @@
 #!/bin/bash
 # Info tool testing script
 #
-# Version: 20160326
+# Version: 20160328
 
 EXIT_SUCCESS=0;
 EXIT_FAILURE=1;
@@ -59,12 +59,8 @@ OLDIFS=${IFS};
 IFS="
 ";
 
-export CHECK_WITH_REFERENCE_FILE=1;
-
-run_test_on_input_directory "${TEST_PROFILE}" "${TEST_DESCRIPTION}" "${OPTION_SETS}" "${TEST_EXECUTABLE}" "${INPUT_DIRECTORY}" "${INPUT_GLOB}";
+run_test_on_input_directory "${TEST_PROFILE}" "${TEST_DESCRIPTION}" "with_stdout_reference" "${OPTION_SETS}" "${TEST_EXECUTABLE}" "${INPUT_DIRECTORY}" "${INPUT_GLOB}";
 RESULT=$?;
-
-export CHECK_WITH_REFERENCE_FILE=;
 
 IFS=${OLDIFS};
 

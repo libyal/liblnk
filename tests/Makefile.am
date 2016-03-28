@@ -22,6 +22,7 @@ TESTS_PYLNK = \
 endif
 
 TESTS = \
+	test_api_functions.sh \
 	test_set_ascii_codepage.sh \
 	test_open_close.sh \
 	test_lnkinfo.sh \
@@ -30,10 +31,11 @@ TESTS = \
 check_SCRIPTS = \
 	pylnk_test_open_close.py \
 	pylnk_test_set_ascii_codepage.py \
+	test_api_functions.sh \
+	test_lnkinfo.sh \
 	test_open_close.sh \
 	test_pylnk_open_close.sh \
 	test_pylnk_set_ascii_codepage.sh \
-	test_lnkinfo.sh \
 	test_runner.sh \
 	test_set_ascii_codepage.sh
 
@@ -41,8 +43,18 @@ EXTRA_DIST = \
 	$(check_SCRIPTS)
 
 check_PROGRAMS = \
+	lnk_test_get_version \
 	lnk_test_open_close \
 	lnk_test_set_ascii_codepage
+
+lnk_test_get_version_SOURCES = \
+	lnk_test_libcstring.h \
+	lnk_test_liblnk.h \
+	lnk_test_get_version.c
+
+lnk_test_get_version_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCSTRING_LIBADD@
 
 lnk_test_open_close_SOURCES = \
 	lnk_test_libcerror.h \

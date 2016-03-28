@@ -1,7 +1,7 @@
 #!/bin/bash
 # Library open close testing script
 #
-# Version: 20160326
+# Version: 20160328
 
 EXIT_SUCCESS=0;
 EXIT_FAILURE=1;
@@ -54,14 +54,8 @@ fi
 
 source ${TEST_RUNNER};
 
-OLDIFS=${IFS};
-IFS="
-";
-
-run_test_on_input_directory "${TEST_PROFILE}" "${TEST_DESCRIPTION}" "${OPTION_SETS}" "${TEST_EXECUTABLE}" "${INPUT_DIRECTORY}" "${INPUT_GLOB}";
+run_test_on_input_directory "${TEST_PROFILE}" "${TEST_DESCRIPTION}" "default" "${OPTION_SETS}" "${TEST_EXECUTABLE}" "${INPUT_DIRECTORY}" "${INPUT_GLOB}";
 RESULT=$?;
-
-IFS=${OLDIFS};
 
 exit ${RESULT};
 
