@@ -33,5 +33,5 @@
 
 #include <liblnk.h>
 
-#endif
+#endif /* !defined( _LNK_TEST_LIBLNK_H ) */
 
