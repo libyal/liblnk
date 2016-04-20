@@ -119,6 +119,7 @@ stamp-h[1-9]
 /pylnk-python[23]/*.[ch]
 /lnktools/lnkinfo
 /tests/input
+/tests/lnk_test_get_version
 /tests/lnk_test_open_close
 /tests/lnk_test_set_ascii_codepage
 /tests/tmp*

@@ -1,5 +1,5 @@
 /*
- * The libfguid header wrapper
+ * The unused definition
  *
  * Copyright (C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,31 +19,32 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_LIBFGUID_H )
-#define _LIBLNK_LIBFGUID_H
+#if !defined( _LNK_TEST_UNUSED_H )
+#define _LNK_TEST_UNUSED_H
 
 #include <common.h>
 
-/* Define HAVE_LOCAL_LIBFGUID for local use of libfguid
- */
-#if defined( HAVE_LOCAL_LIBFGUID )
+#if !defined( LNK_TEST_ATTRIBUTE_UNUSED )
 
-#include <libfguid_definitions.h>
-#include <libfguid_identifier.h>
-#include <libfguid_types.h>
+#if defined( __GNUC__ ) && __GNUC__ >= 3
+#define LNK_TEST_ATTRIBUTE_UNUSED	__attribute__ ((__unused__))
 
 #else
+#define LNK_TEST_ATTRIBUTE_UNUSED
 
-/* If libtool DLL support is enabled set LIBFGUID_DLL_IMPORT
- * before including libfguid.h
- */
-#if defined( _WIN32 ) && defined( DLL_IMPORT )
-#define LIBFGUID_DLL_IMPORT
-#endif
+#endif /* defined( __GNUC__ ) && __GNUC__ >= 3 */
 
-#include <libfguid.h>
+#endif /* !defined( LNK_TEST_ATTRIBUTE_UNUSED ) */
 
-#endif /* defined( HAVE_LOCAL_LIBFGUID ) */
+#if defined( _MSC_VER )
+#define LNK_TEST_UNREFERENCED_PARAMETER( parameter ) \
+	UNREFERENCED_PARAMETER( parameter );
 
-#endif /* !defined( _LIBLNK_LIBFGUID_H ) */
+#else
+#define LNK_TEST_UNREFERENCED_PARAMETER( parameter ) \
+	/* parameter */
+
+#endif /* defined( _MSC_VER ) */
+
+#endif /* !defined( _LNK_TEST_UNUSED_H ) */
 

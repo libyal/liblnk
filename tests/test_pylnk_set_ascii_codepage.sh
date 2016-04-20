@@ -1,15 +1,14 @@
 #!/bin/bash
 # Python-bindings set ASCII codepage testing script
 #
-# Version: 20160217
+# Version: 20160419
 
 EXIT_SUCCESS=0;
 EXIT_FAILURE=1;
 EXIT_IGNORE=77;
 
-TEST_PREFIX=`pwd`;
-TEST_PREFIX=`dirname ${TEST_PREFIX}`;
-TEST_PREFIX=`basename ${TEST_PREFIX} | sed 's/^lib//'`;
+TEST_PREFIX=`dirname ${PWD}`;
+TEST_PREFIX=`basename ${TEST_PREFIX} | sed 's/^lib\([^-]*\)/\1/'`;
 
 TEST_SCRIPT="py${TEST_PREFIX}_test_set_ascii_codepage.py";
 
@@ -27,26 +26,24 @@ then
 	exit ${EXIT_FAILURE};
 fi
 
-if ! test -f ${TEST_SCRIPT};
+TEST_RUNNER="tests/test_runner.sh";
+
+if ! test -f "${TEST_RUNNER}";
 then
-	echo "Missing script: ${TEST_SCRIPT}";
+	TEST_RUNNER="./test_runner.sh";
+fi
+
+if ! test -f "${TEST_RUNNER}";
+then
+	echo "Missing test runner: ${TEST_RUNNER}";
 
 	exit ${EXIT_FAILURE};
 fi
 
-if test `uname -s` = 'Darwin';
-then
-	DYLD_LIBRARY_PATH="../lib${TEST_PREFIX}/.libs/" PYTHONPATH="../py${TEST_PREFIX}/.libs/" ${PYTHON} ${TEST_SCRIPT};
-	RESULT=$?;
-else
-	LD_LIBRARY_PATH="../lib${TEST_PREFIX}/.libs/" PYTHONPATH="../py${TEST_PREFIX}/.libs/" ${PYTHON} ${TEST_SCRIPT};
-	RESULT=$?;
-fi
+source ${TEST_RUNNER};
 
-if test ${RESULT} -ne ${EXIT_SUCCESS};
-then
-	exit ${EXIT_FAILURE};
-fi
+run_test_with_arguments "${TEST_SCRIPT}";
+RESULT=$?;
 
-exit ${EXIT_SUCCESS};
+exit ${RESULT};
 

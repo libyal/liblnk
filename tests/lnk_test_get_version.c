@@ -28,16 +28,19 @@
 
 #include "lnk_test_libcstring.h"
 #include "lnk_test_liblnk.h"
+#include "lnk_test_unused.h"
 
 /* The main program
  */
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-int wmain( int argc, wchar_t * const argv[] )
+int wmain( int argc, wchar_t * const argv[] LNK_TEST_ATTRIBUTE_UNUSED )
 #else
-int main( int argc, char * const argv[] )
+int main( int argc, char * const argv[] LNK_TEST_ATTRIBUTE_UNUSED )
 #endif
 {
 	const char *version_string = NULL;
+
+	LNK_TEST_UNREFERENCED_PARAMETER( argv )
 
 	if( argc != 1 )
 	{

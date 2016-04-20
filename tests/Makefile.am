@@ -17,24 +17,23 @@ AM_CPPFLAGS = \
 
 if HAVE_PYTHON_TESTS
 TESTS_PYLNK = \
-	test_pylnk_set_ascii_codepage.sh \
-	test_pylnk_open_close.sh
+	test_python_functions.sh \
+	test_pylnk_set_ascii_codepage.sh
 endif
 
 TESTS = \
 	test_api_functions.sh \
 	test_set_ascii_codepage.sh \
-	test_open_close.sh \
 	test_lnkinfo.sh \
 	$(TESTS_PYLNK)
 
 check_SCRIPTS = \
+	pylnk_test_get_version.py \
 	pylnk_test_open_close.py \
 	pylnk_test_set_ascii_codepage.py \
 	test_api_functions.sh \
 	test_lnkinfo.sh \
-	test_open_close.sh \
-	test_pylnk_open_close.sh \
+	test_python_functions.sh \
 	test_pylnk_set_ascii_codepage.sh \
 	test_runner.sh \
 	test_set_ascii_codepage.sh
