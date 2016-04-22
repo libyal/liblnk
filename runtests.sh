@@ -52,7 +52,7 @@ run_configure_make_check()
 		return ${RESULT};
 	fi
 
-	make check;
+	make check CHECK_WITH_STDERR=1;
 	RESULT=$?;
 
 	if test ${RESULT} -ne ${EXIT_SUCCESS};
@@ -79,7 +79,7 @@ run_configure_make_check_python()
 		return ${RESULT};
 	fi
 
-	make check SKIP_LIBRARY_TESTS=1 SKIP_TOOLS_TESTS=1;
+	make check SKIP_LIBRARY_TESTS=1 SKIP_TOOLS_TESTS=1 CHECK_WITH_STDERR=1;
 	RESULT=$?;
 
 	if test ${RESULT} -ne ${EXIT_SUCCESS};
