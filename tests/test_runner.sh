@@ -466,6 +466,8 @@ run_test_with_arguments()
 		fi
 		local PYTHON_MODULE_PATH=$( find_binary_python_module_path ${TEST_EXECUTABLE} );
 
+		echo "PYTHONPATH=${PYTHON_MODULE_PATH} ${PYTHON} ${TEST_EXECUTABLE}";
+
 		if ! test -z ${CHECK_WITH_STDERR};
 		then
 			PYTHONPATH="${PYTHON_MODULE_PATH}" "${PYTHON}" "${TEST_EXECUTABLE}" ${ARGUMENTS[@]};
