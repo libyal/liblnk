@@ -135,7 +135,7 @@ find_binary_library_path()
 		LIBRARY_NAME=`dirname ${LIBRARY_NAME}`;
 		LIBRARY_NAME=`basename ${LIBRARY_NAME} | sed 's/\(.*\)tools$/lib\1/'`;
 	else
-		LIBRARY_NAME=`basename ${LIBRARY_NAME} | sed 's/^\(py\|\)\([^_]*\)_test_.*$/lib\2/'`;
+		LIBRARY_NAME=`basename ${LIBRARY_NAME} | sed 's/^py//' | sed 's/^\([^_]*\)_test_.*$/lib\1/'`;
 	fi
 	TEST_EXECUTABLE=`dirname ${TEST_EXECUTABLE}`;
 	TEST_EXECUTABLE=`dirname ${TEST_EXECUTABLE}`;
@@ -460,7 +460,6 @@ run_test_with_arguments()
 
 		if test "${PLATFORM}" = "Darwin";
 		then
-			echo "DYLD_LIBRARY_PATH=${LIBRARY_PATH} PYTHONPATH=${PYTHON_MODULE_PATH} ${PYTHON} ${TEST_EXECUTABLE}";
 			if ! test -z ${CHECK_WITH_STDERR};
 			then
 				DYLD_LIBRARY_PATH="${LIBRARY_PATH}" PYTHONPATH="${PYTHON_MODULE_PATH}" "${PYTHON}" "${TEST_EXECUTABLE}" ${ARGUMENTS[@]};
