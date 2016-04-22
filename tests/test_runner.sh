@@ -460,6 +460,7 @@ run_test_with_arguments()
 
 		if test "${PLATFORM}" = "Darwin";
 		then
+			echo "DYLD_LIBRARY_PATH=${LIBRARY_PATH} PYTHONPATH=${PYTHON_MODULE_PATH} ${PYTHON} ${TEST_EXECUTABLE}";
 			if ! test -z ${CHECK_WITH_STDERR};
 			then
 				DYLD_LIBRARY_PATH="${LIBRARY_PATH}" PYTHONPATH="${PYTHON_MODULE_PATH}" "${PYTHON}" "${TEST_EXECUTABLE}" ${ARGUMENTS[@]};
