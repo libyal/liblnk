@@ -164,18 +164,9 @@ find_binary_library_path()
 find_binary_python_module_path()
 {
 	local TEST_EXECUTABLE=$1;
-	local PYTHON_MODULE_NAME="${TEST_EXECUTABLE}";
 
-	echo ${PYTHON_MODULE_NAME} | grep 'tools' > /dev/null 2>&1;
+	local PYTHON_MODULE_NAME=`basename ${TEST_EXECUTABLE} | sed 's/^py\(.*\)_test_.*$/py\1/'`;
 
-	if test $? -eq ${EXIT_SUCCESS};
-	then
-		PYTHON_MODULE_NAME=`dirname ${PYTHON_MODULE_NAME}`;
-		PYTHON_MODULE_NAME=`dirname ${PYTHON_MODULE_NAME}`;
-		PYTHON_MODULE_NAME=`basename ${PYTHON_MODULE_NAME} | sed 's/\(.*\)tools$/py\1/'`;
-	else
-		PYTHON_MODULE_NAME=`basename ${PYTHON_MODULE_NAME} | sed 's/^\(py\|\)\(.*\)_test_.*$/py\2/'`;
-	fi
 	TEST_EXECUTABLE=`dirname ${TEST_EXECUTABLE}`;
 	TEST_EXECUTABLE=`dirname ${TEST_EXECUTABLE}`;
 	TEST_EXECUTABLE=`dirname ${TEST_EXECUTABLE}`;
