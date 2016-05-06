@@ -45,5 +45,5 @@
 
 #endif
 
-#endif
+#endif /* !defined( _PYLNK_LIBFGUID_H ) */
 
