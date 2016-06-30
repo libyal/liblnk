@@ -277,7 +277,7 @@ int liblnk_known_folder_location_read(
 			goto on_error;
 		}
 		libcnotify_printf(
-		 "%s: known folder identifier\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "%s: known folder identifier\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
 		 function,
 		 guid_string );
 

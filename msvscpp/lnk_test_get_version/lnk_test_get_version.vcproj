@@ -193,6 +193,10 @@
 				RelativePath="..\..\tests\lnk_test_liblnk.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\tests\lnk_test_unused.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

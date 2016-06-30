@@ -47,9 +47,10 @@ check_PROGRAMS = \
 	lnk_test_set_ascii_codepage
 
 lnk_test_get_version_SOURCES = \
+	lnk_test_get_version.c \
 	lnk_test_libcstring.h \
 	lnk_test_liblnk.h \
-	lnk_test_get_version.c
+	lnk_test_unused.h
 
 lnk_test_get_version_LDADD = \
 	../liblnk/liblnk.la \
