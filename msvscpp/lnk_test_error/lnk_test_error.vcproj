@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="lnk_test_get_version"
-	ProjectGUID="{97A248DE-160F-4117-AA53-88547E9D3CFB}"
-	RootNamespace="lnk_test_get_version"
+	Name="lnk_test_error"
+	ProjectGUID="{C9A2C16D-39DD-484F-A3D4-8BE999CB45DA}"
+	RootNamespace="lnk_test_error"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -176,7 +176,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\tests\lnk_test_get_version.c"
+				RelativePath="..\..\tests\lnk_test_error.c"
 				>
 			</File>
 		</Filter>

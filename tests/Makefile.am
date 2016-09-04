@@ -42,14 +42,27 @@ EXTRA_DIST = \
 	$(check_SCRIPTS)
 
 check_PROGRAMS = \
+	lnk_test_error \
 	lnk_test_get_version \
 	lnk_test_open_close \
 	lnk_test_set_ascii_codepage
+
+lnk_test_error_SOURCES = \
+	lnk_test_error.c \
+	lnk_test_libcstring.h \
+	lnk_test_liblnk.h \
+	lnk_test_macros.h \
+	lnk_test_unused.h
+
+lnk_test_error_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCSTRING_LIBADD@
 
 lnk_test_get_version_SOURCES = \
 	lnk_test_get_version.c \
 	lnk_test_libcstring.h \
 	lnk_test_liblnk.h \
+	lnk_test_macros.h \
 	lnk_test_unused.h
 
 lnk_test_get_version_LDADD = \
