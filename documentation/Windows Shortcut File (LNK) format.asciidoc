@@ -137,20 +137,23 @@ GUID: {00021401-0000-0000-c000-000000000046}
 | 24 | 4 | | File attribute flags +
 See section: <<file_attribute_flags,File attribute flags>> +
 | 28 | 8 | | Creation date and time +
-Contains a FILETIME
+Contains a FILETIME or 0 if not set
 | 36 | 8 | | Last access date and time +
-Contains a FILETIME
+Contains a FILETIME or 0 if not set
 | 44 | 8 | | Last modification date and time +
-Contains a FILETIME
-| 52 | 4 | | File size in bytes
-| 56 | 4 | | Icon index value
+Contains a FILETIME or 0 if not set
+| 52 | 4 | | File size in bytes +
+Contains an unsigned integer
+| 56 | 4 | | Icon index value +
+Contains a signed integer
 | 60 | 4 | | ShowWindow value +
+Contains an unsigned integer +
 See section: <<show_window_definitions,Show Window definitions>>
 | 64 | 2 | | Hot key +
 See section: <<hot_key_definitions,Hot Key definitions>>
-| 66 | 2 | 0 | Reserved
-| 68 | 4 | 0 | Reserved
-| 72 | 4 | 0 | Reserved
+| 66 | 2 | 0 | [yellow-background]*Unknown (Reserved)*
+| 68 | 4 | 0 | [yellow-background]*Unknown (Reserved)*
+| 72 | 4 | 0 | [yellow-background]*Unknown (Reserved)*
 |===
 
 === Data flags
@@ -170,13 +173,13 @@ The data flags consist of the following values:
 | 0x00000100 | ForceNoLinkInfo | The location information is ignored
 | 0x00000200 | HasExpString | The LNK file contains environment variables location data block
 | 0x00000400 | RunInSeparateProcess | A 16-bit target application is run in a separate virtual machine.
-| 0x00000800 | | Reserved
+| 0x00000800 | | [yellow-background]*Unknown (Reserved)*
 | 0x00001000 | HasDarwinID | The LNK file contains a Darwin (Mac OS-X) properties data block
 | 0x00002000 | RunAsUser | The target application is run as a different user.
 | 0x00004000 | HasExpIcon | The LNK file contains an icon location data block
 | 0x00008000 | NoPidlAlias | [yellow-background]*The file system location is represented in the shell namespace when the path to an item is parsed into the link target identifiers* +
 [yellow-background]*Contains a known folder location data block?*
-| 0x00010000 | | Reserved
+| 0x00010000 | | [yellow-background]*Unknown (Reserved)*
 3+| [yellow-background]*_Windows Vista and later?_*
 | 0x00020000 | RunWithShimLayer | The target application is run with the shim layer. The LNK file contains shim layer properties data block.
 | 0x00040000 | ForceNoLinkTrack | The LNK does not contain a distributed link tracking data block
@@ -495,8 +498,8 @@ Includes 4 bytes of the size
 | 18 | 2 | | Window height
 | 20 | 2 | | Window origin x-coordinate
 | 22 | 2 | | Window origin y-coordinate
-| 24 | 4 | 0 | Reserved
-| 28 | 4 | 0 | Reserved
+| 24 | 4 | 0 | [yellow-background]*Unknown (Reserved)*
+| 28 | 4 | 0 | [yellow-background]*Unknown (Reserved)*
 | 32 | 4 | | Font size
 | 36 | 4 | | Font family value
 | 40 | 4 | | Font weight +
