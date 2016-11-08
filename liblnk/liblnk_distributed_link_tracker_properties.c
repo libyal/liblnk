@@ -22,7 +22,10 @@
 #include <common.h>
 #include <byte_stream.h>
 #include <memory.h>
+#include <narrow_string.h>
+#include <system_string.h>
 #include <types.h>
+#include <wide_string.h>
 
 #include "liblnk_data_block.h"
 #include "liblnk_distributed_link_tracker_properties.h"
@@ -151,9 +154,9 @@ int liblnk_distributed_link_tracker_properties_read(
 	uint32_t data_version                                                                          = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	libcstring_system_character_t guid_string[ 48 ];
+	system_character_t guid_string[ 48 ];
 
-	libcstring_system_character_t *value_string                                                    = NULL;
+	system_character_t *value_string                                                               = NULL;
 	libfguid_identifier_t *guid                                                                    = NULL;
 	size_t value_string_size                                                                       = 0;
 	int result                                                                                     = 0;
@@ -340,7 +343,7 @@ int liblnk_distributed_link_tracker_properties_read(
 		 16,
 		 0 );
 
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libuna_utf16_string_size_from_byte_stream(
 			  distributed_link_tracker_properties_data->machine_identifier_string,
 			  16,
@@ -367,7 +370,7 @@ int liblnk_distributed_link_tracker_properties_read(
 			goto on_error;
 		}
 		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -378,7 +381,7 @@ int liblnk_distributed_link_tracker_properties_read(
 
 			goto on_error;
 		}
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 				value_string_size );
 
 		if( value_string == NULL )
@@ -392,7 +395,7 @@ int liblnk_distributed_link_tracker_properties_read(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libuna_utf16_string_copy_from_byte_stream(
 			  (libuna_utf16_character_t *) value_string,
 			  value_string_size,
@@ -421,7 +424,7 @@ int liblnk_distributed_link_tracker_properties_read(
 			goto on_error;
 		}
 		libcnotify_printf(
-		 "%s: machine identifier string\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "%s: machine identifier string\t: %" PRIs_SYSTEM "\n",
 		 function,
 		 value_string );
 
@@ -459,7 +462,7 @@ int liblnk_distributed_link_tracker_properties_read(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
@@ -486,7 +489,7 @@ int liblnk_distributed_link_tracker_properties_read(
 			goto on_error;
 		}
 		libcnotify_printf(
-		 "%s: droid volume identifier\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "%s: droid volume identifier\t: %" PRIs_SYSTEM "\n",
 		 function,
 		 guid_string );
 
@@ -506,7 +509,7 @@ int liblnk_distributed_link_tracker_properties_read(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
@@ -533,7 +536,7 @@ int liblnk_distributed_link_tracker_properties_read(
 			goto on_error;
 		}
 		libcnotify_printf(
-		 "%s: droid file identifier\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "%s: droid file identifier\t\t: %" PRIs_SYSTEM "\n",
 		 function,
 		 guid_string );
 
@@ -553,7 +556,7 @@ int liblnk_distributed_link_tracker_properties_read(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
@@ -580,7 +583,7 @@ int liblnk_distributed_link_tracker_properties_read(
 			goto on_error;
 		}
 		libcnotify_printf(
-		 "%s: birth droid volume identifier\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "%s: birth droid volume identifier\t: %" PRIs_SYSTEM "\n",
 		 function,
 		 guid_string );
 
@@ -600,7 +603,7 @@ int liblnk_distributed_link_tracker_properties_read(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
@@ -627,7 +630,7 @@ int liblnk_distributed_link_tracker_properties_read(
 			goto on_error;
 		}
 		libcnotify_printf(
-		 "%s: birth droid file identifier\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "%s: birth droid file identifier\t: %" PRIs_SYSTEM "\n",
 		 function,
 		 guid_string );
 

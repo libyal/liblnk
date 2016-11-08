@@ -22,14 +22,16 @@
 #include <common.h>
 #include <byte_stream.h>
 #include <memory.h>
+#include <narrow_string.h>
+#include <system_string.h>
 #include <types.h>
+#include <wide_string.h>
 
 #include "liblnk_debug.h"
 #include "liblnk_definitions.h"
 #include "liblnk_libbfio.h"
 #include "liblnk_libcerror.h"
 #include "liblnk_libcnotify.h"
-#include "liblnk_libcstring.h"
 #include "liblnk_libuna.h"
 #include "liblnk_location_information.h"
 
@@ -199,7 +201,7 @@ ssize_t liblnk_location_information_read(
 	uint32_t value_size                              = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	libcstring_system_character_t *value_string      = NULL;
+	system_character_t *value_string                 = NULL;
 	size_t value_string_size                         = 0;
 	uint32_t value_32bit                             = 0;
 	int result                                       = 0;
@@ -758,7 +760,7 @@ ssize_t liblnk_location_information_read(
 		{
 			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
 			{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 				result = libuna_utf16_string_size_from_utf16_stream(
 					  location_information->volume_label,
 					  location_information->volume_label_size,
@@ -776,7 +778,7 @@ ssize_t liblnk_location_information_read(
 			}
 			else
 			{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 				result = libuna_utf16_string_size_from_byte_stream(
 					  location_information->volume_label,
 					  location_information->volume_label_size,
@@ -804,7 +806,7 @@ ssize_t liblnk_location_information_read(
 				goto on_error;
 			}
 			if( ( value_string_size > (size_t) SSIZE_MAX )
-			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
+			 || ( ( sizeof( system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -815,7 +817,7 @@ ssize_t liblnk_location_information_read(
 
 				goto on_error;
 			}
-			value_string = libcstring_system_string_allocate(
+			value_string = system_string_allocate(
 					value_string_size );
 
 			if( value_string == NULL )
@@ -831,7 +833,7 @@ ssize_t liblnk_location_information_read(
 			}
 			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
 			{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 				result = libuna_utf16_string_copy_from_utf16_stream(
 					  (libuna_utf16_character_t *) value_string,
 					  value_string_size,
@@ -851,7 +853,7 @@ ssize_t liblnk_location_information_read(
 			}
 			else
 			{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 				result = libuna_utf16_string_copy_from_byte_stream(
 					  (libuna_utf16_character_t *) value_string,
 					  value_string_size,
@@ -881,7 +883,7 @@ ssize_t liblnk_location_information_read(
 				goto on_error;
 			}
 			libcnotify_printf(
-			 "%s: volume information volume label\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+			 "%s: volume information volume label\t\t\t: %" PRIs_SYSTEM "\n",
 			 function,
 			 value_string );
 
@@ -1081,7 +1083,7 @@ ssize_t liblnk_location_information_read(
 			{
 				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE ) != 0 )
 				{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_size_from_utf16_stream(
 						  location_information->local_path,
 						  location_information->local_path_size,
@@ -1099,7 +1101,7 @@ ssize_t liblnk_location_information_read(
 				}
 				else
 				{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_size_from_byte_stream(
 						  location_information->local_path,
 						  location_information->local_path_size,
@@ -1127,7 +1129,7 @@ ssize_t liblnk_location_information_read(
 					goto on_error;
 				}
 				if( ( value_string_size > (size_t) SSIZE_MAX )
-				 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
+				 || ( ( sizeof( system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
 				{
 					libcerror_error_set(
 					 error,
@@ -1138,7 +1140,7 @@ ssize_t liblnk_location_information_read(
 
 					goto on_error;
 				}
-				value_string = libcstring_system_string_allocate(
+				value_string = system_string_allocate(
 						value_string_size );
 
 				if( value_string == NULL )
@@ -1154,7 +1156,7 @@ ssize_t liblnk_location_information_read(
 				}
 				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE ) != 0 )
 				{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_copy_from_utf16_stream(
 						  (libuna_utf16_character_t *) value_string,
 						  value_string_size,
@@ -1174,7 +1176,7 @@ ssize_t liblnk_location_information_read(
 				}
 				else
 				{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_copy_from_byte_stream(
 						  (libuna_utf16_character_t *) value_string,
 						  value_string_size,
@@ -1204,7 +1206,7 @@ ssize_t liblnk_location_information_read(
 					goto on_error;
 				}
 				libcnotify_printf(
-				 "%s: local path\t\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+				 "%s: local path\t\t\t\t\t\t: %" PRIs_SYSTEM "\n",
 				 function,
 				 value_string );
 
@@ -1524,7 +1526,7 @@ ssize_t liblnk_location_information_read(
 			{
 				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE ) != 0 )
 				{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_size_from_utf16_stream(
 						  location_information->network_share_name,
 						  location_information->network_share_name_size,
@@ -1542,7 +1544,7 @@ ssize_t liblnk_location_information_read(
 				}
 				else
 				{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_size_from_byte_stream(
 						  location_information->network_share_name,
 						  location_information->network_share_name_size,
@@ -1570,7 +1572,7 @@ ssize_t liblnk_location_information_read(
 					goto on_error;
 				}
 				if( ( value_string_size > (size_t) SSIZE_MAX )
-				 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
+				 || ( ( sizeof( system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
 				{
 					libcerror_error_set(
 					 error,
@@ -1581,7 +1583,7 @@ ssize_t liblnk_location_information_read(
 
 					goto on_error;
 				}
-				value_string = libcstring_system_string_allocate(
+				value_string = system_string_allocate(
 						value_string_size );
 
 				if( value_string == NULL )
@@ -1597,7 +1599,7 @@ ssize_t liblnk_location_information_read(
 				}
 				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE ) != 0 )
 				{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_copy_from_utf16_stream(
 						  (libuna_utf16_character_t *) value_string,
 						  value_string_size,
@@ -1617,7 +1619,7 @@ ssize_t liblnk_location_information_read(
 				}
 				else
 				{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_copy_from_byte_stream(
 						  (libuna_utf16_character_t *) value_string,
 						  value_string_size,
@@ -1647,7 +1649,7 @@ ssize_t liblnk_location_information_read(
 					goto on_error;
 				}
 				libcnotify_printf(
-				 "%s: volume information network share name\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+				 "%s: volume information network share name\t\t\t: %" PRIs_SYSTEM "\n",
 				 function,
 				 value_string );
 
@@ -1816,7 +1818,7 @@ ssize_t liblnk_location_information_read(
 			{
 				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_DEVICE_NAME_IS_UNICODE ) != 0 )
 				{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_size_from_utf16_stream(
 					          location_information->device_name,
 					          location_information->device_name_size,
@@ -1834,7 +1836,7 @@ ssize_t liblnk_location_information_read(
 				}
 				else
 				{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_size_from_byte_stream(
 					          location_information->device_name,
 					          location_information->device_name_size,
@@ -1862,7 +1864,7 @@ ssize_t liblnk_location_information_read(
 					goto on_error;
 				}
 				if( ( value_string_size > (size_t) SSIZE_MAX )
-				 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
+				 || ( ( sizeof( system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
 				{
 					libcerror_error_set(
 					 error,
@@ -1873,7 +1875,7 @@ ssize_t liblnk_location_information_read(
 
 					goto on_error;
 				}
-				value_string = libcstring_system_string_allocate(
+				value_string = system_string_allocate(
 						value_string_size );
 
 				if( value_string == NULL )
@@ -1889,7 +1891,7 @@ ssize_t liblnk_location_information_read(
 				}
 				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_DEVICE_NAME_IS_UNICODE ) != 0 )
 				{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_copy_from_utf16_stream(
 					          (libuna_utf16_character_t *) value_string,
 					          value_string_size,
@@ -1909,7 +1911,7 @@ ssize_t liblnk_location_information_read(
 				}
 				else
 				{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 					result = libuna_utf16_string_copy_from_byte_stream(
 					          (libuna_utf16_character_t *) value_string,
 					          value_string_size,
@@ -1939,7 +1941,7 @@ ssize_t liblnk_location_information_read(
 					goto on_error;
 				}
 				libcnotify_printf(
-				 "%s: volume information device name\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+				 "%s: volume information device name\t\t\t: %" PRIs_SYSTEM "\n",
 				 function,
 				 value_string );
 
@@ -2138,7 +2140,7 @@ ssize_t liblnk_location_information_read(
 		{
 			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
 			{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 				result = libuna_utf16_string_size_from_utf16_stream(
 					  location_information->common_path,
 					  location_information->common_path_size,
@@ -2156,7 +2158,7 @@ ssize_t liblnk_location_information_read(
 			}
 			else
 			{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 				result = libuna_utf16_string_size_from_byte_stream(
 					  location_information->common_path,
 					  location_information->common_path_size,
@@ -2184,7 +2186,7 @@ ssize_t liblnk_location_information_read(
 				goto on_error;
 			}
 			if( ( value_string_size > (size_t) SSIZE_MAX )
-			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
+			 || ( ( sizeof( system_character_t ) * value_string_size ) > (size_t) SSIZE_MAX ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -2195,7 +2197,7 @@ ssize_t liblnk_location_information_read(
 
 				goto on_error;
 			}
-			value_string = libcstring_system_string_allocate(
+			value_string = system_string_allocate(
 			                value_string_size );
 
 			if( value_string == NULL )
@@ -2211,7 +2213,7 @@ ssize_t liblnk_location_information_read(
 			}
 			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
 			{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 				result = libuna_utf16_string_copy_from_utf16_stream(
 					  (libuna_utf16_character_t *) value_string,
 					  value_string_size,
@@ -2231,7 +2233,7 @@ ssize_t liblnk_location_information_read(
 			}
 			else
 			{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 				result = libuna_utf16_string_copy_from_byte_stream(
 					  (libuna_utf16_character_t *) value_string,
 					  value_string_size,
@@ -2261,7 +2263,7 @@ ssize_t liblnk_location_information_read(
 				goto on_error;
 			}
 			libcnotify_printf(
-			 "%s: common path\t\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+			 "%s: common path\t\t\t\t\t\t: %" PRIs_SYSTEM "\n",
 			 function,
 			 value_string );
 

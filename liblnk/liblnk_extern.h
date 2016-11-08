@@ -24,6 +24,10 @@
 
 #include <common.h>
 
+/* Define HAVE_LOCAL_LIBLNK for local use of liblnk
+ */
+#if !defined( HAVE_LOCAL_LIBLNK )
+
 /* If libtool DLL support is enabled set LIBLNK_DLL_EXPORT
  * before including liblnk/extern.h
  */
@@ -33,5 +37,10 @@
 
 #include <liblnk/extern.h>
 
+#else
+#define LIBLNK_EXTERN	extern
+
 #endif
+
+#endif /* !defined( _LIBLNK_INTERNAL_EXTERN_H ) */
 

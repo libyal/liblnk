@@ -39,7 +39,7 @@ enum LIBLNK_ERROR_DOMAINS
 	LIBLNK_ERROR_DOMAIN_INPUT			= (int) 'i',
 	LIBLNK_ERROR_DOMAIN_MEMORY			= (int) 'm',
 	LIBLNK_ERROR_DOMAIN_OUTPUT			= (int) 'o',
-	LIBLNK_ERROR_DOMAIN_RUNTIME			= (int) 'r',
+	LIBLNK_ERROR_DOMAIN_RUNTIME			= (int) 'r'
 };
 
 /* The argument error codes
@@ -208,6 +208,17 @@ enum LIBLNK_MEMORY_ERROR
 	LIBLNK_MEMORY_ERROR_SET_FAILED			= 3
 };
 
+/* The output error codes
+ */
+enum LIBLNK_OUTPUT_ERROR
+{
+	LIBLNK_OUTPUT_ERROR_GENERIC			= 0,
+
+	/* There is insuficient space to write the output
+	 */
+	LIBLNK_OUTPUT_ERROR_INSUFFICIENT_SPACE		= 1
+};
+
 /* The runtime error codes
  * to signify errors regarding runtime processing
  */
@@ -276,16 +287,5 @@ enum LIBLNK_RUNTIME_ERROR
 	LIBLNK_RUNTIME_ERROR_ABORT_REQUESTED		= 15
 };
 
-/* The output error codes
- */
-enum LIBLNK_OUTPUT_ERROR
-{
-	LIBLNK_OUTPUT_ERROR_GENERIC			= 0,
-
-	/* There is insuficient space to write the output
-	 */
-	LIBLNK_OUTPUT_ERROR_INSUFFICIENT_SPACE		= 1
-};
-
-#endif
+#endif /* !defined( _LIBLNK_ERROR_H ) */
 

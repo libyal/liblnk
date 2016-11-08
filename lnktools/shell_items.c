@@ -22,7 +22,10 @@
 #include <common.h>
 #include <file_stream.h>
 #include <memory.h>
+#include <narrow_string.h>
+#include <system_string.h>
 #include <types.h>
+#include <wide_string.h>
 
 #include "lnktools_libcerror.h"
 #include "lnktools_libfdatetime.h"
@@ -215,17 +218,17 @@ int shell_items_file_entry_extension_fprint(
      FILE *notify_stream,
      libcerror_error_t **error )
 {
-	libcstring_system_character_t date_time_string[ 48 ];
+	system_character_t date_time_string[ 48 ];
 
-	libcstring_system_character_t *value_string = NULL;
 	libfdatetime_fat_date_time_t *fat_date_time = NULL;
+	system_character_t *value_string            = NULL;
 	static char *function                       = "shell_items_file_entry_extension_fprint";
 	size_t value_string_size                    = 0;
 	uint64_t value_64bit                        = 0;
 	uint32_t value_32bit                        = 0;
 	int result                                  = 0;
 
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = libfwsi_file_entry_extension_get_utf16_long_name_size(
 		  extension_block,
 		  &value_string_size,
@@ -250,7 +253,7 @@ int shell_items_file_entry_extension_fprint(
 	if( ( result != 0 )
 	 && ( value_string_size > 0 ) )
 	{
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 		                value_string_size );
 
 		if( value_string == NULL )
@@ -264,7 +267,7 @@ int shell_items_file_entry_extension_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfwsi_file_entry_extension_get_utf16_long_name(
 			  extension_block,
 			  (uint16_t *) value_string,
@@ -290,7 +293,7 @@ int shell_items_file_entry_extension_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t\tLong name\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "\t\tLong name\t\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(
@@ -298,7 +301,7 @@ int shell_items_file_entry_extension_fprint(
 
 		value_string = NULL;
 	}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = libfwsi_file_entry_extension_get_utf16_localized_name_size(
 		  extension_block,
 		  &value_string_size,
@@ -323,7 +326,7 @@ int shell_items_file_entry_extension_fprint(
 	if( ( result != 0 )
 	 && ( value_string_size > 0 ) )
 	{
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 		                value_string_size );
 
 		if( value_string == NULL )
@@ -337,7 +340,7 @@ int shell_items_file_entry_extension_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfwsi_file_entry_extension_get_utf16_localized_name(
 			  extension_block,
 			  (uint16_t *) value_string,
@@ -363,7 +366,7 @@ int shell_items_file_entry_extension_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t\tLocalized name\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "\t\tLocalized name\t\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(
@@ -414,7 +417,7 @@ int shell_items_file_entry_extension_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfdatetime_fat_date_time_copy_to_utf16_string(
 			  fat_date_time,
 			  (uint16_t *) date_time_string,
@@ -442,7 +445,7 @@ int shell_items_file_entry_extension_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t\tCreation time\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "\t\tCreation time\t\t: %" PRIs_SYSTEM "\n",
 		 date_time_string );
 	}
 	else
@@ -481,7 +484,7 @@ int shell_items_file_entry_extension_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfdatetime_fat_date_time_copy_to_utf16_string(
 			  fat_date_time,
 			  (uint16_t *) date_time_string,
@@ -509,7 +512,7 @@ int shell_items_file_entry_extension_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t\tAccess time\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "\t\tAccess time\t\t: %" PRIs_SYSTEM "\n",
 		 date_time_string );
 	}
 	else
@@ -988,7 +991,7 @@ int shell_items_root_folder_fprint(
 {
 	uint8_t guid_data[ 16 ];
 
-	libcstring_system_character_t guid_string[ 48 ];
+	system_character_t guid_string[ 48 ];
 
 	libfguid_identifier_t *guid = NULL;
 	static char *function       = "shell_items_root_folder_fprint";
@@ -1038,7 +1041,7 @@ int shell_items_root_folder_fprint(
 
 		goto on_error;
 	}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = libfguid_identifier_copy_to_utf16_string(
 		  guid,
 		  (uint16_t *) guid_string,
@@ -1066,7 +1069,7 @@ int shell_items_root_folder_fprint(
 	}
 	fprintf(
 	 notify_stream,
-	 "\t\tShell folder identifier\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+	 "\t\tShell folder identifier\t: %" PRIs_SYSTEM "\n",
 	 guid_string );
 
 	if( libfguid_identifier_free(
@@ -1108,12 +1111,12 @@ int shell_items_volume_fprint(
      FILE *notify_stream,
      libcerror_error_t **error )
 {
-	libcstring_system_character_t *value_string = NULL;
-	static char *function                       = "shell_items_volume_fprint";
-	size_t value_string_size                    = 0;
-	int result                                  = 0;
+	system_character_t *value_string = NULL;
+	static char *function            = "shell_items_volume_fprint";
+	size_t value_string_size         = 0;
+	int result                       = 0;
 
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = libfwsi_volume_get_utf16_name_size(
 		  shell_item,
 		  &value_string_size,
@@ -1137,7 +1140,7 @@ int shell_items_volume_fprint(
 	}
 	if( value_string_size > 0 )
 	{
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 		                value_string_size );
 
 		if( value_string == NULL )
@@ -1151,7 +1154,7 @@ int shell_items_volume_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfwsi_volume_get_utf16_name(
 			  shell_item,
 			  (uint16_t *) value_string,
@@ -1177,7 +1180,7 @@ int shell_items_volume_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t\tVolume name\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "\t\tVolume name\t\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(
@@ -1204,16 +1207,16 @@ int shell_items_file_entry_fprint(
      FILE *notify_stream,
      libcerror_error_t **error )
 {
-	libcstring_system_character_t date_time_string[ 48 ];
+	system_character_t date_time_string[ 48 ];
 
-	libcstring_system_character_t *value_string = NULL;
 	libfdatetime_fat_date_time_t *fat_date_time = NULL;
+	system_character_t *value_string            = NULL;
 	static char *function                       = "shell_items_file_entry_fprint";
 	size_t value_string_size                    = 0;
 	uint32_t value_32bit                        = 0;
 	int result                                  = 0;
 
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = libfwsi_file_entry_get_utf16_name_size(
 		  shell_item,
 		  &value_string_size,
@@ -1237,7 +1240,7 @@ int shell_items_file_entry_fprint(
 	}
 	if( value_string_size > 0 )
 	{
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 		                value_string_size );
 
 		if( value_string == NULL )
@@ -1251,7 +1254,7 @@ int shell_items_file_entry_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfwsi_file_entry_get_utf16_name(
 			  shell_item,
 			  (uint16_t *) value_string,
@@ -1277,7 +1280,7 @@ int shell_items_file_entry_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t\tName\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "\t\tName\t\t\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(
@@ -1328,7 +1331,7 @@ int shell_items_file_entry_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfdatetime_fat_date_time_copy_to_utf16_string(
 			  fat_date_time,
 			  (uint16_t *) date_time_string,
@@ -1356,7 +1359,7 @@ int shell_items_file_entry_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t\tModification time\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "\t\tModification time\t: %" PRIs_SYSTEM "\n",
 		 date_time_string );
 	}
 	else
@@ -1425,12 +1428,12 @@ int shell_items_network_location_fprint(
      FILE *notify_stream,
      libcerror_error_t **error )
 {
-	libcstring_system_character_t *value_string = NULL;
-	static char *function                       = "shell_items_network_location_fprint";
-	size_t value_string_size                    = 0;
-	int result                                  = 0;
+	system_character_t *value_string = NULL;
+	static char *function            = "shell_items_network_location_fprint";
+	size_t value_string_size         = 0;
+	int result                       = 0;
 
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = libfwsi_network_location_get_utf16_location_size(
 		  shell_item,
 		  &value_string_size,
@@ -1454,7 +1457,7 @@ int shell_items_network_location_fprint(
 	}
 	if( value_string_size > 0 )
 	{
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 		                value_string_size );
 
 		if( value_string == NULL )
@@ -1468,7 +1471,7 @@ int shell_items_network_location_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfwsi_network_location_get_utf16_location(
 			  shell_item,
 			  (uint16_t *) value_string,
@@ -1494,7 +1497,7 @@ int shell_items_network_location_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t\tLocation\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "\t\tLocation\t\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(
@@ -1502,7 +1505,7 @@ int shell_items_network_location_fprint(
 
 		value_string = NULL;
 	}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = libfwsi_network_location_get_utf16_description_size(
 		  shell_item,
 		  &value_string_size,
@@ -1527,7 +1530,7 @@ int shell_items_network_location_fprint(
 	if( ( result != 0 )
 	 && ( value_string_size > 0 ) )
 	{
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 		                value_string_size );
 
 		if( value_string == NULL )
@@ -1541,7 +1544,7 @@ int shell_items_network_location_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfwsi_network_location_get_utf16_description(
 			  shell_item,
 			  (uint16_t *) value_string,
@@ -1567,7 +1570,7 @@ int shell_items_network_location_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t\tDescription\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "\t\tDescription\t\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(
@@ -1575,7 +1578,7 @@ int shell_items_network_location_fprint(
 
 		value_string = NULL;
 	}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = libfwsi_network_location_get_utf16_comments_size(
 		  shell_item,
 		  &value_string_size,
@@ -1600,7 +1603,7 @@ int shell_items_network_location_fprint(
 	if( ( result != 0 )
 	 && ( value_string_size > 0 ) )
 	{
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 		                value_string_size );
 
 		if( value_string == NULL )
@@ -1614,7 +1617,7 @@ int shell_items_network_location_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfwsi_network_location_get_utf16_comments(
 			  shell_item,
 			  (uint16_t *) value_string,
@@ -1640,7 +1643,7 @@ int shell_items_network_location_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t\tComments\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "\t\tComments\t\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(

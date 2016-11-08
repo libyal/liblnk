@@ -21,7 +21,10 @@
 
 #include <common.h>
 #include <memory.h>
+#include <narrow_string.h>
+#include <system_string.h>
 #include <types.h>
+#include <wide_string.h>
 
 #include "liblnk_data_block.h"
 #include "liblnk_data_block_strings.h"
@@ -48,7 +51,7 @@ int liblnk_data_block_strings_read(
 	size_t unicode_string_size                        = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	libcstring_system_character_t *value_string       = NULL;
+	system_character_t *value_string                  = NULL;
 	size_t value_string_size                          = 0;
 	int result                                        = 0;
 #endif
@@ -157,7 +160,7 @@ int liblnk_data_block_strings_read(
 		 260,
 		 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libuna_utf16_string_size_from_byte_stream(
 			  data_block_strings_data->string,
 			  260,
@@ -184,7 +187,7 @@ int liblnk_data_block_strings_read(
 			goto on_error;
 		}
 		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -195,7 +198,7 @@ int liblnk_data_block_strings_read(
 
 			goto on_error;
 		}
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 				value_string_size );
 
 		if( value_string == NULL )
@@ -209,7 +212,7 @@ int liblnk_data_block_strings_read(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libuna_utf16_string_copy_from_byte_stream(
 			  (libuna_utf16_character_t *) value_string,
 			  value_string_size,
@@ -238,7 +241,7 @@ int liblnk_data_block_strings_read(
 			goto on_error;
 		}
 		libcnotify_printf(
-		 "%s: string\t\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "%s: string\t\t\t\t\t: %" PRIs_SYSTEM "\n",
 		 function,
 		 value_string );
 
@@ -286,7 +289,7 @@ int liblnk_data_block_strings_read(
 		 520,
 		 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libuna_utf16_string_size_from_utf16_stream(
 			  data_block_strings_data->unicode_string,
 			  520,
@@ -313,7 +316,7 @@ int liblnk_data_block_strings_read(
 			goto on_error;
 		}
 		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -324,7 +327,7 @@ int liblnk_data_block_strings_read(
 
 			goto on_error;
 		}
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 				value_string_size );
 
 		if( value_string == NULL )
@@ -338,7 +341,7 @@ int liblnk_data_block_strings_read(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libuna_utf16_string_copy_from_utf16_stream(
 			  (libuna_utf16_character_t *) value_string,
 			  value_string_size,
@@ -367,7 +370,7 @@ int liblnk_data_block_strings_read(
 			goto on_error;
 		}
 		libcnotify_printf(
-		 "%s: unicode string\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "%s: unicode string\t\t\t\t: %" PRIs_SYSTEM "\n",
 		 function,
 		 value_string );
 

@@ -26,7 +26,6 @@
 #include <file_stream.h>
 #include <types.h>
 
-#include "lnktools_libcstring.h"
 #include "lnktools_libfwsi.h"
 
 #if defined( __cplusplus )

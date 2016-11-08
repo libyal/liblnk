@@ -1,7 +1,6 @@
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/common \
-	@LIBCSTRING_CPPFLAGS@ \
 	@LIBCERROR_CPPFLAGS@ \
 	@LIBCDATA_CPPFLAGS@ \
 	@LIBCLOCALE_CPPFLAGS@ \
@@ -32,7 +31,6 @@ lnkinfo_SOURCES = \
 	lnktools_libcerror.h \
 	lnktools_libclocale.h \
 	lnktools_libcnotify.h \
-	lnktools_libcstring.h \
 	lnktools_libcsystem.h \
 	lnktools_libfdatetime.h \
 	lnktools_libfguid.h \
@@ -54,7 +52,6 @@ lnkinfo_LDADD = \
 	@LIBCNOTIFY_LIBADD@ \
 	@LIBCLOCALE_LIBADD@ \
 	@LIBCERROR_LIBADD@ \
-	@LIBCSTRING_LIBADD@ \
 	@LIBINTL@
 
 MAINTAINERCLEANFILES = \

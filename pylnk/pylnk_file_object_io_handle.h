@@ -27,7 +27,6 @@
 
 #include "pylnk_libbfio.h"
 #include "pylnk_libcerror.h"
-#include "pylnk_libcstring.h"
 #include "pylnk_python.h"
 
 #if defined( __cplusplus )

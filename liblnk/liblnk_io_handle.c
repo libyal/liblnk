@@ -22,6 +22,7 @@
 #include <common.h>
 #include <byte_stream.h>
 #include <memory.h>
+#include <system_string.h>
 #include <types.h>
 
 #include "liblnk_codepage.h"
@@ -32,7 +33,6 @@
 #include "liblnk_libbfio.h"
 #include "liblnk_libcerror.h"
 #include "liblnk_libcnotify.h"
-#include "liblnk_libcstring.h"
 #include "liblnk_libfdatetime.h"
 #include "liblnk_libfguid.h"
 #include "liblnk_libuna.h"
@@ -205,8 +205,8 @@ ssize_t liblnk_io_handle_read_file_header(
 	uint32_t header_size              = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	libcstring_system_character_t filetime_string[ 32 ];
-	libcstring_system_character_t guid_string[ 48 ];
+	system_character_t filetime_string[ 32 ];
+	system_character_t guid_string[ 48 ];
 
 	libfdatetime_filetime_t *filetime = NULL;
 	libfguid_identifier_t *guid       = NULL;
@@ -439,7 +439,7 @@ ssize_t liblnk_io_handle_read_file_header(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
@@ -479,7 +479,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			goto on_error;
 		}
 		libcnotify_printf(
-		 "%s: class identifier\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "%s: class identifier\t\t\t: %" PRIs_SYSTEM "\n",
 		 function,
 		 guid_string );
 
@@ -530,7 +530,7 @@ ssize_t liblnk_io_handle_read_file_header(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfdatetime_filetime_copy_to_utf16_string(
 			  filetime,
 			  (uint16_t *) filetime_string,
@@ -557,7 +557,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			goto on_error;
 		}
 		libcnotify_printf(
-		 "%s: creation time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+		 "%s: creation time\t\t\t: %" PRIs_SYSTEM " UTC\n",
 		 function,
 		 filetime_string );
 
@@ -577,7 +577,7 @@ ssize_t liblnk_io_handle_read_file_header(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfdatetime_filetime_copy_to_utf16_string(
 			  filetime,
 			  (uint16_t *) filetime_string,
@@ -604,7 +604,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			goto on_error;
 		}
 		libcnotify_printf(
-		 "%s: access time\t\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+		 "%s: access time\t\t\t\t: %" PRIs_SYSTEM " UTC\n",
 		 function,
 		 filetime_string );
 
@@ -624,7 +624,7 @@ ssize_t liblnk_io_handle_read_file_header(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfdatetime_filetime_copy_to_utf16_string(
 			  filetime,
 			  (uint16_t *) filetime_string,
@@ -651,7 +651,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			goto on_error;
 		}
 		libcnotify_printf(
-		 "%s: modification time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+		 "%s: modification time\t\t\t: %" PRIs_SYSTEM " UTC\n",
 		 function,
 		 filetime_string );
 

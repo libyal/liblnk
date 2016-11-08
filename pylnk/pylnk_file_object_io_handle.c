@@ -28,7 +28,6 @@
 #include "pylnk_integer.h"
 #include "pylnk_libbfio.h"
 #include "pylnk_libcerror.h"
-#include "pylnk_libcstring.h"
 #include "pylnk_python.h"
 
 /* Creates a file object IO handle

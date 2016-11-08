@@ -1,6 +1,6 @@
 # Files to ignore by git
 #
-# Version: 20160507
+# Version: 20161030
 
 # Generic auto-generated build files
 *~
@@ -57,6 +57,7 @@ stamp-h[1-9]
 /test-driver
 /ylwrap
 /m4/codeset.m4
+/m4/extern-inline.m4
 /m4/fcntl-o.m4
 /m4/gettext.m4
 /m4/glibc2.m4
@@ -123,9 +124,9 @@ stamp-h[1-9]
 /lnktools/lnkinfo
 /tests/input
 /tests/lnk_test_error
-/tests/lnk_test_get_version
+/tests/lnk_test_file
 /tests/lnk_test_open_close
-/tests/lnk_test_set_ascii_codepage
+/tests/lnk_test_support
 /tests/tmp*
 
 # Local library dependencies specific files
@@ -137,7 +138,6 @@ stamp-h[1-9]
 /libcnotify
 /libcpath
 /libcsplit
-/libcstring
 /libcsystem
 /libcthreads
 /libfdatetime

@@ -44,14 +44,14 @@ BOOL WINAPI DllMain(
              DWORD fdwReason,
              LPVOID lpvReserved )
 {
-	LIBLNK_UNREFERENCED_PARAMETER( lpvReserved );
+	LIBLNK_UNREFERENCED_PARAMETER( lpvReserved )
 
 	switch( fdwReason )
 	{
 		case DLL_PROCESS_ATTACH:
 			DisableThreadLibraryCalls(
 			 hinstDLL );
-		break;
+			break;
 
 		case DLL_THREAD_ATTACH:
 			break;
@@ -71,7 +71,7 @@ BOOL WINAPI DllMain(
 int liblnk_is_dll(
      void )
 {
-        return( 1 );
+	return( 1 );
 }
 
 #endif /* defined( WINAPI ) && defined( HAVE_DLLMAIN ) */

@@ -1,7 +1,6 @@
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/common \
-	@LIBCSTRING_CPPFLAGS@ \
 	@LIBCERROR_CPPFLAGS@ \
 	@LIBCTHREADS_CPPFLAGS@ \
 	@LIBCDATA_CPPFLAGS@ \
@@ -41,7 +40,6 @@ liblnk_la_SOURCES = \
 	liblnk_libcerror.h \
 	liblnk_libclocale.h \
 	liblnk_libcnotify.h \
-	liblnk_libcstring.h \
 	liblnk_libfdatetime.h \
 	liblnk_libfguid.h \
 	liblnk_libfwps.h \
@@ -60,7 +58,6 @@ liblnk_la_SOURCES = \
 	lnk_location_information.h
 
 liblnk_la_LIBADD = \
-	@LIBCSTRING_LIBADD@ \
 	@LIBCERROR_LIBADD@ \
 	@LIBCTHREADS_LIBADD@ \
 	@LIBCDATA_LIBADD@ \

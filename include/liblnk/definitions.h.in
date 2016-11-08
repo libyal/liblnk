@@ -112,5 +112,5 @@ enum LIBLNK_DRIVE_TYPE
 	LIBLNK_DRIVE_TYPE_RAMDISK					= 6
 };
 
-#endif
+#endif /* !defined( _LIBLNK_DEFINITIONS_H ) */
 

@@ -8,7 +8,6 @@ if HAVE_PYTHON3
 AM_CFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/common \
-	@LIBCSTRING_CPPFLAGS@ \
 	@LIBCERROR_CPPFLAGS@ \
 	@LIBCDATA_CPPFLAGS@ \
 	@LIBCLOCALE_CPPFLAGS@ \
@@ -35,7 +34,6 @@ BUILT_SOURCES = \
 	pylnk_libbfio.h \
 	pylnk_libcerror.h \
 	pylnk_libclocale.h \
-	pylnk_libcstring.h \
 	pylnk_libfguid.h \
 	pylnk_liblnk.h \
 	pylnk_python.h \
@@ -46,7 +44,6 @@ pyexec_LTLIBRARIES = pylnk.la
 nodist_pylnk_la_SOURCES = $(BUILT_SOURCES)
 
 pylnk_la_LIBADD = \
-	@LIBCSTRING_LIBADD@ \
 	@LIBCERROR_LIBADD@ \
 	../liblnk/liblnk.la \
 	@LIBCDATA_LIBADD@ \

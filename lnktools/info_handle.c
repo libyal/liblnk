@@ -22,12 +22,14 @@
 #include <common.h>
 #include <file_stream.h>
 #include <memory.h>
+#include <narrow_string.h>
+#include <system_string.h>
 #include <types.h>
+#include <wide_string.h>
 
 #include "info_handle.h"
 #include "lnktools_libcerror.h"
 #include "lnktools_libclocale.h"
-#include "lnktools_libcstring.h"
 #include "lnktools_libfdatetime.h"
 #include "lnktools_libfguid.h"
 #include "lnktools_libfwsi.h"
@@ -315,7 +317,7 @@ int info_handle_signal_abort(
  */
 int info_handle_set_ascii_codepage(
      info_handle_t *info_handle,
-     const libcstring_system_character_t *string,
+     const system_character_t *string,
      libcerror_error_t **error )
 {
 	static char *function  = "info_handle_set_ascii_codepage";
@@ -336,10 +338,10 @@ int info_handle_set_ascii_codepage(
 	}
 	feature_flags = LIBCLOCALE_CODEPAGE_FEATURE_FLAG_HAVE_WINDOWS;
 
-	string_length = libcstring_system_string_length(
+	string_length = system_string_length(
 	                 string );
 
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = libclocale_codepage_copy_from_string_wide(
 	          &( info_handle->ascii_codepage ),
 	          string,
@@ -373,7 +375,7 @@ int info_handle_set_ascii_codepage(
  */
 int info_handle_open_input(
      info_handle_t *info_handle,
-     const libcstring_system_character_t *filename,
+     const system_character_t *filename,
      libcerror_error_t **error )
 {
 	static char *function = "info_handle_open_input";
@@ -403,7 +405,7 @@ int info_handle_open_input(
 
 		return( -1 );
 	}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	if( liblnk_file_open_wide(
 	     info_handle->input_file,
 	     filename,
@@ -577,15 +579,15 @@ int info_handle_link_information_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error )
 {
-	libcstring_system_character_t date_time_string[ 48 ];
+	system_character_t date_time_string[ 48 ];
 
-	libcstring_system_character_t *value_string = NULL;
-	libfdatetime_filetime_t *filetime           = NULL;
-	static char *function                       = "info_handle_link_information_fprint";
-	size_t value_string_size                    = 0;
-	uint64_t value_64bit                        = 0;
-	uint32_t value_32bit                        = 0;
-	int result                                  = 0;
+	libfdatetime_filetime_t *filetime = NULL;
+	system_character_t *value_string  = NULL;
+	static char *function             = "info_handle_link_information_fprint";
+	size_t value_string_size          = 0;
+	uint64_t value_64bit              = 0;
+	uint32_t value_32bit              = 0;
+	int result                        = 0;
 
 	if( info_handle == NULL )
 	{
@@ -647,7 +649,7 @@ int info_handle_link_information_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfdatetime_filetime_copy_to_utf16_string(
 			  filetime,
 			  (uint16_t *) date_time_string,
@@ -675,7 +677,7 @@ int info_handle_link_information_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tCreation time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+		 "\tCreation time\t\t\t: %" PRIs_SYSTEM " UTC\n",
 		 date_time_string );
 	}
 	else
@@ -716,7 +718,7 @@ int info_handle_link_information_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfdatetime_filetime_copy_to_utf16_string(
 			  filetime,
 			  (uint16_t *) date_time_string,
@@ -744,7 +746,7 @@ int info_handle_link_information_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tModification time\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+		 "\tModification time\t\t: %" PRIs_SYSTEM " UTC\n",
 		 date_time_string );
 	}
 	else
@@ -785,7 +787,7 @@ int info_handle_link_information_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfdatetime_filetime_copy_to_utf16_string(
 			  filetime,
 			  (uint16_t *) date_time_string,
@@ -813,7 +815,7 @@ int info_handle_link_information_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tAccess time\t\t\t: %" PRIs_LIBCSTRING_SYSTEM " UTC\n",
+		 "\tAccess time\t\t\t: %" PRIs_SYSTEM " UTC\n",
 		 date_time_string );
 	}
 	else
@@ -993,7 +995,7 @@ int info_handle_link_information_fprint(
 	}
 	else if( result != 0 )
 	{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_get_utf16_volume_label_size(
 		          info_handle->input_file,
 		          &value_string_size,
@@ -1018,7 +1020,7 @@ int info_handle_link_information_fprint(
 		else if( result != 0 )
 		{
 			if( ( value_string_size > (size_t) SSIZE_MAX )
-			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+			 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -1029,7 +1031,7 @@ int info_handle_link_information_fprint(
 
 				goto on_error;
 			}
-			value_string = libcstring_system_string_allocate(
+			value_string = system_string_allocate(
 			                value_string_size );
 
 			if( value_string == NULL )
@@ -1043,7 +1045,7 @@ int info_handle_link_information_fprint(
 
 				goto on_error;
 			}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 			result = liblnk_file_get_utf16_volume_label(
 			          info_handle->input_file,
 			          (uint16_t *) value_string,
@@ -1077,7 +1079,7 @@ int info_handle_link_information_fprint(
 
 			value_string = NULL;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_get_utf16_local_path_size(
 		          info_handle->input_file,
 		          &value_string_size,
@@ -1102,7 +1104,7 @@ int info_handle_link_information_fprint(
 		else if( result != 0 )
 		{
 			if( ( value_string_size > (size_t) SSIZE_MAX )
-			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+			 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -1113,7 +1115,7 @@ int info_handle_link_information_fprint(
 
 				goto on_error;
 			}
-			value_string = libcstring_system_string_allocate(
+			value_string = system_string_allocate(
 			                value_string_size );
 
 			if( value_string == NULL )
@@ -1127,7 +1129,7 @@ int info_handle_link_information_fprint(
 
 				goto on_error;
 			}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 			result = liblnk_file_get_utf16_local_path(
 			          info_handle->input_file,
 			          (uint16_t *) value_string,
@@ -1161,7 +1163,7 @@ int info_handle_link_information_fprint(
 
 			value_string = NULL;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_get_utf16_network_path_size(
 		          info_handle->input_file,
 		          &value_string_size,
@@ -1186,7 +1188,7 @@ int info_handle_link_information_fprint(
 		else if( result != 0 )
 		{
 			if( ( value_string_size > (size_t) SSIZE_MAX )
-			 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+			 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -1197,7 +1199,7 @@ int info_handle_link_information_fprint(
 
 				goto on_error;
 			}
-			value_string = libcstring_system_string_allocate(
+			value_string = system_string_allocate(
 			                value_string_size );
 
 			if( value_string == NULL )
@@ -1211,7 +1213,7 @@ int info_handle_link_information_fprint(
 
 				goto on_error;
 			}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 			result = liblnk_file_get_utf16_network_path(
 			          info_handle->input_file,
 			          (uint16_t *) value_string,
@@ -1270,10 +1272,10 @@ int info_handle_description_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error )
 {
-	libcstring_system_character_t *value_string = NULL;
-	static char *function                       = "info_handle_description_fprint";
-	size_t value_string_size                    = 0;
-	int result                                  = 0;
+	system_character_t *value_string = NULL;
+	static char *function            = "info_handle_description_fprint";
+	size_t value_string_size         = 0;
+	int result                       = 0;
 
 	if( info_handle == NULL )
 	{
@@ -1286,7 +1288,7 @@ int info_handle_description_fprint(
 
 		return( -1 );
 	}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = liblnk_file_get_utf16_description_size(
 		  info_handle->input_file,
 		  &value_string_size,
@@ -1311,7 +1313,7 @@ int info_handle_description_fprint(
 	else if( result != 0 )
 	{
 		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1322,7 +1324,7 @@ int info_handle_description_fprint(
 
 			goto on_error;
 		}
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 				value_string_size );
 
 		if( value_string == NULL )
@@ -1336,7 +1338,7 @@ int info_handle_description_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_get_utf16_description(
 			  info_handle->input_file,
 			  (uint16_t *) value_string,
@@ -1388,10 +1390,10 @@ int info_handle_relative_path_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error )
 {
-	libcstring_system_character_t *value_string = NULL;
-	static char *function                       = "info_handle_relative_path_fprint";
-	size_t value_string_size                    = 0;
-	int result                                  = 0;
+	system_character_t *value_string = NULL;
+	static char *function            = "info_handle_relative_path_fprint";
+	size_t value_string_size         = 0;
+	int result                       = 0;
 
 	if( info_handle == NULL )
 	{
@@ -1404,7 +1406,7 @@ int info_handle_relative_path_fprint(
 
 		return( -1 );
 	}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = liblnk_file_get_utf16_relative_path_size(
 		  info_handle->input_file,
 		  &value_string_size,
@@ -1429,7 +1431,7 @@ int info_handle_relative_path_fprint(
 	else if( result != 0 )
 	{
 		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1440,7 +1442,7 @@ int info_handle_relative_path_fprint(
 
 			goto on_error;
 		}
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 				value_string_size );
 
 		if( value_string == NULL )
@@ -1454,7 +1456,7 @@ int info_handle_relative_path_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_get_utf16_relative_path(
 			  info_handle->input_file,
 			  (uint16_t *) value_string,
@@ -1506,10 +1508,10 @@ int info_handle_working_directory_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error )
 {
-	libcstring_system_character_t *value_string = NULL;
-	static char *function                       = "info_handle_working_directory_fprint";
-	size_t value_string_size                    = 0;
-	int result                                  = 0;
+	system_character_t *value_string = NULL;
+	static char *function            = "info_handle_working_directory_fprint";
+	size_t value_string_size         = 0;
+	int result                       = 0;
 
 	if( info_handle == NULL )
 	{
@@ -1522,7 +1524,7 @@ int info_handle_working_directory_fprint(
 
 		return( -1 );
 	}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = liblnk_file_get_utf16_working_directory_size(
 		  info_handle->input_file,
 		  &value_string_size,
@@ -1547,7 +1549,7 @@ int info_handle_working_directory_fprint(
 	else if( result != 0 )
 	{
 		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1558,7 +1560,7 @@ int info_handle_working_directory_fprint(
 
 			goto on_error;
 		}
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 				value_string_size );
 
 		if( value_string == NULL )
@@ -1572,7 +1574,7 @@ int info_handle_working_directory_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_get_utf16_working_directory(
 			  info_handle->input_file,
 			  (uint16_t *) value_string,
@@ -1624,10 +1626,10 @@ int info_handle_command_line_arguments_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error )
 {
-	libcstring_system_character_t *value_string = NULL;
-	static char *function                       = "info_handle_command_line_arguments_fprint";
-	size_t value_string_size                    = 0;
-	int result                                  = 0;
+	system_character_t *value_string = NULL;
+	static char *function            = "info_handle_command_line_arguments_fprint";
+	size_t value_string_size         = 0;
+	int result                       = 0;
 
 	if( info_handle == NULL )
 	{
@@ -1640,7 +1642,7 @@ int info_handle_command_line_arguments_fprint(
 
 		return( -1 );
 	}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = liblnk_file_get_utf16_command_line_arguments_size(
 		  info_handle->input_file,
 		  &value_string_size,
@@ -1665,7 +1667,7 @@ int info_handle_command_line_arguments_fprint(
 	else if( result != 0 )
 	{
 		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1676,7 +1678,7 @@ int info_handle_command_line_arguments_fprint(
 
 			goto on_error;
 		}
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 				value_string_size );
 
 		if( value_string == NULL )
@@ -1690,7 +1692,7 @@ int info_handle_command_line_arguments_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_get_utf16_command_line_arguments(
 			  info_handle->input_file,
 			  (uint16_t *) value_string,
@@ -1742,10 +1744,10 @@ int info_handle_icon_location_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error )
 {
-	libcstring_system_character_t *value_string = NULL;
-	static char *function                       = "info_handle_icon_location_fprint";
-	size_t value_string_size                    = 0;
-	int result                                  = 0;
+	system_character_t *value_string = NULL;
+	static char *function            = "info_handle_icon_location_fprint";
+	size_t value_string_size         = 0;
+	int result                       = 0;
 
 	if( info_handle == NULL )
 	{
@@ -1758,7 +1760,7 @@ int info_handle_icon_location_fprint(
 
 		return( -1 );
 	}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = liblnk_file_get_utf16_icon_location_size(
 		  info_handle->input_file,
 		  &value_string_size,
@@ -1783,7 +1785,7 @@ int info_handle_icon_location_fprint(
 	else if( result != 0 )
 	{
 		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1794,7 +1796,7 @@ int info_handle_icon_location_fprint(
 
 			goto on_error;
 		}
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 				value_string_size );
 
 		if( value_string == NULL )
@@ -1808,7 +1810,7 @@ int info_handle_icon_location_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_get_utf16_icon_location(
 			  info_handle->input_file,
 			  (uint16_t *) value_string,
@@ -1860,10 +1862,10 @@ int info_handle_environment_variables_location_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error )
 {
-	libcstring_system_character_t *value_string = NULL;
-	static char *function                       = "info_handle_environment_variables_location_fprint";
-	size_t value_string_size                    = 0;
-	int result                                  = 0;
+	system_character_t *value_string = NULL;
+	static char *function            = "info_handle_environment_variables_location_fprint";
+	size_t value_string_size         = 0;
+	int result                       = 0;
 
 	if( info_handle == NULL )
 	{
@@ -1876,7 +1878,7 @@ int info_handle_environment_variables_location_fprint(
 
 		return( -1 );
 	}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = liblnk_file_get_utf16_environment_variables_location_size(
 		  info_handle->input_file,
 		  &value_string_size,
@@ -1901,7 +1903,7 @@ int info_handle_environment_variables_location_fprint(
 	else if( result != 0 )
 	{
 		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1912,7 +1914,7 @@ int info_handle_environment_variables_location_fprint(
 
 			goto on_error;
 		}
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 				value_string_size );
 
 		if( value_string == NULL )
@@ -1926,7 +1928,7 @@ int info_handle_environment_variables_location_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_get_utf16_environment_variables_location(
 			  info_handle->input_file,
 			  (uint16_t *) value_string,
@@ -2139,13 +2141,13 @@ int info_handle_distributed_link_tracking_fprint(
 {
 	uint8_t guid_data[ 16 ];
 
-	libcstring_system_character_t guid_string[ 48 ];
+	system_character_t guid_string[ 48 ];
 
-	libfguid_identifier_t *guid                 = NULL;
-	libcstring_system_character_t *value_string = NULL;
-	static char *function                       = "info_handle_distributed_link_tracking_fprint";
-	size_t value_string_size                    = 0;
-	int result                                  = 0;
+	libfguid_identifier_t *guid      = NULL;
+	system_character_t *value_string = NULL;
+	static char *function            = "info_handle_distributed_link_tracking_fprint";
+	size_t value_string_size         = 0;
+	int result                       = 0;
 
 	if( info_handle == NULL )
 	{
@@ -2179,7 +2181,7 @@ int info_handle_distributed_link_tracking_fprint(
 		 info_handle->notify_stream,
 		 "Distributed link tracking data:\n" );
 
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_get_utf16_machine_identifier_size(
 			  info_handle->input_file,
 			  &value_string_size,
@@ -2202,7 +2204,7 @@ int info_handle_distributed_link_tracking_fprint(
 			goto on_error;
 		}
 		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( libcstring_system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -2213,7 +2215,7 @@ int info_handle_distributed_link_tracking_fprint(
 
 			goto on_error;
 		}
-		value_string = libcstring_system_string_allocate(
+		value_string = system_string_allocate(
 				value_string_size );
 
 		if( value_string == NULL )
@@ -2227,7 +2229,7 @@ int info_handle_distributed_link_tracking_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_get_utf16_machine_identifier(
 			  info_handle->input_file,
 			  (uint16_t *) value_string,
@@ -2305,7 +2307,7 @@ int info_handle_distributed_link_tracking_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
@@ -2333,7 +2335,7 @@ int info_handle_distributed_link_tracking_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tDroid volume identifier\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "\tDroid volume identifier\t\t: %" PRIs_SYSTEM "\n",
 		 guid_string );
 
 		if( liblnk_file_get_droid_file_identifier(
@@ -2367,7 +2369,7 @@ int info_handle_distributed_link_tracking_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
@@ -2395,7 +2397,7 @@ int info_handle_distributed_link_tracking_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tDroid file identifier\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "\tDroid file identifier\t\t: %" PRIs_SYSTEM "\n",
 		 guid_string );
 
 		if( liblnk_file_get_birth_droid_volume_identifier(
@@ -2429,7 +2431,7 @@ int info_handle_distributed_link_tracking_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
@@ -2457,7 +2459,7 @@ int info_handle_distributed_link_tracking_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tBirth droid volume identifier\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "\tBirth droid volume identifier\t: %" PRIs_SYSTEM "\n",
 		 guid_string );
 
 		if( liblnk_file_get_birth_droid_file_identifier(
@@ -2491,7 +2493,7 @@ int info_handle_distributed_link_tracking_fprint(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
@@ -2519,7 +2521,7 @@ int info_handle_distributed_link_tracking_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tBirth droid file identifier\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "\tBirth droid file identifier\t: %" PRIs_SYSTEM "\n",
 		 guid_string );
 
 		if( libfguid_identifier_free(

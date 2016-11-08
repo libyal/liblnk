@@ -22,6 +22,7 @@
 #include <common.h>
 #include <byte_stream.h>
 #include <memory.h>
+#include <system_string.h>
 #include <types.h>
 
 #include "liblnk_data_block.h"
@@ -148,7 +149,7 @@ int liblnk_known_folder_location_read(
 	static char *function                                              = "liblnk_data_block_strings_read";
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	libcstring_system_character_t guid_string[ 48 ];
+	system_character_t guid_string[ 48 ];
 
 	libfguid_identifier_t *guid                                        = NULL;
 	int result                                                         = 0;
@@ -250,7 +251,7 @@ int liblnk_known_folder_location_read(
 
 			goto on_error;
 		}
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = libfguid_identifier_copy_to_utf16_string(
 			  guid,
 			  (uint16_t *) guid_string,
@@ -277,7 +278,7 @@ int liblnk_known_folder_location_read(
 			goto on_error;
 		}
 		libcnotify_printf(
-		 "%s: known folder identifier\t\t\t: %" PRIs_LIBCSTRING_SYSTEM "\n",
+		 "%s: known folder identifier\t\t\t: %" PRIs_SYSTEM "\n",
 		 function,
 		 guid_string );
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Library API functions testing script
+# Library API type testing script
 #
 # Version: 20161105
 
@@ -11,39 +11,38 @@ TEST_PREFIX=`dirname ${PWD}`;
 TEST_PREFIX=`basename ${TEST_PREFIX} | sed 's/^lib\([^-]*\).*$/\1/'`;
 
 TEST_PROFILE="lib${TEST_PREFIX}";
-TEST_FUNCTIONS="error";
-TEST_FUNCTIONS_WITH_INPUT="open_close support";
+TEST_TYPES="";
+TEST_TYPES_WITH_INPUT="file";
 OPTION_SETS="";
 
 TEST_TOOL_DIRECTORY=".";
 INPUT_DIRECTORY="input";
 INPUT_GLOB="*";
 
-test_api_function()
+test_api_type()
 {
-	local TEST_FUNCTION=$1;
+	local TEST_TYPE=$1;
 
-	local TEST_DESCRIPTION="Testing API functions: ${TEST_FUNCTION}";
-	local TEST_EXECUTABLE="${TEST_TOOL_DIRECTORY}/${TEST_PREFIX}_test_${TEST_FUNCTION}";
+	local TEST_DESCRIPTION="Testing API type: ${TEST_TYPE}";
+	local TEST_EXECUTABLE="${TEST_TOOL_DIRECTORY}/${TEST_PREFIX}_test_${TEST_TYPE}";
 
 	if ! test -x "${TEST_EXECUTABLE}";
 	then
 		TEST_EXECUTABLE="${TEST_EXECUTABLE}.exe";
 	fi
 
-	# TODO: add support for TEST_PROFILE and OPTION_SETS?
 	run_test_with_arguments "${TEST_DESCRIPTION}" "${TEST_EXECUTABLE}";
 	local RESULT=$?;
 
 	return ${RESULT};
 }
 
-test_api_function_with_input()
+test_api_type_with_input()
 {
-	local TEST_FUNCTION=$1;
+	local TEST_TYPE=$1;
 
-	local TEST_DESCRIPTION="Testing API functions: ${TEST_FUNCTION}";
-	local TEST_EXECUTABLE="${TEST_TOOL_DIRECTORY}/${TEST_PREFIX}_test_${TEST_FUNCTION}";
+	local TEST_DESCRIPTION="Testing API type: ${TEST_TYPE}";
+	local TEST_EXECUTABLE="${TEST_TOOL_DIRECTORY}/${TEST_PREFIX}_test_${TEST_TYPE}";
 
 	if ! test -x "${TEST_EXECUTABLE}";
 	then
@@ -79,9 +78,9 @@ source ${TEST_RUNNER};
 
 RESULT=${EXIT_IGNORE};
 
-for TEST_FUNCTION in ${TEST_FUNCTIONS};
+for TEST_TYPE in ${TEST_TYPES};
 do
-	test_api_function "${TEST_FUNCTION}";
+	test_api_type "${TEST_TYPE}";
 	RESULT=$?;
 
 	if test ${RESULT} -ne ${EXIT_SUCCESS};
@@ -95,9 +94,9 @@ then
 	exit ${RESULT};
 fi
 
-for TEST_FUNCTION in ${TEST_FUNCTIONS_WITH_INPUT};
+for TEST_TYPE in ${TEST_TYPES_WITH_INPUT};
 do
-	test_api_function_with_input "${TEST_FUNCTION}";
+	test_api_type_with_input "${TEST_TYPE}";
 	RESULT=$?;
 
 	if test ${RESULT} -ne ${EXIT_SUCCESS};
