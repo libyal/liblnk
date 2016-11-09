@@ -18,7 +18,7 @@ MSVSCPP_FILES = \
 	libuna/libuna.vcproj \
 	lnk_test_error/lnk_test_error.vcproj \
 	lnk_test_file/lnk_test_file.vcproj \
-	lnk_test_open_close/lnk_test_open_close.vcproj \
+	lnk_test_notify/lnk_test_notify.vcproj \
 	lnk_test_support/lnk_test_support.vcproj \
 	lnkinfo/lnkinfo.vcproj \
 	pylnk/pylnk.vcproj \

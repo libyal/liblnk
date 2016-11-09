@@ -65,5 +65,5 @@ ssize_t liblnk_link_target_identifier_read(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBLNK_LINK_TARGET_IDENTIFIER_H ) */
 

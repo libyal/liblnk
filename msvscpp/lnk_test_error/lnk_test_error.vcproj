@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="lnk_test_error"
-	ProjectGUID="{C9A2C16D-39DD-484F-A3D4-8BE999CB45DA}"
+	ProjectGUID="{6AB124BF-E850-4F8A-AFE9-C4ACE80B107F}"
 	RootNamespace="lnk_test_error"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"

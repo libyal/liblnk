@@ -71,5 +71,5 @@ int liblnk_file_information_free(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBLNK_FILE_INFORMATION_H ) */
 

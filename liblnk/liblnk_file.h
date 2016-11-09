@@ -194,5 +194,5 @@ int liblnk_file_set_ascii_codepage(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBLNK_INTERNAL_FILE_H ) */
 

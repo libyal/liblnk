@@ -160,5 +160,5 @@ struct lnk_network_share_information
 }
 #endif
 
-#endif
+#endif /* !defined( _LNK_LOCATION_INFORMATION_H ) */
 

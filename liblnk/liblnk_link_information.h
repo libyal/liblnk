@@ -345,5 +345,5 @@ int liblnk_file_copy_link_target_identifier_data(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBLNK_LINK_INFORMATION_H ) */
 

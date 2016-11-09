@@ -44,5 +44,5 @@ int liblnk_data_block_strings_read(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBLNK_DATA_BLOCK_STRINGS_H ) */
 

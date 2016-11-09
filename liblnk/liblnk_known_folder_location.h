@@ -62,5 +62,5 @@ int liblnk_known_folder_location_read(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBLNK_KNOWN_FOLDER_LOCATION_H ) */
 

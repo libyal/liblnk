@@ -95,5 +95,5 @@ int liblnk_file_get_birth_droid_file_identifier(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBLNK_DISTRIBUTED_LINK_TRACKER_H ) */
 

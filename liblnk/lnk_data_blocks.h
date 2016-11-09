@@ -162,5 +162,5 @@ struct lnk_data_block_known_folder_location
 }
 #endif
 
-#endif
+#endif /* !defined( _LNK_DATA_BLOCKS_H ) */
 

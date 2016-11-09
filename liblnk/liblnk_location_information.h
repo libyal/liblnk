@@ -117,5 +117,5 @@ ssize_t liblnk_location_information_read(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBLNK_LOCATION_INFORMATION_H ) */
 

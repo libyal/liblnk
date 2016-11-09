@@ -38,7 +38,7 @@
 #include "lnk_test_macros.h"
 #include "lnk_test_memory.h"
 
-#if SIZEOF_WCHAR_T != 2 && SIZEOF_WCHAR_T != 4
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER ) && SIZEOF_WCHAR_T != 2 && SIZEOF_WCHAR_T != 4
 #error Unsupported size of wchar_t
 #endif
 
@@ -795,7 +795,7 @@ on_error:
 	return( 0 );
 }
 
-/* Tests the liblnk_file_open functions
+/* Tests the liblnk_file_open function
  * Returns 1 if successful or 0 if not
  */
 int lnk_test_file_open(
@@ -858,21 +858,28 @@ int lnk_test_file_open(
          "error",
          error );
 
-	/* Clean up
+	/* Test error cases
 	 */
-	result = liblnk_file_close(
+	result = liblnk_file_open(
 	          file,
+	          narrow_source,
+	          LIBLNK_OPEN_READ,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
-	 0 );
+	 -1 );
 
-        LNK_TEST_ASSERT_IS_NULL(
+        LNK_TEST_ASSERT_IS_NOT_NULL(
          "error",
          error );
 
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
 	result = liblnk_file_free(
 	          &file,
 	          &error );
@@ -909,7 +916,7 @@ on_error:
 
 #if defined( HAVE_WIDE_CHARACTER_TYPE )
 
-/* Tests the liblnk_file_open_wide functions
+/* Tests the liblnk_file_open_wide function
  * Returns 1 if successful or 0 if not
  */
 int lnk_test_file_open_wide(
@@ -972,21 +979,28 @@ int lnk_test_file_open_wide(
          "error",
          error );
 
-	/* Clean up
+	/* Test error cases
 	 */
-	result = liblnk_file_close(
+	result = liblnk_file_open_wide(
 	          file,
+	          wide_source,
+	          LIBLNK_OPEN_READ,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
-	 0 );
+	 -1 );
 
-        LNK_TEST_ASSERT_IS_NULL(
+        LNK_TEST_ASSERT_IS_NOT_NULL(
          "error",
          error );
 
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
 	result = liblnk_file_free(
 	          &file,
 	          &error );
@@ -1022,6 +1036,185 @@ on_error:
 }
 
 #endif /* defined( HAVE_WIDE_CHARACTER_TYPE ) */
+
+/* Tests the liblnk_file_close function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_file_close(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	int result               = 0;
+
+	/* Test error cases
+	 */
+	result = liblnk_file_close(
+	          NULL,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	return( 0 );
+}
+
+/* Tests the liblnk_file_open and liblnk_file_close functions
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_file_open_close(
+     const system_character_t *source )
+{
+	libcerror_error_t *error = NULL;
+	liblnk_file_t *file      = NULL;
+	int result               = 0;
+
+	/* Initialize test
+	 */
+	result = liblnk_file_initialize(
+	          &file,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "file",
+         file );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	/* Test open and close
+	 */
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+	result = liblnk_file_open_wide(
+	          file,
+	          source,
+	          LIBLNK_OPEN_READ,
+	          &error );
+#else
+	result = liblnk_file_open(
+	          file,
+	          source,
+	          LIBLNK_OPEN_READ,
+	          &error );
+#endif
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	result = liblnk_file_close(
+	          file,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	/* Test open and close a second time to validate clean up on close
+	 */
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+	result = liblnk_file_open_wide(
+	          file,
+	          source,
+	          LIBLNK_OPEN_READ,
+	          &error );
+#else
+	result = liblnk_file_open(
+	          file,
+	          source,
+	          LIBLNK_OPEN_READ,
+	          &error );
+#endif
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	result = liblnk_file_close(
+	          file,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	/* Clean up
+	 */
+	result = liblnk_file_free(
+	          &file,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "file",
+         file );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( file != NULL )
+	{
+		liblnk_file_free(
+		 &file,
+		 NULL );
+	}
+	return( 0 );
+}
 
 /* Tests the liblnk_file_get_ascii_codepage functions
  * Returns 1 if successful or 0 if not
@@ -1343,7 +1536,14 @@ int main(
 
 #endif /* defined( LIBLNK_HAVE_BFIO ) */
 
-		/* TODO add test for liblnk_file_close */
+		LNK_TEST_RUN(
+		 "liblnk_file_close",
+		 lnk_test_file_close );
+
+		LNK_TEST_RUN_WITH_ARGS(
+		 "liblnk_file_open_close",
+		 lnk_test_file_open_close,
+		 source );
 
 		/* Initialize test
 		 */
@@ -1364,16 +1564,8 @@ int main(
 	        LNK_TEST_ASSERT_IS_NULL(
 	         "error",
 	         error );
+		/* TODO: add tests */
 
-		LNK_TEST_RUN_WITH_ARGS(
-		 "liblnk_file_open",
-		 lnk_test_file_open,
-		 file );
-
-		LNK_TEST_RUN_WITH_ARGS(
-		 "liblnk_file_get_ascii_codepage",
-		 lnk_test_file_get_ascii_codepage,
-		 file );
 
 		/* Clean up
 		 */

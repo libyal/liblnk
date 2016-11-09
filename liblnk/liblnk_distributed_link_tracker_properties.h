@@ -76,5 +76,5 @@ int liblnk_distributed_link_tracker_properties_read(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBLNK_DISTRIBUTED_LINK_TRACKER_PROPERTIES_H ) */
 

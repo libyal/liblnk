@@ -57,5 +57,5 @@ PyMODINIT_FUNC initpylnk(
 }
 #endif
 
-#endif
+#endif /* !defined( _PYLNK_H ) */
 

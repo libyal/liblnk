@@ -45,5 +45,5 @@ void lnkoutput_version_detailed_fprint(
 }
 #endif
 
-#endif
+#endif /* !defined( _LNKOUTPUT_H ) */
 

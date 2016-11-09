@@ -82,5 +82,5 @@ int shell_items_item_list_fprint(
 }
 #endif
 
-#endif
+#endif /* !defined( _SHELL_ITEMS_H ) */
 

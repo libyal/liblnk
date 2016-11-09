@@ -105,5 +105,5 @@ struct lnk_file_header
 }
 #endif
 
-#endif
+#endif /* !defined( _LNK_FILE_HEADER_H ) */
 

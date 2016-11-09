@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="lnk_test_file"
-	ProjectGUID="{ED43DBD6-0083-420D-9923-E6DD5EB2E1DA}"
+	ProjectGUID="{690528FE-8E74-4AFE-8241-5AE5859E88BC}"
 	RootNamespace="lnk_test_file"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
@@ -211,10 +211,6 @@
 			</File>
 			<File
 				RelativePath="..\..\tests\lnk_test_memory.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\tests\lnk_test_unused.h"
 				>
 			</File>
 		</Filter>

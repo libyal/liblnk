@@ -84,5 +84,5 @@ ssize_t liblnk_io_handle_read_file_header(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBLNK_IO_HANDLE_H ) */
 

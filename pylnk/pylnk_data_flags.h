@@ -59,5 +59,5 @@ void pylnk_data_flags_free(
 }
 #endif
 
-#endif
+#endif /* !defined( _PYLNK_DATA_FLAGS_H ) */
 

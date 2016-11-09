@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="lnk_test_open_close"
-	ProjectGUID="{9641DF74-1B8B-43D9-96A3-C45830D3F260}"
-	RootNamespace="lnk_test_open_close"
+	Name="lnk_test_notify"
+	ProjectGUID="{1CFE7391-FE3C-4B33-B0F4-57F82381149E}"
+	RootNamespace="lnk_test_notify"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -176,7 +176,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\tests\lnk_test_open_close.c"
+				RelativePath="..\..\tests\lnk_test_notify.c"
 				>
 			</File>
 		</Filter>
@@ -186,15 +186,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\tests\lnk_test_libcerror.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\tests\lnk_test_libcsystem.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\tests\lnk_test_liblnk.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\tests\lnk_test_macros.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\tests\lnk_test_unused.h"
 				>
 			</File>
 		</Filter>

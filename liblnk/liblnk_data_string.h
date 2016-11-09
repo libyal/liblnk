@@ -95,5 +95,5 @@ int liblnk_data_string_get_utf16_string(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBLNK_DATA_STRING_H ) */
 

@@ -69,5 +69,5 @@ ssize_t liblnk_data_block_read(
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBLNK_DATA_BLOCK_H ) */
 

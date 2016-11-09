@@ -125,7 +125,7 @@ stamp-h[1-9]
 /tests/input
 /tests/lnk_test_error
 /tests/lnk_test_file
-/tests/lnk_test_open_close
+/tests/lnk_test_notify
 /tests/lnk_test_support
 /tests/tmp*
 

@@ -59,5 +59,5 @@ void pylnk_drive_types_free(
 }
 #endif
 
-#endif
+#endif /* !defined( _PYLNK_DRIVE_TYPES_H ) */
 

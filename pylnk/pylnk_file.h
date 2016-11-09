@@ -212,5 +212,5 @@ PyObject *pylnk_file_get_birth_droid_file_identifier(
 }
 #endif
 
-#endif
+#endif /* !defined( _PYLNK_FILE_H ) */
 

@@ -39,5 +39,5 @@ PyObject *pylnk_string_new_from_guid(
 }
 #endif
 
-#endif
+#endif /* !defined( _PYLNK_GUID_H ) */
 
