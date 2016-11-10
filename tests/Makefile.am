@@ -42,10 +42,55 @@ EXTRA_DIST = \
 	$(check_SCRIPTS)
 
 check_PROGRAMS = \
+	lnk_test_data_block \
+	lnk_test_data_string \
+	lnk_test_distributed_link_tracker_properties \
 	lnk_test_error \
 	lnk_test_file \
+	lnk_test_file_information \
+	lnk_test_io_handle \
+	lnk_test_known_folder_location \
+	lnk_test_link_target_identifier \
+	lnk_test_location_information \
 	lnk_test_notify \
+	lnk_test_special_folder_location \
 	lnk_test_support
+
+lnk_test_data_block_SOURCES = \
+	lnk_test_data_block.c \
+	lnk_test_libcerror.h \
+	lnk_test_liblnk.h \
+	lnk_test_macros.h \
+	lnk_test_memory.c lnk_test_memory.h \
+	lnk_test_unused.h
+
+lnk_test_data_block_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
+lnk_test_data_string_SOURCES = \
+	lnk_test_data_string.c \
+	lnk_test_libcerror.h \
+	lnk_test_liblnk.h \
+	lnk_test_macros.h \
+	lnk_test_memory.c lnk_test_memory.h \
+	lnk_test_unused.h
+
+lnk_test_data_string_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
+lnk_test_distributed_link_tracker_properties_SOURCES = \
+	lnk_test_distributed_link_tracker_properties.c \
+	lnk_test_libcerror.h \
+	lnk_test_liblnk.h \
+	lnk_test_macros.h \
+	lnk_test_memory.c lnk_test_memory.h \
+	lnk_test_unused.h
+
+lnk_test_distributed_link_tracker_properties_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
 
 lnk_test_error_SOURCES = \
 	lnk_test_error.c \
@@ -77,6 +122,66 @@ lnk_test_file_LDADD = \
 	@LIBCERROR_LIBADD@ \
 	@PTHREAD_LIBADD@
 
+lnk_test_file_information_SOURCES = \
+	lnk_test_file_information.c \
+	lnk_test_libcerror.h \
+	lnk_test_liblnk.h \
+	lnk_test_macros.h \
+	lnk_test_memory.c lnk_test_memory.h \
+	lnk_test_unused.h
+
+lnk_test_file_information_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
+lnk_test_io_handle_SOURCES = \
+	lnk_test_io_handle.c \
+	lnk_test_libcerror.h \
+	lnk_test_liblnk.h \
+	lnk_test_macros.h \
+	lnk_test_memory.c lnk_test_memory.h \
+	lnk_test_unused.h
+
+lnk_test_io_handle_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
+lnk_test_known_folder_location_SOURCES = \
+	lnk_test_known_folder_location.c \
+	lnk_test_libcerror.h \
+	lnk_test_liblnk.h \
+	lnk_test_macros.h \
+	lnk_test_memory.c lnk_test_memory.h \
+	lnk_test_unused.h
+
+lnk_test_known_folder_location_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
+lnk_test_link_target_identifier_SOURCES = \
+	lnk_test_libcerror.h \
+	lnk_test_liblnk.h \
+	lnk_test_link_target_identifier.c \
+	lnk_test_macros.h \
+	lnk_test_memory.c lnk_test_memory.h \
+	lnk_test_unused.h
+
+lnk_test_link_target_identifier_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
+lnk_test_location_information_SOURCES = \
+	lnk_test_libcerror.h \
+	lnk_test_liblnk.h \
+	lnk_test_location_information.c \
+	lnk_test_macros.h \
+	lnk_test_memory.c lnk_test_memory.h \
+	lnk_test_unused.h
+
+lnk_test_location_information_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
 lnk_test_notify_SOURCES = \
 	lnk_test_liblnk.h \
 	lnk_test_macros.h \
@@ -86,6 +191,18 @@ lnk_test_notify_SOURCES = \
 lnk_test_notify_LDADD = \
 	../liblnk/liblnk.la
 
+lnk_test_special_folder_location_SOURCES = \
+	lnk_test_libcerror.h \
+	lnk_test_liblnk.h \
+	lnk_test_macros.h \
+	lnk_test_memory.c lnk_test_memory.h \
+	lnk_test_special_folder_location.c \
+	lnk_test_unused.h
+
+lnk_test_special_folder_location_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
 lnk_test_support_SOURCES = \
 	lnk_test_libcerror.h \
 	lnk_test_libclocale.h \
@@ -93,8 +210,7 @@ lnk_test_support_SOURCES = \
 	lnk_test_liblnk.h \
 	lnk_test_libuna.h \
 	lnk_test_macros.h \
-	lnk_test_support.c \
-	lnk_test_unused.h
+	lnk_test_support.c
 
 lnk_test_support_LDADD = \
 	@LIBCSYSTEM_LIBADD@ \

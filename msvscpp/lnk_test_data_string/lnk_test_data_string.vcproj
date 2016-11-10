@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="lnk_test_support"
-	ProjectGUID="{0D01403A-82BA-4FE4-B8CC-E12347C299CB}"
-	RootNamespace="lnk_test_support"
+	Name="lnk_test_data_string"
+	ProjectGUID="{168B165E-5C12-464B-BCF1-D99B70702F35}"
+	RootNamespace="lnk_test_data_string"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -176,7 +176,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\tests\lnk_test_support.c"
+				RelativePath="..\..\tests\lnk_test_data_string.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\tests\lnk_test_memory.c"
 				>
 			</File>
 		</Filter>
@@ -190,23 +194,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\tests\lnk_test_libclocale.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\tests\lnk_test_libcsystem.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\tests\lnk_test_liblnk.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\tests\lnk_test_libuna.h"
+				RelativePath="..\..\tests\lnk_test_macros.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\tests\lnk_test_macros.h"
+				RelativePath="..\..\tests\lnk_test_memory.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\tests\lnk_test_unused.h"
 				>
 			</File>
 		</Filter>

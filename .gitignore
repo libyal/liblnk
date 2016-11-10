@@ -123,9 +123,18 @@ stamp-h[1-9]
 /pylnk-python[23]/*.[ch]
 /lnktools/lnkinfo
 /tests/input
+/tests/lnk_test_data_block
+/tests/lnk_test_data_string
+/tests/lnk_test_distributed_link_tracker_properties
 /tests/lnk_test_error
 /tests/lnk_test_file
+/tests/lnk_test_file_information
+/tests/lnk_test_io_handle
+/tests/lnk_test_known_folder_location
+/tests/lnk_test_link_target_identifier
+/tests/lnk_test_location_information
 /tests/lnk_test_notify
+/tests/lnk_test_special_folder_location
 /tests/lnk_test_support
 /tests/tmp*
 

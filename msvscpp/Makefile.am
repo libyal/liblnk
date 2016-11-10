@@ -16,9 +16,18 @@ MSVSCPP_FILES = \
 	libfwsi/libfwsi.vcproj \
 	liblnk/liblnk.vcproj \
 	libuna/libuna.vcproj \
+	lnk_test_data_block/lnk_test_data_block.vcproj \
+	lnk_test_data_string/lnk_test_data_string.vcproj \
+	lnk_test_distributed_link_tracker_properties/lnk_test_distributed_link_tracker_properties.vcproj \
 	lnk_test_error/lnk_test_error.vcproj \
 	lnk_test_file/lnk_test_file.vcproj \
+	lnk_test_file_information/lnk_test_file_information.vcproj \
+	lnk_test_io_handle/lnk_test_io_handle.vcproj \
+	lnk_test_known_folder_location/lnk_test_known_folder_location.vcproj \
+	lnk_test_link_target_identifier/lnk_test_link_target_identifier.vcproj \
+	lnk_test_location_information/lnk_test_location_information.vcproj \
 	lnk_test_notify/lnk_test_notify.vcproj \
+	lnk_test_special_folder_location/lnk_test_special_folder_location.vcproj \
 	lnk_test_support/lnk_test_support.vcproj \
 	lnkinfo/lnkinfo.vcproj \
 	pylnk/pylnk.vcproj \
