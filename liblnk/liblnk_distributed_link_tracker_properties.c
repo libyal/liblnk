@@ -22,12 +22,10 @@
 #include <common.h>
 #include <byte_stream.h>
 #include <memory.h>
-#include <narrow_string.h>
-#include <system_string.h>
 #include <types.h>
-#include <wide_string.h>
 
 #include "liblnk_data_block.h"
+#include "liblnk_debug.h"
 #include "liblnk_distributed_link_tracker_properties.h"
 #include "liblnk_libcerror.h"
 #include "liblnk_libcnotify.h"
@@ -153,15 +151,6 @@ int liblnk_distributed_link_tracker_properties_read(
 	uint32_t data_size                                                                             = 0;
 	uint32_t data_version                                                                          = 0;
 
-#if defined( HAVE_DEBUG_OUTPUT )
-	system_character_t guid_string[ 48 ];
-
-	system_character_t *value_string                                                               = NULL;
-	libfguid_identifier_t *guid                                                                    = NULL;
-	size_t value_string_size                                                                       = 0;
-	int result                                                                                     = 0;
-#endif
-
 	if( distributed_link_tracker_properties == NULL )
 	{
 		libcerror_error_set(
@@ -237,7 +226,7 @@ int liblnk_distributed_link_tracker_properties_read(
 		 function,
 		 data_version );
 
-		goto on_error;
+		return( -1 );
 	}
 /* TODO check if data size matches data block size */
 	if( data_size < 88 )
@@ -250,7 +239,7 @@ int liblnk_distributed_link_tracker_properties_read(
 		 function,
 		 data_size );
 
-		goto on_error;
+		return( -1 );
 	}
 	if( memory_copy(
 	     distributed_link_tracker_properties->machine_identifier_string,
@@ -264,7 +253,7 @@ int liblnk_distributed_link_tracker_properties_read(
 		 "%s: unable to copy machine identifier string.",
 		 function );
 
-		goto on_error;
+		return( -1 );
 	}
 	if( memory_copy(
 	     distributed_link_tracker_properties->droid_volume_identifier,
@@ -278,7 +267,7 @@ int liblnk_distributed_link_tracker_properties_read(
 		 "%s: unable to copy droid volume identifier.",
 		 function );
 
-		goto on_error;
+		return( -1 );
 	}
 	if( memory_copy(
 	     distributed_link_tracker_properties->droid_file_identifier,
@@ -292,7 +281,7 @@ int liblnk_distributed_link_tracker_properties_read(
 		 "%s: unable to copy droid file identifier.",
 		 function );
 
-		goto on_error;
+		return( -1 );
 	}
 	if( memory_copy(
 	     distributed_link_tracker_properties->birth_droid_volume_identifier,
@@ -306,7 +295,7 @@ int liblnk_distributed_link_tracker_properties_read(
 		 "%s: unable to copy birth droid volume identifier.",
 		 function );
 
-		goto on_error;
+		return( -1 );
 	}
 	if( memory_copy(
 	     distributed_link_tracker_properties->birth_droid_file_identifier,
@@ -320,7 +309,7 @@ int liblnk_distributed_link_tracker_properties_read(
 		 "%s: unable to copy birth droid file identifier.",
 		 function );
 
-		goto on_error;
+		return( -1 );
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
@@ -343,313 +332,97 @@ int liblnk_distributed_link_tracker_properties_read(
 		 16,
 		 0 );
 
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libuna_utf16_string_size_from_byte_stream(
-			  distributed_link_tracker_properties_data->machine_identifier_string,
-			  16,
-			  io_handle->ascii_codepage,
-			  &value_string_size,
-			  error );
-#else
-		result = libuna_utf8_string_size_from_byte_stream(
-			  distributed_link_tracker_properties_data->machine_identifier_string,
-			  16,
-			  io_handle->ascii_codepage,
-			  &value_string_size,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to determine size of machine identifier string.",
-			 function );
-
-			goto on_error;
-		}
-		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
-			 "%s: invalid machine identifier string size value exceeds maximum.",
-			 function );
-
-			goto on_error;
-		}
-		value_string = system_string_allocate(
-				value_string_size );
-
-		if( value_string == NULL )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_MEMORY,
-			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create machine identifier string.",
-			 function );
-
-			goto on_error;
-		}
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libuna_utf16_string_copy_from_byte_stream(
-			  (libuna_utf16_character_t *) value_string,
-			  value_string_size,
-			  distributed_link_tracker_properties_data->machine_identifier_string,
-			  16,
-			  io_handle->ascii_codepage,
-			  error );
-#else
-		result = libuna_utf8_string_copy_from_byte_stream(
-			  (libuna_utf8_character_t *) value_string,
-			  value_string_size,
-			  distributed_link_tracker_properties_data->machine_identifier_string,
-			  16,
-			  io_handle->ascii_codepage,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-			 "%s: unable to set machine identifier string.",
-			 function );
-
-			goto on_error;
-		}
-		libcnotify_printf(
-		 "%s: machine identifier string\t: %" PRIs_SYSTEM "\n",
-		 function,
-		 value_string );
-
-		memory_free(
-		 value_string );
-
-		value_string = NULL;
-
-		if( libfguid_identifier_initialize(
-		     &guid,
+		if( libfwsi_debug_print_string_value(
+		     function,
+		     "machine identifier string\t",
+		     distributed_link_tracker_properties_data->machine_identifier_string,
+		     16,
+		     io_handle->ascii_codepage,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to create GUID.",
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print string value.",
 			 function );
 
-			goto on_error;
+			return( -1 );
 		}
-		if( libfguid_identifier_copy_from_byte_stream(
-		     guid,
+		if( libfwsi_debug_print_guid_value(
+		     function,
+		     "droid volume identifier\t",
 		     distributed_link_tracker_properties->droid_volume_identifier,
 		     16,
 		     LIBFGUID_ENDIAN_LITTLE,
+		     LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy byte stream to GUID.",
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print GUID value.",
 			 function );
 
-			goto on_error;
+			return( -1 );
 		}
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libfguid_identifier_copy_to_utf16_string(
-			  guid,
-			  (uint16_t *) guid_string,
-			  48,
-			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
-			  error );
-#else
-		result = libfguid_identifier_copy_to_utf8_string(
-			  guid,
-			  (uint8_t *) guid_string,
-			  48,
-			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy GUID to string.",
-			 function );
-
-			goto on_error;
-		}
-		libcnotify_printf(
-		 "%s: droid volume identifier\t: %" PRIs_SYSTEM "\n",
-		 function,
-		 guid_string );
-
-		if( libfguid_identifier_copy_from_byte_stream(
-		     guid,
+		if( libfwsi_debug_print_guid_value(
+		     function,
+		     "droid file identifier\t\t",
 		     distributed_link_tracker_properties->droid_file_identifier,
 		     16,
 		     LIBFGUID_ENDIAN_LITTLE,
+		     LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy byte stream to GUID.",
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print GUID value.",
 			 function );
 
-			goto on_error;
+			return( -1 );
 		}
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libfguid_identifier_copy_to_utf16_string(
-			  guid,
-			  (uint16_t *) guid_string,
-			  48,
-			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
-			  error );
-#else
-		result = libfguid_identifier_copy_to_utf8_string(
-			  guid,
-			  (uint8_t *) guid_string,
-			  48,
-			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy GUID to string.",
-			 function );
-
-			goto on_error;
-		}
-		libcnotify_printf(
-		 "%s: droid file identifier\t\t: %" PRIs_SYSTEM "\n",
-		 function,
-		 guid_string );
-
-		if( libfguid_identifier_copy_from_byte_stream(
-		     guid,
+		if( libfwsi_debug_print_guid_value(
+		     function,
+		     "birth droid volume identifier\t",
 		     distributed_link_tracker_properties->birth_droid_volume_identifier,
 		     16,
 		     LIBFGUID_ENDIAN_LITTLE,
+		     LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy byte stream to GUID.",
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print GUID value.",
 			 function );
 
-			goto on_error;
+			return( -1 );
 		}
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libfguid_identifier_copy_to_utf16_string(
-			  guid,
-			  (uint16_t *) guid_string,
-			  48,
-			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
-			  error );
-#else
-		result = libfguid_identifier_copy_to_utf8_string(
-			  guid,
-			  (uint8_t *) guid_string,
-			  48,
-			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy GUID to string.",
-			 function );
-
-			goto on_error;
-		}
-		libcnotify_printf(
-		 "%s: birth droid volume identifier\t: %" PRIs_SYSTEM "\n",
-		 function,
-		 guid_string );
-
-		if( libfguid_identifier_copy_from_byte_stream(
-		     guid,
+		if( libfwsi_debug_print_guid_value(
+		     function,
+		     "birth droid file identifier\t",
 		     distributed_link_tracker_properties->birth_droid_file_identifier,
 		     16,
 		     LIBFGUID_ENDIAN_LITTLE,
+		     LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy byte stream to GUID.",
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print GUID value.",
 			 function );
 
-			goto on_error;
+			return( -1 );
 		}
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libfguid_identifier_copy_to_utf16_string(
-			  guid,
-			  (uint16_t *) guid_string,
-			  48,
-			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
-			  error );
-#else
-		result = libfguid_identifier_copy_to_utf8_string(
-			  guid,
-			  (uint8_t *) guid_string,
-			  48,
-			  LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy GUID to string.",
-			 function );
-
-			goto on_error;
-		}
-		libcnotify_printf(
-		 "%s: birth droid file identifier\t: %" PRIs_SYSTEM "\n",
-		 function,
-		 guid_string );
-
 		libcnotify_printf(
 		 "\n" );
-
-		if( libfguid_identifier_free(
-		     &guid,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free GUID.",
-			 function );
-
-			goto on_error;
-		}
 	}
 #endif
 #if defined( HAVE_DEBUG_OUTPUT )
@@ -668,21 +441,5 @@ int liblnk_distributed_link_tracker_properties_read(
 	}
 #endif
 	return( 1 );
-
-on_error:
-#if defined( HAVE_DEBUG_OUTPUT )
-	if( guid != NULL )
-	{
-		libfguid_identifier_free(
-		 &guid,
-		 NULL );
-	}
-	if( value_string != NULL )
-	{
-		memory_free(
-		 value_string );
-	}
-#endif
-	return( -1 );
 }
 
