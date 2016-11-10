@@ -808,7 +808,7 @@ int main(
 
 #if defined( LIBLNK_HAVE_BFIO )
 
-		/* TODO add test for liblnk_file_open_file_io_handle */
+		/* TODO add test for liblnk_check_file_file_io_handle */
 
 #endif /* defined( LIBLNK_HAVE_BFIO ) */
 	}

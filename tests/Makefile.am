@@ -2,6 +2,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/common \
 	@LIBCERROR_CPPFLAGS@ \
+	@LIBCTHREADS_CPPFLAGS@ \
 	@LIBCDATA_CPPFLAGS@ \
 	@LIBCLOCALE_CPPFLAGS@ \
 	@LIBCNOTIFY_CPPFLAGS@ \
@@ -62,6 +63,7 @@ lnk_test_file_SOURCES = \
 	lnk_test_libcsystem.h \
 	lnk_test_liblnk.h \
 	lnk_test_libuna.h \
+	lnk_test_macros.h \
 	lnk_test_memory.c lnk_test_memory.h
 
 lnk_test_file_LDADD = \
@@ -71,7 +73,9 @@ lnk_test_file_LDADD = \
 	@LIBCLOCALE_LIBADD@ \
 	@LIBCDATA_LIBADD@ \
 	../liblnk/liblnk.la \
-	@LIBCERROR_LIBADD@
+	@LIBCTHREADS_LIBADD@ \
+	@LIBCERROR_LIBADD@ \
+	@PTHREAD_LIBADD@
 
 lnk_test_notify_SOURCES = \
 	lnk_test_liblnk.h \
