@@ -256,8 +256,8 @@ int lnk_test_file_get_wide_source(
      libcerror_error_t **error )
 {
 	static char *function   = "lnk_test_file_get_wide_source";
-	size_t wide_source_size = 0;
 	size_t source_length    = 0;
+	size_t wide_source_size = 0;
 
 #if !defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	int result              = 0;
@@ -584,11 +584,17 @@ int lnk_test_file_close_source(
 int lnk_test_file_initialize(
      void )
 {
-	libcerror_error_t *error = NULL;
-	liblnk_file_t *file      = NULL;
-	int result               = 0;
+	libcerror_error_t *error        = NULL;
+	liblnk_file_t *file             = NULL;
+	int result                      = 0;
 
-	/* Test liblnk_file_initialize
+#if defined( HAVE_LNK_TEST_MEMORY )
+	int number_of_malloc_fail_tests = 1;
+	int number_of_memset_fail_tests = 1;
+	int test_number                 = 0;
+#endif
+
+	/* Test regular cases
 	 */
 	result = liblnk_file_initialize(
 	          &file,
@@ -664,79 +670,89 @@ int lnk_test_file_initialize(
 
 #if defined( HAVE_LNK_TEST_MEMORY )
 
-	/* Test liblnk_file_initialize with malloc failing
-	 */
-	lnk_test_malloc_attempts_before_fail = 0;
-
-	result = liblnk_file_initialize(
-	          &file,
-	          &error );
-
-	if( lnk_test_malloc_attempts_before_fail != -1 )
+	for( test_number = 0;
+	     test_number < number_of_malloc_fail_tests;
+	     test_number++ )
 	{
-		lnk_test_malloc_attempts_before_fail = -1;
+		/* Test liblnk_file_initialize with malloc failing
+		 */
+		lnk_test_malloc_attempts_before_fail = test_number;
 
-		if( file != NULL )
+		result = liblnk_file_initialize(
+		          &file,
+		          &error );
+
+		if( lnk_test_malloc_attempts_before_fail != -1 )
 		{
-			liblnk_file_free(
-			 &file,
-			 NULL );
+			lnk_test_malloc_attempts_before_fail = -1;
+
+			if( file != NULL )
+			{
+				liblnk_file_free(
+				 &file,
+				 NULL );
+			}
+		}
+		else
+		{
+			LNK_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
+
+			LNK_TEST_ASSERT_IS_NULL(
+			 "file",
+			 file );
+
+			LNK_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
+
+			libcerror_error_free(
+			 &error );
 		}
 	}
-	else
+	for( test_number = 0;
+	     test_number < number_of_memset_fail_tests;
+	     test_number++ )
 	{
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+		/* Test liblnk_file_initialize with memset failing
+		 */
+		lnk_test_memset_attempts_before_fail = test_number;
 
-		LNK_TEST_ASSERT_IS_NULL(
-		 "file",
-		 file );
+		result = liblnk_file_initialize(
+		          &file,
+		          &error );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
-
-		libcerror_error_free(
-		 &error );
-	}
-	/* Test liblnk_file_initialize with memset failing
-	 */
-	lnk_test_memset_attempts_before_fail = 0;
-
-	result = liblnk_file_initialize(
-	          &file,
-	          &error );
-
-	if( lnk_test_memset_attempts_before_fail != -1 )
-	{
-		lnk_test_memset_attempts_before_fail = -1;
-
-		if( file != NULL )
+		if( lnk_test_memset_attempts_before_fail != -1 )
 		{
-			liblnk_file_free(
-			 &file,
-			 NULL );
+			lnk_test_memset_attempts_before_fail = -1;
+
+			if( file != NULL )
+			{
+				liblnk_file_free(
+				 &file,
+				 NULL );
+			}
 		}
-	}
-	else
-	{
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+		else
+		{
+			LNK_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
 
-		LNK_TEST_ASSERT_IS_NULL(
-		 "file",
-		 file );
+			LNK_TEST_ASSERT_IS_NULL(
+			 "file",
+			 file );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+			LNK_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
 
-		libcerror_error_free(
-		 &error );
+			libcerror_error_free(
+			 &error );
+		}
 	}
 #endif /* defined( HAVE_LNK_TEST_MEMORY ) */
 
@@ -1467,8 +1483,8 @@ int main(
 #endif
 {
 	libcerror_error_t *error   = NULL;
-	system_character_t *source = NULL;
 	liblnk_file_t *file        = NULL;
+	system_character_t *source = NULL;
 	system_integer_t option    = 0;
 	int result                 = 0;
 
@@ -1509,6 +1525,8 @@ int main(
 	 "liblnk_file_free",
 	 lnk_test_file_free );
 
+	/* TODO: add tests for liblnk_file_signal_abort */
+
 	LNK_TEST_RUN(
 	 "liblnk_file_set_ascii_codepage",
 	 lnk_test_file_set_ascii_codepage );
@@ -1533,6 +1551,8 @@ int main(
 #if defined( LIBLNK_HAVE_BFIO )
 
 		/* TODO add test for liblnk_file_open_file_io_handle */
+
+		/* TODO: add tests for liblnk_file_open_read */
 
 #endif /* defined( LIBLNK_HAVE_BFIO ) */
 
@@ -1564,8 +1584,11 @@ int main(
 	        LNK_TEST_ASSERT_IS_NULL(
 	         "error",
 	         error );
-		/* TODO: add tests */
 
+		LNK_TEST_RUN_WITH_ARGS(
+		 "liblnk_file_get_ascii_codepage",
+		 lnk_test_file_get_ascii_codepage,
+		 file );
 
 		/* Clean up
 		 */

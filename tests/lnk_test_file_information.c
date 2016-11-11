@@ -47,7 +47,13 @@ int lnk_test_file_information_initialize(
 	liblnk_file_information_t *file_information = NULL;
 	int result                                  = 0;
 
-	/* Test file_information initialization
+#if defined( HAVE_LNK_TEST_MEMORY )
+	int number_of_malloc_fail_tests             = 1;
+	int number_of_memset_fail_tests             = 1;
+	int test_number                             = 0;
+#endif
+
+	/* Test regular cases
 	 */
 	result = liblnk_file_information_initialize(
 	          &file_information,
@@ -123,79 +129,89 @@ int lnk_test_file_information_initialize(
 
 #if defined( HAVE_LNK_TEST_MEMORY )
 
-	/* Test liblnk_file_information_initialize with malloc failing
-	 */
-	lnk_test_malloc_attempts_before_fail = 0;
-
-	result = liblnk_file_information_initialize(
-	          &file_information,
-	          &error );
-
-	if( lnk_test_malloc_attempts_before_fail != -1 )
+	for( test_number = 0;
+	     test_number < number_of_malloc_fail_tests;
+	     test_number++ )
 	{
-		lnk_test_malloc_attempts_before_fail = -1;
+		/* Test liblnk_file_information_initialize with malloc failing
+		 */
+		lnk_test_malloc_attempts_before_fail = test_number;
 
-		if( file_information != NULL )
+		result = liblnk_file_information_initialize(
+		          &file_information,
+		          &error );
+
+		if( lnk_test_malloc_attempts_before_fail != -1 )
 		{
-			liblnk_file_information_free(
-			 &file_information,
-			 NULL );
+			lnk_test_malloc_attempts_before_fail = -1;
+
+			if( file_information != NULL )
+			{
+				liblnk_file_information_free(
+				 &file_information,
+				 NULL );
+			}
+		}
+		else
+		{
+			LNK_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
+
+			LNK_TEST_ASSERT_IS_NULL(
+			 "file_information",
+			 file_information );
+
+			LNK_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
+
+			libcerror_error_free(
+			 &error );
 		}
 	}
-	else
+	for( test_number = 0;
+	     test_number < number_of_memset_fail_tests;
+	     test_number++ )
 	{
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+		/* Test liblnk_file_information_initialize with memset failing
+		 */
+		lnk_test_memset_attempts_before_fail = test_number;
 
-		LNK_TEST_ASSERT_IS_NULL(
-		 "file_information",
-		 file_information );
+		result = liblnk_file_information_initialize(
+		          &file_information,
+		          &error );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
-
-		libcerror_error_free(
-		 &error );
-	}
-	/* Test liblnk_file_information_initialize with memset failing
-	 */
-	lnk_test_memset_attempts_before_fail = 0;
-
-	result = liblnk_file_information_initialize(
-	          &file_information,
-	          &error );
-
-	if( lnk_test_memset_attempts_before_fail != -1 )
-	{
-		lnk_test_memset_attempts_before_fail = -1;
-
-		if( file_information != NULL )
+		if( lnk_test_memset_attempts_before_fail != -1 )
 		{
-			liblnk_file_information_free(
-			 &file_information,
-			 NULL );
+			lnk_test_memset_attempts_before_fail = -1;
+
+			if( file_information != NULL )
+			{
+				liblnk_file_information_free(
+				 &file_information,
+				 NULL );
+			}
 		}
-	}
-	else
-	{
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+		else
+		{
+			LNK_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
 
-		LNK_TEST_ASSERT_IS_NULL(
-		 "file_information",
-		 file_information );
+			LNK_TEST_ASSERT_IS_NULL(
+			 "file_information",
+			 file_information );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+			LNK_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
 
-		libcerror_error_free(
-		 &error );
+			libcerror_error_free(
+			 &error );
+		}
 	}
 #endif /* defined( HAVE_LNK_TEST_MEMORY ) */
 

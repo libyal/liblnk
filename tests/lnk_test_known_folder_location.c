@@ -47,7 +47,13 @@ int lnk_test_known_folder_location_initialize(
 	liblnk_known_folder_location_t *known_folder_location = NULL;
 	int result                                            = 0;
 
-	/* Test known_folder_location initialization
+#if defined( HAVE_LNK_TEST_MEMORY )
+	int number_of_malloc_fail_tests                       = 1;
+	int number_of_memset_fail_tests                       = 1;
+	int test_number                                       = 0;
+#endif
+
+	/* Test regular cases
 	 */
 	result = liblnk_known_folder_location_initialize(
 	          &known_folder_location,
@@ -123,79 +129,89 @@ int lnk_test_known_folder_location_initialize(
 
 #if defined( HAVE_LNK_TEST_MEMORY )
 
-	/* Test liblnk_known_folder_location_initialize with malloc failing
-	 */
-	lnk_test_malloc_attempts_before_fail = 0;
-
-	result = liblnk_known_folder_location_initialize(
-	          &known_folder_location,
-	          &error );
-
-	if( lnk_test_malloc_attempts_before_fail != -1 )
+	for( test_number = 0;
+	     test_number < number_of_malloc_fail_tests;
+	     test_number++ )
 	{
-		lnk_test_malloc_attempts_before_fail = -1;
+		/* Test liblnk_known_folder_location_initialize with malloc failing
+		 */
+		lnk_test_malloc_attempts_before_fail = test_number;
 
-		if( known_folder_location != NULL )
+		result = liblnk_known_folder_location_initialize(
+		          &known_folder_location,
+		          &error );
+
+		if( lnk_test_malloc_attempts_before_fail != -1 )
 		{
-			liblnk_known_folder_location_free(
-			 &known_folder_location,
-			 NULL );
+			lnk_test_malloc_attempts_before_fail = -1;
+
+			if( known_folder_location != NULL )
+			{
+				liblnk_known_folder_location_free(
+				 &known_folder_location,
+				 NULL );
+			}
+		}
+		else
+		{
+			LNK_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
+
+			LNK_TEST_ASSERT_IS_NULL(
+			 "known_folder_location",
+			 known_folder_location );
+
+			LNK_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
+
+			libcerror_error_free(
+			 &error );
 		}
 	}
-	else
+	for( test_number = 0;
+	     test_number < number_of_memset_fail_tests;
+	     test_number++ )
 	{
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+		/* Test liblnk_known_folder_location_initialize with memset failing
+		 */
+		lnk_test_memset_attempts_before_fail = test_number;
 
-		LNK_TEST_ASSERT_IS_NULL(
-		 "known_folder_location",
-		 known_folder_location );
+		result = liblnk_known_folder_location_initialize(
+		          &known_folder_location,
+		          &error );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
-
-		libcerror_error_free(
-		 &error );
-	}
-	/* Test liblnk_known_folder_location_initialize with memset failing
-	 */
-	lnk_test_memset_attempts_before_fail = 0;
-
-	result = liblnk_known_folder_location_initialize(
-	          &known_folder_location,
-	          &error );
-
-	if( lnk_test_memset_attempts_before_fail != -1 )
-	{
-		lnk_test_memset_attempts_before_fail = -1;
-
-		if( known_folder_location != NULL )
+		if( lnk_test_memset_attempts_before_fail != -1 )
 		{
-			liblnk_known_folder_location_free(
-			 &known_folder_location,
-			 NULL );
+			lnk_test_memset_attempts_before_fail = -1;
+
+			if( known_folder_location != NULL )
+			{
+				liblnk_known_folder_location_free(
+				 &known_folder_location,
+				 NULL );
+			}
 		}
-	}
-	else
-	{
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+		else
+		{
+			LNK_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
 
-		LNK_TEST_ASSERT_IS_NULL(
-		 "known_folder_location",
-		 known_folder_location );
+			LNK_TEST_ASSERT_IS_NULL(
+			 "known_folder_location",
+			 known_folder_location );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+			LNK_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
 
-		libcerror_error_free(
-		 &error );
+			libcerror_error_free(
+			 &error );
+		}
 	}
 #endif /* defined( HAVE_LNK_TEST_MEMORY ) */
 
@@ -280,6 +296,8 @@ int main(
 	LNK_TEST_RUN(
 	 "liblnk_known_folder_location_free",
 	 lnk_test_known_folder_location_free );
+
+	/* TODO: add tests for liblnk_known_folder_location_read */
 
 #endif /* defined( __GNUC__ ) */
 

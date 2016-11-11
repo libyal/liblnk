@@ -47,7 +47,13 @@ int lnk_test_distributed_link_tracker_properties_initialize(
 	liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties = NULL;
 	int result                                                                        = 0;
 
-	/* Test distributed_link_tracker_properties initialization
+#if defined( HAVE_LNK_TEST_MEMORY )
+	int number_of_malloc_fail_tests                                                   = 1;
+	int number_of_memset_fail_tests                                                   = 1;
+	int test_number                                                                   = 0;
+#endif
+
+	/* Test regular cases
 	 */
 	result = liblnk_distributed_link_tracker_properties_initialize(
 	          &distributed_link_tracker_properties,
@@ -123,79 +129,89 @@ int lnk_test_distributed_link_tracker_properties_initialize(
 
 #if defined( HAVE_LNK_TEST_MEMORY )
 
-	/* Test liblnk_distributed_link_tracker_properties_initialize with malloc failing
-	 */
-	lnk_test_malloc_attempts_before_fail = 0;
-
-	result = liblnk_distributed_link_tracker_properties_initialize(
-	          &distributed_link_tracker_properties,
-	          &error );
-
-	if( lnk_test_malloc_attempts_before_fail != -1 )
+	for( test_number = 0;
+	     test_number < number_of_malloc_fail_tests;
+	     test_number++ )
 	{
-		lnk_test_malloc_attempts_before_fail = -1;
+		/* Test liblnk_distributed_link_tracker_properties_initialize with malloc failing
+		 */
+		lnk_test_malloc_attempts_before_fail = test_number;
 
-		if( distributed_link_tracker_properties != NULL )
+		result = liblnk_distributed_link_tracker_properties_initialize(
+		          &distributed_link_tracker_properties,
+		          &error );
+
+		if( lnk_test_malloc_attempts_before_fail != -1 )
 		{
-			liblnk_distributed_link_tracker_properties_free(
-			 &distributed_link_tracker_properties,
-			 NULL );
+			lnk_test_malloc_attempts_before_fail = -1;
+
+			if( distributed_link_tracker_properties != NULL )
+			{
+				liblnk_distributed_link_tracker_properties_free(
+				 &distributed_link_tracker_properties,
+				 NULL );
+			}
+		}
+		else
+		{
+			LNK_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
+
+			LNK_TEST_ASSERT_IS_NULL(
+			 "distributed_link_tracker_properties",
+			 distributed_link_tracker_properties );
+
+			LNK_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
+
+			libcerror_error_free(
+			 &error );
 		}
 	}
-	else
+	for( test_number = 0;
+	     test_number < number_of_memset_fail_tests;
+	     test_number++ )
 	{
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+		/* Test liblnk_distributed_link_tracker_properties_initialize with memset failing
+		 */
+		lnk_test_memset_attempts_before_fail = test_number;
 
-		LNK_TEST_ASSERT_IS_NULL(
-		 "distributed_link_tracker_properties",
-		 distributed_link_tracker_properties );
+		result = liblnk_distributed_link_tracker_properties_initialize(
+		          &distributed_link_tracker_properties,
+		          &error );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
-
-		libcerror_error_free(
-		 &error );
-	}
-	/* Test liblnk_distributed_link_tracker_properties_initialize with memset failing
-	 */
-	lnk_test_memset_attempts_before_fail = 0;
-
-	result = liblnk_distributed_link_tracker_properties_initialize(
-	          &distributed_link_tracker_properties,
-	          &error );
-
-	if( lnk_test_memset_attempts_before_fail != -1 )
-	{
-		lnk_test_memset_attempts_before_fail = -1;
-
-		if( distributed_link_tracker_properties != NULL )
+		if( lnk_test_memset_attempts_before_fail != -1 )
 		{
-			liblnk_distributed_link_tracker_properties_free(
-			 &distributed_link_tracker_properties,
-			 NULL );
+			lnk_test_memset_attempts_before_fail = -1;
+
+			if( distributed_link_tracker_properties != NULL )
+			{
+				liblnk_distributed_link_tracker_properties_free(
+				 &distributed_link_tracker_properties,
+				 NULL );
+			}
 		}
-	}
-	else
-	{
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+		else
+		{
+			LNK_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
 
-		LNK_TEST_ASSERT_IS_NULL(
-		 "distributed_link_tracker_properties",
-		 distributed_link_tracker_properties );
+			LNK_TEST_ASSERT_IS_NULL(
+			 "distributed_link_tracker_properties",
+			 distributed_link_tracker_properties );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+			LNK_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
 
-		libcerror_error_free(
-		 &error );
+			libcerror_error_free(
+			 &error );
+		}
 	}
 #endif /* defined( HAVE_LNK_TEST_MEMORY ) */
 
@@ -280,6 +296,8 @@ int main(
 	LNK_TEST_RUN(
 	 "liblnk_distributed_link_tracker_properties_free",
 	 lnk_test_distributed_link_tracker_properties_free );
+
+	/* TODO: add tests for liblnk_distributed_link_tracker_properties_read */
 
 #endif /* defined( __GNUC__ ) */
 

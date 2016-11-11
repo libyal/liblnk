@@ -47,7 +47,13 @@ int lnk_test_data_string_initialize(
 	liblnk_data_string_t *data_string = NULL;
 	int result                        = 0;
 
-	/* Test data_string initialization
+#if defined( HAVE_LNK_TEST_MEMORY )
+	int number_of_malloc_fail_tests   = 1;
+	int number_of_memset_fail_tests   = 1;
+	int test_number                   = 0;
+#endif
+
+	/* Test regular cases
 	 */
 	result = liblnk_data_string_initialize(
 	          &data_string,
@@ -123,79 +129,89 @@ int lnk_test_data_string_initialize(
 
 #if defined( HAVE_LNK_TEST_MEMORY )
 
-	/* Test liblnk_data_string_initialize with malloc failing
-	 */
-	lnk_test_malloc_attempts_before_fail = 0;
-
-	result = liblnk_data_string_initialize(
-	          &data_string,
-	          &error );
-
-	if( lnk_test_malloc_attempts_before_fail != -1 )
+	for( test_number = 0;
+	     test_number < number_of_malloc_fail_tests;
+	     test_number++ )
 	{
-		lnk_test_malloc_attempts_before_fail = -1;
+		/* Test liblnk_data_string_initialize with malloc failing
+		 */
+		lnk_test_malloc_attempts_before_fail = test_number;
 
-		if( data_string != NULL )
+		result = liblnk_data_string_initialize(
+		          &data_string,
+		          &error );
+
+		if( lnk_test_malloc_attempts_before_fail != -1 )
 		{
-			liblnk_data_string_free(
-			 &data_string,
-			 NULL );
+			lnk_test_malloc_attempts_before_fail = -1;
+
+			if( data_string != NULL )
+			{
+				liblnk_data_string_free(
+				 &data_string,
+				 NULL );
+			}
+		}
+		else
+		{
+			LNK_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
+
+			LNK_TEST_ASSERT_IS_NULL(
+			 "data_string",
+			 data_string );
+
+			LNK_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
+
+			libcerror_error_free(
+			 &error );
 		}
 	}
-	else
+	for( test_number = 0;
+	     test_number < number_of_memset_fail_tests;
+	     test_number++ )
 	{
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+		/* Test liblnk_data_string_initialize with memset failing
+		 */
+		lnk_test_memset_attempts_before_fail = test_number;
 
-		LNK_TEST_ASSERT_IS_NULL(
-		 "data_string",
-		 data_string );
+		result = liblnk_data_string_initialize(
+		          &data_string,
+		          &error );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
-
-		libcerror_error_free(
-		 &error );
-	}
-	/* Test liblnk_data_string_initialize with memset failing
-	 */
-	lnk_test_memset_attempts_before_fail = 0;
-
-	result = liblnk_data_string_initialize(
-	          &data_string,
-	          &error );
-
-	if( lnk_test_memset_attempts_before_fail != -1 )
-	{
-		lnk_test_memset_attempts_before_fail = -1;
-
-		if( data_string != NULL )
+		if( lnk_test_memset_attempts_before_fail != -1 )
 		{
-			liblnk_data_string_free(
-			 &data_string,
-			 NULL );
+			lnk_test_memset_attempts_before_fail = -1;
+
+			if( data_string != NULL )
+			{
+				liblnk_data_string_free(
+				 &data_string,
+				 NULL );
+			}
 		}
-	}
-	else
-	{
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+		else
+		{
+			LNK_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
 
-		LNK_TEST_ASSERT_IS_NULL(
-		 "data_string",
-		 data_string );
+			LNK_TEST_ASSERT_IS_NULL(
+			 "data_string",
+			 data_string );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+			LNK_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
 
-		libcerror_error_free(
-		 &error );
+			libcerror_error_free(
+			 &error );
+		}
 	}
 #endif /* defined( HAVE_LNK_TEST_MEMORY ) */
 
@@ -280,6 +296,16 @@ int main(
 	LNK_TEST_RUN(
 	 "liblnk_data_string_free",
 	 lnk_test_data_string_free );
+
+	/* TODO: add tests for liblnk_data_string_read */
+
+	/* TODO: add tests for liblnk_data_string_get_utf8_string_size */
+
+	/* TODO: add tests for liblnk_data_string_get_utf8_string */
+
+	/* TODO: add tests for liblnk_data_string_get_utf16_string_size */
+
+	/* TODO: add tests for liblnk_data_string_get_utf16_string */
 
 #endif /* defined( __GNUC__ ) */
 
