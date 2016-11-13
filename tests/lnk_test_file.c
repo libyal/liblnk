@@ -1525,8 +1525,6 @@ int main(
 	 "liblnk_file_free",
 	 lnk_test_file_free );
 
-	/* TODO: add tests for liblnk_file_signal_abort */
-
 	LNK_TEST_RUN(
 	 "liblnk_file_set_ascii_codepage",
 	 lnk_test_file_set_ascii_codepage );
@@ -1551,8 +1549,6 @@ int main(
 #if defined( LIBLNK_HAVE_BFIO )
 
 		/* TODO add test for liblnk_file_open_file_io_handle */
-
-		/* TODO: add tests for liblnk_file_open_read */
 
 #endif /* defined( LIBLNK_HAVE_BFIO ) */
 
@@ -1589,6 +1585,14 @@ int main(
 		 "liblnk_file_get_ascii_codepage",
 		 lnk_test_file_get_ascii_codepage,
 		 file );
+
+		/* TODO: add tests for liblnk_file_signal_abort */
+
+#if defined( __GNUC__ )
+
+		/* TODO: add tests for liblnk_file_open_read */
+
+#endif /* defined( __GNUC__ ) */
 
 		/* Clean up
 		 */
