@@ -28,7 +28,6 @@ liblnk_la_SOURCES = \
 	liblnk_data_string.c liblnk_data_string.h \
 	liblnk_debug.c liblnk_debug.h \
 	liblnk_definitions.h \
-	liblnk_distributed_link_tracker.c liblnk_distributed_link_tracker.h \
 	liblnk_distributed_link_tracker_properties.c liblnk_distributed_link_tracker_properties.h \
 	liblnk_error.c liblnk_error.h \
 	liblnk_extern.h \
@@ -45,7 +44,6 @@ liblnk_la_SOURCES = \
 	liblnk_libfwps.h \
 	liblnk_libfwsi.h \
 	liblnk_libuna.h \
-	liblnk_link_information.c liblnk_link_information.h \
 	liblnk_link_target_identifier.c liblnk_link_target_identifier.h \
 	liblnk_location_information.c liblnk_location_information.h \
 	liblnk_notify.c liblnk_notify.h \

@@ -307,7 +307,7 @@ int liblnk_file_link_refers_to_file(
 LIBLNK_EXTERN \
 int liblnk_file_get_file_creation_time(
      liblnk_file_t *file,
-     uint64_t *creation_time,
+     uint64_t *filetime,
      liblnk_error_t **error );
 
 /* Retrieves the 64-bit filetime value containing the linked file's last modification date and time
@@ -317,7 +317,7 @@ int liblnk_file_get_file_creation_time(
 LIBLNK_EXTERN \
 int liblnk_file_get_file_modification_time(
      liblnk_file_t *file,
-     uint64_t *modification_time,
+     uint64_t *filetime,
      liblnk_error_t **error );
 
 /* Retrieves the 64-bit filetime value containing the linked file's last access date and time
@@ -327,7 +327,7 @@ int liblnk_file_get_file_modification_time(
 LIBLNK_EXTERN \
 int liblnk_file_get_file_access_time(
      liblnk_file_t *file,
-     uint64_t *access_time,
+     uint64_t *filetime,
      liblnk_error_t **error );
 
 /* Retrieves the linked file's size
@@ -760,22 +760,6 @@ int liblnk_file_get_utf16_environment_variables_location(
      size_t utf16_string_size,
      liblnk_error_t **error );
 
-/* Retrieves the link target identifier data
- * The data contains a shell item (identifier) list
- *
- * This function is deprecated use liblnk_file_get_link_target_identifier_data_size
- * and liblnk_file_copy_link_target_identifier_data instead.
- *
- * Returns 1 if successful, 0 if value is not available or -1 on error
- */
-LIBLNK_DEPRECATED \
-LIBLNK_EXTERN \
-int liblnk_file_get_link_target_identifier_data(
-     liblnk_file_t *file,
-     uint8_t **data,
-     size_t *data_size,
-     liblnk_error_t **error );
-
 /* Retrieves the link target identifier data size
  * The link target identifier contains a shell item (identifier) list
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -811,7 +795,7 @@ int liblnk_file_has_distributed_link_tracking_data(
 
 /* Retrieves the size of the UTF-8 encoded local path
  * The size includes the end of string character
- * Returns 1 if successful or -1 on error
+ * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
 int liblnk_file_get_utf8_machine_identifier_size(
@@ -821,7 +805,7 @@ int liblnk_file_get_utf8_machine_identifier_size(
 
 /* Retrieves the UTF-8 encoded local path
  * The size should include the end of string character
- * Returns 1 if successful or -1 on error
+ * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
 int liblnk_file_get_utf8_machine_identifier(
@@ -832,7 +816,7 @@ int liblnk_file_get_utf8_machine_identifier(
 
 /* Retrieves the size of the UTF-16 encoded local path
  * The size includes the end of string character
- * Returns 1 if successful or -1 on error
+ * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
 int liblnk_file_get_utf16_machine_identifier_size(
@@ -842,7 +826,7 @@ int liblnk_file_get_utf16_machine_identifier_size(
 
 /* Retrieves the UTF-16 encoded local path
  * The size should include the end of string character
- * Returns 1 if successful or -1 on error
+ * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
 int liblnk_file_get_utf16_machine_identifier(
@@ -852,48 +836,48 @@ int liblnk_file_get_utf16_machine_identifier(
      liblnk_error_t **error );
 
 /* Retrieves the droid volume identifier
- * Returns 1 if successful or -1 on error
+ * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
 int liblnk_file_get_droid_volume_identifier(
      liblnk_file_t *file,
-     uint8_t *guid,
-     size_t size,
+     uint8_t *guid_data,
+     size_t guid_data_size,
      liblnk_error_t **error );
 
 /* Retrieves the droid file identifier
- * Returns 1 if successful or -1 on error
+ * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
 int liblnk_file_get_droid_file_identifier(
      liblnk_file_t *file,
-     uint8_t *guid,
-     size_t size,
+     uint8_t *guid_data,
+     size_t guid_data_size,
      liblnk_error_t **error );
 
 /* Retrieves the birth droid volume identifier
- * Returns 1 if successful or -1 on error
+ * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
 int liblnk_file_get_birth_droid_volume_identifier(
      liblnk_file_t *file,
-     uint8_t *guid,
-     size_t size,
+     uint8_t *guid_data,
+     size_t guid_data_size,
      liblnk_error_t **error );
 
 /* Retrieves the birth droid file identifier
- * Returns 1 if successful or -1 on error
+ * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 LIBLNK_EXTERN \
 int liblnk_file_get_birth_droid_file_identifier(
      liblnk_file_t *file,
-     uint8_t *guid,
-     size_t size,
+     uint8_t *guid_data,
+     size_t guid_data_size,
      liblnk_error_t **error );
 
 #if defined( __cplusplus )
 }
 #endif
 
-#endif
+#endif /* !defined( _LIBLNK_H ) */
 

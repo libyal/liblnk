@@ -190,10 +190,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\liblnk\liblnk_distributed_link_tracker.c"
-				>
-			</File>
-			<File
 				RelativePath="..\..\liblnk\liblnk_distributed_link_tracker_properties.c"
 				>
 			</File>
@@ -215,10 +211,6 @@
 			</File>
 			<File
 				RelativePath="..\..\liblnk\liblnk_known_folder_location.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\liblnk\liblnk_link_information.c"
 				>
 			</File>
 			<File
@@ -269,10 +261,6 @@
 			</File>
 			<File
 				RelativePath="..\..\liblnk\liblnk_definitions.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\liblnk\liblnk_distributed_link_tracker.h"
 				>
 			</File>
 			<File
@@ -337,10 +325,6 @@
 			</File>
 			<File
 				RelativePath="..\..\liblnk\liblnk_libuna.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\liblnk\liblnk_link_information.h"
 				>
 			</File>
 			<File

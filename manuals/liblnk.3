@@ -1,4 +1,4 @@
-.Dd November  9, 2016
+.Dd November 13, 2016
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -81,11 +81,11 @@ Link information functions
 .Ft int
 .Fn liblnk_file_link_refers_to_file "liblnk_file_t *file, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_file_creation_time "liblnk_file_t *file, uint64_t *creation_time, liblnk_error_t **error"
+.Fn liblnk_file_get_file_creation_time "liblnk_file_t *file, uint64_t *filetime, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_file_modification_time "liblnk_file_t *file, uint64_t *modification_time, liblnk_error_t **error"
+.Fn liblnk_file_get_file_modification_time "liblnk_file_t *file, uint64_t *filetime, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_file_access_time "liblnk_file_t *file, uint64_t *access_time, liblnk_error_t **error"
+.Fn liblnk_file_get_file_access_time "liblnk_file_t *file, uint64_t *filetime, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_get_file_size "liblnk_file_t *file, uint32_t *file_size, liblnk_error_t **error"
 .Ft int
@@ -183,13 +183,13 @@ Distributed link tracking data functions
 .Ft int
 .Fn liblnk_file_get_utf16_machine_identifier "liblnk_file_t *file, uint16_t *utf16_string, size_t utf16_string_size, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_droid_volume_identifier "liblnk_file_t *file, uint8_t *guid, size_t size, liblnk_error_t **error"
+.Fn liblnk_file_get_droid_volume_identifier "liblnk_file_t *file, uint8_t *guid_data, size_t guid_data_size, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_droid_file_identifier "liblnk_file_t *file, uint8_t *guid, size_t size, liblnk_error_t **error"
+.Fn liblnk_file_get_droid_file_identifier "liblnk_file_t *file, uint8_t *guid_data, size_t guid_data_size, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_birth_droid_volume_identifier "liblnk_file_t *file, uint8_t *guid, size_t size, liblnk_error_t **error"
+.Fn liblnk_file_get_birth_droid_volume_identifier "liblnk_file_t *file, uint8_t *guid_data, size_t guid_data_size, liblnk_error_t **error"
 .Ft int
-.Fn liblnk_file_get_birth_droid_file_identifier "liblnk_file_t *file, uint8_t *guid, size_t size, liblnk_error_t **error"
+.Fn liblnk_file_get_birth_droid_file_identifier "liblnk_file_t *file, uint8_t *guid_data, size_t guid_data_size, liblnk_error_t **error"
 .Sh DESCRIPTION
 The
 .Fn liblnk_get_version

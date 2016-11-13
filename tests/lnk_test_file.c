@@ -1594,6 +1594,118 @@ int main(
 
 #endif /* defined( __GNUC__ ) */
 
+		/* TODO: add tests for liblnk_file_get_data_flags */
+
+		/* TODO: add tests for liblnk_file_link_refers_to_file */
+
+		/* TODO: add tests for liblnk_file_get_file_creation_time */
+
+		/* TODO: add tests for liblnk_file_get_file_modification_time */
+
+		/* TODO: add tests for liblnk_file_get_file_access_time */
+
+		/* TODO: add tests for liblnk_file_get_file_size */
+
+		/* TODO: add tests for liblnk_file_get_file_attribute_flags */
+
+		/* TODO: add tests for liblnk_file_get_drive_type */
+
+		/* TODO: add tests for liblnk_file_get_drive_serial_number */
+
+		/* TODO: add tests for liblnk_file_get_utf8_volume_label_size */
+
+		/* TODO: add tests for liblnk_file_get_utf8_volume_label */
+
+		/* TODO: add tests for liblnk_file_get_utf16_volume_label_size */
+
+		/* TODO: add tests for liblnk_file_get_utf16_volume_label */
+
+		/* TODO: add tests for liblnk_file_get_utf8_local_path_size */
+
+		/* TODO: add tests for liblnk_file_get_utf8_local_path */
+
+		/* TODO: add tests for liblnk_file_get_utf16_local_path_size */
+
+		/* TODO: add tests for liblnk_file_get_utf16_local_path */
+
+		/* TODO: add tests for liblnk_file_get_utf8_network_path_size */
+
+		/* TODO: add tests for liblnk_file_get_utf8_network_path */
+
+		/* TODO: add tests for liblnk_file_get_utf16_network_path_size */
+
+		/* TODO: add tests for liblnk_file_get_utf16_network_path */
+
+		/* TODO: add tests for liblnk_file_get_utf8_description_size */
+
+		/* TODO: add tests for liblnk_file_get_utf8_description */
+
+		/* TODO: add tests for liblnk_file_get_utf16_description_size */
+
+		/* TODO: add tests for liblnk_file_get_utf16_description */
+
+		/* TODO: add tests for liblnk_file_get_utf8_relative_path_size */
+
+		/* TODO: add tests for liblnk_file_get_utf8_relative_path */
+
+		/* TODO: add tests for liblnk_file_get_utf16_relative_path_size */
+
+		/* TODO: add tests for liblnk_file_get_utf16_relative_path */
+
+		/* TODO: add tests for liblnk_file_get_utf8_working_directory_size */
+
+		/* TODO: add tests for liblnk_file_get_utf8_working_directory */
+
+		/* TODO: add tests for liblnk_file_get_utf16_working_directory_size */
+
+		/* TODO: add tests for liblnk_file_get_utf16_working_directory */
+
+		/* TODO: add tests for liblnk_file_get_utf8_command_line_arguments_size */
+
+		/* TODO: add tests for liblnk_file_get_utf8_command_line_arguments */
+
+		/* TODO: add tests for liblnk_file_get_utf16_command_line_arguments_size */
+
+		/* TODO: add tests for liblnk_file_get_utf16_command_line_arguments */
+
+		/* TODO: add tests for liblnk_file_get_utf8_icon_location_size */
+
+		/* TODO: add tests for liblnk_file_get_utf8_icon_location */
+
+		/* TODO: add tests for liblnk_file_get_utf16_icon_location_size */
+
+		/* TODO: add tests for liblnk_file_get_utf16_icon_location */
+
+		/* TODO: add tests for liblnk_file_get_utf8_environment_variables_location_size */
+
+		/* TODO: add tests for liblnk_file_get_utf8_environment_variables_location */
+
+		/* TODO: add tests for liblnk_file_get_utf16_environment_variables_location_size */
+
+		/* TODO: add tests for liblnk_file_get_utf16_environment_variables_location */
+
+		/* TODO: add tests for liblnk_file_get_link_target_identifier_data_size */
+
+		/* TODO: add tests for liblnk_file_copy_link_target_identifier_data */
+
+		/* TODO: add tests for liblnk_file_has_distributed_link_tracking_data */
+
+		/* TODO: add tests for liblnk_file_get_utf8_machine_identifier_size */
+
+		/* TODO: add tests for liblnk_file_get_utf8_machine_identifier */
+
+		/* TODO: add tests for liblnk_file_get_utf16_machine_identifier_size */
+
+		/* TODO: add tests for liblnk_file_get_utf16_machine_identifier */
+
+		/* TODO: add tests for liblnk_file_get_droid_volume_identifier */
+
+		/* TODO: add tests for liblnk_file_get_droid_file_identifier */
+
+		/* TODO: add tests for liblnk_file_get_birth_droid_volume_identifier */
+
+		/* TODO: add tests for liblnk_file_get_birth_droid_file_identifier */
+
 		/* Clean up
 		 */
 		result = lnk_test_file_close_source(

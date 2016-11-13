@@ -1,5 +1,5 @@
 /*
- * Python object definition of the liblnk file
+ * Python object wrapper of liblnk_file_t
  *
  * Copyright (C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -61,8 +61,6 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  "\n"
 	  "Signals the file to abort the current activity." },
 
-	/* Functions to access the file */
-
 	{ "open",
 	  (PyCFunction) pylnk_file_open,
 	  METH_VARARGS | METH_KEYWORDS,
@@ -89,73 +87,78 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  METH_NOARGS,
 	  "get_ascii_codepage() -> String\n"
 	  "\n"
-	  "Returns the codepage used for ASCII strings in the file." },
+	  "Returns the codepage for ASCII strings used in the file." },
 
 	{ "set_ascii_codepage",
 	  (PyCFunction) pylnk_file_set_ascii_codepage,
 	  METH_VARARGS | METH_KEYWORDS,
 	  "set_ascii_codepage(codepage) -> None\n"
 	  "\n"
-	  "Set the codepage used for ASCII strings in the file.\n"
-	  "Expects the codepage to be a String containing a Python codec definition." },
+	  "Sets the codepage for ASCII strings used in the file.\n"
+	  "Expects the codepage to be a string containing a Python codec definition." },
 
-	/* Functions to access the metadata */
+	{ "get_data_flags",
+	  (PyCFunction) pylnk_file_get_data_flags,
+	  METH_NOARGS,
+	  "get_data_flags() -> Integer or None\n"
+	  "\n"
+	  "Returns the data flags." },
 
 	{ "get_file_creation_time",
 	  (PyCFunction) pylnk_file_get_file_creation_time,
 	  METH_NOARGS,
-	  "get_file_creation_time() -> Datetime\n"
+	  "get_file_creation_time() -> Datetime or None\n"
 	  "\n"
-	  "Returns the creation date and time of the linked item." },
+	  "Returns the file creation time." },
 
 	{ "get_file_creation_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_creation_time_as_integer,
 	  METH_NOARGS,
-	  "get_file_creation_time_as_integer() -> Integer\n"
+	  "get_file_creation_time_as_integer() -> Integer or None\n"
 	  "\n"
-	  "Returns the creation date and time as a 64-bit integer containing a FILETIME value." },
+	  "Returns the file creation time as a 64-bit integer containing a FILETIME value." },
 
 	{ "get_file_modification_time",
 	  (PyCFunction) pylnk_file_get_file_modification_time,
 	  METH_NOARGS,
-	  "get_file_modification_time() -> Datetime\n"
+	  "get_file_modification_time() -> Datetime or None\n"
 	  "\n"
-	  "Returns the modification date and time of the linked item." },
+	  "Returns the file modification time." },
 
 	{ "get_file_modification_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_modification_time_as_integer,
 	  METH_NOARGS,
-	  "get_file_modification_time_as_integer() -> Integer\n"
+	  "get_file_modification_time_as_integer() -> Integer or None\n"
 	  "\n"
-	  "Returns the modification date and time as a 64-bit integer containing a FILETIME value." },
+	  "Returns the file modification time as a 64-bit integer containing a FILETIME value." },
 
 	{ "get_file_access_time",
 	  (PyCFunction) pylnk_file_get_file_access_time,
 	  METH_NOARGS,
-	  "get_file_access_time() -> Datetime\n"
+	  "get_file_access_time() -> Datetime or None\n"
 	  "\n"
-	  "Returns the access date and time of the linked item." },
+	  "Returns the file access time." },
 
 	{ "get_file_access_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_access_time_as_integer,
 	  METH_NOARGS,
-	  "get_file_access_time_as_integer() -> Integer\n"
+	  "get_file_access_time_as_integer() -> Integer or None\n"
 	  "\n"
-	  "Returns the access date and time as a 64-bit integer containing a FILETIME value." },
+	  "Returns the file access time as a 64-bit integer containing a FILETIME value." },
 
 	{ "get_file_size",
 	  (PyCFunction) pylnk_file_get_file_size,
 	  METH_NOARGS,
-	  "get_file_size() -> Integer\n"
+	  "get_file_size() -> Integer or None\n"
 	  "\n"
-	  "Returns the size of the linked item." },
+	  "Returns the file size." },
 
 	{ "get_file_attribute_flags",
 	  (PyCFunction) pylnk_file_get_file_attribute_flags,
 	  METH_NOARGS,
-	  "get_file_attribute_flags() -> Integer\n"
+	  "get_file_attribute_flags() -> Integer or None\n"
 	  "\n"
-	  "Returns the file attribute flags of the linked item." },
+	  "Returns the file attribute flags." },
 
 	{ "get_drive_type",
 	  (PyCFunction) pylnk_file_get_drive_type,
@@ -183,99 +186,98 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  METH_NOARGS,
 	  "get_local_path() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the local path of the linked item." },
+	  "Returns the local path." },
 
 	{ "get_network_path",
 	  (PyCFunction) pylnk_file_get_network_path,
 	  METH_NOARGS,
 	  "get_network_path() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the network path of the linked item." },
+	  "Returns the network path." },
 
 	{ "get_description",
 	  (PyCFunction) pylnk_file_get_description,
 	  METH_NOARGS,
 	  "get_description() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the description of the linked item." },
+	  "Returns the description." },
 
 	{ "get_relative_path",
 	  (PyCFunction) pylnk_file_get_relative_path,
 	  METH_NOARGS,
 	  "get_relative_path() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the relative path of the linked item." },
+	  "Returns the relative path." },
 
 	{ "get_working_directory",
 	  (PyCFunction) pylnk_file_get_working_directory,
 	  METH_NOARGS,
 	  "get_working_directory() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the working directory of the linked item." },
+	  "Returns the working directory." },
 
 	{ "get_command_line_arguments",
 	  (PyCFunction) pylnk_file_get_command_line_arguments,
 	  METH_NOARGS,
 	  "get_command_line_arguments() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the command line arguments of the linked item." },
+	  "Returns the command line arguments." },
 
 	{ "get_icon_location",
 	  (PyCFunction) pylnk_file_get_icon_location,
 	  METH_NOARGS,
 	  "get_icon_location() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the icon location of the linked item." },
+	  "Returns the icon location." },
 
 	{ "get_environment_variables_location",
 	  (PyCFunction) pylnk_file_get_environment_variables_location,
 	  METH_NOARGS,
 	  "get_environment_variables_location() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the environment variables location of the linked item." },
+	  "Returns the environment variables location." },
 
 	{ "get_link_target_identifier_data",
 	  (PyCFunction) pylnk_file_get_link_target_identifier_data,
 	  METH_NOARGS,
-	  "get_link_target_identifier_data() -> String or None\n"
+	  "get_link_target_identifier_data() -> Binary string or None\n"
 	  "\n"
-	  "Returns the link target identifier data of the linked item.\n"
-	  "The string contains a shell item (identifier) list.\n" },
-
-	{ "get_droid_volume_identifier",
-	  (PyCFunction) pylnk_file_get_droid_volume_identifier,
-	  METH_NOARGS,
-	  "get_droid_volume_identifier() -> Unicode string or None\n"
-	  "\n"
-	  "Returns the droid volume identifier of the linked item." },
+	  "Returns the link target identifier data." },
 
 	{ "get_machine_identifier",
 	  (PyCFunction) pylnk_file_get_machine_identifier,
 	  METH_NOARGS,
 	  "get_machine_identifier() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the machine identifier of the linked item." },
+	  "Returns the machine identifier." },
+
+	{ "get_droid_volume_identifier",
+	  (PyCFunction) pylnk_file_get_droid_volume_identifier,
+	  METH_NOARGS,
+	  "get_droid_volume_identifier() -> Unicode string or None\n"
+	  "\n"
+	  "Returns the droid volume identifier." },
 
 	{ "get_droid_file_identifier",
 	  (PyCFunction) pylnk_file_get_droid_file_identifier,
 	  METH_NOARGS,
 	  "get_droid_file_identifier() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the droid file identifier of the linked item." },
+	  "Returns the droid file identifier." },
 
 	{ "get_birth_droid_volume_identifier",
 	  (PyCFunction) pylnk_file_get_birth_droid_volume_identifier,
 	  METH_NOARGS,
-	  "get_droid_birth_volume_identifier() -> Unicode string or None\n"
+	  "get_birth_droid_volume_identifier() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the birth droid volume identifier of the linked item." },
+	  "Returns the birth droid volume identifier." },
 
 	{ "get_birth_droid_file_identifier",
 	  (PyCFunction) pylnk_file_get_birth_droid_file_identifier,
 	  METH_NOARGS,
 	  "get_birth_droid_file_identifier() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the birth droid file identifier of the linked item." },
+	  "Returns the birth droid file identifier." },
 
 	/* Sentinel */
 	{ NULL, NULL, 0, NULL }
@@ -289,34 +291,40 @@ PyGetSetDef pylnk_file_object_get_set_definitions[] = {
 	  "The codepage used for ASCII strings in the file.",
 	  NULL },
 
+	{ "data_flags",
+	  (getter) pylnk_file_get_data_flags,
+	  (setter) 0,
+	  "The data flags.",
+	  NULL },
+
 	{ "file_creation_time",
 	  (getter) pylnk_file_get_file_creation_time,
 	  (setter) 0,
-	  "The creation date and time of the linked item.",
+	  "The file creation time.",
 	  NULL },
 
 	{ "file_modification_time",
 	  (getter) pylnk_file_get_file_modification_time,
 	  (setter) 0,
-	  "The modification date and time of the linked item.",
+	  "The file modification time.",
 	  NULL },
 
 	{ "file_access_time",
 	  (getter) pylnk_file_get_file_access_time,
 	  (setter) 0,
-	  "The access date and time of the linked item.",
+	  "The file access time.",
 	  NULL },
 
 	{ "file_size",
 	  (getter) pylnk_file_get_file_size,
 	  (setter) 0,
-	  "The size of the of the linked item.",
+	  "The file size.",
 	  NULL },
 
 	{ "file_attribute_flags",
 	  (getter) pylnk_file_get_file_attribute_flags,
 	  (setter) 0,
-	  "The file attribute flags of the linked item.",
+	  "The file attribute flags.",
 	  NULL },
 
 	{ "drive_type",
@@ -340,86 +348,85 @@ PyGetSetDef pylnk_file_object_get_set_definitions[] = {
 	{ "local_path",
 	  (getter) pylnk_file_get_local_path,
 	  (setter) 0,
-	  "The local path of the linked item.",
+	  "The local path.",
 	  NULL },
 
 	{ "network_path",
 	  (getter) pylnk_file_get_network_path,
 	  (setter) 0,
-	  "The network path of the linked item.",
+	  "The network path.",
 	  NULL },
 
 	{ "description",
 	  (getter) pylnk_file_get_description,
 	  (setter) 0,
-	  "The description of the linked item.",
+	  "The description.",
 	  NULL },
 
 	{ "relative_path",
 	  (getter) pylnk_file_get_relative_path,
 	  (setter) 0,
-	  "The relative path of the linked item.",
+	  "The relative path.",
 	  NULL },
 
 	{ "working_directory",
 	  (getter) pylnk_file_get_working_directory,
 	  (setter) 0,
-	  "The working directory of the linked item.",
+	  "The working directory.",
 	  NULL },
 
 	{ "command_line_arguments",
 	  (getter) pylnk_file_get_command_line_arguments,
 	  (setter) 0,
-	  "The command line arguments of the linked item.",
+	  "The command line arguments.",
 	  NULL },
 
 	{ "icon_location",
 	  (getter) pylnk_file_get_icon_location,
 	  (setter) 0,
-	  "The icon location of the linked item.",
+	  "The icon location.",
 	  NULL },
 
 	{ "environment_variables_location",
 	  (getter) pylnk_file_get_environment_variables_location,
 	  (setter) 0,
-	  "The environment variables location of the linked item.",
+	  "The environment variables location.",
 	  NULL },
 
 	{ "link_target_identifier_data",
 	  (getter) pylnk_file_get_link_target_identifier_data,
 	  (setter) 0,
-	  "The link target identifier data of the linked item.\n"
-	  "The string contains a shell item (identifier) list.",
-	  NULL },
-
-	{ "droid_volume_identifier",
-	  (getter) pylnk_file_get_droid_volume_identifier,
-	  (setter) 0,
-	  "The droid volume identifier of the linked item.",
+	  "The link target identifier data.",
 	  NULL },
 
 	{ "machine_identifier",
 	  (getter) pylnk_file_get_machine_identifier,
 	  (setter) 0,
-	  "The machine identifier of the linked item.",
+	  "The machine identifier.",
+	  NULL },
+
+	{ "droid_volume_identifier",
+	  (getter) pylnk_file_get_droid_volume_identifier,
+	  (setter) 0,
+	  "The droid volume identifier.",
 	  NULL },
 
 	{ "droid_file_identifier",
 	  (getter) pylnk_file_get_droid_file_identifier,
 	  (setter) 0,
-	  "The droid file identifier of the linked item.",
+	  "The droid file identifier.",
 	  NULL },
 
 	{ "birth_droid_volume_identifier",
 	  (getter) pylnk_file_get_birth_droid_volume_identifier,
 	  (setter) 0,
-	  "The birth droid volume identifier of the linked item.",
+	  "The birth droid volume identifier.",
 	  NULL },
 
 	{ "birth_droid_file_identifier",
 	  (getter) pylnk_file_get_birth_droid_file_identifier,
 	  (setter) 0,
-	  "The birth droid file identifier of the linked item.",
+	  "The birth droid file identifier.",
 	  NULL },
 
 	/* Sentinel */
@@ -586,7 +593,7 @@ PyObject *pylnk_file_new_open(
 	return( pylnk_file );
 }
 
-/* Creates a new file object and opens it
+/* Creates a new file object and opens it using a file-like object
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_new_open_file_object(
@@ -614,8 +621,8 @@ PyObject *pylnk_file_new_open_file_object(
 int pylnk_file_init(
      pylnk_file_t *pylnk_file )
 {
-	static char *function    = "pylnk_file_init";
 	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_file_init";
 
 	if( pylnk_file == NULL )
 	{
@@ -652,8 +659,8 @@ int pylnk_file_init(
 void pylnk_file_free(
       pylnk_file_t *pylnk_file )
 {
-	libcerror_error_t *error    = NULL;
 	struct _typeobject *ob_type = NULL;
+	libcerror_error_t *error    = NULL;
 	static char *function       = "pylnk_file_free";
 	int result                  = 0;
 
@@ -778,9 +785,9 @@ PyObject *pylnk_file_open(
 {
 	PyObject *string_object      = NULL;
 	libcerror_error_t *error     = NULL;
+	const char *filename_narrow  = NULL;
 	static char *function        = "pylnk_file_open";
 	static char *keyword_list[]  = { "filename", "mode", NULL };
-	const char *filename_narrow  = NULL;
 	char *mode                   = NULL;
 	int result                   = 0;
 
@@ -834,7 +841,7 @@ PyObject *pylnk_file_open(
 	if( result == -1 )
 	{
 		pylnk_error_fetch_and_raise(
-	         PyExc_RuntimeError,
+		 PyExc_RuntimeError,
 		 "%s: unable to determine if string object is of type unicode.",
 		 function );
 
@@ -851,7 +858,7 @@ PyObject *pylnk_file_open(
 
 		result = liblnk_file_open_wide(
 		          pylnk_file->file,
-	                  filename_wide,
+		          filename_wide,
 		          LIBLNK_OPEN_READ,
 		          &error );
 
@@ -871,16 +878,16 @@ PyObject *pylnk_file_open(
 		}
 #if PY_MAJOR_VERSION >= 3
 		filename_narrow = PyBytes_AsString(
-				   utf8_string_object );
+		                   utf8_string_object );
 #else
 		filename_narrow = PyString_AsString(
-				   utf8_string_object );
+		                   utf8_string_object );
 #endif
 		Py_BEGIN_ALLOW_THREADS
 
 		result = liblnk_file_open(
 		          pylnk_file->file,
-	                  filename_narrow,
+		          filename_narrow,
 		          LIBLNK_OPEN_READ,
 		          &error );
 
@@ -911,17 +918,17 @@ PyObject *pylnk_file_open(
 
 #if PY_MAJOR_VERSION >= 3
 	result = PyObject_IsInstance(
-		  string_object,
-		  (PyObject *) &PyBytes_Type );
+	          string_object,
+	          (PyObject *) &PyBytes_Type );
 #else
 	result = PyObject_IsInstance(
-		  string_object,
-		  (PyObject *) &PyString_Type );
+	          string_object,
+	          (PyObject *) &PyString_Type );
 #endif
 	if( result == -1 )
 	{
 		pylnk_error_fetch_and_raise(
-	         PyExc_RuntimeError,
+		 PyExc_RuntimeError,
 		 "%s: unable to determine if string object is of type string.",
 		 function );
 
@@ -933,16 +940,16 @@ PyObject *pylnk_file_open(
 
 #if PY_MAJOR_VERSION >= 3
 		filename_narrow = PyBytes_AsString(
-				   string_object );
+		                   string_object );
 #else
 		filename_narrow = PyString_AsString(
-				   string_object );
+		                   string_object );
 #endif
 		Py_BEGIN_ALLOW_THREADS
 
 		result = liblnk_file_open(
 		          pylnk_file->file,
-	                  filename_narrow,
+		          filename_narrow,
 		          LIBLNK_OPEN_READ,
 		          &error );
 
@@ -984,9 +991,9 @@ PyObject *pylnk_file_open_file_object(
 {
 	PyObject *file_object       = NULL;
 	libcerror_error_t *error    = NULL;
-	char *mode                  = NULL;
-	static char *keyword_list[] = { "file_object", "mode", NULL };
 	static char *function       = "pylnk_file_open_file_object";
+	static char *keyword_list[] = { "file_object", "mode", NULL };
+	char *mode                  = NULL;
 	int result                  = 0;
 
 	if( pylnk_file == NULL )
@@ -1153,8 +1160,8 @@ PyObject *pylnk_file_get_ascii_codepage(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error    = NULL;
 	PyObject *string_object     = NULL;
+	libcerror_error_t *error    = NULL;
 	const char *codepage_string = NULL;
 	static char *function       = "pylnk_file_get_ascii_codepage";
 	int ascii_codepage          = 0;
@@ -1313,8 +1320,8 @@ PyObject *pylnk_file_set_ascii_codepage(
            PyObject *arguments,
            PyObject *keywords )
 {
-	static char *keyword_list[] = { "codepage", NULL };
 	char *codepage_string       = NULL;
+	static char *keyword_list[] = { "codepage", NULL };
 	int result                  = 0;
 
 	if( PyArg_ParseTupleAndKeywords(
@@ -1349,8 +1356,8 @@ int pylnk_file_set_ascii_codepage_setter(
      void *closure PYLNK_ATTRIBUTE_UNUSED )
 {
 	PyObject *utf8_string_object = NULL;
-	static char *function        = "pylnk_file_set_ascii_codepage_setter";
 	char *codepage_string        = NULL;
+	static char *function        = "pylnk_file_set_ascii_codepage_setter";
 	int result                   = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( closure )
@@ -1364,7 +1371,7 @@ int pylnk_file_set_ascii_codepage_setter(
 	if( result == -1 )
 	{
 		pylnk_error_fetch_and_raise(
-	         PyExc_RuntimeError,
+		 PyExc_RuntimeError,
 		 "%s: unable to determine if string object is of type unicode.",
 		 function );
 
@@ -1388,10 +1395,10 @@ int pylnk_file_set_ascii_codepage_setter(
 		}
 #if PY_MAJOR_VERSION >= 3
 		codepage_string = PyBytes_AsString(
-				   utf8_string_object );
+		                   utf8_string_object );
 #else
 		codepage_string = PyString_AsString(
-				   utf8_string_object );
+		                   utf8_string_object );
 #endif
 		if( codepage_string == NULL )
 		{
@@ -1411,17 +1418,17 @@ int pylnk_file_set_ascii_codepage_setter(
 
 #if PY_MAJOR_VERSION >= 3
 	result = PyObject_IsInstance(
-		  string_object,
-		  (PyObject *) &PyBytes_Type );
+	          string_object,
+	          (PyObject *) &PyBytes_Type );
 #else
 	result = PyObject_IsInstance(
-		  string_object,
-		  (PyObject *) &PyString_Type );
+	          string_object,
+	          (PyObject *) &PyString_Type );
 #endif
 	if( result == -1 )
 	{
 		pylnk_error_fetch_and_raise(
-	         PyExc_RuntimeError,
+		 PyExc_RuntimeError,
 		 "%s: unable to determine if string object is of type string.",
 		 function );
 
@@ -1441,8 +1448,8 @@ int pylnk_file_set_ascii_codepage_setter(
 			return( -1 );
 		}
 		result = pylnk_file_set_ascii_codepage_from_string(
-			  pylnk_file,
-			  codepage_string );
+		          pylnk_file,
+		          codepage_string );
 
 		if( result != 1 )
 		{
@@ -1458,15 +1465,74 @@ int pylnk_file_set_ascii_codepage_setter(
 	return( -1 );
 }
 
-/* Retrieves the creation date and time of the linked item
+/* Retrieves the data flags
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_data_flags(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	PyObject *integer_object = NULL;
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_file_get_data_flags";
+	uint32_t value_32bit     = 0;
+	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_TypeError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_data_flags(
+	          pylnk_file->file,
+	          &value_32bit,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve data flags.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	integer_object = pylnk_integer_unsigned_new_from_64bit(
+	                  (uint64_t) value_32bit );
+
+	return( integer_object );
+}
+
+/* Retrieves the file creation time
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_creation_time(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error   = NULL;
 	PyObject *date_time_object = NULL;
+	libcerror_error_t *error   = NULL;
 	static char *function      = "pylnk_file_get_file_creation_time";
 	uint64_t filetime          = 0;
 	int result                 = 0;
@@ -1491,7 +1557,7 @@ PyObject *pylnk_file_get_file_creation_time(
 
 	Py_END_ALLOW_THREADS
 
-	if( result != 1 )
+	if( result == -1 )
 	{
 		pylnk_error_raise(
 		 error,
@@ -1504,21 +1570,28 @@ PyObject *pylnk_file_get_file_creation_time(
 
 		return( NULL );
 	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
 	date_time_object = pylnk_datetime_new_from_filetime(
 	                    filetime );
 
 	return( date_time_object );
 }
 
-/* Retrieves the creation date and time as an integer
+/* Retrieves the file creation time as an integer
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_creation_time_as_integer(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error = NULL;
 	PyObject *integer_object = NULL;
+	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_get_file_creation_time_as_integer";
 	uint64_t filetime        = 0;
 	int result               = 0;
@@ -1543,12 +1616,12 @@ PyObject *pylnk_file_get_file_creation_time_as_integer(
 
 	Py_END_ALLOW_THREADS
 
-	if( result != 1 )
+	if( result == -1 )
 	{
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve creation time.",
+		 "%s: unable to retrieve file creation time.",
 		 function );
 
 		libcerror_error_free(
@@ -1556,21 +1629,28 @@ PyObject *pylnk_file_get_file_creation_time_as_integer(
 
 		return( NULL );
 	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
 	integer_object = pylnk_integer_unsigned_new_from_64bit(
 	                  (uint64_t) filetime );
 
 	return( integer_object );
 }
 
-/* Retrieves the modification date and time of the linked item
+/* Retrieves the file modification time
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_modification_time(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error   = NULL;
 	PyObject *date_time_object = NULL;
+	libcerror_error_t *error   = NULL;
 	static char *function      = "pylnk_file_get_file_modification_time";
 	uint64_t filetime          = 0;
 	int result                 = 0;
@@ -1595,7 +1675,7 @@ PyObject *pylnk_file_get_file_modification_time(
 
 	Py_END_ALLOW_THREADS
 
-	if( result != 1 )
+	if( result == -1 )
 	{
 		pylnk_error_raise(
 		 error,
@@ -1608,21 +1688,28 @@ PyObject *pylnk_file_get_file_modification_time(
 
 		return( NULL );
 	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
 	date_time_object = pylnk_datetime_new_from_filetime(
 	                    filetime );
 
 	return( date_time_object );
 }
 
-/* Retrieves the modification date and time as an integer
+/* Retrieves the file modification time as an integer
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_modification_time_as_integer(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error = NULL;
 	PyObject *integer_object = NULL;
+	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_get_file_modification_time_as_integer";
 	uint64_t filetime        = 0;
 	int result               = 0;
@@ -1647,12 +1734,12 @@ PyObject *pylnk_file_get_file_modification_time_as_integer(
 
 	Py_END_ALLOW_THREADS
 
-	if( result != 1 )
+	if( result == -1 )
 	{
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve modification time.",
+		 "%s: unable to retrieve file modification time.",
 		 function );
 
 		libcerror_error_free(
@@ -1660,21 +1747,28 @@ PyObject *pylnk_file_get_file_modification_time_as_integer(
 
 		return( NULL );
 	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
 	integer_object = pylnk_integer_unsigned_new_from_64bit(
 	                  (uint64_t) filetime );
 
 	return( integer_object );
 }
 
-/* Retrieves the access date and time of the linked item
+/* Retrieves the file access time
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_access_time(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error   = NULL;
 	PyObject *date_time_object = NULL;
+	libcerror_error_t *error   = NULL;
 	static char *function      = "pylnk_file_get_file_access_time";
 	uint64_t filetime          = 0;
 	int result                 = 0;
@@ -1699,7 +1793,7 @@ PyObject *pylnk_file_get_file_access_time(
 
 	Py_END_ALLOW_THREADS
 
-	if( result != 1 )
+	if( result == -1 )
 	{
 		pylnk_error_raise(
 		 error,
@@ -1712,21 +1806,28 @@ PyObject *pylnk_file_get_file_access_time(
 
 		return( NULL );
 	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
 	date_time_object = pylnk_datetime_new_from_filetime(
 	                    filetime );
 
 	return( date_time_object );
 }
 
-/* Retrieves the access date and time as an integer
+/* Retrieves the file access time as an integer
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_file_access_time_as_integer(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error = NULL;
 	PyObject *integer_object = NULL;
+	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_get_file_access_time_as_integer";
 	uint64_t filetime        = 0;
 	int result               = 0;
@@ -1751,18 +1852,25 @@ PyObject *pylnk_file_get_file_access_time_as_integer(
 
 	Py_END_ALLOW_THREADS
 
-	if( result != 1 )
+	if( result == -1 )
 	{
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve access time.",
+		 "%s: unable to retrieve file access time.",
 		 function );
 
 		libcerror_error_free(
 		 &error );
 
 		return( NULL );
+	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
 	}
 	integer_object = pylnk_integer_unsigned_new_from_64bit(
 	                  (uint64_t) filetime );
@@ -1777,10 +1885,10 @@ PyObject *pylnk_file_get_file_size(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error = NULL;
 	PyObject *integer_object = NULL;
+	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_get_file_size";
-	uint32_t file_size       = 0;
+	uint32_t value_32bit     = 0;
 	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
@@ -1798,12 +1906,12 @@ PyObject *pylnk_file_get_file_size(
 
 	result = liblnk_file_get_file_size(
 	          pylnk_file->file,
-	          &file_size,
+	          &value_32bit,
 	          &error );
 
 	Py_END_ALLOW_THREADS
 
-	if( result != 1 )
+	if( result == -1 )
 	{
 		pylnk_error_raise(
 		 error,
@@ -1816,8 +1924,15 @@ PyObject *pylnk_file_get_file_size(
 
 		return( NULL );
 	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
 	integer_object = pylnk_integer_unsigned_new_from_64bit(
-	                  (uint64_t) file_size );
+	                  (uint64_t) value_32bit );
 
 	return( integer_object );
 }
@@ -1829,11 +1944,11 @@ PyObject *pylnk_file_get_file_attribute_flags(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error      = NULL;
-	PyObject *integer_object      = NULL;
-	static char *function         = "pylnk_file_get_file_attribute_flags";
-	uint32_t file_attribute_flags = 0;
-	int result                    = 0;
+	PyObject *integer_object = NULL;
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_file_get_file_attribute_flags";
+	uint32_t value_32bit     = 0;
+	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
@@ -1850,12 +1965,12 @@ PyObject *pylnk_file_get_file_attribute_flags(
 
 	result = liblnk_file_get_file_attribute_flags(
 	          pylnk_file->file,
-	          &file_attribute_flags,
+	          &value_32bit,
 	          &error );
 
 	Py_END_ALLOW_THREADS
 
-	if( result != 1 )
+	if( result == -1 )
 	{
 		pylnk_error_raise(
 		 error,
@@ -1868,8 +1983,15 @@ PyObject *pylnk_file_get_file_attribute_flags(
 
 		return( NULL );
 	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
 	integer_object = pylnk_integer_unsigned_new_from_64bit(
-	                  (uint64_t) file_attribute_flags );
+	                  (uint64_t) value_32bit );
 
 	return( integer_object );
 }
@@ -1881,10 +2003,10 @@ PyObject *pylnk_file_get_drive_type(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error = NULL;
 	PyObject *integer_object = NULL;
+	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_get_drive_type";
-	uint32_t drive_type      = 0;
+	uint32_t value_32bit     = 0;
 	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
@@ -1902,7 +2024,7 @@ PyObject *pylnk_file_get_drive_type(
 
 	result = liblnk_file_get_drive_type(
 	          pylnk_file->file,
-	          &drive_type,
+	          &value_32bit,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -1928,7 +2050,7 @@ PyObject *pylnk_file_get_drive_type(
 		return( Py_None );
 	}
 	integer_object = pylnk_integer_unsigned_new_from_64bit(
-	                  (uint64_t) drive_type );
+	                  (uint64_t) value_32bit );
 
 	return( integer_object );
 }
@@ -1940,11 +2062,11 @@ PyObject *pylnk_file_get_drive_serial_number(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error     = NULL;
-	PyObject *integer_object     = NULL;
-	static char *function        = "pylnk_file_get_drive_serial_number";
-	uint32_t drive_serial_number = 0;
-	int result                   = 0;
+	PyObject *integer_object = NULL;
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_file_get_drive_serial_number";
+	uint32_t value_32bit     = 0;
+	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
@@ -1961,7 +2083,7 @@ PyObject *pylnk_file_get_drive_serial_number(
 
 	result = liblnk_file_get_drive_serial_number(
 	          pylnk_file->file,
-	          &drive_serial_number,
+	          &value_32bit,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -1987,24 +2109,24 @@ PyObject *pylnk_file_get_drive_serial_number(
 		return( Py_None );
 	}
 	integer_object = pylnk_integer_unsigned_new_from_64bit(
-	                  (uint64_t) drive_serial_number );
+	                  (uint64_t) value_32bit );
 
 	return( integer_object );
 }
 
-/* Retrieves the volume label of the linked item
+/* Retrieves the volume label
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_volume_label(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error = NULL;
 	PyObject *string_object  = NULL;
-	static char *function    = "pylnk_file_get_volume_label";
+	libcerror_error_t *error = NULL;
 	const char *errors       = NULL;
-	char *volume_label       = NULL;
-	size_t volume_label_size = 0;
+	static char *function    = "pylnk_file_get_volume_label";
+	char *utf8_string        = NULL;
+	size_t utf8_string_size  = 0;
 	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
@@ -2022,7 +2144,7 @@ PyObject *pylnk_file_get_volume_label(
 
 	result = liblnk_file_get_utf8_volume_label_size(
 	          pylnk_file->file,
-	          &volume_label_size,
+	          &utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -2032,7 +2154,7 @@ PyObject *pylnk_file_get_volume_label(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 volume label size.",
+		 "%s: unable to determine size of volume label as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2040,24 +2162,22 @@ PyObject *pylnk_file_get_volume_label(
 
 		goto on_error;
 	}
-	/* Check if the volume label is present
-	 */
 	else if( ( result == 0 )
-	      || ( volume_label_size == 0 ) )
+	      || ( utf8_string_size == 0 ) )
 	{
 		Py_IncRef(
 		 Py_None );
 
 		return( Py_None );
 	}
-	volume_label = (char *) PyMem_Malloc(
-	                         sizeof( char ) * volume_label_size );
+	utf8_string = (char *) PyMem_Malloc(
+	                        sizeof( char ) * utf8_string_size );
 
-	if( volume_label == NULL )
+	if( utf8_string == NULL )
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create UTF-8 volume label.",
+		 "%s: unable to create UTF-8 string.",
 		 function );
 
 		goto on_error;
@@ -2066,18 +2186,18 @@ PyObject *pylnk_file_get_volume_label(
 
 	result = liblnk_file_get_utf8_volume_label(
 	          pylnk_file->file,
-	          (uint8_t *) volume_label,
-	          volume_label_size,
+	          (uint8_t *) utf8_string,
+	          utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 volume label.",
+		 "%s: unable to retrieve volume label as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2085,63 +2205,50 @@ PyObject *pylnk_file_get_volume_label(
 
 		goto on_error;
 	}
-	/* Check if the volume label is present
-	 */
-	else if( result == 0 )
-	{
-		PyMem_Free(
-		 volume_label );
-
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
-	}
-	/* Pass the string length to PyUnicode_DecodeUTF8
-	 * otherwise it makes the end of string character is part
-	 * of the string
+	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
+	 * the end of string character is part of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
-	                 volume_label,
-	                 (Py_ssize_t) volume_label_size - 1,
+	                 utf8_string,
+	                 (Py_ssize_t) utf8_string_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_IOError,
-		 "%s: unable to convert UTF-8 volume label into Unicode.",
+		 "%s: unable to convert UTF-8 string into Unicode object.",
 		 function );
 
 		goto on_error;
 	}
 	PyMem_Free(
-	 volume_label );
+	 utf8_string );
 
 	return( string_object );
 
 on_error:
-	if( volume_label != NULL )
+	if( utf8_string != NULL )
 	{
 		PyMem_Free(
-		 volume_label );
+		 utf8_string );
 	}
 	return( NULL );
 }
 
-/* Retrieves the local path of the linked item
+/* Retrieves the local path
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_local_path(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error = NULL;
 	PyObject *string_object  = NULL;
-	static char *function    = "pylnk_file_get_local_path";
+	libcerror_error_t *error = NULL;
 	const char *errors       = NULL;
-	char *local_path         = NULL;
-	size_t local_path_size   = 0;
+	static char *function    = "pylnk_file_get_local_path";
+	char *utf8_string        = NULL;
+	size_t utf8_string_size  = 0;
 	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
@@ -2159,7 +2266,7 @@ PyObject *pylnk_file_get_local_path(
 
 	result = liblnk_file_get_utf8_local_path_size(
 	          pylnk_file->file,
-	          &local_path_size,
+	          &utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -2169,7 +2276,7 @@ PyObject *pylnk_file_get_local_path(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 local path size.",
+		 "%s: unable to determine size of local path as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2177,24 +2284,22 @@ PyObject *pylnk_file_get_local_path(
 
 		goto on_error;
 	}
-	/* Check if the local path is present
-	 */
 	else if( ( result == 0 )
-	      || ( local_path_size == 0 ) )
+	      || ( utf8_string_size == 0 ) )
 	{
 		Py_IncRef(
 		 Py_None );
 
 		return( Py_None );
 	}
-	local_path = (char *) PyMem_Malloc(
-	                       sizeof( char ) * local_path_size );
+	utf8_string = (char *) PyMem_Malloc(
+	                        sizeof( char ) * utf8_string_size );
 
-	if( local_path == NULL )
+	if( utf8_string == NULL )
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create UTF-8 local path.",
+		 "%s: unable to create UTF-8 string.",
 		 function );
 
 		goto on_error;
@@ -2203,18 +2308,18 @@ PyObject *pylnk_file_get_local_path(
 
 	result = liblnk_file_get_utf8_local_path(
 	          pylnk_file->file,
-	          (uint8_t *) local_path,
-	          local_path_size,
+	          (uint8_t *) utf8_string,
+	          utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 local path.",
+		 "%s: unable to retrieve local path as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2222,63 +2327,50 @@ PyObject *pylnk_file_get_local_path(
 
 		goto on_error;
 	}
-	/* Check if the local path is present
-	 */
-	else if( result == 0 )
-	{
-		PyMem_Free(
-		 local_path );
-
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
-	}
-	/* Pass the string length to PyUnicode_DecodeUTF8
-	 * otherwise it makes the end of string character is part
-	 * of the string
+	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
+	 * the end of string character is part of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
-	                 local_path,
-	                 (Py_ssize_t) local_path_size - 1,
+	                 utf8_string,
+	                 (Py_ssize_t) utf8_string_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_IOError,
-		 "%s: unable to convert UTF-8 local path into Unicode.",
+		 "%s: unable to convert UTF-8 string into Unicode object.",
 		 function );
 
 		goto on_error;
 	}
 	PyMem_Free(
-	 local_path );
+	 utf8_string );
 
 	return( string_object );
 
 on_error:
-	if( local_path != NULL )
+	if( utf8_string != NULL )
 	{
 		PyMem_Free(
-		 local_path );
+		 utf8_string );
 	}
 	return( NULL );
 }
 
-/* Retrieves the network path of the linked item
+/* Retrieves the network path
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_network_path(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error = NULL;
 	PyObject *string_object  = NULL;
-	static char *function    = "pylnk_file_get_network_path";
+	libcerror_error_t *error = NULL;
 	const char *errors       = NULL;
-	char *network_path       = NULL;
-	size_t network_path_size = 0;
+	static char *function    = "pylnk_file_get_network_path";
+	char *utf8_string        = NULL;
+	size_t utf8_string_size  = 0;
 	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
@@ -2296,7 +2388,7 @@ PyObject *pylnk_file_get_network_path(
 
 	result = liblnk_file_get_utf8_network_path_size(
 	          pylnk_file->file,
-	          &network_path_size,
+	          &utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -2306,7 +2398,7 @@ PyObject *pylnk_file_get_network_path(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 network path size.",
+		 "%s: unable to determine size of network path as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2314,24 +2406,22 @@ PyObject *pylnk_file_get_network_path(
 
 		goto on_error;
 	}
-	/* Check if the network path is present
-	 */
 	else if( ( result == 0 )
-	      || ( network_path_size == 0 ) )
+	      || ( utf8_string_size == 0 ) )
 	{
 		Py_IncRef(
 		 Py_None );
 
 		return( Py_None );
 	}
-	network_path = (char *) PyMem_Malloc(
-	                         sizeof( char ) * network_path_size );
+	utf8_string = (char *) PyMem_Malloc(
+	                        sizeof( char ) * utf8_string_size );
 
-	if( network_path == NULL )
+	if( utf8_string == NULL )
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create UTF-8 network path.",
+		 "%s: unable to create UTF-8 string.",
 		 function );
 
 		goto on_error;
@@ -2340,18 +2430,18 @@ PyObject *pylnk_file_get_network_path(
 
 	result = liblnk_file_get_utf8_network_path(
 	          pylnk_file->file,
-	          (uint8_t *) network_path,
-	          network_path_size,
+	          (uint8_t *) utf8_string,
+	          utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 network path.",
+		 "%s: unable to retrieve network path as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2359,63 +2449,50 @@ PyObject *pylnk_file_get_network_path(
 
 		goto on_error;
 	}
-	/* Check if the network path is present
-	 */
-	else if( result == 0 )
-	{
-		PyMem_Free(
-		 network_path );
-
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
-	}
-	/* Pass the string length to PyUnicode_DecodeUTF8
-	 * otherwise it makes the end of string character is part
-	 * of the string
+	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
+	 * the end of string character is part of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
-	                 network_path,
-	                 (Py_ssize_t) network_path_size - 1,
+	                 utf8_string,
+	                 (Py_ssize_t) utf8_string_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_IOError,
-		 "%s: unable to convert UTF-8 network path into Unicode.",
+		 "%s: unable to convert UTF-8 string into Unicode object.",
 		 function );
 
 		goto on_error;
 	}
 	PyMem_Free(
-	 network_path );
+	 utf8_string );
 
 	return( string_object );
 
 on_error:
-	if( network_path != NULL )
+	if( utf8_string != NULL )
 	{
 		PyMem_Free(
-		 network_path );
+		 utf8_string );
 	}
 	return( NULL );
 }
 
-/* Retrieves the description of the linked item
+/* Retrieves the description
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_description(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error = NULL;
 	PyObject *string_object  = NULL;
-	static char *function    = "pylnk_file_get_description";
+	libcerror_error_t *error = NULL;
 	const char *errors       = NULL;
-	char *description        = NULL;
-	size_t description_size  = 0;
+	static char *function    = "pylnk_file_get_description";
+	char *utf8_string        = NULL;
+	size_t utf8_string_size  = 0;
 	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
@@ -2433,7 +2510,7 @@ PyObject *pylnk_file_get_description(
 
 	result = liblnk_file_get_utf8_description_size(
 	          pylnk_file->file,
-	          &description_size,
+	          &utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -2443,7 +2520,7 @@ PyObject *pylnk_file_get_description(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 description size.",
+		 "%s: unable to determine size of description as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2451,24 +2528,22 @@ PyObject *pylnk_file_get_description(
 
 		goto on_error;
 	}
-	/* Check if the description is present
-	 */
 	else if( ( result == 0 )
-	      || ( description_size == 0 ) )
+	      || ( utf8_string_size == 0 ) )
 	{
 		Py_IncRef(
 		 Py_None );
 
 		return( Py_None );
 	}
-	description = (char *) PyMem_Malloc(
-	                        sizeof( char ) * description_size );
+	utf8_string = (char *) PyMem_Malloc(
+	                        sizeof( char ) * utf8_string_size );
 
-	if( description == NULL )
+	if( utf8_string == NULL )
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create UTF-8 description.",
+		 "%s: unable to create UTF-8 string.",
 		 function );
 
 		goto on_error;
@@ -2477,18 +2552,18 @@ PyObject *pylnk_file_get_description(
 
 	result = liblnk_file_get_utf8_description(
 	          pylnk_file->file,
-	          (uint8_t *) description,
-	          description_size,
+	          (uint8_t *) utf8_string,
+	          utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 description.",
+		 "%s: unable to retrieve description as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2496,64 +2571,51 @@ PyObject *pylnk_file_get_description(
 
 		goto on_error;
 	}
-	/* Check if the description is present
-	 */
-	else if( result == 0 )
-	{
-		PyMem_Free(
-		 description );
-
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
-	}
-	/* Pass the string length to PyUnicode_DecodeUTF8
-	 * otherwise it makes the end of string character is part
-	 * of the string
+	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
+	 * the end of string character is part of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
-	                 description,
-	                 (Py_ssize_t) description_size - 1,
+	                 utf8_string,
+	                 (Py_ssize_t) utf8_string_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_IOError,
-		 "%s: unable to convert UTF-8 description into Unicode.",
+		 "%s: unable to convert UTF-8 string into Unicode object.",
 		 function );
 
 		goto on_error;
 	}
 	PyMem_Free(
-	 description );
+	 utf8_string );
 
 	return( string_object );
 
 on_error:
-	if( description != NULL )
+	if( utf8_string != NULL )
 	{
 		PyMem_Free(
-		 description );
+		 utf8_string );
 	}
 	return( NULL );
 }
 
-/* Retrieves the relative path of the linked item
+/* Retrieves the relative path
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_relative_path(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error  = NULL;
-	PyObject *string_object   = NULL;
-	static char *function     = "pylnk_file_get_relative_path";
-	const char *errors        = NULL;
-	char *relative_path       = NULL;
-	size_t relative_path_size = 0;
-	int result                = 0;
+	PyObject *string_object  = NULL;
+	libcerror_error_t *error = NULL;
+	const char *errors       = NULL;
+	static char *function    = "pylnk_file_get_relative_path";
+	char *utf8_string        = NULL;
+	size_t utf8_string_size  = 0;
+	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
@@ -2570,7 +2632,7 @@ PyObject *pylnk_file_get_relative_path(
 
 	result = liblnk_file_get_utf8_relative_path_size(
 	          pylnk_file->file,
-	          &relative_path_size,
+	          &utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -2580,7 +2642,7 @@ PyObject *pylnk_file_get_relative_path(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 relative path size.",
+		 "%s: unable to determine size of relative path as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2588,24 +2650,22 @@ PyObject *pylnk_file_get_relative_path(
 
 		goto on_error;
 	}
-	/* Check if the relative path is present
-	 */
 	else if( ( result == 0 )
-	      || ( relative_path_size == 0 ) )
+	      || ( utf8_string_size == 0 ) )
 	{
 		Py_IncRef(
 		 Py_None );
 
 		return( Py_None );
 	}
-	relative_path = (char *) PyMem_Malloc(
-	                          sizeof( char ) * relative_path_size );
+	utf8_string = (char *) PyMem_Malloc(
+	                        sizeof( char ) * utf8_string_size );
 
-	if( relative_path == NULL )
+	if( utf8_string == NULL )
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create UTF-8 relative path.",
+		 "%s: unable to create UTF-8 string.",
 		 function );
 
 		goto on_error;
@@ -2614,18 +2674,18 @@ PyObject *pylnk_file_get_relative_path(
 
 	result = liblnk_file_get_utf8_relative_path(
 	          pylnk_file->file,
-	          (uint8_t *) relative_path,
-	          relative_path_size,
+	          (uint8_t *) utf8_string,
+	          utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 relative path.",
+		 "%s: unable to retrieve relative path as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2633,64 +2693,51 @@ PyObject *pylnk_file_get_relative_path(
 
 		goto on_error;
 	}
-	/* Check if the relative path is present
-	 */
-	else if( result == 0 )
-	{
-		PyMem_Free(
-		 relative_path );
-
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
-	}
-	/* Pass the string length to PyUnicode_DecodeUTF8
-	 * otherwise it makes the end of string character is part
-	 * of the string
+	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
+	 * the end of string character is part of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
-	                 relative_path,
-	                 (Py_ssize_t) relative_path_size - 1,
+	                 utf8_string,
+	                 (Py_ssize_t) utf8_string_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_IOError,
-		 "%s: unable to convert UTF-8 relative path into Unicode.",
+		 "%s: unable to convert UTF-8 string into Unicode object.",
 		 function );
 
 		goto on_error;
 	}
 	PyMem_Free(
-	 relative_path );
+	 utf8_string );
 
 	return( string_object );
 
 on_error:
-	if( relative_path != NULL )
+	if( utf8_string != NULL )
 	{
 		PyMem_Free(
-		 relative_path );
+		 utf8_string );
 	}
 	return( NULL );
 }
 
-/* Retrieves the working directory of the linked item
+/* Retrieves the working directory
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_working_directory(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error      = NULL;
-	PyObject *string_object       = NULL;
-	static char *function         = "pylnk_file_get_working_directory";
-	const char *errors            = NULL;
-	char *working_directory       = NULL;
-	size_t working_directory_size = 0;
-	int result                    = 0;
+	PyObject *string_object  = NULL;
+	libcerror_error_t *error = NULL;
+	const char *errors       = NULL;
+	static char *function    = "pylnk_file_get_working_directory";
+	char *utf8_string        = NULL;
+	size_t utf8_string_size  = 0;
+	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
@@ -2707,7 +2754,7 @@ PyObject *pylnk_file_get_working_directory(
 
 	result = liblnk_file_get_utf8_working_directory_size(
 	          pylnk_file->file,
-	          &working_directory_size,
+	          &utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -2717,7 +2764,7 @@ PyObject *pylnk_file_get_working_directory(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 working directory size.",
+		 "%s: unable to determine size of working directory as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2725,24 +2772,22 @@ PyObject *pylnk_file_get_working_directory(
 
 		goto on_error;
 	}
-	/* Check if the working directory is present
-	 */
 	else if( ( result == 0 )
-	      || ( working_directory_size == 0 ) )
+	      || ( utf8_string_size == 0 ) )
 	{
 		Py_IncRef(
 		 Py_None );
 
 		return( Py_None );
 	}
-	working_directory = (char *) PyMem_Malloc(
-	                              sizeof( char ) * working_directory_size );
+	utf8_string = (char *) PyMem_Malloc(
+	                        sizeof( char ) * utf8_string_size );
 
-	if( working_directory == NULL )
+	if( utf8_string == NULL )
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create UTF-8 working directory.",
+		 "%s: unable to create UTF-8 string.",
 		 function );
 
 		goto on_error;
@@ -2751,18 +2796,18 @@ PyObject *pylnk_file_get_working_directory(
 
 	result = liblnk_file_get_utf8_working_directory(
 	          pylnk_file->file,
-	          (uint8_t *) working_directory,
-	          working_directory_size,
+	          (uint8_t *) utf8_string,
+	          utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 working directory.",
+		 "%s: unable to retrieve working directory as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2770,64 +2815,51 @@ PyObject *pylnk_file_get_working_directory(
 
 		goto on_error;
 	}
-	/* Check if the working directory is present
-	 */
-	else if( result == 0 )
-	{
-		PyMem_Free(
-		 working_directory );
-
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
-	}
-	/* Pass the string length to PyUnicode_DecodeUTF8
-	 * otherwise it makes the end of string character is part
-	 * of the string
+	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
+	 * the end of string character is part of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
-	                 working_directory,
-	                 (Py_ssize_t) working_directory_size - 1,
+	                 utf8_string,
+	                 (Py_ssize_t) utf8_string_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_IOError,
-		 "%s: unable to convert UTF-8 working directory into Unicode.",
+		 "%s: unable to convert UTF-8 string into Unicode object.",
 		 function );
 
 		goto on_error;
 	}
 	PyMem_Free(
-	 working_directory );
+	 utf8_string );
 
 	return( string_object );
 
 on_error:
-	if( working_directory != NULL )
+	if( utf8_string != NULL )
 	{
 		PyMem_Free(
-		 working_directory );
+		 utf8_string );
 	}
 	return( NULL );
 }
 
-/* Retrieves the command line arguments of the linked item
+/* Retrieves the command line arguments
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_command_line_arguments(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error           = NULL;
-	PyObject *string_object            = NULL;
-	static char *function              = "pylnk_file_get_command_line_arguments";
-	const char *errors                 = NULL;
-	char *command_line_arguments       = NULL;
-	size_t command_line_arguments_size = 0;
-	int result                         = 0;
+	PyObject *string_object  = NULL;
+	libcerror_error_t *error = NULL;
+	const char *errors       = NULL;
+	static char *function    = "pylnk_file_get_command_line_arguments";
+	char *utf8_string        = NULL;
+	size_t utf8_string_size  = 0;
+	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
@@ -2844,7 +2876,7 @@ PyObject *pylnk_file_get_command_line_arguments(
 
 	result = liblnk_file_get_utf8_command_line_arguments_size(
 	          pylnk_file->file,
-	          &command_line_arguments_size,
+	          &utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -2854,7 +2886,7 @@ PyObject *pylnk_file_get_command_line_arguments(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 command line arguments size.",
+		 "%s: unable to determine size of command line arguments as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2862,24 +2894,22 @@ PyObject *pylnk_file_get_command_line_arguments(
 
 		goto on_error;
 	}
-	/* Check if the command line arguments is present
-	 */
 	else if( ( result == 0 )
-	      || ( command_line_arguments_size == 0 ) )
+	      || ( utf8_string_size == 0 ) )
 	{
 		Py_IncRef(
 		 Py_None );
 
 		return( Py_None );
 	}
-	command_line_arguments = (char *) PyMem_Malloc(
-	                                   sizeof( char ) * command_line_arguments_size );
+	utf8_string = (char *) PyMem_Malloc(
+	                        sizeof( char ) * utf8_string_size );
 
-	if( command_line_arguments == NULL )
+	if( utf8_string == NULL )
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create UTF-8 command line arguments.",
+		 "%s: unable to create UTF-8 string.",
 		 function );
 
 		goto on_error;
@@ -2888,18 +2918,18 @@ PyObject *pylnk_file_get_command_line_arguments(
 
 	result = liblnk_file_get_utf8_command_line_arguments(
 	          pylnk_file->file,
-	          (uint8_t *) command_line_arguments,
-	          command_line_arguments_size,
+	          (uint8_t *) utf8_string,
+	          utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 command line arguments.",
+		 "%s: unable to retrieve command line arguments as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2907,64 +2937,51 @@ PyObject *pylnk_file_get_command_line_arguments(
 
 		goto on_error;
 	}
-	/* Check if the command line arguments is present
-	 */
-	else if( result == 0 )
-	{
-		PyMem_Free(
-		 command_line_arguments );
-
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
-	}
-	/* Pass the string length to PyUnicode_DecodeUTF8
-	 * otherwise it makes the end of string character is part
-	 * of the string
+	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
+	 * the end of string character is part of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
-	                 command_line_arguments,
-	                 (Py_ssize_t) command_line_arguments_size - 1,
+	                 utf8_string,
+	                 (Py_ssize_t) utf8_string_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_IOError,
-		 "%s: unable to convert UTF-8 command line arguments into Unicode.",
+		 "%s: unable to convert UTF-8 string into Unicode object.",
 		 function );
 
 		goto on_error;
 	}
 	PyMem_Free(
-	 command_line_arguments );
+	 utf8_string );
 
 	return( string_object );
 
 on_error:
-	if( command_line_arguments != NULL )
+	if( utf8_string != NULL )
 	{
 		PyMem_Free(
-		 command_line_arguments );
+		 utf8_string );
 	}
 	return( NULL );
 }
 
-/* Retrieves the icon location of the linked item
+/* Retrieves the icon location
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_icon_location(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error  = NULL;
-	PyObject *string_object   = NULL;
-	static char *function     = "pylnk_file_get_icon_location";
-	const char *errors        = NULL;
-	char *icon_location       = NULL;
-	size_t icon_location_size = 0;
-	int result                = 0;
+	PyObject *string_object  = NULL;
+	libcerror_error_t *error = NULL;
+	const char *errors       = NULL;
+	static char *function    = "pylnk_file_get_icon_location";
+	char *utf8_string        = NULL;
+	size_t utf8_string_size  = 0;
+	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
@@ -2981,7 +2998,7 @@ PyObject *pylnk_file_get_icon_location(
 
 	result = liblnk_file_get_utf8_icon_location_size(
 	          pylnk_file->file,
-	          &icon_location_size,
+	          &utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -2991,7 +3008,7 @@ PyObject *pylnk_file_get_icon_location(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 icon location size.",
+		 "%s: unable to determine size of icon location as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -2999,24 +3016,22 @@ PyObject *pylnk_file_get_icon_location(
 
 		goto on_error;
 	}
-	/* Check if the icon location is present
-	 */
 	else if( ( result == 0 )
-	      || ( icon_location_size == 0 ) )
+	      || ( utf8_string_size == 0 ) )
 	{
 		Py_IncRef(
 		 Py_None );
 
 		return( Py_None );
 	}
-	icon_location = (char *) PyMem_Malloc(
-	                          sizeof( char ) * icon_location_size );
+	utf8_string = (char *) PyMem_Malloc(
+	                        sizeof( char ) * utf8_string_size );
 
-	if( icon_location == NULL )
+	if( utf8_string == NULL )
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create UTF-8 icon location.",
+		 "%s: unable to create UTF-8 string.",
 		 function );
 
 		goto on_error;
@@ -3025,18 +3040,18 @@ PyObject *pylnk_file_get_icon_location(
 
 	result = liblnk_file_get_utf8_icon_location(
 	          pylnk_file->file,
-	          (uint8_t *) icon_location,
-	          icon_location_size,
+	          (uint8_t *) utf8_string,
+	          utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 icon location.",
+		 "%s: unable to retrieve icon location as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -3044,64 +3059,51 @@ PyObject *pylnk_file_get_icon_location(
 
 		goto on_error;
 	}
-	/* Check if the icon location is present
-	 */
-	else if( result == 0 )
-	{
-		PyMem_Free(
-		 icon_location );
-
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
-	}
-	/* Pass the string length to PyUnicode_DecodeUTF8
-	 * otherwise it makes the end of string character is part
-	 * of the string
+	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
+	 * the end of string character is part of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
-	                 icon_location,
-	                 (Py_ssize_t) icon_location_size - 1,
+	                 utf8_string,
+	                 (Py_ssize_t) utf8_string_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_IOError,
-		 "%s: unable to convert UTF-8 icon location into Unicode.",
+		 "%s: unable to convert UTF-8 string into Unicode object.",
 		 function );
 
 		goto on_error;
 	}
 	PyMem_Free(
-	 icon_location );
+	 utf8_string );
 
 	return( string_object );
 
 on_error:
-	if( icon_location != NULL )
+	if( utf8_string != NULL )
 	{
 		PyMem_Free(
-		 icon_location );
+		 utf8_string );
 	}
 	return( NULL );
 }
 
-/* Retrieves the environment variables location of the linked item
+/* Retrieves the environment variables location
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_environment_variables_location(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error                   = NULL;
-	PyObject *string_object                    = NULL;
-	static char *function                      = "pylnk_file_get_environment_variables_location";
-	const char *errors                         = NULL;
-	char *environment_variables_location       = NULL;
-	size_t environment_variables_location_size = 0;
-	int result                                 = 0;
+	PyObject *string_object  = NULL;
+	libcerror_error_t *error = NULL;
+	const char *errors       = NULL;
+	static char *function    = "pylnk_file_get_environment_variables_location";
+	char *utf8_string        = NULL;
+	size_t utf8_string_size  = 0;
+	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
@@ -3118,7 +3120,7 @@ PyObject *pylnk_file_get_environment_variables_location(
 
 	result = liblnk_file_get_utf8_environment_variables_location_size(
 	          pylnk_file->file,
-	          &environment_variables_location_size,
+	          &utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -3128,7 +3130,7 @@ PyObject *pylnk_file_get_environment_variables_location(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 environment variables location size.",
+		 "%s: unable to determine size of environment variables location as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -3136,24 +3138,22 @@ PyObject *pylnk_file_get_environment_variables_location(
 
 		goto on_error;
 	}
-	/* Check if the environment variables location is present
-	 */
 	else if( ( result == 0 )
-	      || ( environment_variables_location_size == 0 ) )
+	      || ( utf8_string_size == 0 ) )
 	{
 		Py_IncRef(
 		 Py_None );
 
 		return( Py_None );
 	}
-	environment_variables_location = (char *) PyMem_Malloc(
-	                                           sizeof( char ) * environment_variables_location_size );
+	utf8_string = (char *) PyMem_Malloc(
+	                        sizeof( char ) * utf8_string_size );
 
-	if( environment_variables_location == NULL )
+	if( utf8_string == NULL )
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create UTF-8 environment variables location.",
+		 "%s: unable to create UTF-8 string.",
 		 function );
 
 		goto on_error;
@@ -3162,18 +3162,18 @@ PyObject *pylnk_file_get_environment_variables_location(
 
 	result = liblnk_file_get_utf8_environment_variables_location(
 	          pylnk_file->file,
-	          (uint8_t *) environment_variables_location,
-	          environment_variables_location_size,
+	          (uint8_t *) utf8_string,
+	          utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 environment variables location.",
+		 "%s: unable to retrieve environment variables location as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -3181,63 +3181,50 @@ PyObject *pylnk_file_get_environment_variables_location(
 
 		goto on_error;
 	}
-	/* Check if the environment variables location is present
-	 */
-	else if( result == 0 )
-	{
-		PyMem_Free(
-		 environment_variables_location );
-
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
-	}
-	/* Pass the string length to PyUnicode_DecodeUTF8
-	 * otherwise it makes the end of string character is part
-	 * of the string
+	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
+	 * the end of string character is part of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
-	                 environment_variables_location,
-	                 (Py_ssize_t) environment_variables_location_size - 1,
+	                 utf8_string,
+	                 (Py_ssize_t) utf8_string_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_IOError,
-		 "%s: unable to convert UTF-8 environment variables location into Unicode.",
+		 "%s: unable to convert UTF-8 string into Unicode object.",
 		 function );
 
 		goto on_error;
 	}
 	PyMem_Free(
-	 environment_variables_location );
+	 utf8_string );
 
 	return( string_object );
 
 on_error:
-	if( environment_variables_location != NULL )
+	if( utf8_string != NULL )
 	{
 		PyMem_Free(
-		 environment_variables_location );
+		 utf8_string );
 	}
 	return( NULL );
 }
 
-/* Retrieves the link target identifier data of the linked item
+/* Retrieves the link target identifier data
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_link_target_identifier_data(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error                = NULL;
-	PyObject *string_object                 = NULL;
-	static char *function                   = "pylnk_file_get_link_target_identifier_data";
-	char *link_target_identifier_data       = NULL;
-	size_t link_target_identifier_data_size = 0;
-	int result                              = 0;
+	PyObject *string_object  = NULL;
+	libcerror_error_t *error = NULL;
+	char *data               = NULL;
+	static char *function    = "pylnk_file_get_link_target_identifier_data";
+	size_t data_size         = 0;
+	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
@@ -3254,7 +3241,7 @@ PyObject *pylnk_file_get_link_target_identifier_data(
 
 	result = liblnk_file_get_link_target_identifier_data_size(
 	          pylnk_file->file,
-	          &link_target_identifier_data_size,
+	          &data_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -3272,24 +3259,22 @@ PyObject *pylnk_file_get_link_target_identifier_data(
 
 		goto on_error;
 	}
-	/* Check if the link target identifier data is present
-	 */
 	else if( ( result == 0 )
-	      || ( link_target_identifier_data_size == 0 ) )
+	      || ( data_size == 0 ) )
 	{
 		Py_IncRef(
 		 Py_None );
 
 		return( Py_None );
 	}
-	link_target_identifier_data = (char *) PyMem_Malloc(
-	                                        sizeof( char ) * link_target_identifier_data_size );
+	data = (char *) PyMem_Malloc(
+	                 sizeof( char ) * data_size );
 
-	if( link_target_identifier_data == NULL )
+	if( data == NULL )
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to create link target identifier data.",
+		 "%s: unable to create data.",
 		 function );
 
 		goto on_error;
@@ -3298,13 +3283,13 @@ PyObject *pylnk_file_get_link_target_identifier_data(
 
 	result = liblnk_file_copy_link_target_identifier_data(
 	          pylnk_file->file,
-	          (uint8_t *) link_target_identifier_data,
-	          link_target_identifier_data_size,
+	          (uint8_t *) data,
+	          data_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != -1 )
 	{
 		pylnk_error_raise(
 		 error,
@@ -3317,66 +3302,54 @@ PyObject *pylnk_file_get_link_target_identifier_data(
 
 		goto on_error;
 	}
-	/* Check if the link target identifier data is present
-	 */
-	else if( result == 0 )
-	{
-		PyMem_Free(
-		 link_target_identifier_data );
-
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
-	}
 	/* This is a byte string so include the full size
 	 */
 #if PY_MAJOR_VERSION >= 3
 	string_object = PyBytes_FromStringAndSize(
-	                 link_target_identifier_data,
-	                 (Py_ssize_t) link_target_identifier_data_size );
+	                 data,
+	                 (Py_ssize_t) data_size );
 #else
 	string_object = PyString_FromStringAndSize(
-	                 link_target_identifier_data,
-	                 (Py_ssize_t) link_target_identifier_data_size );
+	                 data,
+	                 (Py_ssize_t) data_size );
 #endif
 	if( string_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_IOError,
-		 "%s: unable to convert link target identifier into string.",
+		 "%s: unable to convert data into Bytes object.",
 		 function );
 
 		goto on_error;
 	}
 	PyMem_Free(
-	 link_target_identifier_data );
+	 data );
 
 	return( string_object );
 
 on_error:
-	if( link_target_identifier_data != NULL )
+	if( data != NULL )
 	{
 		PyMem_Free(
-		 link_target_identifier_data );
+		 data );
 	}
 	return( NULL );
 }
 
-/* Retrieves the machine identifier of the linked item
+/* Retrieves the machine identifier
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_machine_identifier(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	libcerror_error_t *error       = NULL;
-	PyObject *string_object        = NULL;
-	static char *function          = "pylnk_file_get_machine_identifier";
-	const char *errors             = NULL;
-	char *machine_identifier       = NULL;
-	size_t machine_identifier_size = 0;
-	int result                     = 0;
+	PyObject *string_object  = NULL;
+	libcerror_error_t *error = NULL;
+	const char *errors       = NULL;
+	static char *function    = "pylnk_file_get_machine_identifier";
+	char *utf8_string        = NULL;
+	size_t utf8_string_size  = 0;
+	int result               = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
@@ -3391,8 +3364,9 @@ PyObject *pylnk_file_get_machine_identifier(
 	}
 	Py_BEGIN_ALLOW_THREADS
 
-	result = liblnk_file_has_distributed_link_tracking_data(
+	result = liblnk_file_get_utf8_machine_identifier_size(
 	          pylnk_file->file,
+	          &utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -3402,26 +3376,40 @@ PyObject *pylnk_file_get_machine_identifier(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to determine if file has distributed link tracking data.",
+		 "%s: unable to determine size of machine identifier as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
 		 &error );
 
-		return( NULL );
+		goto on_error;
 	}
-	else if( result == 0 )
+	else if( ( result == 0 )
+	      || ( utf8_string_size == 0 ) )
 	{
 		Py_IncRef(
 		 Py_None );
 
 		return( Py_None );
 	}
+	utf8_string = (char *) PyMem_Malloc(
+	                        sizeof( char ) * utf8_string_size );
+
+	if( utf8_string == NULL )
+	{
+		PyErr_Format(
+		 PyExc_MemoryError,
+		 "%s: unable to create UTF-8 string.",
+		 function );
+
+		goto on_error;
+	}
 	Py_BEGIN_ALLOW_THREADS
 
-	result = liblnk_file_get_utf8_machine_identifier_size(
+	result = liblnk_file_get_utf8_machine_identifier(
 	          pylnk_file->file,
-	          &machine_identifier_size,
+	          (uint8_t *) utf8_string,
+	          utf8_string_size,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -3431,7 +3419,7 @@ PyObject *pylnk_file_get_machine_identifier(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 mschine identifier size.",
+		 "%s: unable to retrieve machine identifier as UTF-8 string.",
 		 function );
 
 		libcerror_error_free(
@@ -3439,95 +3427,38 @@ PyObject *pylnk_file_get_machine_identifier(
 
 		goto on_error;
 	}
-	/* Check if the machine identifier is present
-	 */
-	else if( machine_identifier_size == 0 )
-	{
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
-	}
-	machine_identifier = (char *) PyMem_Malloc(
-	                               sizeof( char ) * machine_identifier_size );
-
-	if( machine_identifier == NULL )
-	{
-		PyErr_Format(
-		 PyExc_MemoryError,
-		 "%s: unable to create UTF-8 machine identifier.",
-		 function );
-
-		goto on_error;
-	}
-	Py_BEGIN_ALLOW_THREADS
-
-	result = liblnk_file_get_utf8_machine_identifier(
-	          pylnk_file->file,
-	          (uint8_t *) machine_identifier,
-	          machine_identifier_size,
-	          &error );
-
-	Py_END_ALLOW_THREADS
-
-	if( result == -1 )
-	{
-		pylnk_error_raise(
-		 error,
-		 PyExc_IOError,
-		 "%s: unable to retrieve UTF-8 machine identifier.",
-		 function );
-
-		libcerror_error_free(
-		 &error );
-
-		goto on_error;
-	}
-	/* Check if the machine identifier is present
-	 */
-	else if( result == 0 )
-	{
-		PyMem_Free(
-		 machine_identifier );
-
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
-	}
-	/* Pass the string length to PyUnicode_DecodeUTF8
-	 * otherwise it makes the end of string character is part
-	 * of the string
+	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
+	 * the end of string character is part of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
-	                 machine_identifier,
-	                 (Py_ssize_t) machine_identifier_size - 1,
+	                 utf8_string,
+	                 (Py_ssize_t) utf8_string_size - 1,
 	                 errors );
 
 	if( string_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_IOError,
-		 "%s: unable to convert UTF-8 machine identifier into Unicode.",
+		 "%s: unable to convert UTF-8 string into Unicode object.",
 		 function );
 
 		goto on_error;
 	}
 	PyMem_Free(
-	 machine_identifier );
+	 utf8_string );
 
 	return( string_object );
 
 on_error:
-	if( machine_identifier != NULL )
+	if( utf8_string != NULL )
 	{
 		PyMem_Free(
-		 machine_identifier );
+		 utf8_string );
 	}
 	return( NULL );
 }
 
-/* Retrieves the droid volume identifier of the linked item
+/* Retrieves the droid volume identifier
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_droid_volume_identifier(
@@ -3536,8 +3467,8 @@ PyObject *pylnk_file_get_droid_volume_identifier(
 {
 	uint8_t guid_data[ 16 ];
 
-	libcerror_error_t *error = NULL;
 	PyObject *string_object  = NULL;
+	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_get_droid_volume_identifier";
 	int result               = 0;
 
@@ -3554,8 +3485,10 @@ PyObject *pylnk_file_get_droid_volume_identifier(
 	}
 	Py_BEGIN_ALLOW_THREADS
 
-	result = liblnk_file_has_distributed_link_tracking_data(
+	result = liblnk_file_get_droid_volume_identifier(
 	          pylnk_file->file,
+	          guid_data,
+	          16,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -3565,7 +3498,7 @@ PyObject *pylnk_file_get_droid_volume_identifier(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to determine if file has distributed link tracking data.",
+		 "%s: unable to retrieve droid volume identifier.",
 		 function );
 
 		libcerror_error_free(
@@ -3580,37 +3513,14 @@ PyObject *pylnk_file_get_droid_volume_identifier(
 
 		return( Py_None );
 	}
-	Py_BEGIN_ALLOW_THREADS
-
-	result = liblnk_file_get_droid_volume_identifier(
-	          pylnk_file->file,
-	          guid_data,
-	          16,
-	          &error );
-
-	Py_END_ALLOW_THREADS
-
-	if( result != 1 )
-	{
-		pylnk_error_raise(
-		 error,
-		 PyExc_IOError,
-		 "%s: unable to retrieve droid volume identifier.",
-		 function );
-
-		libcerror_error_free(
-		 &error );
-
-		return( NULL );
-	}
 	string_object = pylnk_string_new_from_guid(
-			 guid_data,
-			 16 );
+	                 guid_data,
+	                 16 );
 
 	return( string_object );
 }
 
-/* Retrieves the droid file identifier of the linked item
+/* Retrieves the droid file identifier
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_droid_file_identifier(
@@ -3619,8 +3529,8 @@ PyObject *pylnk_file_get_droid_file_identifier(
 {
 	uint8_t guid_data[ 16 ];
 
-	libcerror_error_t *error = NULL;
 	PyObject *string_object  = NULL;
+	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_get_droid_file_identifier";
 	int result               = 0;
 
@@ -3637,8 +3547,10 @@ PyObject *pylnk_file_get_droid_file_identifier(
 	}
 	Py_BEGIN_ALLOW_THREADS
 
-	result = liblnk_file_has_distributed_link_tracking_data(
+	result = liblnk_file_get_droid_file_identifier(
 	          pylnk_file->file,
+	          guid_data,
+	          16,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -3648,7 +3560,7 @@ PyObject *pylnk_file_get_droid_file_identifier(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to determine if file has distributed link tracking data.",
+		 "%s: unable to retrieve droid file identifier.",
 		 function );
 
 		libcerror_error_free(
@@ -3663,37 +3575,14 @@ PyObject *pylnk_file_get_droid_file_identifier(
 
 		return( Py_None );
 	}
-	Py_BEGIN_ALLOW_THREADS
-
-	result = liblnk_file_get_droid_file_identifier(
-	          pylnk_file->file,
-	          guid_data,
-	          16,
-	          &error );
-
-	Py_END_ALLOW_THREADS
-
-	if( result != 1 )
-	{
-		pylnk_error_raise(
-		 error,
-		 PyExc_IOError,
-		 "%s: unable to retrieve droid file identifier.",
-		 function );
-
-		libcerror_error_free(
-		 &error );
-
-		return( NULL );
-	}
 	string_object = pylnk_string_new_from_guid(
-			 guid_data,
-			 16 );
+	                 guid_data,
+	                 16 );
 
 	return( string_object );
 }
 
-/* Retrieves the birth droid volume identifier of the linked item
+/* Retrieves the birth droid volume identifier
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_birth_droid_volume_identifier(
@@ -3702,8 +3591,8 @@ PyObject *pylnk_file_get_birth_droid_volume_identifier(
 {
 	uint8_t guid_data[ 16 ];
 
-	libcerror_error_t *error = NULL;
 	PyObject *string_object  = NULL;
+	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_get_birth_droid_volume_identifier";
 	int result               = 0;
 
@@ -3720,8 +3609,10 @@ PyObject *pylnk_file_get_birth_droid_volume_identifier(
 	}
 	Py_BEGIN_ALLOW_THREADS
 
-	result = liblnk_file_has_distributed_link_tracking_data(
+	result = liblnk_file_get_birth_droid_volume_identifier(
 	          pylnk_file->file,
+	          guid_data,
+	          16,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -3731,7 +3622,7 @@ PyObject *pylnk_file_get_birth_droid_volume_identifier(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to determine if file has distributed link tracking data.",
+		 "%s: unable to retrieve birth droid volume identifier.",
 		 function );
 
 		libcerror_error_free(
@@ -3746,37 +3637,14 @@ PyObject *pylnk_file_get_birth_droid_volume_identifier(
 
 		return( Py_None );
 	}
-	Py_BEGIN_ALLOW_THREADS
-
-	result = liblnk_file_get_birth_droid_volume_identifier(
-	          pylnk_file->file,
-	          guid_data,
-	          16,
-	          &error );
-
-	Py_END_ALLOW_THREADS
-
-	if( result != 1 )
-	{
-		pylnk_error_raise(
-		 error,
-		 PyExc_IOError,
-		 "%s: unable to retrieve birth droid volume identifier.",
-		 function );
-
-		libcerror_error_free(
-		 &error );
-
-		return( NULL );
-	}
 	string_object = pylnk_string_new_from_guid(
-			 guid_data,
-			 16 );
+	                 guid_data,
+	                 16 );
 
 	return( string_object );
 }
 
-/* Retrieves the birth droid file identifier of the linked item
+/* Retrieves the birth droid file identifier
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_file_get_birth_droid_file_identifier(
@@ -3785,8 +3653,8 @@ PyObject *pylnk_file_get_birth_droid_file_identifier(
 {
 	uint8_t guid_data[ 16 ];
 
-	libcerror_error_t *error = NULL;
 	PyObject *string_object  = NULL;
+	libcerror_error_t *error = NULL;
 	static char *function    = "pylnk_file_get_birth_droid_file_identifier";
 	int result               = 0;
 
@@ -3803,8 +3671,10 @@ PyObject *pylnk_file_get_birth_droid_file_identifier(
 	}
 	Py_BEGIN_ALLOW_THREADS
 
-	result = liblnk_file_has_distributed_link_tracking_data(
+	result = liblnk_file_get_birth_droid_file_identifier(
 	          pylnk_file->file,
+	          guid_data,
+	          16,
 	          &error );
 
 	Py_END_ALLOW_THREADS
@@ -3814,7 +3684,7 @@ PyObject *pylnk_file_get_birth_droid_file_identifier(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to determine if file has distributed link tracking data.",
+		 "%s: unable to retrieve birth droid file identifier.",
 		 function );
 
 		libcerror_error_free(
@@ -3829,32 +3699,9 @@ PyObject *pylnk_file_get_birth_droid_file_identifier(
 
 		return( Py_None );
 	}
-	Py_BEGIN_ALLOW_THREADS
-
-	result = liblnk_file_get_birth_droid_file_identifier(
-	          pylnk_file->file,
-	          guid_data,
-	          16,
-	          &error );
-
-	Py_END_ALLOW_THREADS
-
-	if( result != 1 )
-	{
-		pylnk_error_raise(
-		 error,
-		 PyExc_IOError,
-		 "%s: unable to retrieve birth droid file identifier.",
-		 function );
-
-		libcerror_error_free(
-		 &error );
-
-		return( NULL );
-	}
 	string_object = pylnk_string_new_from_guid(
-			 guid_data,
-			 16 );
+	                 guid_data,
+	                 16 );
 
 	return( string_object );
 }
