@@ -298,7 +298,6 @@ int pylnk_data_flags_init_type(
 	{
 		goto on_error;
 	}
-
 #if PY_MAJOR_VERSION >= 3
 	value_object = PyLong_FromLong(
 	                LIBLNK_DATA_FLAG_HAS_DARWIN_IDENTIFIER );
@@ -355,7 +354,6 @@ int pylnk_data_flags_init_type(
 	{
 		goto on_error;
 	}
-
 #if PY_MAJOR_VERSION >= 3
 	value_object = PyLong_FromLong(
 	                LIBLNK_DATA_FLAG_RUN_WITH_SHIM_LAYER );

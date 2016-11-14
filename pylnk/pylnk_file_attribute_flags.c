@@ -73,7 +73,7 @@ PyTypeObject pylnk_file_attribute_flags_type_object = {
 	/* tp_flags */
 	Py_TPFLAGS_DEFAULT,
 	/* tp_doc */
-	"pylnk file_attribute flags object (wraps LIBLNK_FILE_ATTRIBUTE_FLAGS)",
+	"pylnk file attribute flags object (wraps LIBLNK_FILE_ATTRIBUTE_FLAGS)",
 	/* tp_traverse */
 	0,
 	/* tp_clear */
@@ -186,7 +186,6 @@ int pylnk_file_attribute_flags_init_type(
 	{
 		goto on_error;
 	}
-
 #if PY_MAJOR_VERSION >= 3
 	value_object = PyLong_FromLong(
 	                LIBLNK_FILE_ATTRIBUTE_FLAG_DIRECTORY );
@@ -308,7 +307,7 @@ int pylnk_file_attribute_flags_init_type(
 #endif
 	if( PyDict_SetItemString(
 	     type_object->tp_dict,
-	     "NORMAL",
+	     "OFFLINE",
 	     value_object ) != 0 )
 	{
 		goto on_error;
@@ -341,7 +340,6 @@ int pylnk_file_attribute_flags_init_type(
 	{
 		goto on_error;
 	}
-
 #if PY_MAJOR_VERSION >= 3
 	value_object = PyLong_FromLong(
 	                LIBLNK_FILE_ATTRIBUTE_FLAG_VIRTUAL );

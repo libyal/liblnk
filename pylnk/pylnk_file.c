@@ -87,7 +87,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  METH_NOARGS,
 	  "get_ascii_codepage() -> String\n"
 	  "\n"
-	  "Returns the codepage for ASCII strings used in the file." },
+	  "Retrieves the codepage for ASCII strings used in the file." },
 
 	{ "set_ascii_codepage",
 	  (PyCFunction) pylnk_file_set_ascii_codepage,
@@ -102,182 +102,182 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  METH_NOARGS,
 	  "get_data_flags() -> Integer or None\n"
 	  "\n"
-	  "Returns the data flags." },
+	  "Retrieves the data flags." },
 
 	{ "get_file_creation_time",
 	  (PyCFunction) pylnk_file_get_file_creation_time,
 	  METH_NOARGS,
 	  "get_file_creation_time() -> Datetime or None\n"
 	  "\n"
-	  "Returns the file creation time." },
+	  "Retrieves the file creation time." },
 
 	{ "get_file_creation_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_creation_time_as_integer,
 	  METH_NOARGS,
 	  "get_file_creation_time_as_integer() -> Integer or None\n"
 	  "\n"
-	  "Returns the file creation time as a 64-bit integer containing a FILETIME value." },
+	  "Retrieves the file creation time as a 64-bit integer containing a FILETIME value." },
 
 	{ "get_file_modification_time",
 	  (PyCFunction) pylnk_file_get_file_modification_time,
 	  METH_NOARGS,
 	  "get_file_modification_time() -> Datetime or None\n"
 	  "\n"
-	  "Returns the file modification time." },
+	  "Retrieves the file modification time." },
 
 	{ "get_file_modification_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_modification_time_as_integer,
 	  METH_NOARGS,
 	  "get_file_modification_time_as_integer() -> Integer or None\n"
 	  "\n"
-	  "Returns the file modification time as a 64-bit integer containing a FILETIME value." },
+	  "Retrieves the file modification time as a 64-bit integer containing a FILETIME value." },
 
 	{ "get_file_access_time",
 	  (PyCFunction) pylnk_file_get_file_access_time,
 	  METH_NOARGS,
 	  "get_file_access_time() -> Datetime or None\n"
 	  "\n"
-	  "Returns the file access time." },
+	  "Retrieves the file access time." },
 
 	{ "get_file_access_time_as_integer",
 	  (PyCFunction) pylnk_file_get_file_access_time_as_integer,
 	  METH_NOARGS,
 	  "get_file_access_time_as_integer() -> Integer or None\n"
 	  "\n"
-	  "Returns the file access time as a 64-bit integer containing a FILETIME value." },
+	  "Retrieves the file access time as a 64-bit integer containing a FILETIME value." },
 
 	{ "get_file_size",
 	  (PyCFunction) pylnk_file_get_file_size,
 	  METH_NOARGS,
 	  "get_file_size() -> Integer or None\n"
 	  "\n"
-	  "Returns the file size." },
+	  "Retrieves the file size." },
 
 	{ "get_file_attribute_flags",
 	  (PyCFunction) pylnk_file_get_file_attribute_flags,
 	  METH_NOARGS,
 	  "get_file_attribute_flags() -> Integer or None\n"
 	  "\n"
-	  "Returns the file attribute flags." },
+	  "Retrieves the file attribute flags." },
 
 	{ "get_drive_type",
 	  (PyCFunction) pylnk_file_get_drive_type,
 	  METH_NOARGS,
 	  "get_drive_type() -> Integer or None\n"
 	  "\n"
-	  "Returns the drive type." },
+	  "Retrieves the drive type." },
 
 	{ "get_drive_serial_number",
 	  (PyCFunction) pylnk_file_get_drive_serial_number,
 	  METH_NOARGS,
 	  "get_drive_serial_number() -> Integer or None\n"
 	  "\n"
-	  "Returns the drive serial number." },
+	  "Retrieves the drive serial number." },
 
 	{ "get_volume_label",
 	  (PyCFunction) pylnk_file_get_volume_label,
 	  METH_NOARGS,
 	  "get_volume_label() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the volume label." },
+	  "Retrieves the volume label." },
 
 	{ "get_local_path",
 	  (PyCFunction) pylnk_file_get_local_path,
 	  METH_NOARGS,
 	  "get_local_path() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the local path." },
+	  "Retrieves the local path." },
 
 	{ "get_network_path",
 	  (PyCFunction) pylnk_file_get_network_path,
 	  METH_NOARGS,
 	  "get_network_path() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the network path." },
+	  "Retrieves the network path." },
 
 	{ "get_description",
 	  (PyCFunction) pylnk_file_get_description,
 	  METH_NOARGS,
 	  "get_description() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the description." },
+	  "Retrieves the description." },
 
 	{ "get_relative_path",
 	  (PyCFunction) pylnk_file_get_relative_path,
 	  METH_NOARGS,
 	  "get_relative_path() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the relative path." },
+	  "Retrieves the relative path." },
 
 	{ "get_working_directory",
 	  (PyCFunction) pylnk_file_get_working_directory,
 	  METH_NOARGS,
 	  "get_working_directory() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the working directory." },
+	  "Retrieves the working directory." },
 
 	{ "get_command_line_arguments",
 	  (PyCFunction) pylnk_file_get_command_line_arguments,
 	  METH_NOARGS,
 	  "get_command_line_arguments() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the command line arguments." },
+	  "Retrieves the command line arguments." },
 
 	{ "get_icon_location",
 	  (PyCFunction) pylnk_file_get_icon_location,
 	  METH_NOARGS,
 	  "get_icon_location() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the icon location." },
+	  "Retrieves the icon location." },
 
 	{ "get_environment_variables_location",
 	  (PyCFunction) pylnk_file_get_environment_variables_location,
 	  METH_NOARGS,
 	  "get_environment_variables_location() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the environment variables location." },
+	  "Retrieves the environment variables location." },
 
 	{ "get_link_target_identifier_data",
 	  (PyCFunction) pylnk_file_get_link_target_identifier_data,
 	  METH_NOARGS,
 	  "get_link_target_identifier_data() -> Binary string or None\n"
 	  "\n"
-	  "Returns the link target identifier data." },
+	  "Retrieves the link target identifier data." },
 
 	{ "get_machine_identifier",
 	  (PyCFunction) pylnk_file_get_machine_identifier,
 	  METH_NOARGS,
 	  "get_machine_identifier() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the machine identifier." },
+	  "Retrieves the machine identifier." },
 
 	{ "get_droid_volume_identifier",
 	  (PyCFunction) pylnk_file_get_droid_volume_identifier,
 	  METH_NOARGS,
 	  "get_droid_volume_identifier() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the droid volume identifier." },
+	  "Retrieves the droid volume identifier." },
 
 	{ "get_droid_file_identifier",
 	  (PyCFunction) pylnk_file_get_droid_file_identifier,
 	  METH_NOARGS,
 	  "get_droid_file_identifier() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the droid file identifier." },
+	  "Retrieves the droid file identifier." },
 
 	{ "get_birth_droid_volume_identifier",
 	  (PyCFunction) pylnk_file_get_birth_droid_volume_identifier,
 	  METH_NOARGS,
 	  "get_birth_droid_volume_identifier() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the birth droid volume identifier." },
+	  "Retrieves the birth droid volume identifier." },
 
 	{ "get_birth_droid_file_identifier",
 	  (PyCFunction) pylnk_file_get_birth_droid_file_identifier,
 	  METH_NOARGS,
 	  "get_birth_droid_file_identifier() -> Unicode string or None\n"
 	  "\n"
-	  "Returns the birth droid file identifier." },
+	  "Retrieves the birth droid file identifier." },
 
 	/* Sentinel */
 	{ NULL, NULL, 0, NULL }
@@ -1518,8 +1518,8 @@ PyObject *pylnk_file_get_data_flags(
 
 		return( Py_None );
 	}
-	integer_object = pylnk_integer_unsigned_new_from_64bit(
-	                  (uint64_t) value_32bit );
+	integer_object = PyLong_FromUnsignedLong(
+	                  (unsigned long) value_32bit );
 
 	return( integer_object );
 }
@@ -1931,8 +1931,8 @@ PyObject *pylnk_file_get_file_size(
 
 		return( Py_None );
 	}
-	integer_object = pylnk_integer_unsigned_new_from_64bit(
-	                  (uint64_t) value_32bit );
+	integer_object = PyLong_FromUnsignedLong(
+	                  (unsigned long) value_32bit );
 
 	return( integer_object );
 }
@@ -1990,8 +1990,8 @@ PyObject *pylnk_file_get_file_attribute_flags(
 
 		return( Py_None );
 	}
-	integer_object = pylnk_integer_unsigned_new_from_64bit(
-	                  (uint64_t) value_32bit );
+	integer_object = PyLong_FromUnsignedLong(
+	                  (unsigned long) value_32bit );
 
 	return( integer_object );
 }
@@ -2049,8 +2049,8 @@ PyObject *pylnk_file_get_drive_type(
 
 		return( Py_None );
 	}
-	integer_object = pylnk_integer_unsigned_new_from_64bit(
-	                  (uint64_t) value_32bit );
+	integer_object = PyLong_FromUnsignedLong(
+	                  (unsigned long) value_32bit );
 
 	return( integer_object );
 }
@@ -2108,8 +2108,8 @@ PyObject *pylnk_file_get_drive_serial_number(
 
 		return( Py_None );
 	}
-	integer_object = pylnk_integer_unsigned_new_from_64bit(
-	                  (uint64_t) value_32bit );
+	integer_object = PyLong_FromUnsignedLong(
+	                  (unsigned long) value_32bit );
 
 	return( integer_object );
 }
@@ -3219,7 +3219,7 @@ PyObject *pylnk_file_get_link_target_identifier_data(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	PyObject *string_object  = NULL;
+	PyObject *bytes_object   = NULL;
 	libcerror_error_t *error = NULL;
 	char *data               = NULL;
 	static char *function    = "pylnk_file_get_link_target_identifier_data";
@@ -3289,7 +3289,7 @@ PyObject *pylnk_file_get_link_target_identifier_data(
 
 	Py_END_ALLOW_THREADS
 
-	if( result != -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
@@ -3302,18 +3302,18 @@ PyObject *pylnk_file_get_link_target_identifier_data(
 
 		goto on_error;
 	}
-	/* This is a byte string so include the full size
+	/* This is a binary string so include the full size
 	 */
 #if PY_MAJOR_VERSION >= 3
-	string_object = PyBytes_FromStringAndSize(
-	                 data,
-	                 (Py_ssize_t) data_size );
+	bytes_object = PyBytes_FromStringAndSize(
+	                data,
+	                (Py_ssize_t) data_size );
 #else
-	string_object = PyString_FromStringAndSize(
-	                 data,
-	                 (Py_ssize_t) data_size );
+	bytes_object = PyString_FromStringAndSize(
+	                data,
+	                (Py_ssize_t) data_size );
 #endif
-	if( string_object == NULL )
+	if( bytes_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_IOError,
@@ -3325,7 +3325,7 @@ PyObject *pylnk_file_get_link_target_identifier_data(
 	PyMem_Free(
 	 data );
 
-	return( string_object );
+	return( bytes_object );
 
 on_error:
 	if( data != NULL )

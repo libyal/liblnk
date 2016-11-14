@@ -255,7 +255,7 @@ on_error:
 	return( -1 );
 }
 
-/* Creates a new drive type object
+/* Creates a new drive types object
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_drive_types_new(

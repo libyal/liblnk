@@ -1,5 +1,5 @@
 /*
- * Python object definition of the liblnk file
+ * Python object wrapper of liblnk_file_t
  *
  * Copyright (C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>
  *
