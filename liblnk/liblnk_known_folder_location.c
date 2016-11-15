@@ -137,16 +137,15 @@ int liblnk_known_folder_location_free(
 	return( 1 );
 }
 
-/* Reads the known folder location
+/* Reads the known folder location data block
  * Returns the number of bytes read if successful or -1 on error
  */
-int liblnk_known_folder_location_read(
+int liblnk_known_folder_location_read_data_block(
      liblnk_known_folder_location_t *known_folder_location,
-     liblnk_data_block_t *data_block,
+     const liblnk_data_block_t *data_block,
      libcerror_error_t **error )
 {
-	lnk_data_block_known_folder_location_t *known_folder_location_data = NULL;
-	static char *function                                              = "liblnk_data_block_strings_read";
+	static char *function = "liblnk_known_folder_location_read_data_block";
 
 	if( known_folder_location == NULL )
 	{
@@ -170,33 +169,82 @@ int liblnk_known_folder_location_read(
 
 		return( -1 );
 	}
-	if( data_block->data == NULL )
+	if( liblnk_known_folder_location_read_data(
+	     known_folder_location,
+	     data_block->data,
+	     data_block->data_size,
+	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid data block - missing data.",
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
+		 "%s: unable to read known folder location.",
 		 function );
 
 		return( -1 );
 	}
-	if( data_block->data_size < sizeof( lnk_data_block_known_folder_location_t ) )
+	return( 1 );
+}
+
+/* Reads the known folder location
+ * Returns the number of bytes read if successful or -1 on error
+ */
+int liblnk_known_folder_location_read_data(
+     liblnk_known_folder_location_t *known_folder_location,
+     const uint8_t *data,
+     size_t data_size,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_known_folder_location_read_data";
+
+	if( known_folder_location == NULL )
 	{
 		libcerror_error_set(
 		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-		 "%s: invalid data block - data size too small.",
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid known folder location.",
 		 function );
 
 		return( -1 );
 	}
-	known_folder_location_data = (lnk_data_block_known_folder_location_t *) data_block->data;
+	if( data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data.",
+		 function );
 
+		return( -1 );
+	}
+	if( data_size < sizeof( lnk_data_block_known_folder_location_t ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 "%s: invalid data size value too small.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_size > (size_t) SSIZE_MAX )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid data size value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
 	if( memory_copy(
 	     known_folder_location->folder_identifier,
-	     known_folder_location_data->folder_identifier,
+	     ( (lnk_data_block_known_folder_location_t *) data )->folder_identifier,
 	     16 ) == NULL )
 	{
 		libcerror_error_set(
@@ -209,7 +257,7 @@ int liblnk_known_folder_location_read(
 		return( -1 );
 	}
 	byte_stream_copy_to_uint32_little_endian(
-	 known_folder_location_data->first_child_segment_offset,
+	 ( (lnk_data_block_known_folder_location_t *) data )->first_child_segment_offset,
 	 known_folder_location->first_child_segment_offset );
 
 #if defined( HAVE_DEBUG_OUTPUT )
@@ -251,14 +299,14 @@ int liblnk_known_folder_location_read(
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
 	{
-		if( data_block->data_size > sizeof( lnk_data_block_known_folder_location_t ) )
+		if( data_size > sizeof( lnk_data_block_known_folder_location_t ) )
 		{
 			libcnotify_printf(
 			 "%s: trailing data:\n",
 			 function );
 			libcnotify_print_data(
-			 &( data_block->data[ sizeof( lnk_data_block_known_folder_location_t ) ] ),
-			 data_block->data_size - sizeof( lnk_data_block_known_folder_location_t ),
+			 &( data[ sizeof( lnk_data_block_known_folder_location_t ) ] ),
+			 data_size - sizeof( lnk_data_block_known_folder_location_t ),
 			 0 );
 		}
 	}

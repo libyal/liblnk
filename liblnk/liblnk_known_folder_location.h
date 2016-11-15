@@ -53,9 +53,15 @@ int liblnk_known_folder_location_free(
      liblnk_known_folder_location_t **known_folder_location,
      libcerror_error_t **error );
 
-int liblnk_known_folder_location_read(
+int liblnk_known_folder_location_read_data_block(
      liblnk_known_folder_location_t *known_folder_location,
-     liblnk_data_block_t *data_block,
+     const liblnk_data_block_t *data_block,
+     libcerror_error_t **error );
+
+int liblnk_known_folder_location_read_data(
+     liblnk_known_folder_location_t *known_folder_location,
+     const uint8_t *data,
+     size_t data_size,
      libcerror_error_t **error );
 
 #if defined( __cplusplus )

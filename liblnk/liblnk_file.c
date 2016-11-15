@@ -1699,7 +1699,7 @@ int liblnk_file_open_read(
 							 "Reading known folder location data block:\n" );
 						}
 #endif
-						if( liblnk_known_folder_location_read(
+						if( liblnk_known_folder_location_read_data_block(
 						     internal_file->known_folder_location,
 						     data_block,
 						     error ) != 1 )

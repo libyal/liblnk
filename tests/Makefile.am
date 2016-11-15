@@ -209,6 +209,7 @@ lnk_test_special_folder_location_LDADD = \
 	@LIBCERROR_LIBADD@
 
 lnk_test_support_SOURCES = \
+	lnk_test_libbfio.h \
 	lnk_test_libcerror.h \
 	lnk_test_libclocale.h \
 	lnk_test_libcsystem.h \
@@ -219,6 +220,9 @@ lnk_test_support_SOURCES = \
 
 lnk_test_support_LDADD = \
 	@LIBCSYSTEM_LIBADD@ \
+	@LIBBFIO_LIBADD@ \
+	@LIBCPATH_LIBADD@ \
+	@LIBCFILE_LIBADD@ \
 	@LIBUNA_LIBADD@ \
 	@LIBCNOTIFY_LIBADD@ \
 	@LIBCLOCALE_LIBADD@ \
