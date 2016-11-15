@@ -154,14 +154,8 @@ ssize_t liblnk_data_string_read(
 {
 	uint8_t data_string_size_data[ 2 ];
 
-	static char *function            = "liblnk_data_string_read";
-	ssize_t read_count               = 0;
-
-#if defined( HAVE_DEBUG_OUTPUT )
-	system_character_t *value_string = NULL;
-	size_t value_string_size         = 0;
-	int result                       = 0;
-#endif
+	static char *function = "liblnk_data_string_read";
+	ssize_t read_count    = 0;
 
 	if( data_string == NULL )
 	{
@@ -325,144 +319,49 @@ ssize_t liblnk_data_string_read(
 		 0 );
 	}
 #endif
-
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
 	{
 		if( data_string->is_unicode != 0 )
 		{
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-			result = libuna_utf16_string_size_from_utf16_stream(
-				  data_string->data,
-				  data_string->data_size,
-				  LIBUNA_ENDIAN_LITTLE,
-				  &value_string_size,
-				  error );
-#else
-			result = libuna_utf8_string_size_from_utf16_stream(
-				  data_string->data,
-				  data_string->data_size,
-				  LIBUNA_ENDIAN_LITTLE,
-				  &value_string_size,
-				  error );
-#endif
+			if( liblnk_debug_print_utf16_string_value(
+			     function,
+			     "data string\t\t\t\t\t",
+			     data_string->data,
+			     data_string->data_size,
+			     LIBUNA_ENDIAN_LITTLE,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+				 "%s: unable to print UTF-16 string value.",
+				 function );
+
+				goto on_error;
+			}
 		}
 		else
 		{
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-			result = libuna_utf16_string_size_from_byte_stream(
-				  data_string->data,
-				  data_string->data_size,
-				  io_handle->ascii_codepage,
-				  &value_string_size,
-				  error );
-#else
-			result = libuna_utf8_string_size_from_byte_stream(
-				  data_string->data,
-				  data_string->data_size,
-				  io_handle->ascii_codepage,
-				  &value_string_size,
-				  error );
-#endif
+			if( liblnk_debug_print_string_value(
+			     function,
+			     "data string\t\t\t\t\t",
+			     data_string->data,
+			     data_string->data_size,
+			     io_handle->ascii_codepage,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+				 "%s: unable to print string value.",
+				 function );
+
+				goto on_error;
+			}
 		}
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to determine size of data string.",
-			 function );
-
-			goto on_error;
-		}
-		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
-			 "%s: invalid data string size value exceeds maximum.",
-			 function );
-
-			goto on_error;
-		}
-		value_string = system_string_allocate(
-		                value_string_size );
-
-		if( value_string == NULL )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_MEMORY,
-			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create data string.",
-			 function );
-
-			goto on_error;
-		}
-		if( data_string->is_unicode != 0 )
-		{
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-			result = libuna_utf16_string_copy_from_utf16_stream(
-				  (libuna_utf16_character_t *) value_string,
-				  value_string_size,
-				  data_string->data,
-				  data_string->data_size,
-				  LIBUNA_ENDIAN_LITTLE,
-				  error );
-#else
-			result = libuna_utf8_string_copy_from_utf16_stream(
-				  (libuna_utf8_character_t *) value_string,
-				  value_string_size,
-				  data_string->data,
-				  data_string->data_size,
-				  LIBUNA_ENDIAN_LITTLE,
-				  error );
-#endif
-		}
-		else
-		{
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-			result = libuna_utf16_string_copy_from_byte_stream(
-				  (libuna_utf16_character_t *) value_string,
-				  value_string_size,
-				  data_string->data,
-				  data_string->data_size,
-				  io_handle->ascii_codepage,
-				  error );
-#else
-			result = libuna_utf8_string_copy_from_byte_stream(
-				  (libuna_utf8_character_t *) value_string,
-				  value_string_size,
-				  data_string->data,
-				  data_string->data_size,
-				  io_handle->ascii_codepage,
-				  error );
-#endif
-		}
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-			 "%s: unable to set data string.",
-			 function );
-
-			goto on_error;
-		}
-		libcnotify_printf(
-		 "%s: data string\t\t\t\t\t: %" PRIs_SYSTEM "\n",
-		 function,
-		 value_string );
-
-		memory_free(
-		 value_string );
-
-		value_string = NULL;
-
 		libcnotify_printf(
 		 "\n" );
 	}
@@ -470,13 +369,6 @@ ssize_t liblnk_data_string_read(
 	return( read_count + 2 );
 
 on_error:
-#if defined( HAVE_DEBUG_OUTPUT )
-	if( value_string != NULL )
-	{
-		memory_free(
-		 value_string );
-	}
-#endif
 	if( data_string->data != NULL )
 	{
 		memory_free(

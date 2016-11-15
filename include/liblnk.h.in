@@ -300,7 +300,7 @@ int liblnk_file_link_refers_to_file(
      liblnk_file_t *file,
      liblnk_error_t **error );
 
-/* Retrieves the 64-bit filetime value containing the linked file's creation date and time
+/* Retrieves the 64-bit FILETIME value containing the linked file's creation date and time
  * The creation time is only set when the link refers to a file
  * Returns 1 if successful or -1 on error
  */
@@ -310,7 +310,7 @@ int liblnk_file_get_file_creation_time(
      uint64_t *filetime,
      liblnk_error_t **error );
 
-/* Retrieves the 64-bit filetime value containing the linked file's last modification date and time
+/* Retrieves the 64-bit FILETIME value containing the linked file's last modification date and time
  * The modification time is only set when the link refers to a file
  * Returns 1 if successful or -1 on error
  */
@@ -320,7 +320,7 @@ int liblnk_file_get_file_modification_time(
      uint64_t *filetime,
      liblnk_error_t **error );
 
-/* Retrieves the 64-bit filetime value containing the linked file's last access date and time
+/* Retrieves the 64-bit FILETIME value containing the linked file's last access date and time
  * The access time is only set when the link refers to a file
  * Returns 1 if successful or -1 on error
  */

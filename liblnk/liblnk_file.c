@@ -1430,6 +1430,13 @@ int liblnk_file_open_read(
 				switch( data_block->signature )
 				{
 					case LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION:
+#if defined( HAVE_DEBUG_OUTPUT )
+						if( libcnotify_verbose != 0 )
+						{
+							libcnotify_printf(
+							 "Reading environment variables location data block:\n" );
+						}
+#endif
 #if defined( HAVE_VERBOSE_OUTPUT )
 						if( libcnotify_verbose != 0 )
 						{
@@ -1454,13 +1461,6 @@ int liblnk_file_open_read(
 
 							goto on_error;
 						}
-#if defined( HAVE_DEBUG_OUTPUT )
-						if( libcnotify_verbose != 0 )
-						{
-							libcnotify_printf(
-							 "Reading environment variables location data block:\n" );
-						}
-#endif
 						if( liblnk_data_block_strings_read(
 						     internal_file->environment_variables_location,
 						     data_block,
@@ -1479,13 +1479,20 @@ int liblnk_file_open_read(
 						break;
 
 					case LIBLNK_DATA_BLOCK_SIGNATURE_DISTRIBUTED_LINK_TRACKER_PROPERTIES:
+#if defined( HAVE_DEBUG_OUTPUT )
+						if( libcnotify_verbose != 0 )
+						{
+							libcnotify_printf(
+							 "Reading distributed link tracker properties data block:\n" );
+						}
+#endif
 #if defined( HAVE_VERBOSE_OUTPUT )
 						if( libcnotify_verbose != 0 )
 						{
 							if( ( internal_file->io_handle->data_flags & LIBLNK_DATA_FLAG_NO_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK ) != 0 )
 							{
 								libcnotify_printf(
-								 "%s: environment variables location data block found but data flag was not set\n",
+								 "%s: distributed link tracker properties data block found but data flag was not set\n",
 								 function );
 							}
 						}
@@ -1503,13 +1510,6 @@ int liblnk_file_open_read(
 
 							goto on_error;
 						}
-#if defined( HAVE_DEBUG_OUTPUT )
-						if( libcnotify_verbose != 0 )
-						{
-							libcnotify_printf(
-							 "Reading distributed link tracker properties data block:\n" );
-						}
-#endif
 						if( liblnk_distributed_link_tracker_properties_read(
 						     internal_file->distributed_link_tracker_properties,
 						     data_block,
@@ -1528,6 +1528,13 @@ int liblnk_file_open_read(
 						break;
 
 					case LIBLNK_DATA_BLOCK_SIGNATURE_SPECIAL_FOLDER_LOCATION:
+#if defined( HAVE_DEBUG_OUTPUT )
+						if( libcnotify_verbose != 0 )
+						{
+							libcnotify_printf(
+							 "Reading special folder location data block:\n" );
+						}
+#endif
 						if( liblnk_special_folder_location_initialize(
 						     &( internal_file->special_folder_location ),
 						     error ) != 1 )
@@ -1541,14 +1548,7 @@ int liblnk_file_open_read(
 
 							goto on_error;
 						}
-#if defined( HAVE_DEBUG_OUTPUT )
-						if( libcnotify_verbose != 0 )
-						{
-							libcnotify_printf(
-							 "Reading special folder location data block:\n" );
-						}
-#endif
-						if( liblnk_special_folder_location_read(
+						if( liblnk_special_folder_location_read_data_block(
 						     internal_file->special_folder_location,
 						     data_block,
 						     error ) != 1 )
@@ -1565,6 +1565,13 @@ int liblnk_file_open_read(
 						break;
 
 					case LIBLNK_DATA_BLOCK_SIGNATURE_DARWIN_PROPERTIES:
+#if defined( HAVE_DEBUG_OUTPUT )
+						if( libcnotify_verbose != 0 )
+						{
+							libcnotify_printf(
+							 "Reading darwin application identifier data block:\n" );
+						}
+#endif
 #if defined( HAVE_VERBOSE_OUTPUT )
 						if( libcnotify_verbose != 0 )
 						{
@@ -1589,13 +1596,6 @@ int liblnk_file_open_read(
 
 							goto on_error;
 						}
-#if defined( HAVE_DEBUG_OUTPUT )
-						if( libcnotify_verbose != 0 )
-						{
-							libcnotify_printf(
-							 "Reading darwin application identifier data block:\n" );
-						}
-#endif
 						if( liblnk_data_block_strings_read(
 						     internal_file->darwin_application_identifier,
 						     data_block,
@@ -1614,6 +1614,13 @@ int liblnk_file_open_read(
 						break;
 
 					case LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION:
+#if defined( HAVE_DEBUG_OUTPUT )
+						if( libcnotify_verbose != 0 )
+						{
+							libcnotify_printf(
+							 "Reading icon location data block:\n" );
+						}
+#endif
 #if defined( HAVE_VERBOSE_OUTPUT )
 						if( libcnotify_verbose != 0 )
 						{
@@ -1654,13 +1661,6 @@ int liblnk_file_open_read(
 
 							goto on_error;
 						}
-#if defined( HAVE_DEBUG_OUTPUT )
-						if( libcnotify_verbose != 0 )
-						{
-							libcnotify_printf(
-							 "Reading icon location data block:\n" );
-						}
-#endif
 						if( liblnk_data_block_strings_read(
 						     internal_file->icon_location,
 						     data_block,
@@ -1679,6 +1679,13 @@ int liblnk_file_open_read(
 						break;
 
 					case LIBLNK_DATA_BLOCK_SIGNATURE_KNOWN_FOLDER_LOCATION:
+#if defined( HAVE_DEBUG_OUTPUT )
+						if( libcnotify_verbose != 0 )
+						{
+							libcnotify_printf(
+							 "Reading known folder location data block:\n" );
+						}
+#endif
 						if( liblnk_known_folder_location_initialize(
 						     &( internal_file->known_folder_location ),
 						     error ) != 1 )
@@ -1692,13 +1699,6 @@ int liblnk_file_open_read(
 
 							goto on_error;
 						}
-#if defined( HAVE_DEBUG_OUTPUT )
-						if( libcnotify_verbose != 0 )
-						{
-							libcnotify_printf(
-							 "Reading known folder location data block:\n" );
-						}
-#endif
 						if( liblnk_known_folder_location_read_data_block(
 						     internal_file->known_folder_location,
 						     data_block,

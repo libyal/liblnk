@@ -21,14 +21,12 @@
 
 #include <common.h>
 #include <memory.h>
-#include <narrow_string.h>
-#include <system_string.h>
 #include <types.h>
-#include <wide_string.h>
 
 #include "liblnk_data_block.h"
 #include "liblnk_data_block_strings.h"
 #include "liblnk_data_string.h"
+#include "liblnk_debug.h"
 #include "liblnk_io_handle.h"
 #include "liblnk_libcerror.h"
 #include "liblnk_libcnotify.h"
@@ -49,12 +47,6 @@ int liblnk_data_block_strings_read(
 	static char *function                             = "liblnk_data_block_strings_read";
 	size_t string_size                                = 0;
 	size_t unicode_string_size                        = 0;
-
-#if defined( HAVE_DEBUG_OUTPUT )
-	system_character_t *value_string                  = NULL;
-	size_t value_string_size                          = 0;
-	int result                                        = 0;
-#endif
 
 	if( data_string == NULL )
 	{
@@ -160,95 +152,23 @@ int liblnk_data_block_strings_read(
 		 260,
 		 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libuna_utf16_string_size_from_byte_stream(
-			  data_block_strings_data->string,
-			  260,
-			  io_handle->ascii_codepage,
-			  &value_string_size,
-			  error );
-#else
-		result = libuna_utf8_string_size_from_byte_stream(
-			  data_block_strings_data->string,
-			  260,
-			  io_handle->ascii_codepage,
-			  &value_string_size,
-			  error );
-#endif
-		if( result != 1 )
+		if( liblnk_debug_print_string_value(
+		     function,
+		     "string\t\t\t\t\t",
+		     data_block_strings_data->string,
+		     260,
+		     io_handle->ascii_codepage,
+		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to determine size of string.",
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print string value.",
 			 function );
 
 			goto on_error;
 		}
-		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
-			 "%s: invalid string size value exceeds maximum.",
-			 function );
-
-			goto on_error;
-		}
-		value_string = system_string_allocate(
-				value_string_size );
-
-		if( value_string == NULL )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_MEMORY,
-			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create string.",
-			 function );
-
-			goto on_error;
-		}
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libuna_utf16_string_copy_from_byte_stream(
-			  (libuna_utf16_character_t *) value_string,
-			  value_string_size,
-			  data_block_strings_data->string,
-			  260,
-			  io_handle->ascii_codepage,
-			  error );
-#else
-		result = libuna_utf8_string_copy_from_byte_stream(
-			  (libuna_utf8_character_t *) value_string,
-			  value_string_size,
-			  data_block_strings_data->string,
-			  260,
-			  io_handle->ascii_codepage,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-			 "%s: unable to set string.",
-			 function );
-
-			goto on_error;
-		}
-		libcnotify_printf(
-		 "%s: string\t\t\t\t\t: %" PRIs_SYSTEM "\n",
-		 function,
-		 value_string );
-
-		memory_free(
-		 value_string );
-
-		value_string = NULL;
 	}
 #endif
 	for( unicode_string_size = 0;
@@ -289,96 +209,23 @@ int liblnk_data_block_strings_read(
 		 520,
 		 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libuna_utf16_string_size_from_utf16_stream(
-			  data_block_strings_data->unicode_string,
-			  520,
-			  LIBUNA_ENDIAN_LITTLE,
-			  &value_string_size,
-			  error );
-#else
-		result = libuna_utf8_string_size_from_utf16_stream(
-			  data_block_strings_data->unicode_string,
-			  520,
-			  LIBUNA_ENDIAN_LITTLE,
-			  &value_string_size,
-			  error );
-#endif
-		if( result != 1 )
+		if( liblnk_debug_print_utf16_string_value(
+		     function,
+		     "unicode string\t\t\t\t",
+		     data_block_strings_data->unicode_string,
+		     520,
+		     LIBUNA_ENDIAN_LITTLE,
+		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to determine size of unicode string.",
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print UTF-16 string value.",
 			 function );
 
 			goto on_error;
 		}
-		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
-			 "%s: invalid unicode string size value exceeds maximum.",
-			 function );
-
-			goto on_error;
-		}
-		value_string = system_string_allocate(
-				value_string_size );
-
-		if( value_string == NULL )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_MEMORY,
-			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create unicode string.",
-			 function );
-
-			goto on_error;
-		}
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-		result = libuna_utf16_string_copy_from_utf16_stream(
-			  (libuna_utf16_character_t *) value_string,
-			  value_string_size,
-			  data_block_strings_data->unicode_string,
-			  520,
-			  LIBUNA_ENDIAN_LITTLE,
-			  error );
-#else
-		result = libuna_utf8_string_copy_from_utf16_stream(
-			  (libuna_utf8_character_t *) value_string,
-			  value_string_size,
-			  data_block_strings_data->unicode_string,
-			  520,
-			  LIBUNA_ENDIAN_LITTLE,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-			 "%s: unable to set unicode string.",
-			 function );
-
-			goto on_error;
-		}
-		libcnotify_printf(
-		 "%s: unicode string\t\t\t\t: %" PRIs_SYSTEM "\n",
-		 function,
-		 value_string );
-
-		memory_free(
-		 value_string );
-
-		value_string = NULL;
-
 		libcnotify_printf(
 		 "\n" );
 	}
@@ -469,13 +316,6 @@ int liblnk_data_block_strings_read(
 	return( 1 );
 
 on_error:
-#if defined( HAVE_DEBUG_OUTPUT )
-	if( value_string != NULL )
-	{
-		memory_free(
-		 value_string );
-	}
-#endif
 	if( data_string->data != NULL )
 	{
 		memory_free(
