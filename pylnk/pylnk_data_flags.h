@@ -50,10 +50,10 @@ PyObject *pylnk_data_flags_new(
            void );
 
 int pylnk_data_flags_init(
-     pylnk_data_flags_t *pylnk_data_flags );
+     pylnk_data_flags_t *definitions_object );
 
 void pylnk_data_flags_free(
-      pylnk_data_flags_t *pylnk_data_flags );
+      pylnk_data_flags_t *definitions_object );
 
 #if defined( __cplusplus )
 }

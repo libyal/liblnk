@@ -261,39 +261,39 @@ on_error:
 PyObject *pylnk_drive_types_new(
            void )
 {
-	pylnk_drive_types_t *pylnk_drive_types = NULL;
-	static char *function                  = "pylnk_drive_types_new";
+	pylnk_drive_types_t *definitions_object = NULL;
+	static char *function                   = "pylnk_drive_types_new";
 
-	pylnk_drive_types = PyObject_New(
-	                     struct pylnk_drive_types,
-	                     &pylnk_drive_types_type_object );
+	definitions_object = PyObject_New(
+	                      struct pylnk_drive_types,
+	                      &pylnk_drive_types_type_object );
 
-	if( pylnk_drive_types == NULL )
+	if( definitions_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to initialize drive types.",
+		 "%s: unable to create new definitions object.",
 		 function );
 
 		goto on_error;
 	}
 	if( pylnk_drive_types_init(
-	     pylnk_drive_types ) != 0 )
+	     definitions_object ) != 0 )
 	{
 		PyErr_Format(
 		 PyExc_MemoryError,
-		 "%s: unable to initialize drive types.",
+		 "%s: unable to initialize definitions object.",
 		 function );
 
 		goto on_error;
 	}
-	return( (PyObject *) pylnk_drive_types );
+	return( (PyObject *) definitions_object );
 
 on_error:
-	if( pylnk_drive_types != NULL )
+	if( definitions_object != NULL )
 	{
 		Py_DecRef(
-		 (PyObject *) pylnk_drive_types );
+		 (PyObject *) definitions_object );
 	}
 	return( NULL );
 }
@@ -302,15 +302,15 @@ on_error:
  * Returns 0 if successful or -1 on error
  */
 int pylnk_drive_types_init(
-     pylnk_drive_types_t *pylnk_drive_types )
+     pylnk_drive_types_t *definitions_object )
 {
 	static char *function = "pylnk_drive_types_init";
 
-	if( pylnk_drive_types == NULL )
+	if( definitions_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_TypeError,
-		 "%s: invalid drive types.",
+		 "%s: invalid definitions object.",
 		 function );
 
 		return( -1 );
@@ -321,22 +321,22 @@ int pylnk_drive_types_init(
 /* Frees a drive types object
  */
 void pylnk_drive_types_free(
-      pylnk_drive_types_t *pylnk_drive_types )
+      pylnk_drive_types_t *definitions_object )
 {
 	struct _typeobject *ob_type = NULL;
 	static char *function       = "pylnk_drive_types_free";
 
-	if( pylnk_drive_types == NULL )
+	if( definitions_object == NULL )
 	{
 		PyErr_Format(
 		 PyExc_TypeError,
-		 "%s: invalid drive types.",
+		 "%s: invalid definitions object.",
 		 function );
 
 		return;
 	}
 	ob_type = Py_TYPE(
-	           pylnk_drive_types );
+	           definitions_object );
 
 	if( ob_type == NULL )
 	{
@@ -357,6 +357,6 @@ void pylnk_drive_types_free(
 		return;
 	}
 	ob_type->tp_free(
-	 (PyObject*) pylnk_drive_types );
+	 (PyObject*) definitions_object );
 }
 

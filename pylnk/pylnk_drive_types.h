@@ -50,10 +50,10 @@ PyObject *pylnk_drive_types_new(
            void );
 
 int pylnk_drive_types_init(
-     pylnk_drive_types_t *pylnk_drive_types );
+     pylnk_drive_types_t *definitions_object );
 
 void pylnk_drive_types_free(
-      pylnk_drive_types_t *pylnk_drive_types );
+      pylnk_drive_types_t *definitions_object );
 
 #if defined( __cplusplus )
 }

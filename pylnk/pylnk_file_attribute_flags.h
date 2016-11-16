@@ -50,10 +50,10 @@ PyObject *pylnk_file_attribute_flags_new(
            void );
 
 int pylnk_file_attribute_flags_init(
-     pylnk_file_attribute_flags_t *pylnk_file_attribute_flags );
+     pylnk_file_attribute_flags_t *definitions_object );
 
 void pylnk_file_attribute_flags_free(
-      pylnk_file_attribute_flags_t *pylnk_file_attribute_flags );
+      pylnk_file_attribute_flags_t *definitions_object );
 
 #if defined( __cplusplus )
 }
