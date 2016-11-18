@@ -1483,7 +1483,7 @@ PyObject *pylnk_file_get_data_flags(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 
@@ -1896,7 +1896,7 @@ PyObject *pylnk_file_get_file_size(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 
@@ -1955,7 +1955,7 @@ PyObject *pylnk_file_get_file_attribute_flags(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 
@@ -2014,7 +2014,7 @@ PyObject *pylnk_file_get_drive_type(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 
@@ -2073,7 +2073,7 @@ PyObject *pylnk_file_get_drive_serial_number(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 
@@ -3477,7 +3477,7 @@ PyObject *pylnk_file_get_droid_volume_identifier(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 
@@ -3539,7 +3539,7 @@ PyObject *pylnk_file_get_droid_file_identifier(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 
@@ -3601,7 +3601,7 @@ PyObject *pylnk_file_get_birth_droid_volume_identifier(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 
@@ -3663,7 +3663,7 @@ PyObject *pylnk_file_get_birth_droid_file_identifier(
 	if( pylnk_file == NULL )
 	{
 		PyErr_Format(
-		 PyExc_TypeError,
+		 PyExc_ValueError,
 		 "%s: invalid file.",
 		 function );
 

@@ -1071,7 +1071,7 @@ int info_handle_link_information_fprint(
 			}
 			fprintf(
 			 info_handle->notify_stream,
-			 "\tVolume label\t\t\t: %s\n",
+			 "\tVolume label\t\t\t: %" PRIs_SYSTEM "\n",
 			 value_string );
 
 			memory_free(
@@ -1155,7 +1155,7 @@ int info_handle_link_information_fprint(
 			}
 			fprintf(
 			 info_handle->notify_stream,
-			 "\tLocal path\t\t\t: %s\n",
+			 "\tLocal path\t\t\t: %" PRIs_SYSTEM "\n",
 			 value_string );
 
 			memory_free(
@@ -1239,7 +1239,7 @@ int info_handle_link_information_fprint(
 			}
 			fprintf(
 			 info_handle->notify_stream,
-			 "\tNetwork path\t\t\t: %s\n",
+			 "\tNetwork path\t\t\t: %" PRIs_SYSTEM "\n",
 			 value_string );
 
 			memory_free(
@@ -1364,7 +1364,7 @@ int info_handle_description_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tDescription\t\t\t: %s\n",
+		 "\tDescription\t\t\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(
@@ -1482,7 +1482,7 @@ int info_handle_relative_path_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tRelative path\t\t\t: %s\n",
+		 "\tRelative path\t\t\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(
@@ -1600,7 +1600,7 @@ int info_handle_working_directory_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tWorking directory\t\t: %s\n",
+		 "\tWorking directory\t\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(
@@ -1718,7 +1718,7 @@ int info_handle_command_line_arguments_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tCommand line arguments\t\t: %s\n",
+		 "\tCommand line arguments\t\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(
@@ -1836,7 +1836,7 @@ int info_handle_icon_location_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tIcon location\t\t\t: %s\n",
+		 "\tIcon location\t\t\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(
@@ -1954,7 +1954,7 @@ int info_handle_environment_variables_location_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tEnvironment variables location\t: %s\n",
+		 "\tEnvironment variables location\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(
@@ -2255,7 +2255,7 @@ int info_handle_distributed_link_tracking_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tMachine identifier\t\t: %s\n",
+		 "\tMachine identifier\t\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(

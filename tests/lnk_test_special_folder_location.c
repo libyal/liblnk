@@ -297,7 +297,9 @@ int main(
 	 "liblnk_special_folder_location_free",
 	 lnk_test_special_folder_location_free );
 
-	/* TODO: add tests for liblnk_special_folder_location_read */
+	/* TODO: add tests for liblnk_special_folder_location_read_data_block */
+
+	/* TODO: add tests for liblnk_special_folder_location_read_data */
 
 #endif /* defined( __GNUC__ ) */
 
