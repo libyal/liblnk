@@ -30,10 +30,10 @@
 #include <stdlib.h>
 #endif
 
+#include "lnk_test_getopt.h"
 #include "lnk_test_libbfio.h"
 #include "lnk_test_libcerror.h"
 #include "lnk_test_libclocale.h"
-#include "lnk_test_libcsystem.h"
 #include "lnk_test_liblnk.h"
 #include "lnk_test_libuna.h"
 #include "lnk_test_macros.h"
@@ -1018,7 +1018,7 @@ int main(
 	system_character_t *source = NULL;
 	system_integer_t option    = 0;
 
-	while( ( option = libcsystem_getopt(
+	while( ( option = lnk_test_getopt(
 	                   argc,
 	                   argv,
 	                   _SYSTEM_STRING( "" ) ) ) != (system_integer_t) -1 )

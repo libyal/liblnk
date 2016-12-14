@@ -1531,11 +1531,11 @@ PyObject *pylnk_file_get_file_creation_time(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	PyObject *date_time_object = NULL;
-	libcerror_error_t *error   = NULL;
-	static char *function      = "pylnk_file_get_file_creation_time";
-	uint64_t filetime          = 0;
-	int result                 = 0;
+	PyObject *datetime_object = NULL;
+	libcerror_error_t *error  = NULL;
+	static char *function     = "pylnk_file_get_file_creation_time";
+	uint64_t filetime         = 0;
+	int result                = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
@@ -1577,10 +1577,10 @@ PyObject *pylnk_file_get_file_creation_time(
 
 		return( Py_None );
 	}
-	date_time_object = pylnk_datetime_new_from_filetime(
-	                    filetime );
+	datetime_object = pylnk_datetime_new_from_filetime(
+	                   filetime );
 
-	return( date_time_object );
+	return( datetime_object );
 }
 
 /* Retrieves the file creation time as an integer
@@ -1649,11 +1649,11 @@ PyObject *pylnk_file_get_file_modification_time(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	PyObject *date_time_object = NULL;
-	libcerror_error_t *error   = NULL;
-	static char *function      = "pylnk_file_get_file_modification_time";
-	uint64_t filetime          = 0;
-	int result                 = 0;
+	PyObject *datetime_object = NULL;
+	libcerror_error_t *error  = NULL;
+	static char *function     = "pylnk_file_get_file_modification_time";
+	uint64_t filetime         = 0;
+	int result                = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
@@ -1695,10 +1695,10 @@ PyObject *pylnk_file_get_file_modification_time(
 
 		return( Py_None );
 	}
-	date_time_object = pylnk_datetime_new_from_filetime(
-	                    filetime );
+	datetime_object = pylnk_datetime_new_from_filetime(
+	                   filetime );
 
-	return( date_time_object );
+	return( datetime_object );
 }
 
 /* Retrieves the file modification time as an integer
@@ -1767,11 +1767,11 @@ PyObject *pylnk_file_get_file_access_time(
            pylnk_file_t *pylnk_file,
            PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
 {
-	PyObject *date_time_object = NULL;
-	libcerror_error_t *error   = NULL;
-	static char *function      = "pylnk_file_get_file_access_time";
-	uint64_t filetime          = 0;
-	int result                 = 0;
+	PyObject *datetime_object = NULL;
+	libcerror_error_t *error  = NULL;
+	static char *function     = "pylnk_file_get_file_access_time";
+	uint64_t filetime         = 0;
+	int result                = 0;
 
 	PYLNK_UNREFERENCED_PARAMETER( arguments )
 
@@ -1813,10 +1813,10 @@ PyObject *pylnk_file_get_file_access_time(
 
 		return( Py_None );
 	}
-	date_time_object = pylnk_datetime_new_from_filetime(
-	                    filetime );
+	datetime_object = pylnk_datetime_new_from_filetime(
+	                   filetime );
 
-	return( date_time_object );
+	return( datetime_object );
 }
 
 /* Retrieves the file access time as an integer

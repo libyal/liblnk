@@ -33,9 +33,9 @@ TESTS = \
 	$(TESTS_PYLNK)
 
 check_SCRIPTS = \
-	pylnk_test_get_version.py \
 	pylnk_test_open_close.py \
 	pylnk_test_set_ascii_codepage.py \
+	pylnk_test_support.py \
 	test_api_functions.sh \
 	test_api_types.sh \
 	test_lnkinfo.sh \
@@ -108,16 +108,16 @@ lnk_test_error_LDADD = \
 
 lnk_test_file_SOURCES = \
 	lnk_test_file.c \
+	lnk_test_getopt.c lnk_test_getopt.h \
 	lnk_test_libcerror.h \
 	lnk_test_libclocale.h \
-	lnk_test_libcsystem.h \
+	lnk_test_libcnotify.h \
 	lnk_test_liblnk.h \
 	lnk_test_libuna.h \
 	lnk_test_macros.h \
 	lnk_test_memory.c lnk_test_memory.h
 
 lnk_test_file_LDADD = \
-	@LIBCSYSTEM_LIBADD@ \
 	@LIBUNA_LIBADD@ \
 	@LIBCNOTIFY_LIBADD@ \
 	@LIBCLOCALE_LIBADD@ \
@@ -209,17 +209,17 @@ lnk_test_special_folder_location_LDADD = \
 	@LIBCERROR_LIBADD@
 
 lnk_test_support_SOURCES = \
+	lnk_test_getopt.c lnk_test_getopt.h \
 	lnk_test_libbfio.h \
 	lnk_test_libcerror.h \
 	lnk_test_libclocale.h \
-	lnk_test_libcsystem.h \
+	lnk_test_libcnotify.h \
 	lnk_test_liblnk.h \
 	lnk_test_libuna.h \
 	lnk_test_macros.h \
 	lnk_test_support.c
 
 lnk_test_support_LDADD = \
-	@LIBCSYSTEM_LIBADD@ \
 	@LIBBFIO_LIBADD@ \
 	@LIBCPATH_LIBADD@ \
 	@LIBCFILE_LIBADD@ \

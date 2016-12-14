@@ -146,20 +146,6 @@ int pylnk_drive_types_init_type(
 	}
 #if PY_MAJOR_VERSION >= 3
 	value_object = PyLong_FromLong(
-	                LIBLNK_DRIVE_TYPE_UNKNOWN );
-#else
-	value_object = PyInt_FromLong(
-	                LIBLNK_DRIVE_TYPE_UNKNOWN );
-#endif
-	if( PyDict_SetItemString(
-	     type_object->tp_dict,
-	     "UNKNOWN",
-	     value_object ) != 0 )
-	{
-		goto on_error;
-	}
-#if PY_MAJOR_VERSION >= 3
-	value_object = PyLong_FromLong(
 	                LIBLNK_DRIVE_TYPE_NO_ROOT_DIR );
 #else
 	value_object = PyInt_FromLong(

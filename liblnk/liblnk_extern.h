@@ -38,9 +38,9 @@
 #include <liblnk/extern.h>
 
 #else
-#define LIBLNK_EXTERN	extern
+#define LIBLNK_EXTERN	/* extern */
 
-#endif
+#endif /* !defined( HAVE_LOCAL_LIBLNK ) */
 
 #endif /* !defined( _LIBLNK_INTERNAL_EXTERN_H ) */
 
