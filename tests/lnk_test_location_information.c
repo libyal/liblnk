@@ -1,5 +1,5 @@
 /*
- * Library location_information type testing program
+ * Library location_information type test program
  *
  * Copyright (C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>
  *

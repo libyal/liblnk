@@ -1,5 +1,5 @@
 /*
- * Library link_target_identifier type testing program
+ * Library link_target_identifier type test program
  *
  * Copyright (C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>
  *

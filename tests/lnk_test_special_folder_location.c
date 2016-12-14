@@ -1,5 +1,5 @@
 /*
- * Library special_folder_location type testing program
+ * Library special_folder_location type test program
  *
  * Copyright (C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>
  *

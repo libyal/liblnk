@@ -16,14 +16,12 @@ AM_CPPFLAGS = \
 	@LIBFOLE_CPPFLAGS@ \
 	@LIBFWPS_CPPFLAGS@ \
 	@LIBFWSI_CPPFLAGS@ \
-	@LIBCSYSTEM_CPPFLAGS@ \
 	@PTHREAD_CPPFLAGS@ \
 	@LIBLNK_DLL_IMPORT@
 
 if HAVE_PYTHON_TESTS
 TESTS_PYLNK = \
-	test_python_functions.sh \
-	test_pylnk_set_ascii_codepage.sh
+	test_python_functions.sh
 endif
 
 TESTS = \
@@ -33,13 +31,11 @@ TESTS = \
 	$(TESTS_PYLNK)
 
 check_SCRIPTS = \
-	pylnk_test_open_close.py \
-	pylnk_test_set_ascii_codepage.py \
+	pylnk_test_file.py \
 	pylnk_test_support.py \
 	test_api_functions.sh \
 	test_api_types.sh \
 	test_lnkinfo.sh \
-	test_pylnk_set_ascii_codepage.sh \
 	test_python_functions.sh \
 	test_runner.sh
 

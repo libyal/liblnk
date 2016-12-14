@@ -12,7 +12,7 @@ TEST_PREFIX=`basename ${TEST_PREFIX} | sed 's/^lib\([^-]*\).*$/\1/'`;
 
 TEST_PROFILE="py${TEST_PREFIX}";
 TEST_FUNCTIONS="support";
-TEST_FUNCTIONS_WITH_INPUT="open_close";
+TEST_FUNCTIONS_WITH_INPUT="file";
 OPTION_SETS="";
 
 TEST_TOOL_DIRECTORY=".";

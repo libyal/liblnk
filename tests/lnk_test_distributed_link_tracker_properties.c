@@ -1,5 +1,5 @@
 /*
- * Library distributed_link_tracker_properties type testing program
+ * Library distributed_link_tracker_properties type test program
  *
  * Copyright (C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>
  *

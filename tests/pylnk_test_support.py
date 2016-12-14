@@ -29,8 +29,11 @@ class SupportFunctionsTests(unittest.TestCase):
 
   def test_get_version(self):
     """Tests the get_version function."""
-    pylnk.get_version()
+    version = pylnk.get_version()
+
+    # TODO: check version.
+    # self.assertEqual(version, "00000000")
 
 
 if __name__ == "__main__":
-  unittest.main()
+  unittest.main(verbosity=2)

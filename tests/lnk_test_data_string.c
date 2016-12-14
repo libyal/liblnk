@@ -1,5 +1,5 @@
 /*
- * Library data_string type testing program
+ * Library data_string type test program
  *
  * Copyright (C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>
  *
