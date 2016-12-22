@@ -892,7 +892,7 @@ int info_handle_link_information_fprint(
 	}
 	fprintf(
 	 info_handle->notify_stream,
-	 "\tShow Window value\t\t: %" PRIu32 "\n",
+	 "\tShow Window value\t\t: 0x%08" PRIx32 "\n",
 	 value_32bit );
 
 	if( liblnk_file_get_hot_key_value(
