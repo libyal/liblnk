@@ -29,6 +29,7 @@
 #include "liblnk_libbfio.h"
 #include "liblnk_libcerror.h"
 #include "liblnk_libcnotify.h"
+#include "liblnk_libfwsi.h"
 #include "liblnk_libuna.h"
 #include "liblnk_location_information.h"
 

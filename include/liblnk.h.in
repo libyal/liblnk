@@ -340,6 +340,33 @@ int liblnk_file_get_file_size(
      uint32_t *file_size,
      liblnk_error_t **error );
 
+/* Retrieves the icon index
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_icon_index(
+     liblnk_file_t *file,
+     uint32_t *icon_index,
+     liblnk_error_t **error );
+
+/* Retrieves the show window value
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_show_window_value(
+     liblnk_file_t *file,
+     uint32_t *show_window_value,
+     liblnk_error_t **error );
+
+/* Retrieves the hot key value
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_hot_key_value(
+     liblnk_file_t *file,
+     uint16_t *hot_key_value,
+     liblnk_error_t **error );
+
 /* Retrieves the linked file's attribute flags
  * The file attribute flags are only set when the link refers to a file
  * Returns 1 if successful or -1 on error

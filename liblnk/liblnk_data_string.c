@@ -28,6 +28,7 @@
 #include <wide_string.h>
 
 #include "liblnk_data_string.h"
+#include "liblnk_debug.h"
 #include "liblnk_definitions.h"
 #include "liblnk_libbfio.h"
 #include "liblnk_libcerror.h"

@@ -57,6 +57,18 @@ struct liblnk_file_information
 	 * Contains a 64-bit filetime value
 	 */
 	uint64_t access_time;
+
+	/* The icon index
+	 */
+	uint32_t icon_index;
+
+	/* The show window value
+	 */
+	uint32_t show_window_value;
+
+	/* The hot key value
+	 */
+	uint16_t hot_key_value;
 };
 
 int liblnk_file_information_initialize(

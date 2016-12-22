@@ -267,17 +267,18 @@ int liblnk_special_folder_location_read_data(
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
 	{
-		if( data_block->data_size > sizeof( lnk_data_block_special_folder_location_t ) )
+		if( data_size > sizeof( lnk_data_block_special_folder_location_t ) )
 		{
 			libcnotify_printf(
 			 "%s: trailing data:\n",
 			 function );
 			libcnotify_print_data(
-			 &( data_block->data[ sizeof( lnk_data_block_special_folder_location_t ) ] ),
-			 data_block->data_size - sizeof( lnk_data_block_special_folder_location_t ),
+			 &( data[ sizeof( lnk_data_block_special_folder_location_t ) ] ),
+			 data_size - sizeof( lnk_data_block_special_folder_location_t ),
 			 0 );
 		}
 	}
 #endif
 	return( 1 );
 }
+

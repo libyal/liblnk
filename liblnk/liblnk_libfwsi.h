@@ -28,6 +28,7 @@
  */
 #if defined( HAVE_LOCAL_LIBFWSI )
 
+#include <libfwsi_debug.h>
 #include <libfwsi_definitions.h>
 #include <libfwsi_extension_block.h>
 #include <libfwsi_file_entry.h>
@@ -52,7 +53,7 @@
 
 #include <libfwsi.h>
 
-#endif
+#endif /* defined( HAVE_LOCAL_LIBFWSI ) */
 
-#endif
+#endif /* !defined( _LIBLNK_LIBFWSI_H ) */
 

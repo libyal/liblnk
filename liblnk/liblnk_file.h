@@ -221,6 +221,24 @@ int liblnk_file_get_file_size(
      libcerror_error_t **error );
 
 LIBLNK_EXTERN \
+int liblnk_file_get_icon_index(
+     liblnk_file_t *file,
+     uint32_t *icon_index,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_file_get_show_window_value(
+     liblnk_file_t *file,
+     uint32_t *show_window_value,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_file_get_hot_key_value(
+     liblnk_file_t *file,
+     uint16_t *hot_key_value,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
 int liblnk_file_get_file_attribute_flags(
      liblnk_file_t *file,
      uint32_t *file_attribute_flags,

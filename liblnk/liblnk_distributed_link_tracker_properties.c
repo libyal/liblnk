@@ -30,6 +30,7 @@
 #include "liblnk_libcerror.h"
 #include "liblnk_libcnotify.h"
 #include "liblnk_libfguid.h"
+#include "liblnk_libfwsi.h"
 #include "liblnk_libuna.h"
 
 #include "lnk_data_blocks.h"

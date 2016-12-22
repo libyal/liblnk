@@ -34,13 +34,14 @@
 #include "liblnk_libcnotify.h"
 #include "liblnk_libfdatetime.h"
 #include "liblnk_libfguid.h"
+#include "liblnk_libfwsi.h"
 #include "liblnk_libuna.h"
 
 #include "lnk_data_blocks.h"
 #include "lnk_file_header.h"
 
-const uint8_t lnk_file_class_identifier[ 16 ] = \
-	{ 0x01, 0x14, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46 };
+const uint8_t lnk_file_class_identifier[ 16 ] = {
+	0x01, 0x14, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46 };
 
 /* Creates an IO handle
  * Make sure the value io_handle is referencing, is set to NULL
@@ -377,6 +378,7 @@ ssize_t liblnk_io_handle_read_file_header(
 	byte_stream_copy_to_uint32_little_endian(
 	 file_header.data_flags,
 	 io_handle->data_flags );
+
 	byte_stream_copy_to_uint32_little_endian(
 	 file_header.file_attribute_flags,
 	 file_information->attribute_flags );
@@ -384,9 +386,11 @@ ssize_t liblnk_io_handle_read_file_header(
 	byte_stream_copy_to_uint64_little_endian(
 	 file_header.creation_time,
 	 file_information->creation_time )
+
 	byte_stream_copy_to_uint64_little_endian(
 	 file_header.access_time,
 	 file_information->access_time );
+
 	byte_stream_copy_to_uint64_little_endian(
 	 file_header.modification_time,
 	 file_information->modification_time );
@@ -394,6 +398,18 @@ ssize_t liblnk_io_handle_read_file_header(
 	byte_stream_copy_to_uint32_little_endian(
 	 file_header.file_size,
 	 file_information->size );
+
+	byte_stream_copy_to_uint32_little_endian(
+	 file_header.icon_index,
+	 file_information->icon_index );
+
+	byte_stream_copy_to_uint32_little_endian(
+	 file_header.show_window_value,
+	 file_information->show_window_value );
+
+	byte_stream_copy_to_uint16_little_endian(
+	 file_header.hot_key_value,
+	 file_information->hot_key_value );
 
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
@@ -439,7 +455,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		libcnotify_printf(
 		 "\n" );
 
-		if( libregf_debug_print_filetime_value(
+		if( liblnk_debug_print_filetime_value(
 		     function,
 		     "creation time\t\t\t",
 		     file_header.creation_time,
@@ -457,7 +473,7 @@ ssize_t liblnk_io_handle_read_file_header(
 
 			return( -1 );
 		}
-		if( libregf_debug_print_filetime_value(
+		if( liblnk_debug_print_filetime_value(
 		     function,
 		     "access time\t\t\t\t",
 		     file_header.access_time,
@@ -475,7 +491,7 @@ ssize_t liblnk_io_handle_read_file_header(
 
 			return( -1 );
 		}
-		if( libregf_debug_print_filetime_value(
+		if( liblnk_debug_print_filetime_value(
 		     function,
 		     "modification time\t\t\t",
 		     file_header.modification_time,
@@ -498,29 +514,20 @@ ssize_t liblnk_io_handle_read_file_header(
 		 function,
 		 file_information->size );
 
-		byte_stream_copy_to_uint32_little_endian(
-		 file_header.icon_index,
-		 value_32bit );
 		libcnotify_printf(
 		 "%s: icon index\t\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
-		 value_32bit );
+		 file_information->icon_index );
 
-		byte_stream_copy_to_uint32_little_endian(
-		 file_header.show_window_value,
-		 value_32bit );
 		libcnotify_printf(
 		 "%s: show window value\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
-		 value_32bit );
+		 file_information->show_window_value );
 
-		byte_stream_copy_to_uint16_little_endian(
-		 file_header.hot_key_value,
-		 value_16bit );
 		libcnotify_printf(
 		 "%s: hot key value\t\t\t: 0x%04" PRIx16 "\n",
 		 function,
-		 value_16bit );
+		 file_information->hot_key_value );
 
 		libcnotify_printf(
 		 "%s: reserved:\n",

@@ -2318,6 +2318,159 @@ int liblnk_file_get_file_size(
 	return( 1 );
 }
 
+/* Retrieves the icon index
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_file_get_icon_index(
+     liblnk_file_t *file,
+     uint32_t *icon_index,
+     libcerror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_icon_index";
+
+	if( file == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->file_information == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid file - missing file information.",
+		 function );
+
+		return( -1 );
+	}
+	if( icon_index == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid icon index.",
+		 function );
+
+		return( -1 );
+	}
+	*icon_index = internal_file->file_information->icon_index;
+
+	return( 1 );
+}
+
+/* Retrieves the show window value
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_file_get_show_window_value(
+     liblnk_file_t *file,
+     uint32_t *show_window_value,
+     libcerror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_show_window_value";
+
+	if( file == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->file_information == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid file - missing file information.",
+		 function );
+
+		return( -1 );
+	}
+	if( show_window_value == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid show window value.",
+		 function );
+
+		return( -1 );
+	}
+	*show_window_value = internal_file->file_information->size;
+
+	return( 1 );
+}
+
+/* Retrieves the hot key value
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_file_get_hot_key_value(
+     liblnk_file_t *file,
+     uint16_t *hot_key_value,
+     libcerror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_hot_key_value";
+
+	if( file == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->file_information == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid file - missing file information.",
+		 function );
+
+		return( -1 );
+	}
+	if( hot_key_value == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid hot key value.",
+		 function );
+
+		return( -1 );
+	}
+	*hot_key_value = internal_file->file_information->size;
+
+	return( 1 );
+}
+
 /* Retrieves the linked file's attribute flags
  * The file attribute flags are only set if the link refers to a file
  * Returns 1 if successful or -1 on error

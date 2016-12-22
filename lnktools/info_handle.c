@@ -587,6 +587,7 @@ int info_handle_link_information_fprint(
 	size_t value_string_size          = 0;
 	uint64_t value_64bit              = 0;
 	uint32_t value_32bit              = 0;
+	uint16_t value_16bit              = 0;
 	int result                        = 0;
 
 	if( info_handle == NULL )
@@ -855,6 +856,63 @@ int info_handle_link_information_fprint(
 	 info_handle->notify_stream,
 	 "\tFile size\t\t\t: %" PRIu32 " bytes\n",
 	 value_32bit );
+
+	if( liblnk_file_get_icon_index(
+	     info_handle->input_file,
+	     &value_32bit,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve icon index.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\tIcon index\t\t\t: %" PRIi32 "\n",
+	 (int32_t) value_32bit );
+
+	if( liblnk_file_get_show_window_value(
+	     info_handle->input_file,
+	     &value_32bit,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve show window value.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\tShow Window value\t\t: %" PRIu32 "\n",
+	 value_32bit );
+
+	if( liblnk_file_get_hot_key_value(
+	     info_handle->input_file,
+	     &value_16bit,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve hot key value.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\tHot Key value\t\t\t: %" PRIu16 "\n",
+	 value_16bit );
 
 	if( liblnk_file_get_file_attribute_flags(
 	     info_handle->input_file,
