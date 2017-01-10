@@ -1,7 +1,7 @@
 /*
  * Python object wrapper of liblnk_file_t
  *
- * Copyright (C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (C) 2009-2017, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -137,6 +137,18 @@ PyObject *pylnk_file_get_file_access_time_as_integer(
            PyObject *arguments );
 
 PyObject *pylnk_file_get_file_size(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
+
+PyObject *pylnk_file_get_icon_index(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
+
+PyObject *pylnk_file_get_show_window_value(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
+
+PyObject *pylnk_file_get_hot_key_value(
            pylnk_file_t *pylnk_file,
            PyObject *arguments );
 

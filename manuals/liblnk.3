@@ -1,4 +1,4 @@
-.Dd November 13, 2016
+.Dd January 10, 2017
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -88,6 +88,12 @@ Link information functions
 .Fn liblnk_file_get_file_access_time "liblnk_file_t *file, uint64_t *filetime, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_get_file_size "liblnk_file_t *file, uint32_t *file_size, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_icon_index "liblnk_file_t *file, uint32_t *icon_index, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_show_window_value "liblnk_file_t *file, uint32_t *show_window_value, liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_hot_key_value "liblnk_file_t *file, uint16_t *hot_key_value, liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_get_file_attribute_flags "liblnk_file_t *file, uint32_t *file_attribute_flags, liblnk_error_t **error"
 .Ft int
@@ -219,7 +225,7 @@ Please report bugs of any kind on the project issue tracker: https://github.com/
 .Sh AUTHOR
 These man pages are generated from "liblnk.h".
 .Sh COPYRIGHT
-Copyright (C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>.
+Copyright (C) 2009-2017, Joachim Metz <joachim.metz@gmail.com>.
 
 This is free software; see the source for copying conditions.
 There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.

@@ -1,7 +1,7 @@
 /*
  * Library file type test program
  *
- * Copyright (C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (C) 2009-2017, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -1864,6 +1864,240 @@ int lnk_test_file_get_file_size(
 	if( file_size_is_set != 0 )
 	{
 		result = liblnk_file_get_file_size(
+		          file,
+		          NULL,
+		          &error );
+
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	return( 0 );
+}
+
+/* Tests the liblnk_file_get_icon_index function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_file_get_icon_index(
+     liblnk_file_t *file )
+{
+	libcerror_error_t *error = NULL;
+	uint32_t icon_index      = 0;
+	int icon_index_is_set    = 0;
+	int result               = 0;
+
+	/* Test regular cases
+	 */
+	result = liblnk_file_get_icon_index(
+	          file,
+	          &icon_index,
+	          &error );
+
+	LNK_TEST_ASSERT_NOT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	icon_index_is_set = result;
+
+	/* Test error cases
+	 */
+	result = liblnk_file_get_icon_index(
+	          NULL,
+	          &icon_index,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	if( icon_index_is_set != 0 )
+	{
+		result = liblnk_file_get_icon_index(
+		          file,
+		          NULL,
+		          &error );
+
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	return( 0 );
+}
+
+/* Tests the liblnk_file_get_show_window_value function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_file_get_show_window_value(
+     liblnk_file_t *file )
+{
+	libcerror_error_t *error     = NULL;
+	uint32_t show_window_value   = 0;
+	int result                   = 0;
+	int show_window_value_is_set = 0;
+
+	/* Test regular cases
+	 */
+	result = liblnk_file_get_show_window_value(
+	          file,
+	          &show_window_value,
+	          &error );
+
+	LNK_TEST_ASSERT_NOT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	show_window_value_is_set = result;
+
+	/* Test error cases
+	 */
+	result = liblnk_file_get_show_window_value(
+	          NULL,
+	          &show_window_value,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	if( show_window_value_is_set != 0 )
+	{
+		result = liblnk_file_get_show_window_value(
+		          file,
+		          NULL,
+		          &error );
+
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	return( 0 );
+}
+
+/* Tests the liblnk_file_get_hot_key_value function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_file_get_hot_key_value(
+     liblnk_file_t *file )
+{
+	libcerror_error_t *error = NULL;
+	uint16_t hot_key_value   = 0;
+	int hot_key_value_is_set = 0;
+	int result               = 0;
+
+	/* Test regular cases
+	 */
+	result = liblnk_file_get_hot_key_value(
+	          file,
+	          &hot_key_value,
+	          &error );
+
+	LNK_TEST_ASSERT_NOT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	hot_key_value_is_set = result;
+
+	/* Test error cases
+	 */
+	result = liblnk_file_get_hot_key_value(
+	          NULL,
+	          &hot_key_value,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	if( hot_key_value_is_set != 0 )
+	{
+		result = liblnk_file_get_hot_key_value(
 		          file,
 		          NULL,
 		          &error );
@@ -6728,6 +6962,21 @@ int main(
 		LNK_TEST_RUN_WITH_ARGS(
 		 "liblnk_file_get_file_size",
 		 lnk_test_file_get_file_size,
+		 file );
+
+		LNK_TEST_RUN_WITH_ARGS(
+		 "liblnk_file_get_icon_index",
+		 lnk_test_file_get_icon_index,
+		 file );
+
+		LNK_TEST_RUN_WITH_ARGS(
+		 "liblnk_file_get_show_window_value",
+		 lnk_test_file_get_show_window_value,
+		 file );
+
+		LNK_TEST_RUN_WITH_ARGS(
+		 "liblnk_file_get_hot_key_value",
+		 lnk_test_file_get_hot_key_value,
 		 file );
 
 		LNK_TEST_RUN_WITH_ARGS(

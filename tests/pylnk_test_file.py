@@ -2,7 +2,7 @@
 #
 # Python-bindings file type test script
 #
-# Copyright (C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>
+# Copyright (C) 2009-2017, Joachim Metz <joachim.metz@gmail.com>
 #
 # Refer to AUTHORS for acknowledgements.
 #
@@ -20,6 +20,7 @@
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
 import argparse
+import os
 import sys
 import unittest
 
@@ -28,6 +29,12 @@ import pylnk
 
 class FileTypeTests(unittest.TestCase):
   """Tests the file type."""
+
+  def test_signal_abort(self):
+    """Tests the signal_abort function."""
+    lnk_file = pylnk.file()
+
+    lnk_file.signal_abort()
 
   def test_open(self):
     """Tests the open function."""
@@ -60,8 +67,7 @@ class FileTypeTests(unittest.TestCase):
 
     lnk_file.open_file_object(file_object)
 
-    # TODO: change MemoryError into IOError
-    with self.assertRaises(MemoryError):
+    with self.assertRaises(IOError):
       lnk_file.open_file_object(file_object)
 
     lnk_file.close()

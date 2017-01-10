@@ -1,7 +1,7 @@
 /*
  * Python object wrapper of liblnk_file_t
  *
- * Copyright (C) 2009-2016, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (C) 2009-2017, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -152,6 +152,27 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  "get_file_size() -> Integer or None\n"
 	  "\n"
 	  "Retrieves the file size." },
+
+	{ "get_icon_index",
+	  (PyCFunction) pylnk_file_get_icon_index,
+	  METH_NOARGS,
+	  "get_icon_index() -> Integer or None\n"
+	  "\n"
+	  "Retrieves the icon index." },
+
+	{ "get_show_window_value",
+	  (PyCFunction) pylnk_file_get_show_window_value,
+	  METH_NOARGS,
+	  "get_show_window_value() -> Integer or None\n"
+	  "\n"
+	  "Retrieves the show window value." },
+
+	{ "get_hot_key_value",
+	  (PyCFunction) pylnk_file_get_hot_key_value,
+	  METH_NOARGS,
+	  "get_hot_key_value() -> Integer or None\n"
+	  "\n"
+	  "Retrieves the hot key value." },
 
 	{ "get_file_attribute_flags",
 	  (PyCFunction) pylnk_file_get_file_attribute_flags,
@@ -319,6 +340,24 @@ PyGetSetDef pylnk_file_object_get_set_definitions[] = {
 	  (getter) pylnk_file_get_file_size,
 	  (setter) 0,
 	  "The file size.",
+	  NULL },
+
+	{ "icon_index",
+	  (getter) pylnk_file_get_icon_index,
+	  (setter) 0,
+	  "The icon index.",
+	  NULL },
+
+	{ "show_window_value",
+	  (getter) pylnk_file_get_show_window_value,
+	  (setter) 0,
+	  "The show window value.",
+	  NULL },
+
+	{ "hot_key_value",
+	  (getter) pylnk_file_get_hot_key_value,
+	  (setter) 0,
+	  "The hot key value.",
 	  NULL },
 
 	{ "file_attribute_flags",
@@ -1025,6 +1064,16 @@ PyObject *pylnk_file_open_file_object(
 		 mode );
 
 		return( NULL );
+	}
+	if( pylnk_file->file_io_handle != NULL )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: invalid file - file IO handle already set.",
+		 function );
+
+		goto on_error;
 	}
 	if( pylnk_file_object_initialize(
 	     &( pylnk_file->file_io_handle ),
@@ -1934,6 +1983,187 @@ PyObject *pylnk_file_get_file_size(
 	integer_object = PyLong_FromUnsignedLong(
 	                  (unsigned long) value_32bit );
 
+	return( integer_object );
+}
+
+/* Retrieves the icon index
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_icon_index(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	PyObject *integer_object = NULL;
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_file_get_icon_index";
+	uint32_t value_32bit     = 0;
+	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_icon_index(
+	          pylnk_file->file,
+	          &value_32bit,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve icon index.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	integer_object = PyLong_FromUnsignedLong(
+	                  (unsigned long) value_32bit );
+
+	return( integer_object );
+}
+
+/* Retrieves the show window value
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_show_window_value(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	PyObject *integer_object = NULL;
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_file_get_show_window_value";
+	uint32_t value_32bit     = 0;
+	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_show_window_value(
+	          pylnk_file->file,
+	          &value_32bit,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve show window value.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	integer_object = PyLong_FromUnsignedLong(
+	                  (unsigned long) value_32bit );
+
+	return( integer_object );
+}
+
+/* Retrieves the hot key value
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_hot_key_value(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	PyObject *integer_object = NULL;
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_file_get_hot_key_value";
+	uint16_t hot_key_value   = 0;
+	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_hot_key_value(
+	          pylnk_file->file,
+	          &hot_key_value,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve hot key value.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	else if( result == 0 )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+#if PY_MAJOR_VERSION >= 3
+	integer_object = PyLong_FromLong(
+	                  (long) hot_key_value );
+#else
+	integer_object = PyInt_FromLong(
+	                  (long) hot_key_value );
+#endif
 	return( integer_object );
 }
 
