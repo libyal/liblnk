@@ -26,6 +26,7 @@ lnkinfo_SOURCES = \
 	info_handle.c info_handle.h \
 	lnkinfo.c \
 	lnktools_getopt.c lnktools_getopt.h \
+	lnktools_i18n.h \
 	lnktools_libbfio.h \
 	lnktools_libcerror.h \
 	lnktools_libclocale.h \

@@ -214,6 +214,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lnktools\lnktools_i18n.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lnktools\lnktools_libbfio.h"
 				>
 			</File>
