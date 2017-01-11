@@ -19,7 +19,6 @@ SUBDIRS = \
 	libfwps \
 	libfwsi \
 	liblnk \
-	libcsystem \
 	lnktools \
 	pylnk \
 	pylnk-python2 \
@@ -127,7 +126,6 @@ splint:
 	(cd $(srcdir)/libfwps && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/libfwsi && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/liblnk && $(MAKE) splint $(AM_MAKEFLAGS))
-	(cd $(srcdir)/libcsystem && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/lnktools && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/pylnk && $(MAKE) splint $(AM_MAKEFLAGS))
 	(cd $(srcdir)/po && $(MAKE) splint $(AM_MAKEFLAGS))

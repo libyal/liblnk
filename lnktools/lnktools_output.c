@@ -24,14 +24,72 @@
 #include <memory.h>
 #include <types.h>
 
-#include "lnkoutput.h"
+#include "lnktools_i18n.h"
 #include "lnktools_libbfio.h"
-#include "lnktools_libcsystem.h"
 #include "lnktools_libfdatetime.h"
 #include "lnktools_libfguid.h"
 #include "lnktools_libfwsi.h"
 #include "lnktools_liblnk.h"
 #include "lnktools_libuna.h"
+#include "lnktools_output.h"
+
+/* Initializes output settings
+ * Returns 1 if successful or -1 on error
+ */
+int lnktools_output_initialize(
+     int stdio_mode,
+     libcerror_error_t **error )
+{
+	static char *function = "lnktools_output_initialize";
+
+	if( ( stdio_mode != _IOFBF )
+	 && ( stdio_mode != _IOLBF )
+	 && ( stdio_mode != _IONBF ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: unsupported standard IO mode.",
+		 function );
+
+		return( -1 );
+	}
+#if !defined( __BORLANDC__ )
+	if( setvbuf(
+	     stdout,
+	     NULL,
+	     stdio_mode,
+	     0 ) != 0 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set IO mode of stdout.",
+		 function );
+
+		return( -1 );
+	}
+	if( setvbuf(
+	     stderr,
+	     NULL,
+	     stdio_mode,
+	     0 ) != 0 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set IO mode of stderr.",
+		 function );
+
+		return( -1 );
+	}
+#endif /* !defined( __BORLANDC__ ) */
+
+	return( 1 );
+}
 
 /* Prints the copyright information
  */

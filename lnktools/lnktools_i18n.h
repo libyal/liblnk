@@ -1,5 +1,5 @@
 /*
- * Common output functions for the lnktools
+ * Internationalization (i18n) functions
  *
  * Copyright (C) 2009-2017, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,31 +19,30 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LNKOUTPUT_H )
-#define _LNKOUTPUT_H
+#if !defined( _LNKTOOLS_I18N_H )
+#define _LNKTOOLS_I18N_H
 
 #include <common.h>
-#include <file_stream.h>
-#include <types.h>
+
+#if defined( HAVE_LIBINTL_H )
+#include <libintl.h>
+#endif
 
 #if defined( __cplusplus )
 extern "C" {
 #endif
 
-void lnkoutput_copyright_fprint(
-      FILE *stream );
+/* TODO for now do nothing i18n-like
+#define	_( string ) \
+	gettext( string )
+*/
 
-void lnkoutput_version_fprint(
-      FILE *stream,
-      const char *program );
-
-void lnkoutput_version_detailed_fprint(
-      FILE *stream,
-      const char *program );
+#define	_( string ) \
+	string
 
 #if defined( __cplusplus )
 }
 #endif
 
-#endif /* !defined( _LNKOUTPUT_H ) */
+#endif /* !defined( _LNKTOOLS_I18N_H ) */
 

@@ -15,7 +15,6 @@ AM_CPPFLAGS = \
 	@LIBFOLE_CPPFLAGS@ \
 	@LIBFWPS_CPPFLAGS@ \
 	@LIBFWSI_CPPFLAGS@ \
-	@LIBCSYSTEM_CPPFLAGS@ \
 	@LIBLNK_DLL_IMPORT@
 
 AM_LDFLAGS = @STATIC_LDFLAGS@
@@ -26,21 +25,22 @@ bin_PROGRAMS = \
 lnkinfo_SOURCES = \
 	info_handle.c info_handle.h \
 	lnkinfo.c \
-	lnkoutput.c lnkoutput.h \
+	lnktools_getopt.c lnktools_getopt.h \
 	lnktools_libbfio.h \
 	lnktools_libcerror.h \
 	lnktools_libclocale.h \
 	lnktools_libcnotify.h \
-	lnktools_libcsystem.h \
 	lnktools_libfdatetime.h \
 	lnktools_libfguid.h \
 	lnktools_libfwsi.h \
 	lnktools_liblnk.h \
 	lnktools_libuna.h \
+	lnktools_output.c lnktools_output.h \
+	lnktools_signal.c lnktools_signal.h \
+	lnktools_unused.h \
 	shell_items.c shell_items.h
 
 lnkinfo_LDADD = \
-	@LIBCSYSTEM_LIBADD@ \
 	@LIBFWSI_LIBADD@ \
 	@LIBFWPS_LIBADD@ \
 	@LIBFOLE_LIBADD@ \

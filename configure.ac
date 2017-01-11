@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [liblnk],
- [20170110],
+ [20170111],
  [joachim.metz@gmail.com])
 
 AC_CONFIG_SRCDIR(
@@ -102,17 +102,8 @@ AX_LIBFWSI_CHECK_ENABLE
 dnl Check for library function support
 AX_LIBLNK_CHECK_LOCAL
 
-dnl Check for enabling libcsystem for cross-platform C generic system functions
-AX_LIBCSYSTEM_CHECK_ENABLE
-
-dnl Check if lnktools should be build as static executables
-AX_COMMON_CHECK_ENABLE_STATIC_EXECUTABLES
-
-dnl Check if liblnk should be build with verbose output
-AX_COMMON_CHECK_ENABLE_VERBOSE_OUTPUT
-
-dnl Check if liblnk should be build with debug output
-AX_COMMON_CHECK_ENABLE_DEBUG_OUTPUT
+dnl Check for lnktools function support
+AX_LNKTOOLS_CHECK_LOCAL
 
 dnl Check if liblnk python bindings (pylnk) should be build
 AX_PYTHON_CHECK_PYPREFIX
@@ -137,29 +128,6 @@ AS_IF(
 dnl Check for test function support
 AX_TESTS_CHECK_LOCAL
 
-dnl Check if DLL support is needed
-AS_IF(
- [test "x$enable_shared" = xyes],
- [AS_CASE(
-  [$host],
-  [*cygwin* | *mingw*],
-  [AC_DEFINE(
-   [HAVE_DLLMAIN],
-   [1],
-   [Define to 1 to enable the DllMain function.])
-  AC_SUBST(
-   [HAVE_DLLMAIN],
-   [1])
-
-  AS_IF(
-   [test "x$ac_cv_enable_static_executables" = xno],
-   [AC_SUBST(
-    [LIBLNK_DLL_IMPORT],
-    ["-DLIBLNK_DLL_IMPORT"])
-   ])
-  ])
- ])
-
 dnl Set additional compiler flags
 CFLAGS="$CFLAGS -Wall";
 
@@ -171,13 +139,6 @@ AS_IF(
   [Requires:])
  AC_SUBST(
   [liblnk_spec_build_requires],
-  [BuildRequires:])
- ])
-
-AS_IF(
- [test "x$ac_cv_libcsystem" = xyes],
- [AC_SUBST(
-  [liblnk_spec_tools_build_requires],
   [BuildRequires:])
  ])
 
@@ -216,7 +177,6 @@ AC_CONFIG_FILES([libfole/Makefile])
 AC_CONFIG_FILES([libfwps/Makefile])
 AC_CONFIG_FILES([libfwsi/Makefile])
 AC_CONFIG_FILES([liblnk/Makefile])
-AC_CONFIG_FILES([libcsystem/Makefile])
 AC_CONFIG_FILES([lnktools/Makefile])
 AC_CONFIG_FILES([pylnk/Makefile])
 AC_CONFIG_FILES([pylnk-python2/Makefile])
@@ -262,7 +222,6 @@ Building:
    libfole support:                          $ac_cv_libfole
    libfwps support:                          $ac_cv_libfwps
    libfwsi support:                          $ac_cv_libfwsi
-   libcsystem support:                       $ac_cv_libcsystem
 
 Features:
    Multi-threading support:                  $ac_cv_libcthreads_multi_threading

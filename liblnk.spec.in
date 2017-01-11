@@ -24,8 +24,7 @@ Header files and libraries for developing applications for liblnk.
 %package tools
 Summary: Several tools for reading Windows Shortcut Files (LNK)
 Group: Applications/System
-Requires: liblnk = %{version}-%{release} @ax_libcsystem_spec_requires@
-@liblnk_spec_tools_build_requires@ @ax_libcsystem_spec_build_requires@
+Requires: liblnk = %{version}-%{release}
 
 %description tools
 Several tools for reading Windows Shortcut Files (LNK)
