@@ -104,6 +104,10 @@ int liblnk_io_handle_initialize(
 		goto on_error;
 	}
 	( *io_handle )->ascii_codepage = LIBLNK_CODEPAGE_WINDOWS_1252;
+	if(liblnk_get_codepage(&((*io_handle)->ascii_codepage), &error) != 1)
+	{
+		goto on_error;
+	}
 
 	return( 1 );
 
@@ -545,4 +549,3 @@ ssize_t liblnk_io_handle_read_file_header(
 
 	return( read_count );
 }
-
