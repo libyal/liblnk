@@ -26,6 +26,7 @@
 
 #include "lnktools_i18n.h"
 #include "lnktools_libbfio.h"
+#include "lnktools_libcerror.h"
 #include "lnktools_libfdatetime.h"
 #include "lnktools_libfguid.h"
 #include "lnktools_libfwsi.h"

@@ -19,8 +19,8 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LNKOUTPUT_H )
-#define _LNKOUTPUT_H
+#if !defined( _LNKTOOLS_OUTPUT_H )
+#define _LNKTOOLS_OUTPUT_H
 
 #include <common.h>
 #include <file_stream.h>
@@ -51,5 +51,5 @@ void lnkoutput_version_detailed_fprint(
 }
 #endif
 
-#endif /* !defined( _LNKOUTPUT_H ) */
+#endif /* !defined( _LNKTOOLS_OUTPUT_H ) */
 
