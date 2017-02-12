@@ -147,7 +147,6 @@ stamp-h[1-9]
 /libcnotify
 /libcpath
 /libcsplit
-/libcsystem
 /libcthreads
 /libfdatetime
 /libfguid
