@@ -270,6 +270,113 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the liblnk_location_information_read function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_location_information_read(
+     void )
+{
+	libcerror_error_t *error                            = NULL;
+	liblnk_location_information_t *location_information = NULL;
+	int result                                          = 0;
+
+	/* Initialize test
+	 */
+	result = liblnk_location_information_initialize(
+	          &location_information,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "location_information",
+         location_information );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	/* Test error cases
+	 */
+	result = liblnk_location_information_read(
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_location_information_read(
+	          location_information,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	return( 1 );
+
+	/* Clean up
+	 */
+	result = liblnk_location_information_free(
+	          &location_information,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "location_information",
+         location_information );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( location_information != NULL )
+	{
+		liblnk_location_information_free(
+		 &location_information,
+		 NULL );
+	}
+	return( 0 );
+}
+
 #endif /* defined( __GNUC__ ) */
 
 /* The main program
@@ -297,7 +404,9 @@ int main(
 	 "liblnk_location_information_free",
 	 lnk_test_location_information_free );
 
-	/* TODO: add tests for liblnk_location_information_read */
+	LNK_TEST_RUN(
+	 "liblnk_location_information_read",
+	 lnk_test_location_information_read );
 
 #endif /* defined( __GNUC__ ) */
 

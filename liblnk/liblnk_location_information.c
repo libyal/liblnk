@@ -755,7 +755,7 @@ ssize_t liblnk_location_information_read(
 		{
 			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
 			{
-				if( libfwsi_debug_print_utf16_string_value(
+				if( liblnk_debug_print_utf16_string_value(
 				     function,
 				     "volume name\t\t\t\t\t",
 				     location_information->volume_label,
@@ -775,7 +775,7 @@ ssize_t liblnk_location_information_read(
 			}
 			else
 			{
-				if( libfwsi_debug_print_string_value(
+				if( liblnk_debug_print_string_value(
 				     function,
 				     "volume information volume label\t\t\t",
 				     location_information->volume_label,
@@ -985,7 +985,7 @@ ssize_t liblnk_location_information_read(
 			{
 				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_LOCAL_PATH_IS_UNICODE ) != 0 )
 				{
-					if( libfwsi_debug_print_utf16_string_value(
+					if( liblnk_debug_print_utf16_string_value(
 					     function,
 					     "local path\t\t\t\t\t\t",
 					     location_information->local_path,
@@ -1005,7 +1005,7 @@ ssize_t liblnk_location_information_read(
 				}
 				else
 				{
-					if( libfwsi_debug_print_string_value(
+					if( liblnk_debug_print_string_value(
 					     function,
 					     "local path\t\t\t\t\t\t",
 					     location_information->local_path,
@@ -1335,7 +1335,7 @@ ssize_t liblnk_location_information_read(
 			{
 				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_NETWORK_SHARE_NAME_IS_UNICODE ) != 0 )
 				{
-					if( libfwsi_debug_print_utf16_string_value(
+					if( liblnk_debug_print_utf16_string_value(
 					     function,
 					     "volume information network share name\t\t\t",
 					     location_information->network_share_name,
@@ -1355,7 +1355,7 @@ ssize_t liblnk_location_information_read(
 				}
 				else
 				{
-					if( libfwsi_debug_print_string_value(
+					if( liblnk_debug_print_string_value(
 					     function,
 					     "volume information network share name\t\t\t",
 					     location_information->network_share_name,
@@ -1534,7 +1534,7 @@ ssize_t liblnk_location_information_read(
 			{
 				if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_DEVICE_NAME_IS_UNICODE ) != 0 )
 				{
-					if( libfwsi_debug_print_utf16_string_value(
+					if( liblnk_debug_print_utf16_string_value(
 					     function,
 					     "volume information device name\t\t\t",
 					     location_information->device_name,
@@ -1554,7 +1554,7 @@ ssize_t liblnk_location_information_read(
 				}
 				else
 				{
-					if( libfwsi_debug_print_string_value(
+					if( liblnk_debug_print_string_value(
 					     function,
 					     "volume information device name\t\t\t",
 					     location_information->device_name,
@@ -1763,7 +1763,7 @@ ssize_t liblnk_location_information_read(
 		{
 			if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
 			{
-				if( libfwsi_debug_print_utf16_string_value(
+				if( liblnk_debug_print_utf16_string_value(
 				     function,
 				     "common path\t\t\t\t\t\t",
 				     location_information->common_path,
@@ -1783,7 +1783,7 @@ ssize_t liblnk_location_information_read(
 			}
 			else
 			{
-				if( libfwsi_debug_print_string_value(
+				if( liblnk_debug_print_string_value(
 				     function,
 				     "common path\t\t\t\t\t\t",
 				     location_information->device_name,

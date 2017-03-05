@@ -80,6 +80,15 @@ ssize_t liblnk_io_handle_read_file_header(
          liblnk_file_information_t *file_information,
          libcerror_error_t **error );
 
+int liblnk_io_handle_read_file_header_data(
+     liblnk_io_handle_t *io_handle,
+     const uint8_t *data,
+     size_t data_size,
+     uint8_t *class_identifier,
+     size_t class_identifier_size,
+     liblnk_file_information_t *file_information,
+     libcerror_error_t **error );
+
 #if defined( __cplusplus )
 }
 #endif

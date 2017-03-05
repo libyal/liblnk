@@ -270,6 +270,113 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the liblnk_link_target_identifier_read function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_link_target_identifier_read(
+     void )
+{
+	libcerror_error_t *error                                = NULL;
+	liblnk_link_target_identifier_t *link_target_identifier = NULL;
+	int result                                              = 0;
+
+	/* Initialize test
+	 */
+	result = liblnk_link_target_identifier_initialize(
+	          &link_target_identifier,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "link_target_identifier",
+         link_target_identifier );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	/* Test error cases
+	 */
+	result = liblnk_link_target_identifier_read(
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_link_target_identifier_read(
+	          link_target_identifier,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	return( 1 );
+
+	/* Clean up
+	 */
+	result = liblnk_link_target_identifier_free(
+	          &link_target_identifier,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "link_target_identifier",
+         link_target_identifier );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( link_target_identifier != NULL )
+	{
+		liblnk_link_target_identifier_free(
+		 &link_target_identifier,
+		 NULL );
+	}
+	return( 0 );
+}
+
 #endif /* defined( __GNUC__ ) */
 
 /* The main program
@@ -297,7 +404,9 @@ int main(
 	 "liblnk_link_target_identifier_free",
 	 lnk_test_link_target_identifier_free );
 
-	/* TODO: add tests for liblnk_link_target_identifier_read */
+	LNK_TEST_RUN(
+	 "liblnk_link_target_identifier_read",
+	 lnk_test_link_target_identifier_read );
 
 #endif /* defined( __GNUC__ ) */
 

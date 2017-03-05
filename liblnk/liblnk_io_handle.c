@@ -202,12 +202,6 @@ ssize_t liblnk_io_handle_read_file_header(
 
 	static char *function = "liblnk_io_handle_read_file_header";
 	ssize_t read_count    = 0;
-	uint32_t header_size  = 0;
-
-#if defined( HAVE_DEBUG_OUTPUT )
-	uint32_t value_32bit  = 0;
-	uint16_t value_16bit  = 0;
-#endif
 
 	if( io_handle == NULL )
 	{
@@ -216,50 +210,6 @@ ssize_t liblnk_io_handle_read_file_header(
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid IO handle.",
-		 function );
-
-		return( -1 );
-	}
-	if( class_identifier == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid class identifier.",
-		 function );
-
-		return( -1 );
-	}
-	if( class_identifier_size < 16 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-		 "%s: class identifier too small.",
-		 function );
-
-		return( -1 );
-	}
-	if( class_identifier_size > (size_t) SSIZE_MAX )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
-		 "%s: class identifier size value exceeds maximum.",
-		 function );
-
-		return( -1 );
-	}
-	if( file_information == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid file information.",
 		 function );
 
 		return( -1 );
@@ -313,7 +263,131 @@ ssize_t liblnk_io_handle_read_file_header(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_IO,
 		 LIBCERROR_IO_ERROR_READ_FAILED,
+		 "%s: unable to read file header data.",
+		 function );
+
+		return( -1 );
+	}
+	if( liblnk_io_handle_read_file_header_data(
+	     io_handle,
+	     (uint8_t *) &file_header,
+	     sizeof( lnk_file_header_t ),
+	     class_identifier,
+	     class_identifier_size,
+	     file_information,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
 		 "%s: unable to read file header.",
+		 function );
+
+		return( -1 );
+	}
+	return( read_count );
+}
+
+/* Reads the file header data
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_io_handle_read_file_header_data(
+     liblnk_io_handle_t *io_handle,
+     const uint8_t *data,
+     size_t data_size,
+     uint8_t *class_identifier,
+     size_t class_identifier_size,
+     liblnk_file_information_t *file_information,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_io_handle_read_file_header_data";
+	uint32_t header_size  = 0;
+
+	if( io_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_size < sizeof( lnk_file_header_t ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 "%s: invalid data size value too small.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_size > (size_t) SSIZE_MAX )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid data size value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
+	if( class_identifier == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid class identifier.",
+		 function );
+
+		return( -1 );
+	}
+	if( class_identifier_size < 16 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 "%s: class identifier too small.",
+		 function );
+
+		return( -1 );
+	}
+	if( class_identifier_size > (size_t) SSIZE_MAX )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: class identifier size value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
+	if( file_information == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file information.",
 		 function );
 
 		return( -1 );
@@ -325,16 +399,16 @@ ssize_t liblnk_io_handle_read_file_header(
 		 "%s: file header:\n",
 		 function );
 		libcnotify_print_data(
-		 (uint8_t *) &file_header,
+		 data,
 		 sizeof( lnk_file_header_t ),
 		 0 );
 	}
 #endif
 	byte_stream_copy_to_uint32_little_endian(
-	 file_header.header_size,
+	 ( (lnk_file_header_t *) data )->header_size,
 	 header_size );
 
-	if( header_size != 0x4c )
+	if( header_size != 76 )
 	{
 		libcerror_error_set(
 		 error,
@@ -347,7 +421,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		return( -1 );
 	}
 	if( memory_compare(
-	     file_header.class_identifier,
+	     ( (lnk_file_header_t *) data )->class_identifier,
 	     lnk_file_class_identifier,
 	     16 ) != 0 )
 	{
@@ -363,7 +437,7 @@ ssize_t liblnk_io_handle_read_file_header(
 /* TODO is a libfguid version of the class identifier needed ? */
 	if( memory_copy(
 	     class_identifier,
-	     file_header.class_identifier,
+	     ( (lnk_file_header_t *) data )->class_identifier,
 	     16 ) == NULL )
 	{
 		libcerror_error_set(
@@ -376,53 +450,53 @@ ssize_t liblnk_io_handle_read_file_header(
 		return( -1 );
 	}
 	byte_stream_copy_to_uint32_little_endian(
-	 file_header.data_flags,
+	 ( (lnk_file_header_t *) data )->data_flags,
 	 io_handle->data_flags );
 
 	byte_stream_copy_to_uint32_little_endian(
-	 file_header.file_attribute_flags,
+	 ( (lnk_file_header_t *) data )->file_attribute_flags,
 	 file_information->attribute_flags );
 
 	byte_stream_copy_to_uint64_little_endian(
-	 file_header.creation_time,
+	 ( (lnk_file_header_t *) data )->creation_time,
 	 file_information->creation_time )
 
 	byte_stream_copy_to_uint64_little_endian(
-	 file_header.access_time,
+	 ( (lnk_file_header_t *) data )->access_time,
 	 file_information->access_time );
 
 	byte_stream_copy_to_uint64_little_endian(
-	 file_header.modification_time,
+	 ( (lnk_file_header_t *) data )->modification_time,
 	 file_information->modification_time );
 
 	byte_stream_copy_to_uint32_little_endian(
-	 file_header.file_size,
+	 ( (lnk_file_header_t *) data )->file_size,
 	 file_information->size );
 
 	byte_stream_copy_to_uint32_little_endian(
-	 file_header.icon_index,
+	 ( (lnk_file_header_t *) data )->icon_index,
 	 file_information->icon_index );
 
 	byte_stream_copy_to_uint32_little_endian(
-	 file_header.show_window_value,
+	 ( (lnk_file_header_t *) data )->show_window_value,
 	 file_information->show_window_value );
 
 	byte_stream_copy_to_uint16_little_endian(
-	 file_header.hot_key_value,
+	 ( (lnk_file_header_t *) data )->hot_key_value,
 	 file_information->hot_key_value );
 
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
 	{
 		libcnotify_printf(
-		 "%s: header size\t\t\t\t: %" PRIu32 "\n",
+		 "%s: header size\t\t\t: %" PRIu32 "\n",
 		 function,
 		 header_size );
 
-		if( libfwsi_debug_print_guid_value(
+		if( liblnk_debug_print_guid_value(
 		     function,
-		     "class identifier\t\t\t",
-		     file_header.class_identifier,
+		     "class identifier\t\t",
+		     ( (lnk_file_header_t *) data )->class_identifier,
 		     16,
 		     LIBFGUID_ENDIAN_LITTLE,
 		     LIBFGUID_STRING_FORMAT_FLAG_USE_LOWER_CASE,
@@ -438,7 +512,7 @@ ssize_t liblnk_io_handle_read_file_header(
 			return( -1 );
 		}
 		libcnotify_printf(
-		 "%s: data flags\t\t\t\t: 0x%08" PRIx32 "\n",
+		 "%s: data flags\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 io_handle->data_flags );
 		liblnk_debug_print_data_flags(
@@ -447,7 +521,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		 "\n" );
 
 		libcnotify_printf(
-		 "%s: file attribute flags\t\t\t: 0x%08" PRIx32 "\n",
+		 "%s: file attribute flags\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 file_information->attribute_flags );
 		liblnk_debug_print_file_attribute_flags(
@@ -458,7 +532,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		if( liblnk_debug_print_filetime_value(
 		     function,
 		     "creation time\t\t\t",
-		     file_header.creation_time,
+		     ( (lnk_file_header_t *) data )->creation_time,
 		     8,
 		     LIBFDATETIME_ENDIAN_LITTLE,
 		     LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
@@ -475,8 +549,8 @@ ssize_t liblnk_io_handle_read_file_header(
 		}
 		if( liblnk_debug_print_filetime_value(
 		     function,
-		     "access time\t\t\t\t",
-		     file_header.access_time,
+		     "access time\t\t\t",
+		     ( (lnk_file_header_t *) data )->access_time,
 		     8,
 		     LIBFDATETIME_ENDIAN_LITTLE,
 		     LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
@@ -493,8 +567,8 @@ ssize_t liblnk_io_handle_read_file_header(
 		}
 		if( liblnk_debug_print_filetime_value(
 		     function,
-		     "modification time\t\t\t",
-		     file_header.modification_time,
+		     "modification time\t\t",
+		     ( (lnk_file_header_t *) data )->modification_time,
 		     8,
 		     LIBFDATETIME_ENDIAN_LITTLE,
 		     LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
@@ -510,17 +584,17 @@ ssize_t liblnk_io_handle_read_file_header(
 			return( -1 );
 		}
 		libcnotify_printf(
-		 "%s: file size\t\t\t\t: %" PRIu32 " bytes\n",
+		 "%s: file size\t\t\t: %" PRIu32 " bytes\n",
 		 function,
 		 file_information->size );
 
 		libcnotify_printf(
-		 "%s: icon index\t\t\t\t: 0x%08" PRIx32 "\n",
+		 "%s: icon index\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 file_information->icon_index );
 
 		libcnotify_printf(
-		 "%s: show window value\t\t\t: 0x%08" PRIx32 "\n",
+		 "%s: show window value\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 file_information->show_window_value );
 
@@ -533,7 +607,7 @@ ssize_t liblnk_io_handle_read_file_header(
 		 "%s: reserved:\n",
 		 function );
 		libcnotify_print_data(
-		 (uint8_t *) file_header.reserved,
+		 (uint8_t *) ( (lnk_file_header_t *) data )->reserved,
 		 10,
 		 0 );
 
@@ -541,8 +615,6 @@ ssize_t liblnk_io_handle_read_file_header(
 		 "\n" );
 	}
 #endif
-/* TODO compare file sizes */
-
-	return( read_count );
+	return( 1 );
 }
 

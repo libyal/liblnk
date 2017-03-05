@@ -270,6 +270,113 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the liblnk_data_string_read function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_data_string_read(
+     void )
+{
+	libcerror_error_t *error          = NULL;
+	liblnk_data_string_t *data_string = NULL;
+	int result                        = 0;
+
+	/* Initialize test
+	 */
+	result = liblnk_data_string_initialize(
+	          &data_string,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "data_string",
+         data_string );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	/* Test error cases
+	 */
+	result = liblnk_data_string_read(
+	          NULL,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_data_string_read(
+	          data_string,
+	          NULL,
+	          NULL,
+	          0,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	return( 1 );
+
+	/* Clean up
+	 */
+	result = liblnk_data_string_free(
+	          &data_string,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "data_string",
+         data_string );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( data_string != NULL )
+	{
+		liblnk_data_string_free(
+		 &data_string,
+		 NULL );
+	}
+	return( 0 );
+}
+
 #endif /* defined( __GNUC__ ) */
 
 /* The main program
@@ -297,7 +404,9 @@ int main(
 	 "liblnk_data_string_free",
 	 lnk_test_data_string_free );
 
-	/* TODO: add tests for liblnk_data_string_read */
+	LNK_TEST_RUN(
+	 "liblnk_data_string_read",
+	 lnk_test_data_string_read );
 
 	/* TODO: add tests for liblnk_data_string_get_utf8_string_size */
 

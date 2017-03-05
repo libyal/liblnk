@@ -333,7 +333,7 @@ int liblnk_distributed_link_tracker_properties_read(
 		 16,
 		 0 );
 
-		if( libfwsi_debug_print_string_value(
+		if( liblnk_debug_print_string_value(
 		     function,
 		     "machine identifier string\t",
 		     distributed_link_tracker_properties_data->machine_identifier_string,
@@ -350,7 +350,7 @@ int liblnk_distributed_link_tracker_properties_read(
 
 			return( -1 );
 		}
-		if( libfwsi_debug_print_guid_value(
+		if( liblnk_debug_print_guid_value(
 		     function,
 		     "droid volume identifier\t",
 		     distributed_link_tracker_properties->droid_volume_identifier,
@@ -368,7 +368,7 @@ int liblnk_distributed_link_tracker_properties_read(
 
 			return( -1 );
 		}
-		if( libfwsi_debug_print_guid_value(
+		if( liblnk_debug_print_guid_value(
 		     function,
 		     "droid file identifier\t\t",
 		     distributed_link_tracker_properties->droid_file_identifier,
@@ -386,7 +386,7 @@ int liblnk_distributed_link_tracker_properties_read(
 
 			return( -1 );
 		}
-		if( libfwsi_debug_print_guid_value(
+		if( liblnk_debug_print_guid_value(
 		     function,
 		     "birth droid volume identifier\t",
 		     distributed_link_tracker_properties->birth_droid_volume_identifier,
@@ -404,7 +404,7 @@ int liblnk_distributed_link_tracker_properties_read(
 
 			return( -1 );
 		}
-		if( libfwsi_debug_print_guid_value(
+		if( liblnk_debug_print_guid_value(
 		     function,
 		     "birth droid file identifier\t",
 		     distributed_link_tracker_properties->birth_droid_file_identifier,

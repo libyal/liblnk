@@ -138,7 +138,7 @@ int liblnk_known_folder_location_free(
 }
 
 /* Reads the known folder location data block
- * Returns the number of bytes read if successful or -1 on error
+ * Returns 1 if successful or -1 on error
  */
 int liblnk_known_folder_location_read_data_block(
      liblnk_known_folder_location_t *known_folder_location,
@@ -188,7 +188,7 @@ int liblnk_known_folder_location_read_data_block(
 }
 
 /* Reads the known folder location
- * Returns the number of bytes read if successful or -1 on error
+ * Returns 1 if successful or -1 on error
  */
 int liblnk_known_folder_location_read_data(
      liblnk_known_folder_location_t *known_folder_location,
@@ -263,7 +263,7 @@ int liblnk_known_folder_location_read_data(
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
 	{
-		if( libfwsi_debug_print_guid_value(
+		if( liblnk_debug_print_guid_value(
 		     function,
 		     "known folder identifier\t\t\t",
 		     known_folder_location->folder_identifier,

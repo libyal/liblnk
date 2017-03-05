@@ -270,6 +270,111 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the liblnk_distributed_link_tracker_properties_read function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_distributed_link_tracker_properties_read(
+     void )
+{
+	libcerror_error_t *error                                                          = NULL;
+	liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties = NULL;
+	int result                                                                        = 0;
+
+	/* Initialize test
+	 */
+	result = liblnk_distributed_link_tracker_properties_initialize(
+	          &distributed_link_tracker_properties,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "distributed_link_tracker_properties",
+         distributed_link_tracker_properties );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	/* Test error cases
+	 */
+	result = liblnk_distributed_link_tracker_properties_read(
+	          NULL,
+	          NULL,
+	          NULL,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_distributed_link_tracker_properties_read(
+	          distributed_link_tracker_properties,
+	          NULL,
+	          NULL,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	return( 1 );
+
+	/* Clean up
+	 */
+	result = liblnk_distributed_link_tracker_properties_free(
+	          &distributed_link_tracker_properties,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "distributed_link_tracker_properties",
+         distributed_link_tracker_properties );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( distributed_link_tracker_properties != NULL )
+	{
+		liblnk_distributed_link_tracker_properties_free(
+		 &distributed_link_tracker_properties,
+		 NULL );
+	}
+	return( 0 );
+}
+
 #endif /* defined( __GNUC__ ) */
 
 /* The main program
@@ -297,7 +402,9 @@ int main(
 	 "liblnk_distributed_link_tracker_properties_free",
 	 lnk_test_distributed_link_tracker_properties_free );
 
-	/* TODO: add tests for liblnk_distributed_link_tracker_properties_read */
+	LNK_TEST_RUN(
+	 "liblnk_distributed_link_tracker_properties_read",
+	 lnk_test_distributed_link_tracker_properties_read );
 
 #endif /* defined( __GNUC__ ) */
 
