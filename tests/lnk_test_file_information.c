@@ -35,6 +35,27 @@
 
 #include "../liblnk/liblnk_file_information.h"
 
+uint8_t lnk_test_file_information_data[ 76 ] = {
+	0x4c, 0x00, 0x00, 0x00, 0x01, 0x14, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x46, 0x9f, 0x02, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x8c, 0x37, 0x55,
+	0x70, 0xb9, 0xbb, 0x01, 0x00, 0x80, 0x93, 0xfc, 0x7d, 0xb3, 0xcb, 0x01, 0x00, 0x8c, 0x37, 0x55,
+	0x70, 0xb9, 0xbb, 0x01, 0x10, 0xd5, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
+uint8_t lnk_test_file_information_error_data1[ 76 ] = {
+	0x4d, 0x00, 0x00, 0x00, 0x01, 0x14, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x46, 0x9f, 0x02, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x8c, 0x37, 0x55,
+	0x70, 0xb9, 0xbb, 0x01, 0x00, 0x80, 0x93, 0xfc, 0x7d, 0xb3, 0xcb, 0x01, 0x00, 0x8c, 0x37, 0x55,
+	0x70, 0xb9, 0xbb, 0x01, 0x10, 0xd5, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
+uint8_t lnk_test_file_information_error_data2[ 76 ] = {
+	0x4c, 0x00, 0x00, 0x00, 0x01, 0x14, 0x02, 0x00, 0xa0, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x46, 0x9f, 0x02, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x8c, 0x37, 0x55,
+	0x70, 0xb9, 0xbb, 0x01, 0x00, 0x80, 0x93, 0xfc, 0x7d, 0xb3, 0xcb, 0x01, 0x00, 0x8c, 0x37, 0x55,
+	0x70, 0xb9, 0xbb, 0x01, 0x10, 0xd5, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
 #if defined( __GNUC__ )
 
 /* Tests the liblnk_file_information_initialize function
@@ -270,6 +291,283 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the liblnk_file_information_read_data function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_file_information_read_data(
+     void )
+{
+	uint8_t class_identifier[ 16 ];
+
+	libcerror_error_t *error                    = NULL;
+	liblnk_file_information_t *file_information = NULL;
+	int result                                  = 0;
+
+	/* Initialize test
+	 */
+	result = liblnk_file_information_initialize(
+	          &file_information,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "file_information",
+         file_information );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	/* Test regular cases
+	 */
+	result = liblnk_file_information_read_data(
+	          file_information,
+	          lnk_test_file_information_data,
+	          76,
+	          class_identifier,
+	          16,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	LNK_TEST_ASSERT_EQUAL_UINT32(
+	 "file_information->size",
+	 file_information->size,
+	 709904 );
+
+	/* Test error cases
+	 */
+	result = liblnk_file_information_read_data(
+	          NULL,
+	          lnk_test_file_information_data,
+	          76,
+	          class_identifier,
+	          16,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_file_information_read_data(
+	          file_information,
+	          NULL,
+	          76,
+	          class_identifier,
+	          16,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_file_information_read_data(
+	          file_information,
+	          lnk_test_file_information_data,
+	          75,
+	          class_identifier,
+	          16,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_file_information_read_data(
+	          file_information,
+	          lnk_test_file_information_data,
+	          (size_t) SSIZE_MAX + 1,
+	          class_identifier,
+	          16,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_file_information_read_data(
+	          file_information,
+	          lnk_test_file_information_data,
+	          76,
+	          NULL,
+	          16,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_file_information_read_data(
+	          file_information,
+	          lnk_test_file_information_data,
+	          76,
+	          class_identifier,
+	          15,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_file_information_read_data(
+	          file_information,
+	          lnk_test_file_information_data,
+	          76,
+	          class_identifier,
+	          (size_t) SSIZE_MAX + 1,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test error case where header size is invalid
+	 */
+	result = liblnk_file_information_read_data(
+	          file_information,
+	          lnk_test_file_information_error_data1,
+	          76,
+	          class_identifier,
+	          16,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test error case where class identifier is invalid
+	 */
+	result = liblnk_file_information_read_data(
+	          file_information,
+	          lnk_test_file_information_error_data2,
+	          76,
+	          class_identifier,
+	          16,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "error",
+         error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = liblnk_file_information_free(
+	          &file_information,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "file_information",
+         file_information );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( file_information != NULL )
+	{
+		liblnk_file_information_free(
+		 &file_information,
+		 NULL );
+	}
+	return( 0 );
+}
+
 #endif /* defined( __GNUC__ ) */
 
 /* The main program
@@ -296,6 +594,12 @@ int main(
 	LNK_TEST_RUN(
 	 "liblnk_file_information_free",
 	 lnk_test_file_information_free );
+
+	/* TODO: add tests for liblnk_file_information_read */
+
+	LNK_TEST_RUN(
+	 "liblnk_file_information_read_data",
+	 lnk_test_file_information_read_data );
 
 #endif /* defined( __GNUC__ ) */
 

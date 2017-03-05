@@ -193,14 +193,8 @@ ssize_t liblnk_data_string_read(
 	}
 	/* Store is unicode value for internal use
 	 */
-	if( ( io_handle->data_flags & LIBLNK_DATA_FLAG_IS_UNICODE ) != 0 )
-	{
-		data_string->is_unicode = 1;
-	}
-	else
-	{
-		data_string->is_unicode = 0;
-	}
+	data_string->is_unicode = io_handle->is_unicode;
+
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
 	{

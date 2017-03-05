@@ -25,6 +25,7 @@
 #include <common.h>
 #include <types.h>
 
+#include "liblnk_libbfio.h"
 #include "liblnk_libcerror.h"
 
 #if defined( __cplusplus )
@@ -35,6 +36,10 @@ typedef struct liblnk_file_information liblnk_file_information_t;
 
 struct liblnk_file_information
 {
+	/* The data flags
+	 */
+	uint32_t data_flags;
+
 	/* The size
 	 */
 	uint32_t size;
@@ -77,6 +82,21 @@ int liblnk_file_information_initialize(
 
 int liblnk_file_information_free(
      liblnk_file_information_t **file_information,
+     libcerror_error_t **error );
+
+int liblnk_file_information_read(
+     liblnk_file_information_t *file_information,
+     libbfio_handle_t *file_io_handle,
+     uint8_t *class_identifier,
+     size_t class_identifier_size,
+     libcerror_error_t **error );
+
+int liblnk_file_information_read_data(
+     liblnk_file_information_t *file_information,
+     const uint8_t *data,
+     size_t data_size,
+     uint8_t *class_identifier,
+     size_t class_identifier_size,
      libcerror_error_t **error );
 
 #if defined( __cplusplus )

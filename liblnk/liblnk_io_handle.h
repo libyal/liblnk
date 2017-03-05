@@ -43,9 +43,9 @@ struct liblnk_io_handle
 	 */
 	size64_t file_size;
 
-	/* The data flags
+	/* Value to indicate if the string data is in Unicode (UTF-16 little-endian)
 	 */
-	uint32_t data_flags;
+	uint8_t is_unicode;
 
 	/* Flags
 	 */
@@ -70,23 +70,6 @@ int liblnk_io_handle_free(
 
 int liblnk_io_handle_clear(
      liblnk_io_handle_t *io_handle,
-     libcerror_error_t **error );
-
-ssize_t liblnk_io_handle_read_file_header(
-         liblnk_io_handle_t *io_handle,
-         libbfio_handle_t *file_io_handle,
-         uint8_t *class_identifier,
-         size_t class_identifier_size,
-         liblnk_file_information_t *file_information,
-         libcerror_error_t **error );
-
-int liblnk_io_handle_read_file_header_data(
-     liblnk_io_handle_t *io_handle,
-     const uint8_t *data,
-     size_t data_size,
-     uint8_t *class_identifier,
-     size_t class_identifier_size,
-     liblnk_file_information_t *file_information,
      libcerror_error_t **error );
 
 #if defined( __cplusplus )
