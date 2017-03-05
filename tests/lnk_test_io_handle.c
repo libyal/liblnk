@@ -33,7 +33,6 @@
 #include "lnk_test_memory.h"
 #include "lnk_test_unused.h"
 
-#include "../liblnk/liblnk_file_information.h"
 #include "../liblnk/liblnk_io_handle.h"
 
 #if defined( __GNUC__ )
