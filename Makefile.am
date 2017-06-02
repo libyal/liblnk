@@ -34,13 +34,12 @@ DPKG_FILES = \
 	dpkg/compat \
 	dpkg/control \
 	dpkg/copyright \
-	dpkg/copyright.in \
 	dpkg/rules \
-	dpkg/liblnk.docs \
-	dpkg/liblnk-dev.docs \
-	dpkg/liblnk-python.docs \
-	dpkg/liblnk-python3.docs \
-	dpkg/liblnk-tools.docs \
+	dpkg/liblnk.install \
+	dpkg/liblnk-dev.install \
+	dpkg/liblnk-python.install \
+	dpkg/liblnk-python3.install \
+	dpkg/liblnk-tools.install \
 	dpkg/source/format
 
 GETTEXT_FILES = \
