@@ -11,7 +11,7 @@ TEST_PREFIX=`dirname ${PWD}`;
 TEST_PREFIX=`basename ${TEST_PREFIX} | sed 's/^lib\([^-]*\).*$/\1/'`;
 
 TEST_PROFILE="lib${TEST_PREFIX}";
-LIBRARY_TESTS="data_block data_string distributed_link_tracker_properties error file_information io_handle known_folder_location link_target_identifier location_information notify special_folder_location";
+LIBRARY_TESTS="data_block data_string distributed_link_tracker_properties error file_header io_handle known_folder_location link_target_identifier location_information notify special_folder_location";
 LIBRARY_TESTS_WITH_INPUT="file support";
 OPTION_SETS="";
 

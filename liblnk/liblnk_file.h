@@ -28,7 +28,7 @@
 #include "liblnk_data_string.h"
 #include "liblnk_distributed_link_tracker_properties.h"
 #include "liblnk_extern.h"
-#include "liblnk_file_information.h"
+#include "liblnk_file_header.h"
 #include "liblnk_io_handle.h"
 #include "liblnk_known_folder_location.h"
 #include "liblnk_libbfio.h"
@@ -67,7 +67,7 @@ struct liblnk_internal_file
 
 	/* The file information
 	 */
-	liblnk_file_information_t *file_information;
+	liblnk_file_header_t *file_information;
 
 	/* The link target identifier
 	 * Consists of a shell item (identifiers) list

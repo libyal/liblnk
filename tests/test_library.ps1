@@ -10,7 +10,7 @@ $TestPrefix = Split-Path -path ${Pwd}.Path -parent
 $TestPrefix = Split-Path -path ${TestPrefix} -leaf
 $TestPrefix = ${TestPrefix}.Substring(3)
 
-$LibraryTests = "data_block data_string distributed_link_tracker_properties error file_information io_handle known_folder_location link_target_identifier location_information notify special_folder_location"
+$LibraryTests = "data_block data_string distributed_link_tracker_properties error file_header io_handle known_folder_location link_target_identifier location_information notify special_folder_location"
 $LibraryTestsWithInput = "file support"
 
 $TestToolDirectory = "..\msvscpp\Release"

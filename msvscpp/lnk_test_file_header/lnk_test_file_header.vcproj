@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="lnk_test_file_information"
-	ProjectGUID="{A87B70A1-D596-4A0A-BB8C-DBA6F3D71993}"
-	RootNamespace="lnk_test_file_information"
+	Name="lnk_test_file_header"
+	ProjectGUID="{D0D3267D-3ED7-4AF8-9702-54D948E89CB5}"
+	RootNamespace="lnk_test_file_header"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -176,7 +176,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\tests\lnk_test_file_information.c"
+				RelativePath="..\..\tests\lnk_test_file_header.c"
 				>
 			</File>
 			<File

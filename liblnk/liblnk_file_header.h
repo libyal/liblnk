@@ -1,5 +1,5 @@
 /*
- * File information functions
+ * File header functions
  *
  * Copyright (C) 2009-2017, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,8 +19,8 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_FILE_INFORMATION_H )
-#define _LIBLNK_FILE_INFORMATION_H
+#if !defined( _LIBLNK_FILE_HEADER_H )
+#define _LIBLNK_FILE_HEADER_H
 
 #include <common.h>
 #include <types.h>
@@ -32,9 +32,9 @@
 extern "C" {
 #endif
 
-typedef struct liblnk_file_information liblnk_file_information_t;
+typedef struct liblnk_file_header liblnk_file_header_t;
 
-struct liblnk_file_information
+struct liblnk_file_header
 {
 	/* The data flags
 	 */
@@ -67,32 +67,32 @@ struct liblnk_file_information
 	 */
 	uint32_t icon_index;
 
-	/* The show window value
+	/* The show window
 	 */
-	uint32_t show_window_value;
+	uint32_t show_window;
 
-	/* The hot key value
+	/* The hot key
 	 */
-	uint16_t hot_key_value;
+	uint16_t hot_key;
 };
 
-int liblnk_file_information_initialize(
-     liblnk_file_information_t **file_information,
+int liblnk_file_header_initialize(
+     liblnk_file_header_t **file_header,
      libcerror_error_t **error );
 
-int liblnk_file_information_free(
-     liblnk_file_information_t **file_information,
+int liblnk_file_header_free(
+     liblnk_file_header_t **file_header,
      libcerror_error_t **error );
 
-int liblnk_file_information_read(
-     liblnk_file_information_t *file_information,
+int liblnk_file_header_read(
+     liblnk_file_header_t *file_header,
      libbfio_handle_t *file_io_handle,
      uint8_t *class_identifier,
      size_t class_identifier_size,
      libcerror_error_t **error );
 
-int liblnk_file_information_read_data(
-     liblnk_file_information_t *file_information,
+int liblnk_file_header_read_data(
+     liblnk_file_header_t *file_header,
      const uint8_t *data,
      size_t data_size,
      uint8_t *class_identifier,
@@ -103,5 +103,5 @@ int liblnk_file_information_read_data(
 }
 #endif
 
-#endif /* !defined( _LIBLNK_FILE_INFORMATION_H ) */
+#endif /* !defined( _LIBLNK_FILE_HEADER_H ) */
 

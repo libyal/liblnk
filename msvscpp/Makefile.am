@@ -20,7 +20,7 @@ MSVSCPP_FILES = \
 	lnk_test_distributed_link_tracker_properties/lnk_test_distributed_link_tracker_properties.vcproj \
 	lnk_test_error/lnk_test_error.vcproj \
 	lnk_test_file/lnk_test_file.vcproj \
-	lnk_test_file_information/lnk_test_file_information.vcproj \
+	lnk_test_file_header/lnk_test_file_header.vcproj \
 	lnk_test_io_handle/lnk_test_io_handle.vcproj \
 	lnk_test_known_folder_location/lnk_test_known_folder_location.vcproj \
 	lnk_test_link_target_identifier/lnk_test_link_target_identifier.vcproj \

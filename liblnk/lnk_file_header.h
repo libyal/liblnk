@@ -1,5 +1,5 @@
 /*
- * The file header definition of a Windows Shortcut File (LNK)
+ * File header of a Windows Shortcut File (LNK) format
  *
  * Copyright (C) 2009-2017, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -33,14 +33,13 @@ typedef struct lnk_file_header lnk_file_header_t;
 
 struct lnk_file_header
 {
-	/* The header size
+	/* Header size
 	 * Consists of 4 bytes
 	 */
 	uint8_t header_size[ 4 ];
 
 	/* Class identifier
 	 * Consists of 16 bytes
-	 * Contains the little-endian GUID: {00021401-0000-0000-00c0-000000000046}
 	 */
 	uint8_t class_identifier[ 16 ];
 
@@ -56,49 +55,53 @@ struct lnk_file_header
 
 	/* Creation date and time
 	 * Consists of 8 bytes
-	 * Contains a filetime
 	 */
 	uint8_t creation_time[ 8 ];
 
 	/* Last access date and time
 	 * Consists of 8 bytes
-	 * Contains a filetime
 	 */
 	uint8_t access_time[ 8 ];
 
 	/* Last modification date and time
 	 * Consists of 8 bytes
-	 * Contains a filetime
 	 */
 	uint8_t modification_time[ 8 ];
 
-	/* The size of the file
+	/* File size
 	 * Consists of 4 bytes
 	 */
 	uint8_t file_size[ 4 ];
 
-	/* The icon index value
+	/* Icon index
 	 * Consists of 4 bytes
 	 */
 	uint8_t icon_index[ 4 ];
 
-	/* The ShowWindow value
+	/* Show window
 	 * Consists of 4 bytes
 	 */
-	uint8_t show_window_value[ 4 ];
+	uint8_t show_window[ 4 ];
 
-	/* The hot key value
+	/* Hot key
 	 * Consists of 2 bytes
 	 */
-	uint8_t hot_key_value[ 2 ];
+	uint8_t hot_key[ 2 ];
 
-	/* Reserved
-	 * Consists of 10 bytes
-	 * a 2 byte value
-	 * a 4 byte value
-	 * a 4 byte value
+	/* Reserved1
+	 * Consists of 2 bytes
 	 */
-	uint8_t reserved[ 10 ];
+	uint8_t reserved1[ 2 ];
+
+	/* Reserved2
+	 * Consists of 4 bytes
+	 */
+	uint8_t reserved2[ 4 ];
+
+	/* Reserved3
+	 * Consists of 4 bytes
+	 */
+	uint8_t reserved3[ 4 ];
 };
 
 #if defined( __cplusplus )

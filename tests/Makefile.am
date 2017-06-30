@@ -46,7 +46,7 @@ check_PROGRAMS = \
 	lnk_test_distributed_link_tracker_properties \
 	lnk_test_error \
 	lnk_test_file \
-	lnk_test_file_information \
+	lnk_test_file_header \
 	lnk_test_io_handle \
 	lnk_test_known_folder_location \
 	lnk_test_link_target_identifier \
@@ -121,15 +121,15 @@ lnk_test_file_LDADD = \
 	@LIBCERROR_LIBADD@ \
 	@PTHREAD_LIBADD@
 
-lnk_test_file_information_SOURCES = \
-	lnk_test_file_information.c \
+lnk_test_file_header_SOURCES = \
+	lnk_test_file_header.c \
 	lnk_test_libcerror.h \
 	lnk_test_liblnk.h \
 	lnk_test_macros.h \
 	lnk_test_memory.c lnk_test_memory.h \
 	lnk_test_unused.h
 
-lnk_test_file_information_LDADD = \
+lnk_test_file_header_LDADD = \
 	../liblnk/liblnk.la \
 	@LIBCERROR_LIBADD@
 

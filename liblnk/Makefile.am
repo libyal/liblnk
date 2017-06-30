@@ -32,7 +32,7 @@ liblnk_la_SOURCES = \
 	liblnk_error.c liblnk_error.h \
 	liblnk_extern.h \
 	liblnk_file.c liblnk_file.h \
-	liblnk_file_information.c liblnk_file_information.h \
+	liblnk_file_header.c liblnk_file_header.h \
 	liblnk_io_handle.c liblnk_io_handle.h \
 	liblnk_known_folder_location.c liblnk_known_folder_location.h \
 	liblnk_libbfio.h \

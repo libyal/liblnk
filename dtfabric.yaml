@@ -1,0 +1,154 @@
+name: byte
+type: integer
+attributes:
+  format: unsigned
+  size: 1
+  units: bytes
+---
+name: uint8
+type: integer
+attributes:
+  format: unsigned
+  size: 1
+  units: bytes
+---
+name: uint16
+type: integer
+attributes:
+  format: unsigned
+  size: 2
+  units: bytes
+---
+name: int32
+type: integer
+description: 32-bit signed integer type
+attributes:
+  format: signed
+  size: 4
+  units: bytes
+---
+name: uint32
+type: integer
+attributes:
+  format: unsigned
+  size: 4
+  units: bytes
+---
+name: filetime
+aliases: [FILETIME]
+type: structure
+description: FILETIME structure
+urls: ['https://msdn.microsoft.com/en-us/library/windows/desktop/ms724284(v=vs.85).aspx']
+members:
+- name: lower_part
+  data_type: uint32
+- name: upper_part
+  data_type: uint32
+---
+name: lnk
+type: format
+description: Windows Shortcut File (LNK) format
+urls: ['https://msdn.microsoft.com/en-us/library/dd871305.aspx']
+metadata:
+  authors: ['Joachim Metz <joachim.metz@gmail.com>']
+  year: 2009
+attributes:
+  byte_order: little-endian
+layout:
+- data_type: file_header
+---
+name: file_header
+aliases: [ShellLinkHeader]
+type: structure
+description: File header
+members:
+- name: header_size
+  aliases: [HeaderSize]
+  data_type: uint32
+- name: class_identifier
+  aliases: [LinkCLSID]
+  type: uuid
+  value: '\x01\x14\x02\x00\x00\x00\x00\x00\xc0\x00\x00\x00\x00\x00\x00F'
+- name: data_flags
+  aliases: [LinkFlags]
+  data_type: uint32
+- name: file_attribute_flags
+  aliases: [FileAttributes]
+  data_type: uint32
+- name: creation_time
+  aliases: [CreationTime]
+  description: Creation date and time
+  data_type: filetime
+- name: access_time
+  aliases: [AccessTime]
+  description: Last access date and time
+  data_type: filetime
+- name: modification_time
+  aliases: [WriteTime]
+  description: Last modification date and time
+  data_type: filetime
+- name: file_size
+  aliases: [FileSize]
+  data_type: uint32
+- name: icon_index
+  aliases: [IconIndex]
+  data_type: int32
+- name: show_window
+  aliases: [ShowCommand]
+  data_type: uint32
+- name: hot_key
+  aliases: [HotKey]
+  data_type: uint16
+- name: reserved1
+  aliases: [Reserved1]
+  data_type: uint16
+  value: 0
+- name: reserved2
+  aliases: [Reserved2]
+  data_type: uint32
+  value: 0
+- name: reserved3
+  aliases: [Reserved3]
+  data_type: uint32
+  value: 0
+---
+name: link_target_identifier
+aliases: [LinkTargetIDList]
+type: structure
+description: Link target identifier
+members:
+- name: data_size
+  aliases: [IDListSize]
+  data_type: uint16
+- name: data
+  aliases: [IDList]
+  type: stream
+  element_data_type: byte
+  elements_data_size: link_target_identifier.data_size
+---
+name: location_information
+aliases: [LinkInfo]
+type: structure
+description: Location information
+members:
+- name: data_size
+  aliases: [LinkInfoSize]
+  data_type: uint32
+- name: header_size
+  aliases: [LinkInfoHeaderSize]
+  data_type: uint32
+- name: location_flags
+  aliases: [LinkInfoFlags]
+  data_type: uint32
+- name: volume_information_offset
+  aliases: [VolumeIDOffset]
+  data_type: uint32
+- name: local_path_offset
+  aliases: [LocalBasePathOffset]
+  data_type: uint32
+- name: network_share_information_offset
+  aliases: [CommonNetworkRelativeLinkOffset]
+  data_type: uint32
+- name: common_path_offset
+  aliases: [CommonPathSuffixOffset]
+  data_type: uint32

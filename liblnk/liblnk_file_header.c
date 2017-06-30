@@ -1,5 +1,5 @@
 /*
- * File information functions
+ * File header functions
  *
  * Copyright (C) 2009-2017, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -24,7 +24,7 @@
 #include <types.h>
 
 #include "liblnk_debug.h"
-#include "liblnk_file_information.h"
+#include "liblnk_file_header.h"
 #include "liblnk_io_handle.h"
 #include "liblnk_libcerror.h"
 #include "liblnk_libcnotify.h"
@@ -33,62 +33,62 @@
 
 #include "lnk_file_header.h"
 
-/* Creates file information
- * Make sure the value file_information is referencing, is set to NULL
+/* Creates file header
+ * Make sure the value file_header is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
-int liblnk_file_information_initialize(
-     liblnk_file_information_t **file_information,
+int liblnk_file_header_initialize(
+     liblnk_file_header_t **file_header,
      libcerror_error_t **error )
 {
-	static char *function = "liblnk_file_information_initialize";
+	static char *function = "liblnk_file_header_initialize";
 
-	if( file_information == NULL )
+	if( file_header == NULL )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid file information.",
+		 "%s: invalid file header.",
 		 function );
 
 		return( -1 );
 	}
-	if( *file_information != NULL )
+	if( *file_header != NULL )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
-		 "%s: invalid file information value already set.",
+		 "%s: invalid file header value already set.",
 		 function );
 
 		return( -1 );
 	}
-	*file_information = memory_allocate_structure(
-	                     liblnk_file_information_t );
+	*file_header = memory_allocate_structure(
+	                liblnk_file_header_t );
 
-	if( *file_information == NULL )
+	if( *file_header == NULL )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_MEMORY,
 		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-		 "%s: unable to create file information.",
+		 "%s: unable to create file header.",
 		 function );
 
 		goto on_error;
 	}
 	if( memory_set(
-	     *file_information,
+	     *file_header,
 	     0,
-	     sizeof( liblnk_file_information_t ) ) == NULL )
+	     sizeof( liblnk_file_header_t ) ) == NULL )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_MEMORY,
 		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
-		 "%s: unable to clear file information.",
+		 "%s: unable to clear file header.",
 		 function );
 
 		goto on_error;
@@ -96,42 +96,42 @@ int liblnk_file_information_initialize(
 	return( 1 );
 
 on_error:
-	if( *file_information != NULL )
+	if( *file_header != NULL )
 	{
 		memory_free(
-		 *file_information );
+		 *file_header );
 
-		*file_information = NULL;
+		*file_header = NULL;
 	}
 	return( -1 );
 }
 
-/* Frees file information
+/* Frees file header
  * Returns 1 if successful or -1 on error
  */
-int liblnk_file_information_free(
-     liblnk_file_information_t **file_information,
+int liblnk_file_header_free(
+     liblnk_file_header_t **file_header,
      libcerror_error_t **error )
 {
-	static char *function = "liblnk_file_information_free";
+	static char *function = "liblnk_file_header_free";
 
-	if( file_information == NULL )
+	if( file_header == NULL )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid file information.",
+		 "%s: invalid file header.",
 		 function );
 
 		return( -1 );
 	}
-	if( *file_information != NULL )
+	if( *file_header != NULL )
 	{
 		memory_free(
-		 *file_information );
+		 *file_header );
 
-		*file_information = NULL;
+		*file_header = NULL;
 	}
 	return( 1 );
 }
@@ -139,25 +139,25 @@ int liblnk_file_information_free(
 /* Reads the file header
  * Returns 1 if successful or -1 on error
  */
-int liblnk_file_information_read(
-     liblnk_file_information_t *file_information,
+int liblnk_file_header_read(
+     liblnk_file_header_t *file_header,
      libbfio_handle_t *file_io_handle,
      uint8_t *class_identifier,
      size_t class_identifier_size,
      libcerror_error_t **error )
 {
-	lnk_file_header_t file_header;
+	uint8_t file_header_data[ sizeof( lnk_file_header_t ) ];
 
-	static char *function = "liblnk_file_information_read";
+	static char *function = "liblnk_file_header_read";
 	ssize_t read_count    = 0;
 
-	if( file_information == NULL )
+	if( file_header == NULL )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid file information.",
+		 "%s: invalid file header.",
 		 function );
 
 		return( -1 );
@@ -187,7 +187,7 @@ int liblnk_file_information_read(
 	}
 	read_count = libbfio_handle_read_buffer(
 	              file_io_handle,
-	              (uint8_t *) &file_header,
+	              file_header_data,
 	              sizeof( lnk_file_header_t ),
 	              error );
 
@@ -202,9 +202,9 @@ int liblnk_file_information_read(
 
 		return( -1 );
 	}
-	if( liblnk_file_information_read_data(
-	     file_information,
-	     (uint8_t *) &file_header,
+	if( liblnk_file_header_read_data(
+	     file_header,
+	     file_header_data,
 	     sizeof( lnk_file_header_t ),
 	     class_identifier,
 	     class_identifier_size,
@@ -225,24 +225,24 @@ int liblnk_file_information_read(
 /* Reads the file header data
  * Returns 1 if successful or -1 on error
  */
-int liblnk_file_information_read_data(
-     liblnk_file_information_t *file_information,
+int liblnk_file_header_read_data(
+     liblnk_file_header_t *file_header,
      const uint8_t *data,
      size_t data_size,
      uint8_t *class_identifier,
      size_t class_identifier_size,
      libcerror_error_t **error )
 {
-	static char *function = "liblnk_file_information_read_data";
+	static char *function = "liblnk_file_header_read_data";
 	uint32_t header_size  = 0;
 
-	if( file_information == NULL )
+	if( file_header == NULL )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid file information.",
+		 "%s: invalid file header.",
 		 function );
 
 		return( -1 );
@@ -372,39 +372,39 @@ int liblnk_file_information_read_data(
 	}
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_file_header_t *) data )->data_flags,
-	 file_information->data_flags );
+	 file_header->data_flags );
 
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_file_header_t *) data )->file_attribute_flags,
-	 file_information->attribute_flags );
+	 file_header->attribute_flags );
 
 	byte_stream_copy_to_uint64_little_endian(
 	 ( (lnk_file_header_t *) data )->creation_time,
-	 file_information->creation_time )
+	 file_header->creation_time )
 
 	byte_stream_copy_to_uint64_little_endian(
 	 ( (lnk_file_header_t *) data )->access_time,
-	 file_information->access_time );
+	 file_header->access_time );
 
 	byte_stream_copy_to_uint64_little_endian(
 	 ( (lnk_file_header_t *) data )->modification_time,
-	 file_information->modification_time );
+	 file_header->modification_time );
 
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_file_header_t *) data )->file_size,
-	 file_information->size );
+	 file_header->size );
 
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_file_header_t *) data )->icon_index,
-	 file_information->icon_index );
+	 file_header->icon_index );
 
 	byte_stream_copy_to_uint32_little_endian(
-	 ( (lnk_file_header_t *) data )->show_window_value,
-	 file_information->show_window_value );
+	 ( (lnk_file_header_t *) data )->show_window,
+	 file_header->show_window );
 
 	byte_stream_copy_to_uint16_little_endian(
-	 ( (lnk_file_header_t *) data )->hot_key_value,
-	 file_information->hot_key_value );
+	 ( (lnk_file_header_t *) data )->hot_key,
+	 file_header->hot_key );
 
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
@@ -435,18 +435,18 @@ int liblnk_file_information_read_data(
 		libcnotify_printf(
 		 "%s: data flags\t\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
-		 file_information->data_flags );
+		 file_header->data_flags );
 		liblnk_debug_print_data_flags(
-		 file_information->data_flags );
+		 file_header->data_flags );
 		libcnotify_printf(
 		 "\n" );
 
 		libcnotify_printf(
 		 "%s: file attribute flags\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
-		 file_information->attribute_flags );
+		 file_header->attribute_flags );
 		liblnk_debug_print_file_attribute_flags(
-		 file_information->attribute_flags );
+		 file_header->attribute_flags );
 		libcnotify_printf(
 		 "\n" );
 
@@ -507,22 +507,22 @@ int liblnk_file_information_read_data(
 		libcnotify_printf(
 		 "%s: file size\t\t\t\t: %" PRIu32 " bytes\n",
 		 function,
-		 file_information->size );
+		 file_header->size );
 
 		libcnotify_printf(
 		 "%s: icon index\t\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
-		 file_information->icon_index );
+		 file_header->icon_index );
 
 		libcnotify_printf(
-		 "%s: show window value\t\t\t: 0x%08" PRIx32 "\n",
+		 "%s: show window\t\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
-		 file_information->show_window_value );
+		 file_header->show_window );
 
 		libcnotify_printf(
-		 "%s: hot key value\t\t\t: 0x%04" PRIx16 "\n",
+		 "%s: hot key\t\t\t\t: 0x%04" PRIx16 "\n",
 		 function,
-		 file_information->hot_key_value );
+		 file_header->hot_key );
 
 		libcnotify_printf(
 		 "%s: reserved:\n",
@@ -535,7 +535,7 @@ int liblnk_file_information_read_data(
 		libcnotify_printf(
 		 "\n" );
 	}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
 	return( 1 );
 }
 

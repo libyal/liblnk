@@ -33,7 +33,7 @@
 #include "liblnk_definitions.h"
 #include "liblnk_distributed_link_tracker_properties.h"
 #include "liblnk_file.h"
-#include "liblnk_file_information.h"
+#include "liblnk_file_header.h"
 #include "liblnk_io_handle.h"
 #include "liblnk_known_folder_location.h"
 #include "liblnk_libbfio.h"
@@ -775,7 +775,7 @@ int liblnk_file_close(
 	}
 	if( internal_file->file_information != NULL )
 	{
-		if( liblnk_file_information_free(
+		if( liblnk_file_header_free(
 		     &( internal_file->file_information ),
 		     error ) != 1 )
 		{
@@ -1038,7 +1038,7 @@ int liblnk_file_open_read(
 
 		return( -1 );
 	}
-	if( liblnk_file_information_initialize(
+	if( liblnk_file_header_initialize(
 	     &( internal_file->file_information ),
 	     error ) != 1 )
 	{
@@ -1072,7 +1072,7 @@ int liblnk_file_open_read(
 
 		goto on_error;
 	}
-	if( liblnk_file_information_read(
+	if( liblnk_file_header_read(
 	     internal_file->file_information,
 	     file_io_handle,
 	     internal_file->class_identifier,
@@ -1909,7 +1909,7 @@ on_error:
 	}
 	if( internal_file->file_information != NULL )
 	{
-		liblnk_file_information_free(
+		liblnk_file_header_free(
 		 &( internal_file->file_information ),
 		 NULL );
 	}
