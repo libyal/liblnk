@@ -1072,7 +1072,7 @@ int liblnk_file_open_read(
 
 		goto on_error;
 	}
-	if( liblnk_file_header_read(
+	if( liblnk_file_header_read_file_io_handle(
 	     internal_file->file_information,
 	     file_io_handle,
 	     internal_file->class_identifier,

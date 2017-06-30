@@ -136,92 +136,6 @@ int liblnk_file_header_free(
 	return( 1 );
 }
 
-/* Reads the file header
- * Returns 1 if successful or -1 on error
- */
-int liblnk_file_header_read(
-     liblnk_file_header_t *file_header,
-     libbfio_handle_t *file_io_handle,
-     uint8_t *class_identifier,
-     size_t class_identifier_size,
-     libcerror_error_t **error )
-{
-	uint8_t file_header_data[ sizeof( lnk_file_header_t ) ];
-
-	static char *function = "liblnk_file_header_read";
-	ssize_t read_count    = 0;
-
-	if( file_header == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid file header.",
-		 function );
-
-		return( -1 );
-	}
-#if defined( HAVE_DEBUG_OUTPUT )
-	if( libcnotify_verbose != 0 )
-	{
-		libcnotify_printf(
-		 "%s: reading file header at offset: 0 (0x00000000)\n",
-		 function );
-	}
-#endif
-	if( libbfio_handle_seek_offset(
-	     file_io_handle,
-	     0,
-	     SEEK_SET,
-	     error ) == -1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_IO,
-		 LIBCERROR_IO_ERROR_SEEK_FAILED,
-		 "%s: unable to seek file header offset: 0.",
-		 function );
-
-		return( -1 );
-	}
-	read_count = libbfio_handle_read_buffer(
-	              file_io_handle,
-	              file_header_data,
-	              sizeof( lnk_file_header_t ),
-	              error );
-
-	if( read_count != (ssize_t) sizeof( lnk_file_header_t ) )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_IO,
-		 LIBCERROR_IO_ERROR_READ_FAILED,
-		 "%s: unable to read file header data.",
-		 function );
-
-		return( -1 );
-	}
-	if( liblnk_file_header_read_data(
-	     file_header,
-	     file_header_data,
-	     sizeof( lnk_file_header_t ),
-	     class_identifier,
-	     class_identifier_size,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_IO,
-		 LIBCERROR_IO_ERROR_READ_FAILED,
-		 "%s: unable to read file header.",
-		 function );
-
-		return( -1 );
-	}
-	return( 1 );
-}
-
 /* Reads the file header data
  * Returns 1 if successful or -1 on error
  */
@@ -536,6 +450,92 @@ int liblnk_file_header_read_data(
 		 "\n" );
 	}
 #endif /* defined( HAVE_DEBUG_OUTPUT ) */
+	return( 1 );
+}
+
+/* Reads the file header
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_file_header_read_file_io_handle(
+     liblnk_file_header_t *file_header,
+     libbfio_handle_t *file_io_handle,
+     uint8_t *class_identifier,
+     size_t class_identifier_size,
+     libcerror_error_t **error )
+{
+	uint8_t file_header_data[ sizeof( lnk_file_header_t ) ];
+
+	static char *function = "liblnk_file_header_read_file_io_handle";
+	ssize_t read_count    = 0;
+
+	if( file_header == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file header.",
+		 function );
+
+		return( -1 );
+	}
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( libcnotify_verbose != 0 )
+	{
+		libcnotify_printf(
+		 "%s: reading file header at offset: 0 (0x00000000)\n",
+		 function );
+	}
+#endif
+	if( libbfio_handle_seek_offset(
+	     file_io_handle,
+	     0,
+	     SEEK_SET,
+	     error ) == -1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_SEEK_FAILED,
+		 "%s: unable to seek file header offset: 0.",
+		 function );
+
+		return( -1 );
+	}
+	read_count = libbfio_handle_read_buffer(
+	              file_io_handle,
+	              file_header_data,
+	              sizeof( lnk_file_header_t ),
+	              error );
+
+	if( read_count != (ssize_t) sizeof( lnk_file_header_t ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
+		 "%s: unable to read file header data.",
+		 function );
+
+		return( -1 );
+	}
+	if( liblnk_file_header_read_data(
+	     file_header,
+	     file_header_data,
+	     sizeof( lnk_file_header_t ),
+	     class_identifier,
+	     class_identifier_size,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
+		 "%s: unable to read file header.",
+		 function );
+
+		return( -1 );
+	}
 	return( 1 );
 }
 

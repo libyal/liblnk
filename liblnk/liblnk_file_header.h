@@ -84,17 +84,17 @@ int liblnk_file_header_free(
      liblnk_file_header_t **file_header,
      libcerror_error_t **error );
 
-int liblnk_file_header_read(
-     liblnk_file_header_t *file_header,
-     libbfio_handle_t *file_io_handle,
-     uint8_t *class_identifier,
-     size_t class_identifier_size,
-     libcerror_error_t **error );
-
 int liblnk_file_header_read_data(
      liblnk_file_header_t *file_header,
      const uint8_t *data,
      size_t data_size,
+     uint8_t *class_identifier,
+     size_t class_identifier_size,
+     libcerror_error_t **error );
+
+int liblnk_file_header_read_file_io_handle(
+     liblnk_file_header_t *file_header,
+     libbfio_handle_t *file_io_handle,
      uint8_t *class_identifier,
      size_t class_identifier_size,
      libcerror_error_t **error );
