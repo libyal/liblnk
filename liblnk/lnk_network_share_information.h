@@ -1,5 +1,5 @@
 /*
- * The location information definition of a Windows Shortcut File (LNK)
+ * The network share information definition of a Windows Shortcut File (LNK)
  *
  * Copyright (C) 2009-2017, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,8 +19,8 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LNK_LOCATION_INFORMATION_H )
-#define _LNK_LOCATION_INFORMATION_H
+#if !defined( _LNK_NETWORK_SHARE_INFORMATION_H )
+#define _LNK_NETWORK_SHARE_INFORMATION_H
 
 #include <common.h>
 #include <types.h>
@@ -29,60 +29,52 @@
 extern "C" {
 #endif
 
-typedef struct lnk_location_information lnk_location_information_t;
+typedef struct lnk_network_share_information lnk_network_share_information_t;
 
-struct lnk_location_information
+struct lnk_network_share_information
 {
-	/* The size of the location information header
+	/* The size of the network share information
 	 * Consists of 4 bytes
 	 */
-	uint8_t header_size[ 4 ];
+	uint8_t size[ 4 ];
 
-	/* The location flags
+	/* The network share type
 	 * Consists of 4 bytes
 	 */
-	uint8_t location_flags[ 4 ];
+	uint8_t network_share_type[ 4 ];
 
-	/* The offset of the volume information
+	/* The offset of the network share name
 	 * Consists of 4 bytes
 	 */
-	uint8_t volume_information_offset[ 4 ];
+	uint8_t network_share_name_offset[ 4 ];
 
-	/* The offset of the local path
+	/* The offset of the device name
 	 * Consists of 4 bytes
 	 */
-	uint8_t local_path_offset[ 4 ];
+	uint8_t device_name_offset[ 4 ];
 
-	/* The offset of the network share information
+	/* The network provide type
 	 * Consists of 4 bytes
 	 */
-	uint8_t network_share_information_offset[ 4 ];
+	uint8_t network_provider_type[ 4 ];
 
-	/* The offset of the common path
+	/* The following values are only available if the network share name offset > 20
+	 */
+
+	/* The offset of the unicode network share name
 	 * Consists of 4 bytes
 	 */
-	uint8_t common_path_offset[ 4 ];
+	uint8_t unicode_network_share_name_offset[ 4 ];
 
-	/* The following values are only available if the header size > 28
-	 */
-
-	/* The offset of the unicode local path
+	/* The offset of the unicode device name
 	 * Consists of 4 bytes
 	 */
-	uint8_t unicode_local_path_offset[ 4 ];
-
-	/* The following values are only available if the header size > 32
-	 */
-
-	/* The offset of the unicode common path
-	 * Consists of 4 bytes
-	 */
-	uint8_t unicode_common_path_offset[ 4 ];
+	uint8_t unicode_device_name_offset[ 4 ];
 };
 
 #if defined( __cplusplus )
 }
 #endif
 
-#endif /* !defined( _LNK_LOCATION_INFORMATION_H ) */
+#endif /* !defined( _LNK_NETWORK_SHARE_INFORMATION_H ) */
 

@@ -367,6 +367,14 @@
 				RelativePath="..\..\liblnk\lnk_location_information.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\liblnk\lnk_network_share_information.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\liblnk\lnk_volume_information.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

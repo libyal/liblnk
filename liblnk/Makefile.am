@@ -53,7 +53,9 @@ liblnk_la_SOURCES = \
 	liblnk_unused.h \
 	lnk_data_blocks.h \
 	lnk_file_header.h \
-	lnk_location_information.h
+	lnk_location_information.h \
+	lnk_network_share_information.h \
+	lnk_volume_information.h
 
 liblnk_la_LIBADD = \
 	@LIBCERROR_LIBADD@ \

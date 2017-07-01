@@ -34,6 +34,8 @@
 #include "liblnk_location_information.h"
 
 #include "lnk_location_information.h"
+#include "lnk_network_share_information.h"
+#include "lnk_volume_information.h"
 
 /* Creates location information
  * Make sure the value location_information is referencing, is set to NULL
