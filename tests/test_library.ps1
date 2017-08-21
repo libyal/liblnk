@@ -1,14 +1,10 @@
 # Tests C library functions and types.
 #
-# Version: 20170115
+# Version: 20170807
 
 $ExitSuccess = 0
 $ExitFailure = 1
 $ExitIgnore = 77
-
-$TestPrefix = Split-Path -path ${Pwd}.Path -parent
-$TestPrefix = Split-Path -path ${TestPrefix} -leaf
-$TestPrefix = ${TestPrefix}.Substring(3)
 
 $LibraryTests = "data_block data_string distributed_link_tracker_properties error file_header io_handle known_folder_location link_target_identifier location_information notify special_folder_location"
 $LibraryTestsWithInput = "file support"
@@ -20,7 +16,7 @@ Function RunTest
 	param( [string]$TestType )
 
 	$TestDescription = "Testing: ${TestName}"
-	$TestExecutable = "${TestToolDirectory}\${TestPrefix}_test_${TestName}.exe"
+	$TestExecutable = "${TestToolDirectory}\lnk_test_${TestName}.exe"
 
 	$Output = Invoke-Expression ${TestExecutable}
 	$Result = ${LastExitCode}
@@ -44,7 +40,15 @@ Function RunTest
 
 If (-Not (Test-Path ${TestToolDirectory}))
 {
+	$TestToolDirectory = "..\msvscpp\VSDebug"
+}
+If (-Not (Test-Path ${TestToolDirectory}))
+{
 	$TestToolDirectory = "..\vs2010\Release"
+}
+If (-Not (Test-Path ${TestToolDirectory}))
+{
+	$TestToolDirectory = "..\vs2010\VSDebug"
 }
 If (-Not (Test-Path ${TestToolDirectory}))
 {
@@ -52,11 +56,23 @@ If (-Not (Test-Path ${TestToolDirectory}))
 }
 If (-Not (Test-Path ${TestToolDirectory}))
 {
+	$TestToolDirectory = "..\vs2012\VSDebug"
+}
+If (-Not (Test-Path ${TestToolDirectory}))
+{
 	$TestToolDirectory = "..\vs2013\Release"
 }
 If (-Not (Test-Path ${TestToolDirectory}))
 {
+	$TestToolDirectory = "..\vs2013\VSDebug"
+}
+If (-Not (Test-Path ${TestToolDirectory}))
+{
 	$TestToolDirectory = "..\vs2015\Release"
+}
+If (-Not (Test-Path ${TestToolDirectory}))
+{
+	$TestToolDirectory = "..\vs2015\VSDebug"
 }
 If (-Not (Test-Path ${TestToolDirectory}))
 {

@@ -1025,7 +1025,7 @@ int liblnk_file_open_read(
 		 "%s: invalid file - missing IO handle.",
 		 function );
 
-		goto on_error;
+		return( -1 );
 	}
 	if( internal_file->file_information != NULL )
 	{
