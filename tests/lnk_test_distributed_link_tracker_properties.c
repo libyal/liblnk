@@ -337,8 +337,6 @@ int lnk_test_distributed_link_tracker_properties_read(
 	libcerror_error_free(
 	 &error );
 
-	return( 1 );
-
 	/* Clean up
 	 */
 	result = liblnk_distributed_link_tracker_properties_free(

@@ -339,8 +339,6 @@ int lnk_test_link_target_identifier_read(
 	libcerror_error_free(
 	 &error );
 
-	return( 1 );
-
 	/* Clean up
 	 */
 	result = liblnk_link_target_identifier_free(

@@ -339,8 +339,6 @@ int lnk_test_data_block_read(
 	libcerror_error_free(
 	 &error );
 
-	return( 1 );
-
 	/* Clean up
 	 */
 	result = liblnk_data_block_free(

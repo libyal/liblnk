@@ -339,8 +339,6 @@ int lnk_test_location_information_read(
 	libcerror_error_free(
 	 &error );
 
-	return( 1 );
-
 	/* Clean up
 	 */
 	result = liblnk_location_information_free(
