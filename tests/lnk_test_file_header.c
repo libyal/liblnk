@@ -56,7 +56,7 @@ uint8_t lnk_test_file_header_error_data2[ 76 ] = {
 	0x70, 0xb9, 0xbb, 0x01, 0x10, 0xd5, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
-#if defined( __GNUC__ )
+#if defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT )
 
 /* Tests the liblnk_file_header_initialize function
  * Returns 1 if successful or 0 if not
@@ -568,7 +568,7 @@ on_error:
 	return( 0 );
 }
 
-#endif /* defined( __GNUC__ ) */
+#endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 
 /* The main program
  */
@@ -585,7 +585,7 @@ int main(
 	LNK_TEST_UNREFERENCED_PARAMETER( argc )
 	LNK_TEST_UNREFERENCED_PARAMETER( argv )
 
-#if defined( __GNUC__ )
+#if defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT )
 
 	LNK_TEST_RUN(
 	 "liblnk_file_header_initialize",
@@ -601,7 +601,7 @@ int main(
 	 "liblnk_file_header_read_data",
 	 lnk_test_file_header_read_data );
 
-#endif /* defined( __GNUC__ ) */
+#endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 
 	return( EXIT_SUCCESS );
 

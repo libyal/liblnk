@@ -6921,11 +6921,11 @@ int main(
 		 lnk_test_file_signal_abort,
 		 file );
 
-#if defined( __GNUC__ )
+#if defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT )
 
 		/* TODO: add tests for liblnk_file_open_read */
 
-#endif /* defined( __GNUC__ ) */
+#endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 
 		LNK_TEST_RUN_WITH_ARGS(
 		 "liblnk_file_get_ascii_codepage",

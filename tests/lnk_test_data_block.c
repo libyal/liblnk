@@ -35,7 +35,7 @@
 
 #include "../liblnk/liblnk_data_block.h"
 
-#if defined( __GNUC__ )
+#if defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT )
 
 /* Tests the liblnk_data_block_initialize function
  * Returns 1 if successful or 0 if not
@@ -375,7 +375,7 @@ on_error:
 	return( 0 );
 }
 
-#endif /* defined( __GNUC__ ) */
+#endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 
 /* The main program
  */
@@ -392,7 +392,7 @@ int main(
 	LNK_TEST_UNREFERENCED_PARAMETER( argc )
 	LNK_TEST_UNREFERENCED_PARAMETER( argv )
 
-#if defined( __GNUC__ )
+#if defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT )
 
 	LNK_TEST_RUN(
 	 "liblnk_data_block_initialize",
@@ -406,7 +406,7 @@ int main(
 	 "liblnk_data_block_read",
 	 lnk_test_data_block_read );
 
-#endif /* defined( __GNUC__ ) */
+#endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 
 	return( EXIT_SUCCESS );
 

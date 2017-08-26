@@ -35,7 +35,7 @@
 
 #include "../liblnk/liblnk_io_handle.h"
 
-#if defined( __GNUC__ )
+#if defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT )
 
 /* Tests the liblnk_io_handle_initialize function
  * Returns 1 if successful or 0 if not
@@ -368,7 +368,7 @@ on_error:
 	return( 0 );
 }
 
-#endif /* defined( __GNUC__ ) */
+#endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 
 /* The main program
  */
@@ -385,7 +385,7 @@ int main(
 	LNK_TEST_UNREFERENCED_PARAMETER( argc )
 	LNK_TEST_UNREFERENCED_PARAMETER( argv )
 
-#if defined( __GNUC__ )
+#if defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT )
 
 	LNK_TEST_RUN(
 	 "liblnk_io_handle_initialize",
@@ -399,7 +399,7 @@ int main(
 	 "liblnk_io_handle_clear",
 	 lnk_test_io_handle_clear );
 
-#endif /* defined( __GNUC__ ) */
+#endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 
 	return( EXIT_SUCCESS );
 
