@@ -64,13 +64,13 @@ int lnk_test_distributed_link_tracker_properties_initialize(
 	 result,
 	 1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "distributed_link_tracker_properties",
-         distributed_link_tracker_properties );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "distributed_link_tracker_properties",
+	 distributed_link_tracker_properties );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	result = liblnk_distributed_link_tracker_properties_free(
 	          &distributed_link_tracker_properties,
@@ -81,13 +81,13 @@ int lnk_test_distributed_link_tracker_properties_initialize(
 	 result,
 	 1 );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "distributed_link_tracker_properties",
-         distributed_link_tracker_properties );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "distributed_link_tracker_properties",
+	 distributed_link_tracker_properties );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	/* Test error cases
 	 */
@@ -100,9 +100,9 @@ int lnk_test_distributed_link_tracker_properties_initialize(
 	 result,
 	 -1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -118,9 +118,9 @@ int lnk_test_distributed_link_tracker_properties_initialize(
 	 result,
 	 -1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -252,9 +252,9 @@ int lnk_test_distributed_link_tracker_properties_free(
 	 result,
 	 -1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -291,13 +291,13 @@ int lnk_test_distributed_link_tracker_properties_read(
 	 result,
 	 1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "distributed_link_tracker_properties",
-         distributed_link_tracker_properties );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "distributed_link_tracker_properties",
+	 distributed_link_tracker_properties );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	/* Test error cases
 	 */
@@ -312,9 +312,9 @@ int lnk_test_distributed_link_tracker_properties_read(
 	 result,
 	 -1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -330,9 +330,9 @@ int lnk_test_distributed_link_tracker_properties_read(
 	 result,
 	 -1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -348,13 +348,13 @@ int lnk_test_distributed_link_tracker_properties_read(
 	 result,
 	 1 );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "distributed_link_tracker_properties",
-         distributed_link_tracker_properties );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "distributed_link_tracker_properties",
+	 distributed_link_tracker_properties );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	return( 1 );
 

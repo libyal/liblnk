@@ -64,13 +64,13 @@ int lnk_test_known_folder_location_initialize(
 	 result,
 	 1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "known_folder_location",
-         known_folder_location );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "known_folder_location",
+	 known_folder_location );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	result = liblnk_known_folder_location_free(
 	          &known_folder_location,
@@ -81,13 +81,13 @@ int lnk_test_known_folder_location_initialize(
 	 result,
 	 1 );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "known_folder_location",
-         known_folder_location );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "known_folder_location",
+	 known_folder_location );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	/* Test error cases
 	 */
@@ -100,9 +100,9 @@ int lnk_test_known_folder_location_initialize(
 	 result,
 	 -1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -118,9 +118,9 @@ int lnk_test_known_folder_location_initialize(
 	 result,
 	 -1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -252,9 +252,9 @@ int lnk_test_known_folder_location_free(
 	 result,
 	 -1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );

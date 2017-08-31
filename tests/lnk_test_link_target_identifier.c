@@ -64,13 +64,13 @@ int lnk_test_link_target_identifier_initialize(
 	 result,
 	 1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "link_target_identifier",
-         link_target_identifier );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "link_target_identifier",
+	 link_target_identifier );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	result = liblnk_link_target_identifier_free(
 	          &link_target_identifier,
@@ -81,13 +81,13 @@ int lnk_test_link_target_identifier_initialize(
 	 result,
 	 1 );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "link_target_identifier",
-         link_target_identifier );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "link_target_identifier",
+	 link_target_identifier );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	/* Test error cases
 	 */
@@ -100,9 +100,9 @@ int lnk_test_link_target_identifier_initialize(
 	 result,
 	 -1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -118,9 +118,9 @@ int lnk_test_link_target_identifier_initialize(
 	 result,
 	 -1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -252,9 +252,9 @@ int lnk_test_link_target_identifier_free(
 	 result,
 	 -1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -291,13 +291,13 @@ int lnk_test_link_target_identifier_read(
 	 result,
 	 1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "link_target_identifier",
-         link_target_identifier );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "link_target_identifier",
+	 link_target_identifier );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	/* Test error cases
 	 */
@@ -313,9 +313,9 @@ int lnk_test_link_target_identifier_read(
 	 result,
 	 -1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -332,9 +332,9 @@ int lnk_test_link_target_identifier_read(
 	 result,
 	 -1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
 	libcerror_error_free(
 	 &error );
@@ -350,13 +350,13 @@ int lnk_test_link_target_identifier_read(
 	 result,
 	 1 );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "link_target_identifier",
-         link_target_identifier );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "link_target_identifier",
+	 link_target_identifier );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	return( 1 );
 
