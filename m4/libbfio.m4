@@ -1,6 +1,6 @@
 dnl Checks for libbfio or required headers and functions
 dnl
-dnl Version: 20170911
+dnl Version: 20170912
 
 dnl Function to detect if libbfio is available
 AC_DEFUN([AX_LIBBFIO_CHECK_LIB],
@@ -304,6 +304,16 @@ AC_DEFUN([AX_LIBBFIO_CHECK_LIB],
     ])
   ])
 
+dnl Function to detect if libbfio dependencies are available
+AC_DEFUN([AX_LIBBFIO_CHECK_LOCAL],
+  [dnl No additional checks.
+
+  ac_cv_libbfio_CPPFLAGS="-I../libbfio";
+  ac_cv_libbfio_LIBADD="../libbfio/libbfio.la";
+
+  ac_cv_libbfio=local
+  ])
+
 dnl Function to detect how to enable libbfio
 AC_DEFUN([AX_LIBBFIO_CHECK_ENABLE],
   [AX_COMMON_ARG_WITH(
@@ -319,18 +329,15 @@ AC_DEFUN([AX_LIBBFIO_CHECK_ENABLE],
   dnl Check if the dependencies for the local library version
   AS_IF(
     [test "x$ac_cv_libbfio" != xyes],
-    [AC_DEFINE(
+    [AX_LIBBFIO_CHECK_LOCAL
+
+    AC_DEFINE(
       [HAVE_LOCAL_LIBBFIO],
       [1],
       [Define to 1 if the local version of libbfio is used.])
     AC_SUBST(
       [HAVE_LOCAL_LIBBFIO],
       [1])
-
-    ac_cv_libbfio_CPPFLAGS="-I../libbfio";
-    ac_cv_libbfio_LIBADD="../libbfio/libbfio.la";
-
-    ac_cv_libbfio=local
     ])
 
   AM_CONDITIONAL(
