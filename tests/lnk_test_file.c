@@ -578,6 +578,8 @@ int lnk_test_file_close_source(
 	return( result );
 }
 
+#include "../liblnk/liblnk_file.h"
+
 /* Tests the liblnk_file_initialize function
  * Returns 1 if successful or 0 if not
  */
@@ -1428,9 +1430,9 @@ int lnk_test_file_set_ascii_codepage(
 		 result,
 		 1 );
 
-	        LNK_TEST_ASSERT_IS_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
 	}
 	/* Test error cases
 	 */
@@ -1467,9 +1469,9 @@ int lnk_test_file_set_ascii_codepage(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -2519,9 +2521,9 @@ int lnk_test_file_get_utf8_volume_label(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -2715,9 +2717,9 @@ int lnk_test_file_get_utf16_volume_label(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -2911,9 +2913,9 @@ int lnk_test_file_get_utf8_local_path(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -3107,9 +3109,9 @@ int lnk_test_file_get_utf16_local_path(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -3303,9 +3305,9 @@ int lnk_test_file_get_utf8_network_path(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -3499,9 +3501,9 @@ int lnk_test_file_get_utf16_network_path(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -3695,9 +3697,9 @@ int lnk_test_file_get_utf8_description(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -3891,9 +3893,9 @@ int lnk_test_file_get_utf16_description(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -4087,9 +4089,9 @@ int lnk_test_file_get_utf8_relative_path(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -4283,9 +4285,9 @@ int lnk_test_file_get_utf16_relative_path(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -4479,9 +4481,9 @@ int lnk_test_file_get_utf8_working_directory(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -4675,9 +4677,9 @@ int lnk_test_file_get_utf16_working_directory(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -4871,9 +4873,9 @@ int lnk_test_file_get_utf8_command_line_arguments(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -5067,9 +5069,9 @@ int lnk_test_file_get_utf16_command_line_arguments(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -5263,9 +5265,9 @@ int lnk_test_file_get_utf8_icon_location(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -5459,9 +5461,9 @@ int lnk_test_file_get_utf16_icon_location(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -5655,9 +5657,9 @@ int lnk_test_file_get_utf8_environment_variables_location(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -5851,9 +5853,9 @@ int lnk_test_file_get_utf16_environment_variables_location(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -6125,9 +6127,9 @@ int lnk_test_file_get_utf8_machine_identifier(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -6321,9 +6323,9 @@ int lnk_test_file_get_utf16_machine_identifier(
 		 result,
 		 -1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
 
 		libcerror_error_free(
 		 &error );
@@ -6867,6 +6869,27 @@ int main(
 #if !defined( __BORLANDC__ ) || ( __BORLANDC__ >= 0x0560 )
 	if( source != NULL )
 	{
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+		result = liblnk_check_file_signature_wide(
+		          source,
+		          &error );
+#else
+		result = liblnk_check_file_signature(
+		          source,
+		          &error );
+#endif
+
+		LNK_TEST_ASSERT_NOT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
+	}
+	if( result != 0 )
+	{
 		LNK_TEST_RUN_WITH_ARGS(
 		 "liblnk_file_open",
 		 lnk_test_file_open,
@@ -6908,13 +6931,13 @@ int main(
 		 result,
 		 1 );
 
-	        LNK_TEST_ASSERT_IS_NOT_NULL(
-	         "file",
-	         file );
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "file",
+		 file );
 
-	        LNK_TEST_ASSERT_IS_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
 
 		LNK_TEST_RUN_WITH_ARGS(
 		 "liblnk_file_signal_abort",
@@ -7235,12 +7258,12 @@ int main(
 		 0 );
 
 		LNK_TEST_ASSERT_IS_NULL(
-	         "file",
-	         file );
+		 "file",
+		 file );
 
-	        LNK_TEST_ASSERT_IS_NULL(
-	         "error",
-	         error );
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
 	}
 #endif /* !defined( __BORLANDC__ ) || ( __BORLANDC__ >= 0x0560 ) */
 

@@ -99,6 +99,7 @@ rm -rf %{buildroot}
 %doc AUTHORS COPYING NEWS README
 %attr(755,root,root) %{_bindir}/*
 %{_mandir}/man1/*
+
 %changelog
 * @SPEC_DATE@ Joachim Metz <joachim.metz@gmail.com> @VERSION@-1
 - Auto-generated
