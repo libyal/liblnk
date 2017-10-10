@@ -35,7 +35,7 @@
 
 #include "../liblnk/liblnk_file_header.h"
 
-uint8_t lnk_test_file_header_data[ 76 ] = {
+uint8_t lnk_test_file_header_data1[ 76 ] = {
 	0x4c, 0x00, 0x00, 0x00, 0x01, 0x14, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00,
 	0x00, 0x00, 0x00, 0x46, 0x9f, 0x02, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x8c, 0x37, 0x55,
 	0x70, 0xb9, 0xbb, 0x01, 0x00, 0x80, 0x93, 0xfc, 0x7d, 0xb3, 0xcb, 0x01, 0x00, 0x8c, 0x37, 0x55,
@@ -326,7 +326,7 @@ int lnk_test_file_header_read_data(
 	 */
 	result = liblnk_file_header_read_data(
 	          file_header,
-	          lnk_test_file_header_data,
+	          lnk_test_file_header_data1,
 	          76,
 	          class_identifier,
 	          16,
@@ -350,7 +350,7 @@ int lnk_test_file_header_read_data(
 	 */
 	result = liblnk_file_header_read_data(
 	          NULL,
-	          lnk_test_file_header_data,
+	          lnk_test_file_header_data1,
 	          76,
 	          class_identifier,
 	          16,
@@ -390,7 +390,7 @@ int lnk_test_file_header_read_data(
 
 	result = liblnk_file_header_read_data(
 	          file_header,
-	          lnk_test_file_header_data,
+	          lnk_test_file_header_data1,
 	          75,
 	          class_identifier,
 	          16,
@@ -410,7 +410,7 @@ int lnk_test_file_header_read_data(
 
 	result = liblnk_file_header_read_data(
 	          file_header,
-	          lnk_test_file_header_data,
+	          lnk_test_file_header_data1,
 	          (size_t) SSIZE_MAX + 1,
 	          class_identifier,
 	          16,
@@ -430,7 +430,7 @@ int lnk_test_file_header_read_data(
 
 	result = liblnk_file_header_read_data(
 	          file_header,
-	          lnk_test_file_header_data,
+	          lnk_test_file_header_data1,
 	          76,
 	          NULL,
 	          16,
@@ -450,7 +450,7 @@ int lnk_test_file_header_read_data(
 
 	result = liblnk_file_header_read_data(
 	          file_header,
-	          lnk_test_file_header_data,
+	          lnk_test_file_header_data1,
 	          76,
 	          class_identifier,
 	          15,
@@ -470,7 +470,7 @@ int lnk_test_file_header_read_data(
 
 	result = liblnk_file_header_read_data(
 	          file_header,
-	          lnk_test_file_header_data,
+	          lnk_test_file_header_data1,
 	          76,
 	          class_identifier,
 	          (size_t) SSIZE_MAX + 1,
