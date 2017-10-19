@@ -102,6 +102,7 @@ lnk_test_error_LDADD = \
 
 lnk_test_file_SOURCES = \
 	lnk_test_file.c \
+	lnk_test_functions.c lnk_test_functions.h \
 	lnk_test_getopt.c lnk_test_getopt.h \
 	lnk_test_libcerror.h \
 	lnk_test_libclocale.h \
@@ -203,6 +204,7 @@ lnk_test_special_folder_location_LDADD = \
 	@LIBCERROR_LIBADD@
 
 lnk_test_support_SOURCES = \
+	lnk_test_functions.c lnk_test_functions.h \
 	lnk_test_getopt.c lnk_test_getopt.h \
 	lnk_test_libbfio.h \
 	lnk_test_libcerror.h \
