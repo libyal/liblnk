@@ -229,6 +229,10 @@
 				RelativePath="..\..\tests\lnk_test_macros.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\tests\lnk_test_unused.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

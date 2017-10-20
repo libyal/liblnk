@@ -206,6 +206,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\tests\lnk_test_libbfio.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\tests\lnk_test_libcerror.h"
 				>
 			</File>
@@ -231,6 +235,10 @@
 			</File>
 			<File
 				RelativePath="..\..\tests\lnk_test_memory.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\tests\lnk_test_unused.h"
 				>
 			</File>
 		</Filter>

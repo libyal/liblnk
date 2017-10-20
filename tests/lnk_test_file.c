@@ -37,6 +37,7 @@
 #include "lnk_test_liblnk.h"
 #include "lnk_test_macros.h"
 #include "lnk_test_memory.h"
+#include "lnk_test_unused.h"
 
 #include "../liblnk/liblnk_file.h"
 
@@ -483,6 +484,62 @@ int lnk_test_file_open(
 	/* Test error cases
 	 */
 	result = liblnk_file_open(
+	          NULL,
+	          narrow_source,
+	          LIBLNK_OPEN_READ,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_file_open(
+	          file,
+	          NULL,
+	          LIBLNK_OPEN_READ,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_file_open(
+	          file,
+	          narrow_source,
+	          -1,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test open when already opened
+	 */
+	result = liblnk_file_open(
 	          file,
 	          narrow_source,
 	          LIBLNK_OPEN_READ,
@@ -604,6 +661,62 @@ int lnk_test_file_open_wide(
 	/* Test error cases
 	 */
 	result = liblnk_file_open_wide(
+	          NULL,
+	          wide_source,
+	          LIBLNK_OPEN_READ,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_file_open_wide(
+	          file,
+	          NULL,
+	          LIBLNK_OPEN_READ,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_file_open_wide(
+	          file,
+	          wide_source,
+	          -1,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test open when already opened
+	 */
+	result = liblnk_file_open_wide(
 	          file,
 	          wide_source,
 	          LIBLNK_OPEN_READ,
@@ -658,6 +771,231 @@ on_error:
 }
 
 #endif /* defined( HAVE_WIDE_CHARACTER_TYPE ) */
+
+/* Tests the liblnk_file_open_file_io_handle function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_file_open_file_io_handle(
+     const system_character_t *source )
+{
+	libbfio_handle_t *file_io_handle = NULL;
+	libcerror_error_t *error         = NULL;
+	liblnk_file_t *file              = NULL;
+	size_t source_length             = 0;
+	int result                       = 0;
+
+	/* Initialize test
+	 */
+	result = libbfio_file_initialize(
+	          &file_io_handle,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NOT_NULL(
+         "file_io_handle",
+         file_io_handle );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	source_length = system_string_length(
+	                 source );
+
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+	result = libbfio_file_set_name_wide(
+	          file_io_handle,
+	          source,
+	          source_length,
+	          &error );
+#else
+	result = libbfio_file_set_name(
+	          file_io_handle,
+	          source,
+	          source_length,
+	          &error );
+#endif
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	result = liblnk_file_initialize(
+	          &file,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "file",
+	 file );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test open
+	 */
+	result = liblnk_file_open_file_io_handle(
+	          file,
+	          file_io_handle,
+	          LIBLNK_OPEN_READ,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = liblnk_file_open_file_io_handle(
+	          NULL,
+	          file_io_handle,
+	          LIBLNK_OPEN_READ,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_file_open_file_io_handle(
+	          file,
+	          NULL,
+	          LIBLNK_OPEN_READ,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_file_open_file_io_handle(
+	          file,
+	          file_io_handle,
+	          -1,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Test open when already opened
+	 */
+	result = liblnk_file_open_file_io_handle(
+	          file,
+	          file_io_handle,
+	          LIBLNK_OPEN_READ,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = liblnk_file_free(
+	          &file,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "file",
+	 file );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = libbfio_handle_free(
+	          &file_io_handle,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+         "file_io_handle",
+         file_io_handle );
+
+        LNK_TEST_ASSERT_IS_NULL(
+         "error",
+         error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( file != NULL )
+	{
+		liblnk_file_free(
+		 &file,
+		 NULL );
+	}
+	if( file_io_handle != NULL )
+	{
+		libbfio_handle_free(
+		 &file_io_handle,
+		 NULL );
+	}
+	return( 0 );
+}
 
 /* Tests the liblnk_file_close function
  * Returns 1 if successful or 0 if not
@@ -6510,11 +6848,10 @@ int main(
 
 #endif /* defined( HAVE_WIDE_CHARACTER_TYPE ) */
 
-#if defined( LIBLNK_HAVE_BFIO )
-
-		/* TODO add test for liblnk_file_open_file_io_handle */
-
-#endif /* defined( LIBLNK_HAVE_BFIO ) */
+		LNK_TEST_RUN_WITH_ARGS(
+		 "liblnk_file_open_file_io_handle",
+		 lnk_test_file_open_file_io_handle,
+		 source );
 
 		LNK_TEST_RUN(
 		 "liblnk_file_close",

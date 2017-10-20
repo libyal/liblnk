@@ -104,13 +104,15 @@ lnk_test_file_SOURCES = \
 	lnk_test_file.c \
 	lnk_test_functions.c lnk_test_functions.h \
 	lnk_test_getopt.c lnk_test_getopt.h \
+	lnk_test_libbfio.h \
 	lnk_test_libcerror.h \
 	lnk_test_libclocale.h \
 	lnk_test_libcnotify.h \
 	lnk_test_liblnk.h \
 	lnk_test_libuna.h \
 	lnk_test_macros.h \
-	lnk_test_memory.c lnk_test_memory.h
+	lnk_test_memory.c lnk_test_memory.h \
+	lnk_test_unused.h
 
 lnk_test_file_LDADD = \
 	@LIBBFIO_LIBADD@ \
@@ -217,7 +219,8 @@ lnk_test_support_SOURCES = \
 	lnk_test_liblnk.h \
 	lnk_test_libuna.h \
 	lnk_test_macros.h \
-	lnk_test_support.c
+	lnk_test_support.c \
+	lnk_test_unused.h
 
 lnk_test_support_LDADD = \
 	@LIBBFIO_LIBADD@ \

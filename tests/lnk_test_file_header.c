@@ -595,11 +595,11 @@ int main(
 	 "liblnk_file_header_free",
 	 lnk_test_file_header_free );
 
-	/* TODO: add tests for liblnk_file_header_read */
-
 	LNK_TEST_RUN(
 	 "liblnk_file_header_read_data",
 	 lnk_test_file_header_read_data );
+
+	/* TODO: add tests for liblnk_file_header_read_file_io_handle */
 
 #endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 
