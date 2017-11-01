@@ -35,6 +35,9 @@
 
 #include "../liblnk/liblnk_special_folder_location.h"
 
+uint8_t lnk_test_special_folder_location_data1[ 16 ] = {
+	0x10, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0xa0, 0xff, 0xff, 0xff, 0xff, 0x34, 0x00, 0x00, 0x00, };
+
 #if defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT )
 
 /* Tests the liblnk_special_folder_location_initialize function
@@ -270,6 +273,144 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the liblnk_special_folder_location_read_data function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_special_folder_location_read_data(
+     void )
+{
+	libcerror_error_t *error                                  = NULL;
+	liblnk_special_folder_location_t *special_folder_location = NULL;
+	int result                                                = 0;
+
+	/* Initialize test
+	 */
+	result = liblnk_special_folder_location_initialize(
+	          &special_folder_location,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "special_folder_location",
+	 special_folder_location );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+	result = liblnk_special_folder_location_read_data(
+	          special_folder_location,
+	          lnk_test_special_folder_location_data1,
+	          16,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = liblnk_special_folder_location_read_data(
+	          NULL,
+	          lnk_test_special_folder_location_data1,
+	          16,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_special_folder_location_read_data(
+	          special_folder_location,
+	          NULL,
+	          16,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_special_folder_location_read_data(
+	          special_folder_location,
+	          lnk_test_special_folder_location_data1,
+	          (size_t) SSIZE_MAX + 1,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = liblnk_special_folder_location_free(
+	          &special_folder_location,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "special_folder_location",
+	 special_folder_location );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( special_folder_location != NULL )
+	{
+		liblnk_special_folder_location_free(
+		 &special_folder_location,
+		 NULL );
+	}
+	return( 0 );
+}
+
 #endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 
 /* The main program
@@ -299,7 +440,9 @@ int main(
 
 	/* TODO: add tests for liblnk_special_folder_location_read_data_block */
 
-	/* TODO: add tests for liblnk_special_folder_location_read_data */
+	LNK_TEST_RUN(
+	 "liblnk_special_folder_location_read_data",
+	 lnk_test_special_folder_location_read_data );
 
 #endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 

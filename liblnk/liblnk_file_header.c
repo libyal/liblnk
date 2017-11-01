@@ -331,7 +331,7 @@ int liblnk_file_header_read_data(
 
 		if( liblnk_debug_print_guid_value(
 		     function,
-		     "class identifier\t\t\t",
+		     "class identifier\t\t\t\t",
 		     ( (lnk_file_header_t *) data )->class_identifier,
 		     16,
 		     LIBFGUID_ENDIAN_LITTLE,
@@ -367,7 +367,7 @@ int liblnk_file_header_read_data(
 
 		if( liblnk_debug_print_filetime_value(
 		     function,
-		     "creation time\t\t\t",
+		     "creation time\t\t\t\t",
 		     ( (lnk_file_header_t *) data )->creation_time,
 		     8,
 		     LIBFDATETIME_ENDIAN_LITTLE,
@@ -403,7 +403,7 @@ int liblnk_file_header_read_data(
 		}
 		if( liblnk_debug_print_filetime_value(
 		     function,
-		     "modification time\t\t\t",
+		     "modification time\t\t\t\t",
 		     ( (lnk_file_header_t *) data )->modification_time,
 		     8,
 		     LIBFDATETIME_ENDIAN_LITTLE,
@@ -420,7 +420,7 @@ int liblnk_file_header_read_data(
 			return( -1 );
 		}
 		libcnotify_printf(
-		 "%s: file size\t\t\t\t: %" PRIu32 " bytes\n",
+		 "%s: file size\t\t\t\t\t: %" PRIu32 " bytes\n",
 		 function,
 		 file_header->size );
 
@@ -435,15 +435,15 @@ int liblnk_file_header_read_data(
 		 file_header->show_window );
 
 		libcnotify_printf(
-		 "%s: hot key\t\t\t\t: 0x%04" PRIx16 "\n",
+		 "%s: hot key\t\t\t\t\t: 0x%04" PRIx16 "\n",
 		 function,
 		 file_header->hot_key );
 
 		libcnotify_printf(
-		 "%s: reserved:\n",
+		 "%s: unknown:\n",
 		 function );
 		libcnotify_print_data(
-		 (uint8_t *) ( (lnk_file_header_t *) data )->reserved,
+		 (uint8_t *) ( (lnk_file_header_t *) data )->unknown1,
 		 10,
 		 0 );
 

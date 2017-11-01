@@ -88,20 +88,20 @@ struct lnk_file_header
 	 */
 	uint8_t hot_key[ 2 ];
 
-	/* Reserved1
+	/* Unknown (reserved)
 	 * Consists of 2 bytes
 	 */
-	uint8_t reserved1[ 2 ];
+	uint8_t unknown1[ 2 ];
 
-	/* Reserved2
+	/* Unknown (reserved)
 	 * Consists of 4 bytes
 	 */
-	uint8_t reserved2[ 4 ];
+	uint8_t unknown2[ 4 ];
 
-	/* Reserved3
+	/* Unknown (reserved)
 	 * Consists of 4 bytes
 	 */
-	uint8_t reserved3[ 4 ];
+	uint8_t unknown3[ 4 ];
 };
 
 #if defined( __cplusplus )

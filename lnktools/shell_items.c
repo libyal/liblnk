@@ -806,6 +806,7 @@ int shell_items_item_fprint(
 				fprintf(
 				 notify_stream,
 				 " (URI)" );
+				break;
 
 			case LIBFWSI_ITEM_TYPE_VOLUME:
 				fprintf(

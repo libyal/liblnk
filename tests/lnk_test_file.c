@@ -43,7 +43,12 @@
 
 #if !defined( LIBLNK_HAVE_BFIO )
 
-extern \
+LIBLNK_EXTERN \
+int liblnk_check_file_signature_file_io_handle(
+     libbfio_handle_t *file_io_handle,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
 int liblnk_file_open_file_io_handle(
      liblnk_file_t *file,
      libbfio_handle_t *file_io_handle,
@@ -781,7 +786,7 @@ int lnk_test_file_open_file_io_handle(
 	libbfio_handle_t *file_io_handle = NULL;
 	libcerror_error_t *error         = NULL;
 	liblnk_file_t *file              = NULL;
-	size_t source_length             = 0;
+	size_t string_length             = 0;
 	int result                       = 0;
 
 	/* Initialize test
@@ -803,20 +808,20 @@ int lnk_test_file_open_file_io_handle(
          "error",
          error );
 
-	source_length = system_string_length(
+	string_length = system_string_length(
 	                 source );
 
 #if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	result = libbfio_file_set_name_wide(
 	          file_io_handle,
 	          source,
-	          source_length,
+	          string_length,
 	          &error );
 #else
 	result = libbfio_file_set_name(
 	          file_io_handle,
 	          source,
-	          source_length,
+	          string_length,
 	          &error );
 #endif
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -6813,57 +6818,6 @@ int main(
 #if !defined( __BORLANDC__ ) || ( __BORLANDC__ >= 0x0560 )
 	if( source != NULL )
 	{
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-		result = liblnk_check_file_signature_wide(
-		          source,
-		          &error );
-#else
-		result = liblnk_check_file_signature(
-		          source,
-		          &error );
-#endif
-
-		LNK_TEST_ASSERT_NOT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
-
-		LNK_TEST_ASSERT_IS_NULL(
-		 "error",
-		 error );
-	}
-	if( result != 0 )
-	{
-		LNK_TEST_RUN_WITH_ARGS(
-		 "liblnk_file_open",
-		 lnk_test_file_open,
-		 source );
-
-#if defined( HAVE_WIDE_CHARACTER_TYPE )
-
-		LNK_TEST_RUN_WITH_ARGS(
-		 "liblnk_file_open_wide",
-		 lnk_test_file_open_wide,
-		 source );
-
-#endif /* defined( HAVE_WIDE_CHARACTER_TYPE ) */
-
-		LNK_TEST_RUN_WITH_ARGS(
-		 "liblnk_file_open_file_io_handle",
-		 lnk_test_file_open_file_io_handle,
-		 source );
-
-		LNK_TEST_RUN(
-		 "liblnk_file_close",
-		 lnk_test_file_close );
-
-		LNK_TEST_RUN_WITH_ARGS(
-		 "liblnk_file_open_close",
-		 lnk_test_file_open_close,
-		 source );
-
-		/* Initialize test
-		 */
 		result = libbfio_file_initialize(
 		          &file_io_handle,
 		          &error );
@@ -6906,6 +6860,51 @@ int main(
 	         "error",
 	         error );
 
+		result = liblnk_check_file_signature_file_io_handle(
+		          file_io_handle,
+		          &error );
+
+		LNK_TEST_ASSERT_NOT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
+	}
+	if( result != 0 )
+	{
+		LNK_TEST_RUN_WITH_ARGS(
+		 "liblnk_file_open",
+		 lnk_test_file_open,
+		 source );
+
+#if defined( HAVE_WIDE_CHARACTER_TYPE )
+
+		LNK_TEST_RUN_WITH_ARGS(
+		 "liblnk_file_open_wide",
+		 lnk_test_file_open_wide,
+		 source );
+
+#endif /* defined( HAVE_WIDE_CHARACTER_TYPE ) */
+
+		LNK_TEST_RUN_WITH_ARGS(
+		 "liblnk_file_open_file_io_handle",
+		 lnk_test_file_open_file_io_handle,
+		 source );
+
+		LNK_TEST_RUN(
+		 "liblnk_file_close",
+		 lnk_test_file_close );
+
+		LNK_TEST_RUN_WITH_ARGS(
+		 "liblnk_file_open_close",
+		 lnk_test_file_open_close,
+		 source );
+
+		/* Initialize file for tests
+		 */
 		result = lnk_test_file_open_source(
 		          &file,
 		          file_io_handle,
