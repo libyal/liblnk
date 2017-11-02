@@ -64,7 +64,7 @@ in the section entitled "GNU Free Documentation License".
 | 0.0.19 | J.B. Metz | June 2015 | Small changes.
 | 0.0.20 | J.B. Metz | February 2016 | Addtional information regarding corruption scenarios with thanks to B. Spasojevic.
 | 0.0.21 | J.B. Metz | December 2016 | Addtional information regarding Show Window value.
-| 0.0.22 | J.B. Metz | March 2027 | Addtional information.
+| 0.0.22 | J.B. Metz | March 2017 | Addtional information.
 |===
 
 :numbered:
