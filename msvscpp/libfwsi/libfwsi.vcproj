@@ -211,6 +211,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef000a_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0013_values.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0014_values.c"
 				>
 			</File>
@@ -296,6 +304,10 @@
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_unknown_0x74_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_uri_sub_values.c"
 				>
 			</File>
 			<File
@@ -386,6 +398,14 @@
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0006_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef000a_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0013_values.h"
 				>
 			</File>
 			<File
@@ -518,6 +538,10 @@
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_unused.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_uri_sub_values.h"
 				>
 			</File>
 			<File
