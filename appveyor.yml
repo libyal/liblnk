@@ -102,7 +102,7 @@ test_script:
 - ps: if ($env:TARGET -eq "vs2017") {
     .\runtests.ps1 }
 - cmd: if [%TARGET%]==[cygwin] (
-    C:\cygwin\bin\bash -e -l -c "cd liblnk && export CHECK_WITH_STRACE=1 && ./runtests.sh" )
+    C:\cygwin\bin\bash -e -l -c "cd liblnk && ./runtests.sh" )
 - cmd: if [%TARGET%]==[cygwin64] (
     C:\cygwin64\bin\bash -e -l -c "cd liblnk && ./runtests.sh" )
 - cmd: if [%TARGET%]==[mingw] (
@@ -111,8 +111,7 @@ test_script:
     C:\msys64\usr\bin\bash -e -l -c "cd liblnk && ./runtests.sh" )
 
 after_test:
-- cmd: if [%TARGET%]==[cygwin] (
-    C:\cygwin\bin\bash -e -l -c "cd liblnk && tail -n 50 strace.log" )
 - cmd: if [%TARGET%]==[mingw] (
     copy C:\projects\codecov-bash\codecov C:\MinGW\msys\1.0\home\appveyor\liblnk\codecov.sh &&
     C:\MinGW\msys\1.0\bin\bash -e -l -c "cd liblnk && chmod a+x ./codecov.sh && ./codecov.sh" )
+
