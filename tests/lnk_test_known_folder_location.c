@@ -376,6 +376,24 @@ int lnk_test_known_folder_location_read_data(
 	libcerror_error_free(
 	 &error );
 
+	result = liblnk_known_folder_location_read_data(
+	          known_folder_location,
+	          lnk_test_known_folder_location_data1,
+	          0,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
 	/* Clean up
 	 */
 	result = liblnk_known_folder_location_free(

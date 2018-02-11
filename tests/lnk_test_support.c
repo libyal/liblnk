@@ -352,7 +352,7 @@ on_error:
 int lnk_test_check_file_signature_file_io_handle(
      const system_character_t *source )
 {
-	uint8_t empty_block[ 4096 ];
+	uint8_t empty_block[ 8192 ];
 
 	libbfio_handle_t *file_io_handle = NULL;
 	libcerror_error_t *error         = NULL;
@@ -483,19 +483,12 @@ int lnk_test_check_file_signature_file_io_handle(
 	 "error",
 	 error );
 
-	/* Initialize test
+	/* Test check file signature with data too small
 	 */
-	memset_result = memory_set(
-	                 empty_block,
-	                 0,
-	                 sizeof( uint8_t ) * 4096 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "memset_result",
-	 memset_result );
-
-	result = libbfio_memory_range_initialize(
+	result = lnk_test_open_file_io_handle(
 	          &file_io_handle,
+	          empty_block,
+	          sizeof( uint8_t ) * 1,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -511,37 +504,65 @@ int lnk_test_check_file_signature_file_io_handle(
 	 "error",
 	 error );
 
-	result = libbfio_memory_range_set(
+	result = liblnk_check_file_signature_file_io_handle(
 	          file_io_handle,
-	          empty_block,
-	          sizeof( uint8_t ) * 4096,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
-	 1 );
+	 -1 );
 
-	LNK_TEST_ASSERT_IS_NULL(
+	LNK_TEST_ASSERT_IS_NOT_NULL(
 	 "error",
 	 error );
 
-	result = libbfio_handle_open(
-	          file_io_handle,
-	          LIBBFIO_OPEN_READ,
+	libcerror_error_free(
+	 &error );
+
+	result = lnk_test_close_file_io_handle(
+	          &file_io_handle,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
-	 1 );
+	 0 );
 
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
 
-	/* Test check file signature
+	/* Test check file signature with empty block
 	 */
+	memset_result = memory_set(
+	                 empty_block,
+	                 0,
+	                 sizeof( uint8_t ) * 8192 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "memset_result",
+	 memset_result );
+
+	result = lnk_test_open_file_io_handle(
+	          &file_io_handle,
+	          empty_block,
+	          sizeof( uint8_t ) * 8192,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "file_io_handle",
+	 file_io_handle );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
 	result = liblnk_check_file_signature_file_io_handle(
 	          file_io_handle,
 	          &error );
@@ -555,10 +576,8 @@ int lnk_test_check_file_signature_file_io_handle(
 	 "error",
 	 error );
 
-	/* Clean up
-	 */
-	result = libbfio_handle_close(
-	          file_io_handle,
+	result = lnk_test_close_file_io_handle(
+	          &file_io_handle,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -569,25 +588,6 @@ int lnk_test_check_file_signature_file_io_handle(
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-
-	result = libbfio_handle_free(
-	          &file_io_handle,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
-
-	LNK_TEST_ASSERT_IS_NULL(
-	 "file_io_handle",
-	 file_io_handle );
-
-	LNK_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
-	/* TODO test file too small */
 
 	return( 1 );
 

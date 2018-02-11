@@ -332,6 +332,36 @@ int lnk_test_io_handle_clear(
 	libcerror_error_free(
 	 &error );
 
+#if defined( HAVE_LNK_TEST_MEMORY )
+
+	/* Test liblnk_io_handle_clear with memset failing
+	 */
+	lnk_test_memset_attempts_before_fail = 0;
+
+	result = liblnk_io_handle_clear(
+	          io_handle,
+	          &error );
+
+	if( lnk_test_memset_attempts_before_fail != -1 )
+	{
+		lnk_test_memset_attempts_before_fail = -1;
+	}
+	else
+	{
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#endif /* defined( HAVE_LNK_TEST_MEMORY ) */
+
 	/* Clean up
 	 */
 	result = liblnk_io_handle_free(
