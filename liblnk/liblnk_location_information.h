@@ -106,6 +106,13 @@ int liblnk_location_information_free(
      liblnk_location_information_t **location_information,
      libcerror_error_t **error );
 
+int liblnk_location_information_read_data(
+     liblnk_location_information_t *location_information,
+     liblnk_io_handle_t *io_handle,
+     const uint8_t *data,
+     size_t data_size,
+     libcerror_error_t **error );
+
 ssize_t liblnk_location_information_read(
          liblnk_location_information_t *location_information,
          liblnk_io_handle_t *io_handle,

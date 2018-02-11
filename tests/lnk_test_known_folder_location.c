@@ -21,6 +21,7 @@
 
 #include <common.h>
 #include <file_stream.h>
+#include <memory.h>
 #include <types.h>
 
 #if defined( HAVE_STDLIB_H ) || defined( WINAPI )
@@ -274,6 +275,206 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the liblnk_known_folder_location_read_data_block function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_known_folder_location_read_data_block(
+     void )
+{
+	libcerror_error_t *error                              = NULL;
+	liblnk_data_block_t *data_block                       = NULL;
+	liblnk_known_folder_location_t *known_folder_location = NULL;
+	void *memcpy_result                                   = NULL;
+	int result                                            = 0;
+
+	/* Initialize test
+	 */
+	result = liblnk_known_folder_location_initialize(
+	          &known_folder_location,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "known_folder_location",
+	 known_folder_location );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Initialize data block
+	 */
+	result = liblnk_data_block_initialize(
+	          &data_block,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "data_block",
+	 data_block );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	data_block->data_size = 28;
+
+	data_block->data = (uint8_t *) memory_allocate(
+	                                data_block->data_size );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "data_block->data",
+	 data_block->data );
+
+	memcpy_result = memory_copy(
+	                 data_block->data,
+	                 lnk_test_known_folder_location_data1,
+	                 data_block->data_size );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "memcpy_result",
+	 memcpy_result );
+
+	/* Test regular cases
+	 */
+	result = liblnk_known_folder_location_read_data_block(
+	          known_folder_location,
+	          data_block,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = liblnk_known_folder_location_read_data_block(
+	          NULL,
+	          data_block,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_known_folder_location_read_data_block(
+	          known_folder_location,
+	          NULL,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	data_block->data_size = 8;
+
+	result = liblnk_known_folder_location_read_data_block(
+	          known_folder_location,
+	          data_block,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up data block
+	 */
+	result = liblnk_data_block_free(
+	          &data_block,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "data_block",
+	 data_block );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Clean up
+	 */
+	result = liblnk_known_folder_location_free(
+	          &known_folder_location,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "known_folder_location",
+	 known_folder_location );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( data_block != NULL )
+	{
+		liblnk_data_block_free(
+		 &data_block,
+		 NULL );
+	}
+	if( known_folder_location != NULL )
+	{
+		liblnk_known_folder_location_free(
+		 &known_folder_location,
+		 NULL );
+	}
+	return( 0 );
+}
+
 /* Tests the liblnk_known_folder_location_read_data function
  * Returns 1 if successful or 0 if not
  */
@@ -394,6 +595,38 @@ int lnk_test_known_folder_location_read_data(
 	libcerror_error_free(
 	 &error );
 
+#if defined( HAVE_LNK_TEST_MEMORY )
+
+	/* Test liblnk_known_folder_location_read_data with memcpy failing
+	 */
+	lnk_test_memcpy_attempts_before_fail = 0;
+
+	result = liblnk_known_folder_location_read_data(
+	          known_folder_location,
+	          lnk_test_known_folder_location_data1,
+	          28,
+	          &error );
+
+	if( lnk_test_memcpy_attempts_before_fail != -1 )
+	{
+		lnk_test_memcpy_attempts_before_fail = -1;
+	}
+	else
+	{
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#endif /* defined( HAVE_LNK_TEST_MEMORY ) */
+
 	/* Clean up
 	 */
 	result = liblnk_known_folder_location_free(
@@ -457,7 +690,9 @@ int main(
 	 "liblnk_known_folder_location_free",
 	 lnk_test_known_folder_location_free );
 
-	/* TODO: add tests for liblnk_known_folder_location_read_data_block */
+	LNK_TEST_RUN(
+	 "liblnk_known_folder_location_read_data_block",
+	 lnk_test_known_folder_location_read_data_block );
 
 	LNK_TEST_RUN(
 	 "liblnk_known_folder_location_read_data",

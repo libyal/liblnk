@@ -61,7 +61,7 @@ int liblnk_data_block_free(
 ssize_t liblnk_data_block_read(
          liblnk_data_block_t *data_block,
          liblnk_io_handle_t *io_handle,
-         libbfio_handle_t *data_block_io_handle,
+         libbfio_handle_t *file_io_handle,
          off64_t data_block_offset,
          libcerror_error_t **error );
 

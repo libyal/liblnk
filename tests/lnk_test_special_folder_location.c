@@ -21,6 +21,7 @@
 
 #include <common.h>
 #include <file_stream.h>
+#include <memory.h>
 #include <types.h>
 
 #if defined( HAVE_STDLIB_H ) || defined( WINAPI )
@@ -283,9 +284,29 @@ int lnk_test_special_folder_location_read_data_block(
 	libcerror_error_t *error                                  = NULL;
 	liblnk_data_block_t *data_block                           = NULL;
 	liblnk_special_folder_location_t *special_folder_location = NULL;
+	void *memcpy_result                                       = NULL;
 	int result                                                = 0;
 
 	/* Initialize test
+	 */
+	result = liblnk_special_folder_location_initialize(
+	          &special_folder_location,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "special_folder_location",
+	 special_folder_location );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Initialize data block
 	 */
 	result = liblnk_data_block_initialize(
 	          &data_block,
@@ -304,18 +325,35 @@ int lnk_test_special_folder_location_read_data_block(
 	 "error",
 	 error );
 
-	result = liblnk_special_folder_location_initialize(
-	          &special_folder_location,
+	data_block->data_size = 16;
+
+	data_block->data = (uint8_t *) memory_allocate(
+	                                data_block->data_size );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "data_block->data",
+	 data_block->data );
+
+	memcpy_result = memory_copy(
+	                 data_block->data,
+	                 lnk_test_special_folder_location_data1,
+	                 data_block->data_size );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "memcpy_result",
+	 memcpy_result );
+
+	/* Test regular cases
+	 */
+	result = liblnk_special_folder_location_read_data_block(
+	          special_folder_location,
+	          data_block,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
 	 1 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "special_folder_location",
-	 special_folder_location );
 
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -357,6 +395,44 @@ int lnk_test_special_folder_location_read_data_block(
 	libcerror_error_free(
 	 &error );
 
+	data_block->data_size = 8;
+
+	result = liblnk_special_folder_location_read_data_block(
+	          special_folder_location,
+	          data_block,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up data block
+	 */
+	result = liblnk_data_block_free(
+	          &data_block,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "data_block",
+	 data_block );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
 	/* Clean up
 	 */
 	result = liblnk_special_folder_location_free(
@@ -376,23 +452,6 @@ int lnk_test_special_folder_location_read_data_block(
 	 "error",
 	 error );
 
-	result = liblnk_data_block_free(
-	          &data_block,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
-
-	LNK_TEST_ASSERT_IS_NULL(
-	 "data_block",
-	 data_block );
-
-	LNK_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
 	return( 1 );
 
 on_error:
@@ -401,16 +460,16 @@ on_error:
 		libcerror_error_free(
 		 &error );
 	}
-	if( special_folder_location != NULL )
-	{
-		liblnk_special_folder_location_free(
-		 &special_folder_location,
-		 NULL );
-	}
 	if( data_block != NULL )
 	{
 		liblnk_data_block_free(
 		 &data_block,
+		 NULL );
+	}
+	if( special_folder_location != NULL )
+	{
+		liblnk_special_folder_location_free(
+		 &special_folder_location,
 		 NULL );
 	}
 	return( 0 );
@@ -486,6 +545,24 @@ int lnk_test_special_folder_location_read_data(
 	          special_folder_location,
 	          NULL,
 	          16,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_special_folder_location_read_data(
+	          special_folder_location,
+	          lnk_test_special_folder_location_data1,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(

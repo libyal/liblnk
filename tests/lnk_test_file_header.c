@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #endif
 
+#include "lnk_test_functions.h"
 #include "lnk_test_libcerror.h"
 #include "lnk_test_liblnk.h"
 #include "lnk_test_macros.h"
@@ -415,6 +416,38 @@ int lnk_test_file_header_read_data(
 
 	libcerror_error_free(
 	 &error );
+
+#if defined( HAVE_LNK_TEST_MEMORY )
+
+	/* Test lnk_test_file_header_read_data with memcpy failing
+	 */
+	lnk_test_memcpy_attempts_before_fail = 0;
+
+	result = liblnk_file_header_read_data(
+	          file_header,
+	          lnk_test_file_header_data1,
+	          76,
+	          &error );
+
+	if( lnk_test_memcpy_attempts_before_fail != -1 )
+	{
+		lnk_test_memcpy_attempts_before_fail = -1;
+	}
+	else
+	{
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 -1 );
+
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "error",
+		 error );
+
+		libcerror_error_free(
+		 &error );
+	}
+#endif /* defined( HAVE_LNK_TEST_MEMORY ) */
 
 	/* Test error case where header size is invalid
 	 */

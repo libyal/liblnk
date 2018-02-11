@@ -168,40 +168,36 @@ int liblnk_location_information_free(
 /* Reads a location information
  * Returns the number of bytes read if successful or -1 on error
  */
-ssize_t liblnk_location_information_read(
-         liblnk_location_information_t *location_information,
-         liblnk_io_handle_t *io_handle,
-         libbfio_handle_t *file_io_handle,
-         off64_t location_information_offset,
-         libcerror_error_t **error )
+int liblnk_location_information_read_data(
+     liblnk_location_information_t *location_information,
+     liblnk_io_handle_t *io_handle,
+     const uint8_t *data,
+     size_t data_size,
+     libcerror_error_t **error )
 {
-	uint8_t location_information_size_data[ 4 ];
-
-	uint8_t *location_information_data               = NULL;
-	uint8_t *location_information_unicode_value_data = NULL;
-	uint8_t *location_information_value_data         = NULL;
-	static char *function                            = "liblnk_location_information_read";
-	size_t location_information_size                 = 0;
-	ssize_t read_count                               = 0;
-	uint32_t common_path_offset                      = 0;
-	uint32_t device_name_offset                      = 0;
-	uint32_t local_path_offset                       = 0;
-	uint32_t location_information_header_size        = 0;
-	uint32_t location_information_value_size         = 0;
-	uint32_t network_share_information_offset        = 0;
-	uint32_t network_share_name_offset               = 0;
-	uint32_t unicode_common_path_offset              = 0;
-	uint32_t unicode_device_name_offset              = 0;
-	uint32_t unicode_local_path_offset               = 0;
-	uint32_t unicode_network_share_name_offset       = 0;
-	uint32_t unicode_value_size                      = 0;
-	uint32_t unicode_volume_label_offset             = 0;
-	uint32_t value_size                              = 0;
-	uint32_t volume_information_offset               = 0;
-	uint32_t volume_label_offset                     = 0;
+	const uint8_t *location_information_unicode_value_data = NULL;
+	const uint8_t *location_information_value_data         = NULL;
+	static char *function                                  = "liblnk_location_information_read_data";
+	ssize_t read_count                                     = 0;
+	uint32_t common_path_offset                            = 0;
+	uint32_t device_name_offset                            = 0;
+	uint32_t local_path_offset                             = 0;
+	uint32_t location_information_header_size              = 0;
+	uint32_t location_information_value_size               = 0;
+	uint32_t network_share_information_offset              = 0;
+	uint32_t network_share_name_offset                     = 0;
+	uint32_t unicode_common_path_offset                    = 0;
+	uint32_t unicode_device_name_offset                    = 0;
+	uint32_t unicode_local_path_offset                     = 0;
+	uint32_t unicode_network_share_name_offset             = 0;
+	uint32_t unicode_value_size                            = 0;
+	uint32_t unicode_volume_label_offset                   = 0;
+	uint32_t value_size                                    = 0;
+	uint32_t volume_information_offset                     = 0;
+	uint32_t volume_label_offset                           = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	uint32_t value_32bit                             = 0;
+	uint32_t value_32bit                                   = 0;
 #endif
 
 	if( location_information == NULL )
@@ -226,117 +222,38 @@ ssize_t liblnk_location_information_read(
 
 		return( -1 );
 	}
-#if defined( HAVE_DEBUG_OUTPUT )
-	if( libcnotify_verbose != 0 )
-	{
-		libcnotify_printf(
-		 "%s: reading location information at offset: %" PRIi64 " (0x%08" PRIx64 ")\n",
-		 function,
-		 location_information_offset,
-		 location_information_offset );
-	}
-#endif
-	if( libbfio_handle_seek_offset(
-	     file_io_handle,
-	     location_information_offset,
-	     SEEK_SET,
-	     error ) == -1 )
+	if( data == NULL )
 	{
 		libcerror_error_set(
 		 error,
-		 LIBCERROR_ERROR_DOMAIN_IO,
-		 LIBCERROR_IO_ERROR_SEEK_FAILED,
-		 "%s: unable to seek location information offset: %" PRIi64 ".",
-		 function,
-		 location_information_offset );
-
-		goto on_error;
-	}
-	read_count = libbfio_handle_read_buffer(
-	              file_io_handle,
-	              location_information_size_data,
-	              4,
-	              error );
-
-	if( read_count != (ssize_t) 4 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_IO,
-		 LIBCERROR_IO_ERROR_READ_FAILED,
-		 "%s: unable to read location information size.",
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data.",
 		 function );
 
-		goto on_error;
+		return( -1 );
 	}
-	byte_stream_copy_to_uint32_little_endian(
-	 location_information_size_data,
-	 location_information_size );
-	
-#if defined( HAVE_DEBUG_OUTPUT )
-	if( libcnotify_verbose != 0 )
+	if( data_size < sizeof( lnk_location_information_t ) )
 	{
-		libcnotify_printf(
-		 "%s: location information size\t\t\t\t: %" PRIzd "\n",
-		 function,
-		 location_information_size );
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 "%s: invalid data size value too small.",
+		 function );
+
+		return( -1 );
 	}
-#endif
-	if( location_information_size <= 4 )
-	{
-#if defined( HAVE_VERBOSE_OUTPUT )
-		if( libcnotify_verbose != 0 )
-		{
-			libcnotify_printf(
-			 "%s: empty location information.\n",
-			 function );
-		}
-#endif
-		return( read_count );
-	}
-	if( location_information_size > (size_t) SSIZE_MAX )
+	if( data_size > (size_t) SSIZE_MAX )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
-		 "%s: location information size value exceeds maximum.",
+		 "%s: invalid data size value exceeds maximum.",
 		 function );
 
-		goto on_error;
-	}
-	location_information_size -= 4;
-
-	location_information_data = (uint8_t *) memory_allocate(
-	                                         sizeof( uint8_t ) * location_information_size );
-
-	if( location_information_data == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_MEMORY,
-		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-		 "%s: unable to create location information data.",
-		 function );
-
-		goto on_error;
-	}
-	read_count = libbfio_handle_read_buffer(
-	              file_io_handle,
-	              location_information_data,
-	              location_information_size,
-	              error );
-
-	if( read_count != (ssize_t) location_information_size )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_IO,
-		 LIBCERROR_IO_ERROR_READ_FAILED,
-		 "%s: unable to read location information data.",
-		 function );
-
-		goto on_error;
+		return( -1 );
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
@@ -345,13 +262,13 @@ ssize_t liblnk_location_information_read(
 		 "%s: location information data:\n",
 		 function );
 		libcnotify_print_data(
-		 location_information_data,
-		 location_information_size,
+		 data,
+		 data_size,
 		 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 	}
 #endif
 	byte_stream_copy_to_uint32_little_endian(
-	 ( (lnk_location_information_t *) location_information_data )->header_size,
+	 ( (lnk_location_information_t *) data )->header_size,
 	 location_information_header_size );
 
 	if( location_information_header_size == 0 )
@@ -361,23 +278,23 @@ ssize_t liblnk_location_information_read(
 		return( read_count + 4 );
 	}
 	byte_stream_copy_to_uint32_little_endian(
-	 ( (lnk_location_information_t *) location_information_data )->location_flags,
+	 ( (lnk_location_information_t *) data )->location_flags,
 	 location_information->flags );
 
 	byte_stream_copy_to_uint32_little_endian(
-	 ( (lnk_location_information_t *) location_information_data )->volume_information_offset,
+	 ( (lnk_location_information_t *) data )->volume_information_offset,
 	 volume_information_offset );
 
 	byte_stream_copy_to_uint32_little_endian(
-	 ( (lnk_location_information_t *) location_information_data )->local_path_offset,
+	 ( (lnk_location_information_t *) data )->local_path_offset,
 	 local_path_offset );
 
 	byte_stream_copy_to_uint32_little_endian(
-	 ( (lnk_location_information_t *) location_information_data )->network_share_information_offset,
+	 ( (lnk_location_information_t *) data )->network_share_information_offset,
 	 network_share_information_offset );
 
 	byte_stream_copy_to_uint32_little_endian(
-	 ( (lnk_location_information_t *) location_information_data )->common_path_offset,
+	 ( (lnk_location_information_t *) data )->common_path_offset,
 	 common_path_offset );
 
 #if defined( HAVE_DEBUG_OUTPUT )
@@ -431,7 +348,7 @@ ssize_t liblnk_location_information_read(
 	if( location_information_header_size > 28 )
 	{
 		byte_stream_copy_to_uint32_little_endian(
-		 ( (lnk_location_information_t *) location_information_data )->unicode_local_path_offset,
+		 ( (lnk_location_information_t *) data )->unicode_local_path_offset,
 		 unicode_local_path_offset );
 
 #if defined( HAVE_DEBUG_OUTPUT )
@@ -447,7 +364,7 @@ ssize_t liblnk_location_information_read(
 	if( location_information_header_size > 32 )
 	{
 		byte_stream_copy_to_uint32_little_endian(
-		 ( (lnk_location_information_t *) location_information_data )->unicode_common_path_offset,
+		 ( (lnk_location_information_t *) data )->unicode_common_path_offset,
 		 unicode_common_path_offset );
 
 #if defined( HAVE_DEBUG_OUTPUT )
@@ -485,7 +402,7 @@ ssize_t liblnk_location_information_read(
 		}
 		volume_information_offset -= 4;
 
-		if( location_information_size < 4 )
+		if( data_size < 4 )
 		{
 			libcerror_error_set(
 			 error,
@@ -496,7 +413,7 @@ ssize_t liblnk_location_information_read(
 
 			goto on_error;
 		}
-		if( volume_information_offset > ( location_information_size - 4 ) )
+		if( volume_information_offset > ( data_size - 4 ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -507,13 +424,13 @@ ssize_t liblnk_location_information_read(
 
 			goto on_error;
 		}
-		location_information_value_data = &( location_information_data[ volume_information_offset ] );
+		location_information_value_data = &( data[ volume_information_offset ] );
 
 		byte_stream_copy_to_uint32_little_endian(
 		 ( (lnk_volume_information_t *) location_information_value_data )->size,
 		 location_information_value_size );
 
-		if( location_information_value_size > ( location_information_size - volume_information_offset ) )
+		if( location_information_value_size > ( data_size - volume_information_offset ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -817,7 +734,7 @@ ssize_t liblnk_location_information_read(
 			}
 			local_path_offset -= 4;
 
-			if( local_path_offset > location_information_size )
+			if( local_path_offset > data_size )
 			{
 				libcerror_error_set(
 				 error,
@@ -828,10 +745,10 @@ ssize_t liblnk_location_information_read(
 
 				goto on_error;
 			}
-			location_information_value_data = &( location_information_data[ local_path_offset ] );
+			location_information_value_data = &( data[ local_path_offset ] );
 
 			for( value_size = 0;
-			     value_size < ( location_information_size - local_path_offset );
+			     value_size < ( data_size - local_path_offset );
 			     value_size++ )
 			{
 				if( location_information_value_data[ value_size ] == 0 )
@@ -874,7 +791,7 @@ ssize_t liblnk_location_information_read(
 			}
 			unicode_local_path_offset -= 4;
 
-			if( unicode_local_path_offset > location_information_size )
+			if( unicode_local_path_offset > data_size )
 			{
 				libcerror_error_set(
 				 error,
@@ -885,10 +802,10 @@ ssize_t liblnk_location_information_read(
 
 				goto on_error;
 			}
-			location_information_unicode_value_data = &( location_information_data[ unicode_local_path_offset ] );
+			location_information_unicode_value_data = &( data[ unicode_local_path_offset ] );
 
 			for( unicode_value_size = 0;
-			     ( unicode_value_size + 1 ) < ( location_information_size - unicode_local_path_offset );
+			     ( unicode_value_size + 1 ) < ( data_size - unicode_local_path_offset );
 			     unicode_value_size += 2 )
 			{
 				if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
@@ -1047,7 +964,7 @@ ssize_t liblnk_location_information_read(
 		}
 		network_share_information_offset -= 4;
 
-		if( location_information_size < 4 )
+		if( data_size < 4 )
 		{
 			libcerror_error_set(
 			 error,
@@ -1058,7 +975,7 @@ ssize_t liblnk_location_information_read(
 
 			goto on_error;
 		}
-		if( network_share_information_offset > ( location_information_size - 4 ) )
+		if( network_share_information_offset > ( data_size - 4 ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1069,13 +986,13 @@ ssize_t liblnk_location_information_read(
 
 			goto on_error;
 		}
-		location_information_value_data = &( location_information_data[ network_share_information_offset ] );
+		location_information_value_data = &( data[ network_share_information_offset ] );
 
 		byte_stream_copy_to_uint32_little_endian(
 		 ( (lnk_network_share_information_t *) location_information_value_data )->size,
 		 location_information_value_size );
 
-		if( location_information_value_size > ( location_information_size - network_share_information_offset ) )
+		if( location_information_value_size > ( data_size - network_share_information_offset ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1595,7 +1512,7 @@ ssize_t liblnk_location_information_read(
 		}
 		common_path_offset -= 4;
 
-		if( common_path_offset > location_information_size )
+		if( common_path_offset > data_size )
 		{
 			libcerror_error_set(
 			 error,
@@ -1606,10 +1523,10 @@ ssize_t liblnk_location_information_read(
 
 			goto on_error;
 		}
-		location_information_value_data = &( location_information_data[ common_path_offset ] );
+		location_information_value_data = &( data[ common_path_offset ] );
 
 		for( value_size = 0;
-		     value_size < ( location_information_size - common_path_offset );
+		     value_size < ( data_size - common_path_offset );
 		     value_size++ )
 		{
 			if( location_information_value_data[ value_size ] == 0 )
@@ -1652,7 +1569,7 @@ ssize_t liblnk_location_information_read(
 		}
 		unicode_common_path_offset -= 4;
 
-		if( unicode_common_path_offset > location_information_size )
+		if( unicode_common_path_offset > data_size )
 		{
 			libcerror_error_set(
 			 error,
@@ -1663,10 +1580,10 @@ ssize_t liblnk_location_information_read(
 
 			goto on_error;
 		}
-		location_information_unicode_value_data = &( location_information_data[ unicode_common_path_offset ] );
+		location_information_unicode_value_data = &( data[ unicode_common_path_offset ] );
 
 		for( unicode_value_size = 0;
-		     ( unicode_value_size + 1 ) < ( location_information_size - unicode_common_path_offset );
+		     ( unicode_value_size + 1 ) < ( data_size - unicode_common_path_offset );
 		     unicode_value_size += 2 )
 		{
 			if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
@@ -1805,20 +1722,8 @@ ssize_t liblnk_location_information_read(
 			}
 		}
 	}
-#endif
-	memory_free(
-	 location_information_data );
-
-	location_information_data = NULL;
-
-#if defined( HAVE_DEBUG_OUTPUT )
-	if( libcnotify_verbose != 0 )
-	{
-		libcnotify_printf(
-		 "\n" );
-	}
-#endif
-	return( read_count + 4 );
+#endif /* defined( HAVE_VERBOSE_OUTPUT ) */
+	return( 1 );
 
 on_error:
 	if( location_information->common_path != NULL )
@@ -1856,6 +1761,180 @@ on_error:
 
 		location_information->volume_label = NULL;
 	}
+	return( -1 );
+}
+
+/* Reads a location information
+ * Returns the number of bytes read if successful or -1 on error
+ */
+ssize_t liblnk_location_information_read(
+         liblnk_location_information_t *location_information,
+         liblnk_io_handle_t *io_handle,
+         libbfio_handle_t *file_io_handle,
+         off64_t location_information_offset,
+         libcerror_error_t **error )
+{
+	uint8_t location_information_size_data[ 4 ];
+
+	uint8_t *location_information_data = NULL;
+	static char *function              = "liblnk_location_information_read";
+	size_t location_information_size   = 0;
+	ssize_t read_count                 = 0;
+
+	if( location_information == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid location information.",
+		 function );
+
+		return( -1 );
+	}
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( libcnotify_verbose != 0 )
+	{
+		libcnotify_printf(
+		 "%s: reading location information at offset: %" PRIi64 " (0x%08" PRIx64 ")\n",
+		 function,
+		 location_information_offset,
+		 location_information_offset );
+	}
+#endif
+	if( libbfio_handle_seek_offset(
+	     file_io_handle,
+	     location_information_offset,
+	     SEEK_SET,
+	     error ) == -1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_SEEK_FAILED,
+		 "%s: unable to seek location information offset: %" PRIi64 ".",
+		 function,
+		 location_information_offset );
+
+		goto on_error;
+	}
+	read_count = libbfio_handle_read_buffer(
+	              file_io_handle,
+	              location_information_size_data,
+	              4,
+	              error );
+
+	if( read_count != (ssize_t) 4 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
+		 "%s: unable to read location information size.",
+		 function );
+
+		goto on_error;
+	}
+	byte_stream_copy_to_uint32_little_endian(
+	 location_information_size_data,
+	 location_information_size );
+	
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( libcnotify_verbose != 0 )
+	{
+		libcnotify_printf(
+		 "%s: location information size\t\t\t\t: %" PRIzd "\n",
+		 function,
+		 location_information_size );
+	}
+#endif
+	if( location_information_size <= 4 )
+	{
+#if defined( HAVE_VERBOSE_OUTPUT )
+		if( libcnotify_verbose != 0 )
+		{
+			libcnotify_printf(
+			 "%s: empty location information.\n",
+			 function );
+		}
+#endif
+		return( read_count );
+	}
+	if( location_information_size > (size_t) SSIZE_MAX )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: location information size value exceeds maximum.",
+		 function );
+
+		goto on_error;
+	}
+	location_information_size -= 4;
+
+	location_information_data = (uint8_t *) memory_allocate(
+	                                         sizeof( uint8_t ) * location_information_size );
+
+	if( location_information_data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+		 "%s: unable to create location information data.",
+		 function );
+
+		goto on_error;
+	}
+	read_count = libbfio_handle_read_buffer(
+	              file_io_handle,
+	              location_information_data,
+	              location_information_size,
+	              error );
+
+	if( read_count != (ssize_t) location_information_size )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
+		 "%s: unable to read location information data.",
+		 function );
+
+		goto on_error;
+	}
+	if( liblnk_location_information_read_data(
+	     location_information,
+	     io_handle,
+	     location_information_data,
+	     location_information_size,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_IO,
+		 LIBCERROR_IO_ERROR_READ_FAILED,
+		 "%s: unable to read location information.",
+		 function );
+
+		goto on_error;
+	}
+	memory_free(
+	 location_information_data );
+
+	location_information_data = NULL;
+
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( libcnotify_verbose != 0 )
+	{
+		libcnotify_printf(
+		 "\n" );
+	}
+#endif
+	return( read_count + 4 );
+
+on_error:
 	if( location_information_data != NULL )
 	{
 		memory_free(
