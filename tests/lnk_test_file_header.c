@@ -384,7 +384,7 @@ int lnk_test_file_header_read_data(
 	result = liblnk_file_header_read_data(
 	          file_header,
 	          lnk_test_file_header_data1,
-	          75,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
