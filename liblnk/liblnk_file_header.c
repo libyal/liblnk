@@ -144,8 +144,6 @@ int liblnk_file_header_read_data(
      liblnk_file_header_t *file_header,
      const uint8_t *data,
      size_t data_size,
-     uint8_t *class_identifier,
-     size_t class_identifier_size,
      libcerror_error_t **error )
 {
 	static char *function = "liblnk_file_header_read_data";
@@ -195,39 +193,6 @@ int liblnk_file_header_read_data(
 
 		return( -1 );
 	}
-	if( class_identifier == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid class identifier.",
-		 function );
-
-		return( -1 );
-	}
-	if( class_identifier_size < 16 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-		 "%s: class identifier too small.",
-		 function );
-
-		return( -1 );
-	}
-	if( class_identifier_size > (size_t) SSIZE_MAX )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
-		 "%s: class identifier size value exceeds maximum.",
-		 function );
-
-		return( -1 );
-	}
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
 	{
@@ -270,9 +235,8 @@ int liblnk_file_header_read_data(
 
 		return( -1 );
 	}
-/* TODO is a libfguid version of the class identifier needed ? */
 	if( memory_copy(
-	     class_identifier,
+	     file_header->class_identifier,
 	     ( (lnk_file_header_t *) data )->class_identifier,
 	     16 ) == NULL )
 	{
@@ -460,8 +424,6 @@ int liblnk_file_header_read_data(
 int liblnk_file_header_read_file_io_handle(
      liblnk_file_header_t *file_header,
      libbfio_handle_t *file_io_handle,
-     uint8_t *class_identifier,
-     size_t class_identifier_size,
      libcerror_error_t **error )
 {
 	uint8_t file_header_data[ sizeof( lnk_file_header_t ) ];
@@ -524,8 +486,6 @@ int liblnk_file_header_read_file_io_handle(
 	     file_header,
 	     file_header_data,
 	     sizeof( lnk_file_header_t ),
-	     class_identifier,
-	     class_identifier_size,
 	     error ) != 1 )
 	{
 		libcerror_error_set(

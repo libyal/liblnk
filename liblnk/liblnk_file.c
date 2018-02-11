@@ -746,20 +746,6 @@ int liblnk_file_close(
 	}
 	internal_file->file_io_handle = NULL;
 
-	if( memory_set(
-	     internal_file->class_identifier,
-	     0,
-	     16 ) == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_MEMORY,
-		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
-		 "%s: unable to clear class identifier.",
-		 function );
-
-		result = -1;
-	}
 	if( liblnk_io_handle_clear(
 	     internal_file->io_handle,
 	     error ) != 1 )
@@ -1075,8 +1061,6 @@ int liblnk_file_open_read(
 	if( liblnk_file_header_read_file_io_handle(
 	     internal_file->file_information,
 	     file_io_handle,
-	     internal_file->class_identifier,
-	     16,
 	     error ) != 1 )
 	{
 		libcerror_error_set(

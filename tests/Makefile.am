@@ -130,6 +130,8 @@ lnk_test_file_LDADD = \
 
 lnk_test_file_header_SOURCES = \
 	lnk_test_file_header.c \
+	lnk_test_functions.c lnk_test_functions.h \
+	lnk_test_libbfio.h \
 	lnk_test_libcerror.h \
 	lnk_test_liblnk.h \
 	lnk_test_macros.h \
@@ -137,6 +139,14 @@ lnk_test_file_header_SOURCES = \
 	lnk_test_unused.h
 
 lnk_test_file_header_LDADD = \
+	@LIBBFIO_LIBADD@ \
+	@LIBCPATH_LIBADD@ \
+	@LIBCFILE_LIBADD@ \
+	@LIBUNA_LIBADD@ \
+	@LIBCSPLIT_LIBADD@ \
+	@LIBCNOTIFY_LIBADD@ \
+	@LIBCLOCALE_LIBADD@ \
+	@LIBCDATA_LIBADD@ \
 	../liblnk/liblnk.la \
 	@LIBCERROR_LIBADD@
 

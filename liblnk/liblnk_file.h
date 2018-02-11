@@ -61,10 +61,6 @@ struct liblnk_internal_file
 	 */
 	uint8_t file_io_handle_opened_in_library;
 
-	/* The class identifier
-	 */
-	uint8_t class_identifier[ 16 ];
-
 	/* The file information
 	 */
 	liblnk_file_header_t *file_information;
