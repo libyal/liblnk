@@ -1032,7 +1032,7 @@ int liblnk_file_open_read(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-		 "%s: unable to create file information.",
+		 "%s: unable to create file header.",
 		 function );
 
 		goto on_error;
