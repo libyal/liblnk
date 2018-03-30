@@ -36,6 +36,7 @@
 #include "lnk_test_libcerror.h"
 #include "lnk_test_liblnk.h"
 #include "lnk_test_macros.h"
+#include "lnk_test_memory.h"
 #include "lnk_test_unused.h"
 
 #if !defined( LIBLNK_HAVE_BFIO )
@@ -209,38 +210,40 @@ int lnk_test_check_file_signature(
 	libcerror_error_t *error = NULL;
 	int result               = 0;
 
-	/* Initialize test
-	 */
-	result = lnk_test_get_narrow_source(
-	          source,
-	          narrow_source,
-	          256,
-	          &error );
+	if( source != NULL )
+	{
+		/* Initialize test
+		 */
+		result = lnk_test_get_narrow_source(
+		          source,
+		          narrow_source,
+		          256,
+		          &error );
 
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 1 );
 
-	LNK_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
 
-	/* Test check file signature
-	 */
-	result = liblnk_check_file_signature(
-	          narrow_source,
-	          &error );
+		/* Test check file signature
+		 */
+		result = liblnk_check_file_signature(
+		          narrow_source,
+		          &error );
 
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 1 );
 
-	LNK_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
+	}
 	/* Test error cases
 	 */
 	result = liblnk_check_file_signature(
@@ -259,6 +262,54 @@ int lnk_test_check_file_signature(
 	libcerror_error_free(
 	 &error );
 
+	result = liblnk_check_file_signature(
+	          "",
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	if( source != NULL )
+	{
+#if defined( HAVE_LNK_TEST_MEMORY )
+
+		/* Test liblnk_check_file_signature with malloc failing in libbfio_file_initialize
+		 */
+		lnk_test_malloc_attempts_before_fail = 0;
+
+		result = liblnk_check_file_signature(
+		          narrow_source,
+		          &error );
+
+		if( lnk_test_malloc_attempts_before_fail != -1 )
+		{
+			lnk_test_malloc_attempts_before_fail = -1;
+		}
+		else
+		{
+			LNK_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
+
+			LNK_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
+
+			libcerror_error_free(
+			 &error );
+		}
+#endif /* defined( HAVE_LNK_TEST_MEMORY ) */
+	}
 	return( 1 );
 
 on_error:
@@ -283,38 +334,40 @@ int lnk_test_check_file_signature_wide(
 	libcerror_error_t *error = NULL;
 	int result               = 0;
 
-	/* Initialize test
-	 */
-	result = lnk_test_get_wide_source(
-	          source,
-	          wide_source,
-	          256,
-	          &error );
+	if( source != NULL )
+	{
+		/* Initialize test
+		 */
+		result = lnk_test_get_wide_source(
+		          source,
+		          wide_source,
+		          256,
+		          &error );
 
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 1 );
 
-	LNK_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
 
-	/* Test check file signature
-	 */
-	result = liblnk_check_file_signature_wide(
-	          wide_source,
-	          &error );
+		/* Test check file signature
+		 */
+		result = liblnk_check_file_signature_wide(
+		          wide_source,
+		          &error );
 
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 1 );
 
-	LNK_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
+	}
 	/* Test error cases
 	 */
 	result = liblnk_check_file_signature_wide(
@@ -333,6 +386,54 @@ int lnk_test_check_file_signature_wide(
 	libcerror_error_free(
 	 &error );
 
+	result = liblnk_check_file_signature_wide(
+	          L"",
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	if( source != NULL )
+	{
+#if defined( HAVE_LNK_TEST_MEMORY )
+
+		/* Test liblnk_check_file_signature_wide with malloc failing in libbfio_file_initialize
+		 */
+		lnk_test_malloc_attempts_before_fail = 0;
+
+		result = liblnk_check_file_signature_wide(
+		          wide_source,
+		          &error );
+
+		if( lnk_test_malloc_attempts_before_fail != -1 )
+		{
+			lnk_test_malloc_attempts_before_fail = -1;
+		}
+		else
+		{
+			LNK_TEST_ASSERT_EQUAL_INT(
+			 "result",
+			 result,
+			 -1 );
+
+			LNK_TEST_ASSERT_IS_NOT_NULL(
+			 "error",
+			 error );
+
+			libcerror_error_free(
+			 &error );
+		}
+#endif /* defined( HAVE_LNK_TEST_MEMORY ) */
+	}
 	return( 1 );
 
 on_error:
@@ -362,77 +463,90 @@ int lnk_test_check_file_signature_file_io_handle(
 
 	/* Initialize test
 	 */
-	result = libbfio_file_initialize(
-	          &file_io_handle,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
+	memset_result = memory_set(
+	                 empty_block,
+	                 0,
+	                 sizeof( uint8_t ) * 8192 );
 
 	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "file_io_handle",
-	 file_io_handle );
+	 "memset_result",
+	 memset_result );
 
-	LNK_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
+	if( source != NULL )
+	{
+		/* Initialize test
+		 */
+		result = libbfio_file_initialize(
+		          &file_io_handle,
+		          &error );
 
-	source_length = system_string_length(
-	                 source );
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 1 );
+
+		LNK_TEST_ASSERT_IS_NOT_NULL(
+		 "file_io_handle",
+		 file_io_handle );
+
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
+
+		source_length = system_string_length(
+		                 source );
 
 #if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-	result = libbfio_file_set_name_wide(
-	          file_io_handle,
-	          source,
-	          source_length,
-	          &error );
+		result = libbfio_file_set_name_wide(
+		          file_io_handle,
+		          source,
+		          source_length,
+		          &error );
 #else
-	result = libbfio_file_set_name(
-	          file_io_handle,
-	          source,
-	          source_length,
-	          &error );
+		result = libbfio_file_set_name(
+		          file_io_handle,
+		          source,
+		          source_length,
+		          &error );
 #endif
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 1 );
 
-	LNK_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
 
-	result = libbfio_handle_open(
-	          file_io_handle,
-	          LIBBFIO_OPEN_READ,
-	          &error );
+		result = libbfio_handle_open(
+		          file_io_handle,
+		          LIBBFIO_OPEN_READ,
+		          &error );
 
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 1 );
 
-	LNK_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
 
-	/* Test check file signature
-	 */
-	result = liblnk_check_file_signature_file_io_handle(
-	          file_io_handle,
-	          &error );
+		/* Test check file signature
+		 */
+		result = liblnk_check_file_signature_file_io_handle(
+		          file_io_handle,
+		          &error );
 
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 1 );
 
-	LNK_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
+	}
 	/* Test error cases
 	 */
 	result = liblnk_check_file_signature_file_io_handle(
@@ -453,36 +567,38 @@ int lnk_test_check_file_signature_file_io_handle(
 
 	/* Clean up
 	 */
-	result = libbfio_handle_close(
-	          file_io_handle,
-	          &error );
+	if( source != NULL )
+	{
+		result = libbfio_handle_close(
+		          file_io_handle,
+		          &error );
 
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 0 );
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 0 );
 
-	LNK_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
 
-	result = libbfio_handle_free(
-	          &file_io_handle,
-	          &error );
+		result = libbfio_handle_free(
+		          &file_io_handle,
+		          &error );
 
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 1 );
+		LNK_TEST_ASSERT_EQUAL_INT(
+		 "result",
+		 result,
+		 1 );
 
-	LNK_TEST_ASSERT_IS_NULL(
-	 "file_io_handle",
-	 file_io_handle );
+		LNK_TEST_ASSERT_IS_NULL(
+		 "file_io_handle",
+		 file_io_handle );
 
-	LNK_TEST_ASSERT_IS_NULL(
-	 "error",
-	 error );
-
+		LNK_TEST_ASSERT_IS_NULL(
+		 "error",
+		 error );
+	}
 	/* Test check file signature with data too small
 	 */
 	result = lnk_test_open_file_io_handle(
@@ -535,15 +651,6 @@ int lnk_test_check_file_signature_file_io_handle(
 
 	/* Test check file signature with empty block
 	 */
-	memset_result = memory_set(
-	                 empty_block,
-	                 0,
-	                 sizeof( uint8_t ) * 8192 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "memset_result",
-	 memset_result );
-
 	result = lnk_test_open_file_io_handle(
 	          &file_io_handle,
 	          empty_block,
@@ -659,27 +766,26 @@ int main(
 	 lnk_test_set_codepage );
 
 #if !defined( __BORLANDC__ ) || ( __BORLANDC__ >= 0x0560 )
-	if( source != NULL )
-	{
-		LNK_TEST_RUN_WITH_ARGS(
-		 "liblnk_check_file_signature",
-		 lnk_test_check_file_signature,
-		 source );
+
+	LNK_TEST_RUN_WITH_ARGS(
+	 "liblnk_check_file_signature",
+	 lnk_test_check_file_signature,
+	 source );
 
 #if defined( HAVE_WIDE_CHARACTER_TYPE )
 
-		LNK_TEST_RUN_WITH_ARGS(
-		 "liblnk_check_file_signature_wide",
-		 lnk_test_check_file_signature_wide,
-		 source );
+	LNK_TEST_RUN_WITH_ARGS(
+	 "liblnk_check_file_signature_wide",
+	 lnk_test_check_file_signature_wide,
+	 source );
 
 #endif /* defined( HAVE_WIDE_CHARACTER_TYPE ) */
 
-		LNK_TEST_RUN_WITH_ARGS(
-		 "liblnk_check_file_signature_file_io_handle",
-		 lnk_test_check_file_signature_file_io_handle,
-		 source );
-	}
+	LNK_TEST_RUN_WITH_ARGS(
+	 "liblnk_check_file_signature_file_io_handle",
+	 lnk_test_check_file_signature_file_io_handle,
+	 source );
+
 #endif /* !defined( __BORLANDC__ ) || ( __BORLANDC__ >= 0x0560 ) */
 
 	return( EXIT_SUCCESS );

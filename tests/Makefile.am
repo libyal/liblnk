@@ -199,13 +199,15 @@ lnk_test_location_information_LDADD = \
 	@LIBCERROR_LIBADD@
 
 lnk_test_notify_SOURCES = \
+	lnk_test_libcerror.h \
 	lnk_test_liblnk.h \
 	lnk_test_macros.h \
 	lnk_test_notify.c \
 	lnk_test_unused.h
 
 lnk_test_notify_LDADD = \
-	../liblnk/liblnk.la
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
 
 lnk_test_special_folder_location_SOURCES = \
 	lnk_test_libcerror.h \
@@ -229,6 +231,7 @@ lnk_test_support_SOURCES = \
 	lnk_test_liblnk.h \
 	lnk_test_libuna.h \
 	lnk_test_macros.h \
+	lnk_test_memory.c lnk_test_memory.h \
 	lnk_test_support.c \
 	lnk_test_unused.h
 
