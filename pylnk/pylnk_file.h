@@ -53,19 +53,6 @@ struct pylnk_file
 extern PyMethodDef pylnk_file_object_methods[];
 extern PyTypeObject pylnk_file_type_object;
 
-PyObject *pylnk_file_new(
-           void );
-
-PyObject *pylnk_file_new_open(
-           PyObject *self,
-           PyObject *arguments,
-           PyObject *keywords );
-
-PyObject *pylnk_file_new_open_file_object(
-           PyObject *self,
-           PyObject *arguments,
-           PyObject *keywords );
-
 int pylnk_file_init(
      pylnk_file_t *pylnk_file );
 

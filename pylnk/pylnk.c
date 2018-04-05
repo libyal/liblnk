@@ -28,9 +28,9 @@
 #endif
 
 #include "pylnk.h"
-#include "pylnk_error.h"
 #include "pylnk_data_flags.h"
 #include "pylnk_drive_types.h"
+#include "pylnk_error.h"
 #include "pylnk_file.h"
 #include "pylnk_file_attribute_flags.h"
 #include "pylnk_file_object_io_handle.h"
@@ -73,21 +73,24 @@ PyMethodDef pylnk_module_methods[] = {
 	  "Checks if a file has a Windows Shortcut File (LNK) signature using a file-like object." },
 
 	{ "open",
-	  (PyCFunction) pylnk_file_new_open,
+	  (PyCFunction) pylnk_open_new_file,
 	  METH_VARARGS | METH_KEYWORDS,
 	  "open(filename, mode='r') -> Object\n"
 	  "\n"
 	  "Opens a file." },
 
 	{ "open_file_object",
-	  (PyCFunction) pylnk_file_new_open_file_object,
+	  (PyCFunction) pylnk_open_new_file_with_file_object,
 	  METH_VARARGS | METH_KEYWORDS,
 	  "open_file_object(file_object, mode='r') -> Object\n"
 	  "\n"
 	  "Opens a file using a file-like object." },
 
 	/* Sentinel */
-	{ NULL, NULL, 0, NULL }
+	{ NULL,
+	  NULL,
+	  0,
+	  NULL}
 };
 
 /* Retrieves the pylnk/liblnk version
@@ -123,7 +126,7 @@ PyObject *pylnk_get_version(
 	         errors ) );
 }
 
-/* Checks if the file has a Windows Shortcut File (LNK) signature
+/* Checks if a file has a Windows Shortcut File (LNK) signature
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_check_file_signature(
@@ -219,7 +222,9 @@ PyObject *pylnk_check_file_signature(
 
 		Py_DecRef(
 		 utf8_string_object );
-#endif
+
+#endif /* #if defined( HAVE_WIDE_SYSTEM_CHARACTER ) */
+
 		if( result == -1 )
 		{
 			pylnk_error_raise(
@@ -317,7 +322,7 @@ PyObject *pylnk_check_file_signature(
 	return( NULL );
 }
 
-/* Checks if the file has a Windows Shortcut File (LNK) signature using a file-like object
+/* Checks if a file has a Windows Shortcut File (LNK) signature using a file-like object
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_check_file_signature_file_object(
@@ -417,6 +422,52 @@ on_error:
 	return( NULL );
 }
 
+/* Creates a new file object and opens it
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_open_new_file(
+           PyObject *self PYLNK_ATTRIBUTE_UNUSED,
+           PyObject *arguments,
+           PyObject *keywords )
+{
+	PyObject *pylnk_file = NULL;
+
+	PYLNK_UNREFERENCED_PARAMETER( self )
+
+	pylnk_file_init(
+	 (pylnk_file_t *) pylnk_file );
+
+	pylnk_file_open(
+	 (pylnk_file_t *) pylnk_file,
+	 arguments,
+	 keywords );
+
+	return( pylnk_file );
+}
+
+/* Creates a new file object and opens it using a file-like object
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_open_new_file_with_file_object(
+           PyObject *self PYLNK_ATTRIBUTE_UNUSED,
+           PyObject *arguments,
+           PyObject *keywords )
+{
+	PyObject *pylnk_file = NULL;
+
+	PYLNK_UNREFERENCED_PARAMETER( self )
+
+	pylnk_file_init(
+	 (pylnk_file_t *) pylnk_file );
+
+	pylnk_file_open_file_object(
+	 (pylnk_file_t *) pylnk_file,
+	 arguments,
+	 keywords );
+
+	return( pylnk_file );
+}
+
 #if PY_MAJOR_VERSION >= 3
 
 /* The pylnk module definition
@@ -454,12 +505,8 @@ PyMODINIT_FUNC initpylnk(
                 void )
 #endif
 {
-	PyObject *module                               = NULL;
-	PyTypeObject *data_flags_type_object           = NULL;
-	PyTypeObject *drive_types_type_object          = NULL;
-	PyTypeObject *file_type_object                 = NULL;
-	PyTypeObject *file_attribute_flags_type_object = NULL;
-	PyGILState_STATE gil_state                     = 0;
+	PyObject *module           = NULL;
+	PyGILState_STATE gil_state = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
 	liblnk_notify_set_stream(
@@ -494,6 +541,40 @@ PyMODINIT_FUNC initpylnk(
 
 	gil_state = PyGILState_Ensure();
 
+	/* Setup the data_flags type object
+	 */
+	pylnk_data_flags_type_object.tp_new = PyType_GenericNew;
+
+	if( PyType_Ready(
+	     &pylnk_data_flags_type_object ) < 0 )
+	{
+		goto on_error;
+	}
+	Py_IncRef(
+	 (PyObject * ) &pylnk_data_flags_type_object );
+
+	PyModule_AddObject(
+	 module,
+	 "data_flags",
+	 (PyObject *) &pylnk_data_flags_type_object );
+
+	/* Setup the drive_types type object
+	 */
+	pylnk_drive_types_type_object.tp_new = PyType_GenericNew;
+
+	if( PyType_Ready(
+	     &pylnk_drive_types_type_object ) < 0 )
+	{
+		goto on_error;
+	}
+	Py_IncRef(
+	 (PyObject * ) &pylnk_drive_types_type_object );
+
+	PyModule_AddObject(
+	 module,
+	 "drive_types",
+	 (PyObject *) &pylnk_drive_types_type_object );
+
 	/* Setup the file type object
 	 */
 	pylnk_file_type_object.tp_new = PyType_GenericNew;
@@ -504,86 +585,29 @@ PyMODINIT_FUNC initpylnk(
 		goto on_error;
 	}
 	Py_IncRef(
-	 (PyObject *) &pylnk_file_type_object );
-
-	file_type_object = &pylnk_file_type_object;
+	 (PyObject * ) &pylnk_file_type_object );
 
 	PyModule_AddObject(
 	 module,
 	 "file",
-	 (PyObject *) file_type_object );
+	 (PyObject *) &pylnk_file_type_object );
 
-	/* Setup the data flags type object
-	 */
-	pylnk_data_flags_type_object.tp_new = PyType_GenericNew;
-
-	if( pylnk_data_flags_init_type(
-	     &pylnk_data_flags_type_object ) != 1 )
-	{
-		goto on_error;
-	}
-	if( PyType_Ready(
-	     &pylnk_data_flags_type_object ) < 0 )
-	{
-		goto on_error;
-	}
-	Py_IncRef(
-	 (PyObject *) &pylnk_data_flags_type_object );
-
-	data_flags_type_object = &pylnk_data_flags_type_object;
-
-	PyModule_AddObject(
-	 module,
-	 "data_flags",
-	 (PyObject *) data_flags_type_object );
-
-	/* Setup the drive types type object
-	 */
-	pylnk_drive_types_type_object.tp_new = PyType_GenericNew;
-
-	if( pylnk_drive_types_init_type(
-	     &pylnk_drive_types_type_object ) != 1 )
-	{
-		goto on_error;
-	}
-	if( PyType_Ready(
-	     &pylnk_drive_types_type_object ) < 0 )
-	{
-		goto on_error;
-	}
-	Py_IncRef(
-	 (PyObject *) &pylnk_drive_types_type_object );
-
-	drive_types_type_object = &pylnk_drive_types_type_object;
-
-	PyModule_AddObject(
-	 module,
-	 "drive_types",
-	 (PyObject *) drive_types_type_object );
-
-	/* Setup the file attribute flags type object
+	/* Setup the file_attribute_flags type object
 	 */
 	pylnk_file_attribute_flags_type_object.tp_new = PyType_GenericNew;
 
-	if( pylnk_file_attribute_flags_init_type(
-	     &pylnk_file_attribute_flags_type_object ) != 1 )
-	{
-		goto on_error;
-	}
 	if( PyType_Ready(
 	     &pylnk_file_attribute_flags_type_object ) < 0 )
 	{
 		goto on_error;
 	}
 	Py_IncRef(
-	 (PyObject *) &pylnk_file_attribute_flags_type_object );
-
-	file_attribute_flags_type_object = &pylnk_file_attribute_flags_type_object;
+	 (PyObject * ) &pylnk_file_attribute_flags_type_object );
 
 	PyModule_AddObject(
 	 module,
 	 "file_attribute_flags",
-	 (PyObject *) file_attribute_flags_type_object );
+	 (PyObject *) &pylnk_file_attribute_flags_type_object );
 
 	PyGILState_Release(
 	 gil_state );

@@ -1,5 +1,5 @@
 /*
- * Python bindings for liblnk (pylnk)
+ * Python bindings module for liblnk (pylnk)
  *
  * Copyright (C) 2009-2018, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -41,6 +41,16 @@ PyObject *pylnk_check_file_signature(
            PyObject *keywords );
 
 PyObject *pylnk_check_file_signature_file_object(
+           PyObject *self,
+           PyObject *arguments,
+           PyObject *keywords );
+
+PyObject *pylnk_open_new_file(
+           PyObject *self,
+           PyObject *arguments,
+           PyObject *keywords );
+
+PyObject *pylnk_open_new_file_with_file_object(
            PyObject *self,
            PyObject *arguments,
            PyObject *keywords );

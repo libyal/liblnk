@@ -567,93 +567,6 @@ PyTypeObject pylnk_file_type_object = {
 	0
 };
 
-/* Creates a new file object
- * Returns a Python object if successful or NULL on error
- */
-PyObject *pylnk_file_new(
-           void )
-{
-	pylnk_file_t *pylnk_file = NULL;
-	static char *function    = "pylnk_file_new";
-
-	pylnk_file = PyObject_New(
-	              struct pylnk_file,
-	              &pylnk_file_type_object );
-
-	if( pylnk_file == NULL )
-	{
-		PyErr_Format(
-		 PyExc_MemoryError,
-		 "%s: unable to initialize file.",
-		 function );
-
-		goto on_error;
-	}
-	if( pylnk_file_init(
-	     pylnk_file ) != 0 )
-	{
-		PyErr_Format(
-		 PyExc_MemoryError,
-		 "%s: unable to initialize file.",
-		 function );
-
-		goto on_error;
-	}
-	return( (PyObject *) pylnk_file );
-
-on_error:
-	if( pylnk_file != NULL )
-	{
-		Py_DecRef(
-		 (PyObject *) pylnk_file );
-	}
-	return( NULL );
-}
-
-/* Creates a new file object and opens it
- * Returns a Python object if successful or NULL on error
- */
-PyObject *pylnk_file_new_open(
-           PyObject *self PYLNK_ATTRIBUTE_UNUSED,
-           PyObject *arguments,
-           PyObject *keywords )
-{
-	PyObject *pylnk_file = NULL;
-
-	PYLNK_UNREFERENCED_PARAMETER( self )
-
-	pylnk_file = pylnk_file_new();
-
-	pylnk_file_open(
-	 (pylnk_file_t *) pylnk_file,
-	 arguments,
-	 keywords );
-
-	return( pylnk_file );
-}
-
-/* Creates a new file object and opens it using a file-like object
- * Returns a Python object if successful or NULL on error
- */
-PyObject *pylnk_file_new_open_file_object(
-           PyObject *self PYLNK_ATTRIBUTE_UNUSED,
-           PyObject *arguments,
-           PyObject *keywords )
-{
-	PyObject *pylnk_file = NULL;
-
-	PYLNK_UNREFERENCED_PARAMETER( self )
-
-	pylnk_file = pylnk_file_new();
-
-	pylnk_file_open_file_object(
-	 (pylnk_file_t *) pylnk_file,
-	 arguments,
-	 keywords );
-
-	return( pylnk_file );
-}
-
 /* Intializes a file object
  * Returns 0 if successful or -1 on error
  */
@@ -672,6 +585,8 @@ int pylnk_file_init(
 
 		return( -1 );
 	}
+	/* Make sure liblnk file is set to NULL
+	 */
 	pylnk_file->file           = NULL;
 	pylnk_file->file_io_handle = NULL;
 
@@ -712,15 +627,6 @@ void pylnk_file_free(
 
 		return;
 	}
-	if( pylnk_file->file == NULL )
-	{
-		PyErr_Format(
-		 PyExc_ValueError,
-		 "%s: invalid file - missing liblnk file.",
-		 function );
-
-		return;
-	}
 	ob_type = Py_TYPE(
 	           pylnk_file );
 
@@ -742,24 +648,27 @@ void pylnk_file_free(
 
 		return;
 	}
-	Py_BEGIN_ALLOW_THREADS
-
-	result = liblnk_file_free(
-	          &( pylnk_file->file ),
-	          &error );
-
-	Py_END_ALLOW_THREADS
-
-	if( result != 1 )
+	if( pylnk_file->file != NULL )
 	{
-		pylnk_error_raise(
-		 error,
-		 PyExc_MemoryError,
-		 "%s: unable to free liblnk file.",
-		 function );
+		Py_BEGIN_ALLOW_THREADS
 
-		libcerror_error_free(
-		 &error );
+		result = liblnk_file_free(
+		          &( pylnk_file->file ),
+		          &error );
+
+		Py_END_ALLOW_THREADS
+
+		if( result != 1 )
+		{
+			pylnk_error_raise(
+			 error,
+			 PyExc_MemoryError,
+			 "%s: unable to free liblnk file.",
+			 function );
+
+			libcerror_error_free(
+			 &error );
+		}
 	}
 	ob_type->tp_free(
 	 (PyObject*) pylnk_file );
