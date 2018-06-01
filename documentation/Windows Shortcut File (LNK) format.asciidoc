@@ -887,7 +887,7 @@ Windows Explorer considers this valid LNK data.
 |===
 | Title: | The Windows Shortcut File Format
 | Author(s): | Jesse Hager
-| URL: | http://www.i2s-lab.com/Papers/The_Windows_Shortcut_File_Format.pdf
+| URL: | https://ithreats.files.wordpress.com/2009/05/lnk_the_windows_shortcut_file_format.pdf
 |===
 
 `[MSDN]`
