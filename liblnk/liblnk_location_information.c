@@ -1042,7 +1042,7 @@ int liblnk_location_information_read_data(
 		if( libcnotify_verbose != 0 )
 		{
 			libcnotify_printf(
-			 "%s: network share information size\t\t\t: %" PRIu32 "\n",
+			 "%s: network share information size\t\t\t\t: %" PRIu32 "\n",
 			 function,
 			 location_information_value_size );
 
@@ -1064,7 +1064,7 @@ int liblnk_location_information_read_data(
 			 device_name_offset );
 
 			libcnotify_printf(
-			 "%s: network share information network provider type\t: 0x%08" PRIx32 " (%s)\n",
+			 "%s: network share information network provider type\t\t: 0x%08" PRIx32 " (%s)\n",
 			 function,
 			 location_information->network_provider_type,
 			 liblnk_debug_print_network_provider_type(

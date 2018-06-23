@@ -1024,6 +1024,138 @@ int liblnk_file_open_read(
 
 		return( -1 );
 	}
+	if( internal_file->link_target_identifier != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid file - link target identifier value already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->location_information != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid file - location information value already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->description != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid file - description value already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->relative_path != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid file - relative path value already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->working_directory != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid file - working directory value already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->command_line_arguments != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid file - command line arguments value already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->icon_location != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid file - icon location value already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->environment_variables_location != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid file - environment variables location value already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->darwin_application_identifier != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid file - darwin application identifier value already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->special_folder_location != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid file - special folder location value already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->known_folder_location != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid file - known folder location value already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_file->distributed_link_tracker_properties != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid file - distributed link tracker properties value already set.",
+		 function );
+
+		return( -1 );
+	}
 	if( liblnk_file_header_initialize(
 	     &( internal_file->file_information ),
 	     error ) != 1 )
@@ -1889,6 +2021,78 @@ on_error:
 	{
 		liblnk_data_block_free(
 		 &data_block,
+		 NULL );
+	}
+	if( internal_file->distributed_link_tracker_properties != NULL )
+	{
+		liblnk_distributed_link_tracker_properties_free(
+		 &( internal_file->distributed_link_tracker_properties ),
+		 NULL );
+	}
+	if( internal_file->known_folder_location != NULL )
+	{
+		liblnk_known_folder_location_free(
+		 &( internal_file->known_folder_location ),
+		 NULL );
+	}
+	if( internal_file->special_folder_location != NULL )
+	{
+		liblnk_special_folder_location_free(
+		 &( internal_file->special_folder_location ),
+		 NULL );
+	}
+	if( internal_file->darwin_application_identifier != NULL )
+	{
+		liblnk_data_string_free(
+		 &( internal_file->darwin_application_identifier ),
+		 NULL );
+	}
+	if( internal_file->environment_variables_location != NULL )
+	{
+		liblnk_data_string_free(
+		 &( internal_file->environment_variables_location ),
+		 NULL );
+	}
+	if( internal_file->icon_location != NULL )
+	{
+		liblnk_data_string_free(
+		 &( internal_file->icon_location ),
+		 NULL );
+	}
+	if( internal_file->command_line_arguments != NULL )
+	{
+		liblnk_data_string_free(
+		 &( internal_file->command_line_arguments ),
+		 NULL );
+	}
+	if( internal_file->working_directory != NULL )
+	{
+		liblnk_data_string_free(
+		 &( internal_file->working_directory ),
+		 NULL );
+	}
+	if( internal_file->relative_path != NULL )
+	{
+		liblnk_data_string_free(
+		 &( internal_file->relative_path ),
+		 NULL );
+	}
+	if( internal_file->description != NULL )
+	{
+		liblnk_data_string_free(
+		 &( internal_file->description ),
+		 NULL );
+	}
+	if( internal_file->location_information != NULL )
+	{
+		liblnk_location_information_free(
+		 &( internal_file->location_information ),
+		 NULL );
+	}
+	if( internal_file->link_target_identifier != NULL )
+	{
+		liblnk_link_target_identifier_free(
+		 &( internal_file->link_target_identifier ),
 		 NULL );
 	}
 	if( internal_file->file_information != NULL )

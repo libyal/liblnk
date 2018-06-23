@@ -251,12 +251,12 @@ int liblnk_special_folder_location_read_data(
 	if( libcnotify_verbose != 0 )
 	{
 		libcnotify_printf(
-		 "%s: folder identifier\t\t\t: %" PRIu32 "\n",
+		 "%s: folder identifier\t\t: %" PRIu32 "\n",
 		 function,
 		 special_folder_location->folder_identifier );
 
 		libcnotify_printf(
-		 "%s: first child segment offset\t\t: %" PRIu32 "\n",
+		 "%s: first child segment offset\t: %" PRIu32 "\n",
 		 function,
 		 special_folder_location->first_child_segment_offset );
 
