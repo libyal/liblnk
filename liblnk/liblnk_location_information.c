@@ -301,7 +301,7 @@ int liblnk_location_information_read_data(
 	if( libcnotify_verbose != 0 )
 	{
 		libcnotify_printf(
-		 "%s: location information header size\t\t\t: %" PRIu32 "\n",
+		 "%s: location information header size\t\t\t\t: %" PRIu32 "\n",
 		 function,
 		 location_information_header_size );
 
@@ -311,12 +311,12 @@ int liblnk_location_information_read_data(
 		 location_information->flags );
 
 		libcnotify_printf(
-		 "%s: location information volume information offset\t: 0x%08" PRIx32 "\n",
+		 "%s: location information volume information offset\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 volume_information_offset );
 
 		libcnotify_printf(
-		 "%s: location information local path offset\t\t: 0x%08" PRIx32 "\n",
+		 "%s: location information local path offset\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 local_path_offset );
 
@@ -326,7 +326,7 @@ int liblnk_location_information_read_data(
 		 network_share_information_offset );
 
 		libcnotify_printf(
-		 "%s: location information common path offset\t\t: 0x%08" PRIx32 "\n",
+		 "%s: location information common path offset\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
 		 common_path_offset );
 	}
@@ -480,7 +480,7 @@ int liblnk_location_information_read_data(
 		if( libcnotify_verbose != 0 )
 		{
 			libcnotify_printf(
-			 "%s: volume information size\t\t\t\t: %" PRIu32 "\n",
+			 "%s: volume information size\t\t\t\t\t: %" PRIu32 "\n",
 			 function,
 			 location_information_value_size );
 
@@ -492,12 +492,12 @@ int liblnk_location_information_read_data(
 			  location_information->drive_type ) );
 
 			libcnotify_printf(
-			 "%s: volume information drive serial number\t\t: 0x%08" PRIx32 "\n",
+			 "%s: volume information drive serial number\t\t\t: 0x%08" PRIx32 "\n",
 			 function,
 			 location_information->drive_serial_number );
 
 			libcnotify_printf(
-			 "%s: volume information volume label offset\t\t: %" PRIu32 "\n",
+			 "%s: volume information volume label offset\t\t\t: %" PRIu32 "\n",
 			 function,
 			 volume_label_offset );
 		}
@@ -512,7 +512,7 @@ int liblnk_location_information_read_data(
 			if( libcnotify_verbose != 0 )
 			{
 				libcnotify_printf(
-				 "%s: unicode volume information volume label offset\t: %" PRIu32 "\n",
+				 "%s: unicode volume information volume label offset\t\t: %" PRIu32 "\n",
 				 function,
 				 unicode_volume_label_offset );
 			}
@@ -676,7 +676,7 @@ int liblnk_location_information_read_data(
 			{
 				if( liblnk_debug_print_utf16_string_value(
 				     function,
-				     "volume name\t\t\t\t\t",
+				     "volume information volume label\t\t\t\t",
 				     location_information->volume_label,
 				     location_information->volume_label_size,
 				     LIBUNA_ENDIAN_LITTLE,
@@ -696,7 +696,7 @@ int liblnk_location_information_read_data(
 			{
 				if( liblnk_debug_print_string_value(
 				     function,
-				     "volume information volume label\t\t\t",
+				     "volume information volume label\t\t\t\t",
 				     location_information->volume_label,
 				     location_information->volume_label_size,
 				     io_handle->ascii_codepage,
@@ -1843,7 +1843,7 @@ ssize_t liblnk_location_information_read(
 	if( libcnotify_verbose != 0 )
 	{
 		libcnotify_printf(
-		 "%s: location information size\t\t\t\t: %" PRIzd "\n",
+		 "%s: location information size\t\t\t\t\t: %" PRIzd "\n",
 		 function,
 		 location_information_size );
 	}
