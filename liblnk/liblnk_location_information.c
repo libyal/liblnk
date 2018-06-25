@@ -504,6 +504,17 @@ int liblnk_location_information_read_data(
 #endif
 		if( volume_label_offset > 16 )
 		{
+			if( location_information_value_size < 20 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+				 "%s: location information value size value out of bounds.",
+				 function );
+
+				goto on_error;
+			}
 			byte_stream_copy_to_uint32_little_endian(
 			 ( (lnk_volume_information_t *) location_information_value_data )->unicode_volume_label_offset,
 			 unicode_volume_label_offset );
