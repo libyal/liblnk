@@ -293,6 +293,17 @@ ssize_t liblnk_data_block_read(
 		}
 		read_count += 4;
 
+		if( data_block->data_size < 4 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: data block size too small.",
+			 function );
+
+			goto on_error;
+		}
 		byte_stream_copy_to_uint32_little_endian(
 		 data_block->data,
 		 data_block->signature );

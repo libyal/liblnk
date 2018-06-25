@@ -550,11 +550,10 @@ int liblnk_location_information_read_data(
 			{
 				if( location_information_value_data[ value_size ] == 0 )
 				{
+					value_size++;
 					break;
 				}
 			}
-			value_size++;
-
 #if defined( HAVE_DEBUG_OUTPUT )
 			if( libcnotify_verbose != 0 )
 			{
@@ -595,11 +594,10 @@ int liblnk_location_information_read_data(
 				if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
 				 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
 				{
+					unicode_value_size += 2;
 					break;
 				}
 			}
-			unicode_value_size += 2;
-
 #if defined( HAVE_DEBUG_OUTPUT )
 			if( libcnotify_verbose != 0 )
 			{
@@ -764,11 +762,10 @@ int liblnk_location_information_read_data(
 			{
 				if( location_information_value_data[ value_size ] == 0 )
 				{
+					value_size++;
 					break;
 				}
 			}
-			value_size++;
-
 #if defined( HAVE_DEBUG_OUTPUT )
 			if( libcnotify_verbose != 0 )
 			{
@@ -822,11 +819,10 @@ int liblnk_location_information_read_data(
 				if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
 				 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
 				{
+					unicode_value_size += 2;
 					break;
 				}
 			}
-			unicode_value_size += 2;
-
 #if defined( HAVE_DEBUG_OUTPUT )
 			if( libcnotify_verbose != 0 )
 			{
@@ -1128,11 +1124,10 @@ int liblnk_location_information_read_data(
 			{
 				if( location_information_value_data[ value_size ] == 0 )
 				{
+					value_size++;
 					break;
 				}
 			}
-			value_size++;
-
 #if defined( HAVE_DEBUG_OUTPUT )
 			if( libcnotify_verbose != 0 )
 			{
@@ -1173,11 +1168,10 @@ int liblnk_location_information_read_data(
 				if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
 				 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
 				{
+					unicode_value_size += 2;
 					break;
 				}
 			}
-			unicode_value_size += 2;
-
 #if defined( HAVE_DEBUG_OUTPUT )
 			if( libcnotify_verbose != 0 )
 			{
@@ -1327,11 +1321,10 @@ int liblnk_location_information_read_data(
 			{
 				if( location_information_value_data[ value_size ] == 0 )
 				{
+					value_size++;
 					break;
 				}
 			}
-			value_size++;
-
 #if defined( HAVE_DEBUG_OUTPUT )
 			if( libcnotify_verbose != 0 )
 			{
@@ -1372,11 +1365,10 @@ int liblnk_location_information_read_data(
 				if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
 				 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
 				{
+					unicode_value_size += 2;
 					break;
 				}
 			}
-			unicode_value_size += 2;
-
 #if defined( HAVE_DEBUG_OUTPUT )
 			if( libcnotify_verbose != 0 )
 			{
@@ -1542,11 +1534,10 @@ int liblnk_location_information_read_data(
 		{
 			if( location_information_value_data[ value_size ] == 0 )
 			{
+				value_size++;
 				break;
 			}
 		}
-		value_size++;
-
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libcnotify_verbose != 0 )
 		{
@@ -1600,11 +1591,10 @@ int liblnk_location_information_read_data(
 			if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
 			 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
 			{
+				unicode_value_size += 2;
 				break;
 			}
 		}
-		unicode_value_size += 2;
-
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libcnotify_verbose != 0 )
 		{
