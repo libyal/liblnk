@@ -355,7 +355,7 @@ int liblnk_location_information_read_data(
 		if( libcnotify_verbose != 0 )
 		{
 			libcnotify_printf(
-			 "%s: location information unicode local path offset\t: %" PRIu32 "\n",
+			 "%s: location information unicode local path offset\t\t: %" PRIu32 "\n",
 			 function,
 			 unicode_local_path_offset );
 		}
@@ -371,7 +371,7 @@ int liblnk_location_information_read_data(
 		if( libcnotify_verbose != 0 )
 		{
 			libcnotify_printf(
-			 "%s: location information unicode common path offset\t: %" PRIu32 "\n",
+			 "%s: location information unicode common path offset\t\t: %" PRIu32 "\n",
 			 function,
 			 unicode_common_path_offset );
 		}
