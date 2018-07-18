@@ -87,10 +87,7 @@ PyMethodDef pylnk_module_methods[] = {
 	  "Opens a file using a file-like object." },
 
 	/* Sentinel */
-	{ NULL,
-	  NULL,
-	  0,
-	  NULL}
+	{ NULL, NULL, 0, NULL }
 };
 
 /* Retrieves the pylnk/liblnk version
@@ -551,7 +548,7 @@ PyMODINIT_FUNC initpylnk(
 		goto on_error;
 	}
 	Py_IncRef(
-	 (PyObject * ) &pylnk_data_flags_type_object );
+	 (PyObject *) &pylnk_data_flags_type_object );
 
 	PyModule_AddObject(
 	 module,
@@ -568,7 +565,7 @@ PyMODINIT_FUNC initpylnk(
 		goto on_error;
 	}
 	Py_IncRef(
-	 (PyObject * ) &pylnk_drive_types_type_object );
+	 (PyObject *) &pylnk_drive_types_type_object );
 
 	PyModule_AddObject(
 	 module,
@@ -585,7 +582,7 @@ PyMODINIT_FUNC initpylnk(
 		goto on_error;
 	}
 	Py_IncRef(
-	 (PyObject * ) &pylnk_file_type_object );
+	 (PyObject *) &pylnk_file_type_object );
 
 	PyModule_AddObject(
 	 module,
@@ -602,7 +599,7 @@ PyMODINIT_FUNC initpylnk(
 		goto on_error;
 	}
 	Py_IncRef(
-	 (PyObject * ) &pylnk_file_attribute_flags_type_object );
+	 (PyObject *) &pylnk_file_attribute_flags_type_object );
 
 	PyModule_AddObject(
 	 module,

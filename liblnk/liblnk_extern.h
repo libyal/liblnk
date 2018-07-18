@@ -37,8 +37,11 @@
 
 #include <liblnk/extern.h>
 
+#define LIBLNK_EXTERN_VARIABLE	LIBLNK_EXTERN
+
 #else
-#define LIBLNK_EXTERN	/* extern */
+#define LIBLNK_EXTERN		/* extern */
+#define LIBLNK_EXTERN_VARIABLE	extern
 
 #endif /* !defined( HAVE_LOCAL_LIBLNK ) */
 

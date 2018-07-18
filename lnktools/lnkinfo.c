@@ -83,7 +83,7 @@ void lnkinfo_signal_handler(
       lnktools_signal_t signal LNKTOOLS_ATTRIBUTE_UNUSED )
 {
 	libcerror_error_t *error = NULL;
-	static char *function   = "lnkinfo_signal_handler";
+	static char *function    = "lnkinfo_signal_handler";
 
 	LNKTOOLS_UNREFERENCED_PARAMETER( signal )
 
