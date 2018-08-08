@@ -28,13 +28,6 @@
  */
 #if !defined( HAVE_LOCAL_LIBLNK )
 
-/* If libtool DLL support is enabled set LIBLNK_DLL_EXPORT
- * before including liblnk/extern.h
- */
-#if defined( _WIN32 ) && defined( DLL_EXPORT )
-#define LIBLNK_DLL_EXPORT
-#endif
-
 #include <liblnk/extern.h>
 
 #define LIBLNK_EXTERN_VARIABLE	LIBLNK_EXTERN
