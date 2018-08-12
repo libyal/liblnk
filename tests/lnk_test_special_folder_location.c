@@ -118,6 +118,8 @@ int lnk_test_special_folder_location_initialize(
 	          &special_folder_location,
 	          &error );
 
+	special_folder_location = NULL;
+
 	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
@@ -129,8 +131,6 @@ int lnk_test_special_folder_location_initialize(
 
 	libcerror_error_free(
 	 &error );
-
-	special_folder_location = NULL;
 
 #if defined( HAVE_LNK_TEST_MEMORY )
 

@@ -113,6 +113,8 @@ int lnk_test_data_string_initialize(
 	          &data_string,
 	          &error );
 
+	data_string = NULL;
+
 	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
@@ -124,8 +126,6 @@ int lnk_test_data_string_initialize(
 
 	libcerror_error_free(
 	 &error );
-
-	data_string = NULL;
 
 #if defined( HAVE_LNK_TEST_MEMORY )
 

@@ -113,6 +113,8 @@ int lnk_test_distributed_link_tracker_properties_initialize(
 	          &distributed_link_tracker_properties,
 	          &error );
 
+	distributed_link_tracker_properties = NULL;
+
 	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
@@ -124,8 +126,6 @@ int lnk_test_distributed_link_tracker_properties_initialize(
 
 	libcerror_error_free(
 	 &error );
-
-	distributed_link_tracker_properties = NULL;
 
 #if defined( HAVE_LNK_TEST_MEMORY )
 

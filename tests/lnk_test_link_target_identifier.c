@@ -113,6 +113,8 @@ int lnk_test_link_target_identifier_initialize(
 	          &link_target_identifier,
 	          &error );
 
+	link_target_identifier = NULL;
+
 	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
@@ -124,8 +126,6 @@ int lnk_test_link_target_identifier_initialize(
 
 	libcerror_error_free(
 	 &error );
-
-	link_target_identifier = NULL;
 
 #if defined( HAVE_LNK_TEST_MEMORY )
 

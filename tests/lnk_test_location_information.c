@@ -113,6 +113,8 @@ int lnk_test_location_information_initialize(
 	          &location_information,
 	          &error );
 
+	location_information = NULL;
+
 	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
@@ -124,8 +126,6 @@ int lnk_test_location_information_initialize(
 
 	libcerror_error_free(
 	 &error );
-
-	location_information = NULL;
 
 #if defined( HAVE_LNK_TEST_MEMORY )
 

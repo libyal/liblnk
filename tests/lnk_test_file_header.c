@@ -135,6 +135,8 @@ int lnk_test_file_header_initialize(
 	          &file_header,
 	          &error );
 
+	file_header = NULL;
+
 	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
@@ -146,8 +148,6 @@ int lnk_test_file_header_initialize(
 
 	libcerror_error_free(
 	 &error );
-
-	file_header = NULL;
 
 #if defined( HAVE_LNK_TEST_MEMORY )
 
