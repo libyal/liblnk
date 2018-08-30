@@ -175,29 +175,31 @@ int liblnk_location_information_read_data(
      size_t data_size,
      libcerror_error_t **error )
 {
-	const uint8_t *location_information_unicode_value_data = NULL;
-	const uint8_t *location_information_value_data         = NULL;
-	static char *function                                  = "liblnk_location_information_read_data";
-	ssize_t read_count                                     = 0;
-	uint32_t common_path_offset                            = 0;
-	uint32_t device_name_offset                            = 0;
-	uint32_t local_path_offset                             = 0;
-	uint32_t location_information_header_size              = 0;
-	uint32_t location_information_value_size               = 0;
-	uint32_t network_share_information_offset              = 0;
-	uint32_t network_share_name_offset                     = 0;
-	uint32_t unicode_common_path_offset                    = 0;
-	uint32_t unicode_device_name_offset                    = 0;
-	uint32_t unicode_local_path_offset                     = 0;
-	uint32_t unicode_network_share_name_offset             = 0;
-	uint32_t unicode_value_size                            = 0;
-	uint32_t unicode_volume_label_offset                   = 0;
-	uint32_t value_size                                    = 0;
-	uint32_t volume_information_offset                     = 0;
-	uint32_t volume_label_offset                           = 0;
+	const uint8_t *location_information_value_data = NULL;
+	const uint8_t *string_data                     = NULL;
+	const uint8_t *unicode_string_data             = NULL;
+	static char *function                          = "liblnk_location_information_read_data";
+	ssize_t read_count                             = 0;
+	uint32_t common_path_offset                    = 0;
+	uint32_t device_name_offset                    = 0;
+	uint32_t local_path_offset                     = 0;
+	uint32_t location_information_header_size      = 0;
+	uint32_t location_information_value_size       = 0;
+	uint32_t network_share_information_offset      = 0;
+	uint32_t network_share_name_offset             = 0;
+	uint32_t unicode_common_path_offset            = 0;
+	uint32_t unicode_device_name_offset            = 0;
+	uint32_t unicode_local_path_offset             = 0;
+	uint32_t unicode_network_share_name_offset     = 0;
+	uint32_t unicode_value_size                    = 0;
+	uint32_t unicode_volume_label_offset           = 0;
+	uint32_t value_size                            = 0;
+	uint32_t volume_information_offset             = 0;
+	uint32_t volume_label_data_size                = 0;
+	uint32_t volume_label_offset                   = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-	uint32_t value_32bit                                   = 0;
+	uint32_t value_32bit                           = 0;
 #endif
 
 	if( location_information == NULL )
@@ -542,13 +544,15 @@ int liblnk_location_information_read_data(
 
 				goto on_error;
 			}
-			location_information_value_data = &( location_information_value_data[ volume_label_offset ] );
+			volume_label_data_size = location_information_value_size - volume_label_offset;
+
+			string_data = &( location_information_value_data[ volume_label_offset ] );
 
 			for( value_size = 0;
-			     value_size < ( location_information_value_size - volume_label_offset );
+			     value_size < volume_label_data_size;
 			     value_size++ )
 			{
-				if( location_information_value_data[ value_size ] == 0 )
+				if( string_data[ value_size ] == 0 )
 				{
 					value_size++;
 					break;
@@ -566,7 +570,7 @@ int liblnk_location_information_read_data(
 				 "%s: volume information volume label data:\n",
 				 function );
 				libcnotify_print_data(
-				 location_information_value_data,
+				 string_data,
 				 value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
@@ -585,14 +589,16 @@ int liblnk_location_information_read_data(
 
 				goto on_error;
 			}
-			location_information_unicode_value_data = &( location_information_value_data[ unicode_volume_label_offset ] );
+			volume_label_data_size = location_information_value_size - unicode_volume_label_offset;
+
+			unicode_string_data = &( location_information_value_data[ unicode_volume_label_offset ] );
 
 			for( unicode_value_size = 0;
-			     ( unicode_value_size + 1 ) < ( location_information_value_size - unicode_volume_label_offset );
+			     ( unicode_value_size + 1 ) < volume_label_data_size;
 			     unicode_value_size += 2 )
 			{
-				if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
-				 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
+				if( ( unicode_string_data[ unicode_value_size ] == 0 )
+				 && ( unicode_string_data[ unicode_value_size + 1 ] == 0 ) )
 				{
 					unicode_value_size += 2;
 					break;
@@ -610,7 +616,7 @@ int liblnk_location_information_read_data(
 				 "%s: unicode volume information volume label data:\n",
 				 function );
 				libcnotify_print_data(
-				 location_information_unicode_value_data,
+				 unicode_string_data,
 				 unicode_value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
@@ -631,7 +637,7 @@ int liblnk_location_information_read_data(
 			}
 			if( memory_copy(
 			     location_information->volume_label,
-			     location_information_unicode_value_data,
+			     unicode_string_data,
 			     unicode_value_size ) == NULL )
 			{
 				libcerror_error_set(
@@ -664,7 +670,7 @@ int liblnk_location_information_read_data(
 			}
 			if( memory_copy(
 			     location_information->volume_label,
-			     location_information_value_data,
+			     string_data,
 			     value_size ) == NULL )
 			{
 				libcerror_error_set(
@@ -754,13 +760,13 @@ int liblnk_location_information_read_data(
 
 				goto on_error;
 			}
-			location_information_value_data = &( data[ local_path_offset ] );
+			string_data = &( data[ local_path_offset ] );
 
 			for( value_size = 0;
 			     value_size < ( data_size - local_path_offset );
 			     value_size++ )
 			{
-				if( location_information_value_data[ value_size ] == 0 )
+				if( string_data[ value_size ] == 0 )
 				{
 					value_size++;
 					break;
@@ -778,7 +784,7 @@ int liblnk_location_information_read_data(
 				 "%s: local path data:\n",
 				 function );
 				libcnotify_print_data(
-				 location_information_value_data,
+				 string_data,
 				 value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
@@ -810,14 +816,14 @@ int liblnk_location_information_read_data(
 
 				goto on_error;
 			}
-			location_information_unicode_value_data = &( data[ unicode_local_path_offset ] );
+			unicode_string_data = &( data[ unicode_local_path_offset ] );
 
 			for( unicode_value_size = 0;
 			     ( unicode_value_size + 1 ) < ( data_size - unicode_local_path_offset );
 			     unicode_value_size += 2 )
 			{
-				if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
-				 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
+				if( ( unicode_string_data[ unicode_value_size ] == 0 )
+				 && ( unicode_string_data[ unicode_value_size + 1 ] == 0 ) )
 				{
 					unicode_value_size += 2;
 					break;
@@ -835,7 +841,7 @@ int liblnk_location_information_read_data(
 				 "%s: unicode local path data:\n",
 				 function );
 				libcnotify_print_data(
-				 location_information_unicode_value_data,
+				 unicode_string_data,
 				 unicode_value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
@@ -856,7 +862,7 @@ int liblnk_location_information_read_data(
 			}
 			if( memory_copy(
 			     location_information->local_path,
-			     location_information_unicode_value_data,
+			     unicode_string_data,
 			     unicode_value_size ) == NULL )
 			{
 				libcerror_error_set(
@@ -889,7 +895,7 @@ int liblnk_location_information_read_data(
 			}
 			if( memory_copy(
 			     location_information->local_path,
-			     location_information_value_data,
+			     string_data,
 			     value_size ) == NULL )
 			{
 				libcerror_error_set(
@@ -1116,13 +1122,13 @@ int liblnk_location_information_read_data(
 
 				goto on_error;
 			}
-			location_information_value_data = &( location_information_value_data[ network_share_name_offset ] );
+			string_data = &( location_information_value_data[ network_share_name_offset ] );
 
 			for( value_size = 0;
 			     value_size < ( location_information_value_size - network_share_name_offset );
 			     value_size++ )
 			{
-				if( location_information_value_data[ value_size ] == 0 )
+				if( string_data[ value_size ] == 0 )
 				{
 					value_size++;
 					break;
@@ -1140,7 +1146,7 @@ int liblnk_location_information_read_data(
 				 "%s: network share information network share name data:\n",
 				 function );
 				libcnotify_print_data(
-				 location_information_value_data,
+				 string_data,
 				 value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
@@ -1159,14 +1165,14 @@ int liblnk_location_information_read_data(
 
 				goto on_error;
 			}
-			location_information_unicode_value_data = &( location_information_value_data[ unicode_network_share_name_offset ] );
+			unicode_string_data = &( location_information_value_data[ unicode_network_share_name_offset ] );
 
 			for( unicode_value_size = 0;
 			     ( unicode_value_size + 1 ) < ( location_information_value_size - unicode_network_share_name_offset );
 			     unicode_value_size += 2 )
 			{
-				if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
-				 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
+				if( ( unicode_string_data[ unicode_value_size ] == 0 )
+				 && ( unicode_string_data[ unicode_value_size + 1 ] == 0 ) )
 				{
 					unicode_value_size += 2;
 					break;
@@ -1184,7 +1190,7 @@ int liblnk_location_information_read_data(
 				 "%s: unicode volume information network share name data:\n",
 				 function );
 				libcnotify_print_data(
-				 location_information_unicode_value_data,
+				 unicode_string_data,
 				 unicode_value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
@@ -1205,7 +1211,7 @@ int liblnk_location_information_read_data(
 			}
 			if( memory_copy(
 			     location_information->network_share_name,
-			     location_information_unicode_value_data,
+			     unicode_string_data,
 			     unicode_value_size ) == NULL )
 			{
 				libcerror_error_set(
@@ -1238,7 +1244,7 @@ int liblnk_location_information_read_data(
 			}
 			if( memory_copy(
 			     location_information->network_share_name,
-			     location_information_value_data,
+			     string_data,
 			     value_size ) == NULL )
 			{
 				libcerror_error_set(
@@ -1313,13 +1319,13 @@ int liblnk_location_information_read_data(
 
 				goto on_error;
 			}
-			location_information_value_data = &( location_information_value_data[ device_name_offset ] );
+			string_data = &( location_information_value_data[ device_name_offset ] );
 
 			for( value_size = 0;
 			     value_size < ( location_information_value_size - network_share_name_offset );
 			     value_size++ )
 			{
-				if( location_information_value_data[ value_size ] == 0 )
+				if( string_data[ value_size ] == 0 )
 				{
 					value_size++;
 					break;
@@ -1337,7 +1343,7 @@ int liblnk_location_information_read_data(
 				 "%s: network share information device name data:\n",
 				 function );
 				libcnotify_print_data(
-				 location_information_value_data,
+				 string_data,
 				 value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
@@ -1356,14 +1362,14 @@ int liblnk_location_information_read_data(
 
 				goto on_error;
 			}
-			location_information_unicode_value_data = &( location_information_value_data[ unicode_device_name_offset ] );
+			unicode_string_data = &( location_information_value_data[ unicode_device_name_offset ] );
 
 			for( unicode_value_size = 0;
 			     ( unicode_value_size + 1 ) < ( location_information_value_size - unicode_device_name_offset );
 			     unicode_value_size += 2 )
 			{
-				if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
-				 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
+				if( ( unicode_string_data[ unicode_value_size ] == 0 )
+				 && ( unicode_string_data[ unicode_value_size + 1 ] == 0 ) )
 				{
 					unicode_value_size += 2;
 					break;
@@ -1381,7 +1387,7 @@ int liblnk_location_information_read_data(
 				 "%s: unicode volume information device name data:\n",
 				 function );
 				libcnotify_print_data(
-				 location_information_unicode_value_data,
+				 unicode_string_data,
 				 unicode_value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
@@ -1402,7 +1408,7 @@ int liblnk_location_information_read_data(
 			}
 			if( memory_copy(
 			     location_information->device_name,
-			     location_information_unicode_value_data,
+			     unicode_string_data,
 			     unicode_value_size ) == NULL )
 			{
 				libcerror_error_set(
@@ -1435,7 +1441,7 @@ int liblnk_location_information_read_data(
 			}
 			if( memory_copy(
 			     location_information->device_name,
-			     location_information_value_data,
+			     string_data,
 			     value_size ) == NULL )
 			{
 				libcerror_error_set(
@@ -1496,7 +1502,7 @@ int liblnk_location_information_read_data(
 				}
 			}
 		}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
 	}
 	/* Common path
 	 */
@@ -1526,13 +1532,13 @@ int liblnk_location_information_read_data(
 
 			goto on_error;
 		}
-		location_information_value_data = &( data[ common_path_offset ] );
+		string_data = &( data[ common_path_offset ] );
 
 		for( value_size = 0;
 		     value_size < ( data_size - common_path_offset );
 		     value_size++ )
 		{
-			if( location_information_value_data[ value_size ] == 0 )
+			if( string_data[ value_size ] == 0 )
 			{
 				value_size++;
 				break;
@@ -1550,7 +1556,7 @@ int liblnk_location_information_read_data(
 			 "%s: common path data:\n",
 			 function );
 			libcnotify_print_data(
-			 location_information_value_data,
+			 string_data,
 			 value_size,
 			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 		}
@@ -1582,14 +1588,14 @@ int liblnk_location_information_read_data(
 
 			goto on_error;
 		}
-		location_information_unicode_value_data = &( data[ unicode_common_path_offset ] );
+		unicode_string_data = &( data[ unicode_common_path_offset ] );
 
 		for( unicode_value_size = 0;
 		     ( unicode_value_size + 1 ) < ( data_size - unicode_common_path_offset );
 		     unicode_value_size += 2 )
 		{
-			if( ( location_information_unicode_value_data[ unicode_value_size ] == 0 )
-			 && ( location_information_unicode_value_data[ unicode_value_size + 1 ] == 0 ) )
+			if( ( unicode_string_data[ unicode_value_size ] == 0 )
+			 && ( unicode_string_data[ unicode_value_size + 1 ] == 0 ) )
 			{
 				unicode_value_size += 2;
 				break;
@@ -1607,7 +1613,7 @@ int liblnk_location_information_read_data(
 			 "%s: unicode common path data:\n",
 			 function );
 			libcnotify_print_data(
-			 location_information_unicode_value_data,
+			 unicode_string_data,
 			 unicode_value_size,
 			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 		}
@@ -1628,7 +1634,7 @@ int liblnk_location_information_read_data(
 		}
 		if( memory_copy(
 		     location_information->common_path,
-		     location_information_unicode_value_data,
+		     unicode_string_data,
 		     unicode_value_size ) == NULL )
 		{
 			libcerror_error_set(
@@ -1661,7 +1667,7 @@ int liblnk_location_information_read_data(
 		}
 		if( memory_copy(
 		     location_information->common_path,
-		     location_information_value_data,
+		     string_data,
 		     value_size ) == NULL )
 		{
 			libcerror_error_set(
