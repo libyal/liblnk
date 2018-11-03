@@ -8,43 +8,45 @@ Source: %{name}-%{version}.tar.gz
 URL: https://github.com/libyal/liblnk
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 @liblnk_spec_requires@ @ax_libbfio_spec_requires@ @ax_libcdata_spec_requires@ @ax_libcerror_spec_requires@ @ax_libcfile_spec_requires@ @ax_libclocale_spec_requires@ @ax_libcnotify_spec_requires@ @ax_libcpath_spec_requires@ @ax_libcsplit_spec_requires@ @ax_libcthreads_spec_requires@ @ax_libfdatetime_spec_requires@ @ax_libfguid_spec_requires@ @ax_libfole_spec_requires@ @ax_libfwps_spec_requires@ @ax_libfwsi_spec_requires@ @ax_libuna_spec_requires@
-@liblnk_spec_build_requires@ @ax_libbfio_spec_build_requires@ @ax_libcdata_spec_build_requires@ @ax_libcerror_spec_build_requires@ @ax_libcfile_spec_build_requires@ @ax_libclocale_spec_build_requires@ @ax_libcnotify_spec_build_requires@ @ax_libcpath_spec_build_requires@ @ax_libcsplit_spec_build_requires@ @ax_libcthreads_spec_build_requires@ @ax_libfdatetime_spec_build_requires@ @ax_libfguid_spec_build_requires@ @ax_libfole_spec_build_requires@ @ax_libfwps_spec_build_requires@ @ax_libfwsi_spec_build_requires@ @ax_libuna_spec_build_requires@
+BuildRequires: gcc @ax_libbfio_spec_build_requires@ @ax_libcdata_spec_build_requires@ @ax_libcerror_spec_build_requires@ @ax_libcfile_spec_build_requires@ @ax_libclocale_spec_build_requires@ @ax_libcnotify_spec_build_requires@ @ax_libcpath_spec_build_requires@ @ax_libcsplit_spec_build_requires@ @ax_libcthreads_spec_build_requires@ @ax_libfdatetime_spec_build_requires@ @ax_libfguid_spec_build_requires@ @ax_libfole_spec_build_requires@ @ax_libfwps_spec_build_requires@ @ax_libfwsi_spec_build_requires@ @ax_libuna_spec_build_requires@
 
-%description
+%description -n liblnk
 Library to access the Windows Shortcut File (LNK) format
 
-%package devel
+%package -n liblnk-devel
 Summary: Header files and libraries for developing applications for liblnk
 Group: Development/Libraries
 Requires: liblnk = %{version}-%{release}
 
-%description devel
+%description -n liblnk-devel
 Header files and libraries for developing applications for liblnk.
 
-%package python
+%package -n liblnk-python2
+Obsoletes: liblnk-python < %{version}
+Provides: liblnk-python = %{version}
 Summary: Python 2 bindings for liblnk
 Group: System Environment/Libraries
-Requires: liblnk = %{version}-%{release} python
-BuildRequires: python-devel
+Requires: liblnk = %{version}-%{release} python2
+BuildRequires: python2-devel
 
-%description python
+%description -n liblnk-python2
 Python 2 bindings for liblnk
 
-%package python3
+%package -n liblnk-python3
 Summary: Python 3 bindings for liblnk
 Group: System Environment/Libraries
 Requires: liblnk = %{version}-%{release} python3
 BuildRequires: python3-devel
 
-%description python3
+%description -n liblnk-python3
 Python 3 bindings for liblnk
 
-%package tools
+%package -n liblnk-tools
 Summary: Several tools for reading Windows Shortcut Files (LNK)
 Group: Applications/System
 Requires: liblnk = %{version}-%{release}
 
-%description tools
+%description -n liblnk-tools
 Several tools for reading Windows Shortcut Files (LNK)
 
 %prep
@@ -65,13 +67,13 @@ rm -rf %{buildroot}
 
 %postun -p /sbin/ldconfig
 
-%files
+%files -n liblnk
 %defattr(644,root,root,755)
 %license COPYING
 %doc AUTHORS README
 %attr(755,root,root) %{_libdir}/*.so.*
 
-%files devel
+%files -n liblnk-devel
 %defattr(644,root,root,755)
 %license COPYING
 %doc AUTHORS README ChangeLog
@@ -82,7 +84,7 @@ rm -rf %{buildroot}
 %{_includedir}/*
 %{_mandir}/man3/*
 
-%files python
+%files -n liblnk-python2
 %defattr(644,root,root,755)
 %license COPYING
 %doc AUTHORS README
@@ -90,7 +92,7 @@ rm -rf %{buildroot}
 %{_libdir}/python2*/site-packages/*.la
 %{_libdir}/python2*/site-packages/*.so
 
-%files python3
+%files -n liblnk-python3
 %defattr(644,root,root,755)
 %license COPYING
 %doc AUTHORS README
@@ -98,7 +100,7 @@ rm -rf %{buildroot}
 %{_libdir}/python3*/site-packages/*.la
 %{_libdir}/python3*/site-packages/*.so
 
-%files tools
+%files -n liblnk-tools
 %defattr(644,root,root,755)
 %license COPYING
 %doc AUTHORS README
