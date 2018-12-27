@@ -9,6 +9,8 @@ Homepage: https://github.com/libyal/liblnk
 Package: liblnk
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: liblnk1
+Replaces: liblnk1
 Suggests: liblnk-dbg
 Description: Library to access the Windows Shortcut File (LNK) format
  liblnk is a library to access the Windows Shortcut File (LNK) format.
@@ -31,6 +33,8 @@ Package: liblnk-tools
 Section: utils
 Architecture: any
 Depends: liblnk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Conflicts: liblnk-utils
+Replaces: liblnk-utils
 Description: Several tools for reading Windows Shortcut Files (LNK)
  Several tools for reading Windows Shortcut Files (LNK).
 
@@ -45,6 +49,8 @@ Package: liblnk-python
 Section: python
 Architecture: any
 Depends: liblnk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Conflicts: python-liblnk
+Replaces: python-liblnk
 Suggests: liblnk-python-dbg
 Description: Python 2 bindings for liblnk
  Python 2 bindings for liblnk.
@@ -60,6 +66,8 @@ Package: liblnk-python3
 Section: python
 Architecture: any
 Depends: liblnk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Conflicts: python3-liblnk
+Replaces: python3-liblnk
 Suggests: liblnk-python3-dbg
 Description: Python 3 bindings for liblnk
  Python 3 bindings for liblnk.
