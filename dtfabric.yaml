@@ -1,3 +1,17 @@
+name: lnk
+type: format
+description: Windows Shortcut File (LNK) format
+urls:
+- 'https://msdn.microsoft.com/en-us/library/dd871305.aspx'
+- 'https://github.com/libyal/liblnk/blob/master/documentation/Windows%20Shortcut%20File%20(LNK)%20format.asciidoc'
+metadata:
+  authors: ['Joachim Metz <joachim.metz@gmail.com>']
+  year: 2009
+attributes:
+  byte_order: little-endian
+layout:
+- data_type: file_header
+---
 name: byte
 type: integer
 attributes:
@@ -44,18 +58,6 @@ members:
   data_type: uint32
 - name: upper_part
   data_type: uint32
----
-name: lnk
-type: format
-description: Windows Shortcut File (LNK) format
-urls: ['https://msdn.microsoft.com/en-us/library/dd871305.aspx']
-metadata:
-  authors: ['Joachim Metz <joachim.metz@gmail.com>']
-  year: 2009
-attributes:
-  byte_order: little-endian
-layout:
-- data_type: file_header
 ---
 name: file_header
 aliases: [ShellLinkHeader]

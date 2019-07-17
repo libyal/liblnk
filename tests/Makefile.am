@@ -34,6 +34,7 @@ check_SCRIPTS = \
 	pylnk_test_support.py \
 	test_library.sh \
 	test_lnkinfo.sh \
+	test_manpage.sh \
 	test_python_module.sh \
 	test_runner.sh
 

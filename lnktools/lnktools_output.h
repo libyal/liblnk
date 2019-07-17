@@ -36,14 +36,14 @@ int lnktools_output_initialize(
      int stdio_mode,
      libcerror_error_t **error );
 
-void lnkoutput_copyright_fprint(
+void lnktools_output_copyright_fprint(
       FILE *stream );
 
-void lnkoutput_version_fprint(
+void lnktools_output_version_fprint(
       FILE *stream,
       const char *program );
 
-void lnkoutput_version_detailed_fprint(
+void lnktools_output_version_detailed_fprint(
       FILE *stream,
       const char *program );
 

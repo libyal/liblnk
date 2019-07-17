@@ -25,7 +25,6 @@
 #include <types.h>
 
 #include "liblnk_codepage.h"
-#include "liblnk_definitions.h"
 #include "liblnk_io_handle.h"
 #include "liblnk_libcerror.h"
 

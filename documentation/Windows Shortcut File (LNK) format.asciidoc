@@ -7,6 +7,7 @@ Analysis of the Windows Shortcut File (LNK) format
 :numbered!:
 [abstract]
 == Summary
+
 A Windows Shortcut File (LNK) is used by Microsoft Windows to link to multiple
 types of information like files, network shares, search results, etc. This
 specification is based on earlier work on the format, the Shell Link Binary
@@ -19,6 +20,7 @@ tooling to be able to process this file type.
 
 [preface]
 == Document information
+
 [cols="1,5"]
 |===
 | Author(s): | Joachim Metz <joachim.metz@gmail.com>
@@ -29,6 +31,7 @@ tooling to be able to process this file type.
 
 [preface]
 == License
+
 ....
 Copyright (C) 2009-2018, Joachim Metz <joachim.metz@gmail.com>.
 Permission is granted to copy, distribute and/or modify this document under the
@@ -40,6 +43,7 @@ in the section entitled "GNU Free Documentation License".
 
 [preface]
 == Revision history
+
 [cols="1,1,1,5",options="header"]
 |===
 | Version | Author | Date | Comments
@@ -70,6 +74,7 @@ in the section entitled "GNU Free Documentation License".
 
 :numbered:
 == Overview
+
 A Windows Shortcut File (LNK) is used by Microsoft Windows to link to multiple
 types of information like files, network shares, search results, etc. The
 Windows Shortcut File format is also known as:
@@ -111,6 +116,7 @@ Unicode strings are stored in UTF-16 little-endian without the byte order mark (
 |===
 
 === Test version
+
 The following version of programs were used to test the information within this document:
 
 * Windows 95
@@ -128,6 +134,7 @@ The following version of programs were used to test the information within this 
 * Windows 10
 
 == File header
+
 The file header (ShellLinkHeader) is 76 bytes of size and consists of:
 
 [cols="1,1,1,5",options="header"]
@@ -160,6 +167,7 @@ See section: <<hot_key_definitions,Hot Key definitions>>
 |===
 
 === Data flags
+
 The data flags consist of the following values:
 
 [cols="1,1,5",options="header"]
@@ -200,6 +208,7 @@ The data flags consist of the following values:
 LNK files in Windows XP and earlier do not use the ForceNoLinkTrack flag.
 
 == Link target identifier
+
 The link target identifier contains a (shell) item identifier list. The data
 flags define if the link target identifier is present or not.
 
@@ -214,6 +223,7 @@ See: https://github.com/libyal/libfwsi/blob/master/documentation/Windows%20Shell
 |===
 
 == Location information
+
 The data flags define if the (link) location information is present or not.
 
 The location information is variable of size and consists of:
@@ -270,6 +280,7 @@ the value can still be set, but is not necessarily valid. This behavior was
 seen on Windows95.
 
 === Location flags
+
 The location flags consist of the following values:
 
 [cols="1,1,5",options="header"]
@@ -282,6 +293,7 @@ If set the network share information and common path contain data
 |===
 
 === Volume information
+
 The volume information is variable of size and consists of:
 
 [cols="1,1,1,5",options="header"]
@@ -305,6 +317,7 @@ Unicode string terminated by an end-of-string character
 |===
 
 ==== Drive types
+
 This drive type consist of one of the following values:
 
 [cols="1,1,5",options="header"]
@@ -320,6 +333,7 @@ This drive type consist of one of the following values:
 |===
 
 === Network share information
+
 The network share information is variable of size and consists of:
 
 [cols="1,1,1,5",options="header"]
@@ -353,6 +367,7 @@ Unicode string terminated by an end-of-string character
 The network share name is not necessarily terminated by a path separator.
 
 ==== Network share flags
+
 The network share flags consist of the following values:
 
 [cols="1,1,5",options="header"]
@@ -363,6 +378,7 @@ The network share flags consist of the following values:
 |===
 
 ==== Network provider types
+
 The network provider types consist of one of the following values:
 
 [cols="1,1,5",options="header"]
@@ -413,6 +429,7 @@ The network provider types consist of one of the following values:
 |===
 
 == Data strings
+
 Dependent on the flags in the file header the following data strings are
 present or not. They are stored in the following order directly after the
 location information:
@@ -434,6 +451,7 @@ ASCII or Unicode string
 |===
 
 == Extra data
+
 The extra data is variable of size and consists of:
 
 [cols="1,1,1,5",options="header"]
@@ -466,6 +484,7 @@ data string:
 Not all extra data blocks are controlled by the data flags in the file header.
 
 === The environment variables location data block
+
 The environment variables location data block is 788 bytes of size and consists of:
 
 [cols="1,1,1,5",options="header"]
@@ -485,6 +504,7 @@ Unused bytes can contain remnant data
 The environment variables location contains the path to the environment variables information.
 
 === The console properties data block
+
 The console properties data block is 204 bytes of size and consists of:
 
 [cols="1,1,1,5",options="header"]
@@ -528,6 +548,7 @@ A value of 0 represents that duplicates are not allowed in the history another v
 |===
 
 ==== Console color flags
+
 The console color flags consist of the following values:
 
 [cols="1,1,5",options="header"]
@@ -544,6 +565,7 @@ The console color flags consist of the following values:
 |===
 
 ==== Console font family value
+
 The console font family value consist of the following values:
 
 [cols="1,1,5",options="header"]
@@ -558,6 +580,7 @@ The console font family value consist of the following values:
 |===
 
 === The distributed link tracker properties data block
+
 The distributed link tracker properties data block is 96 bytes of size and consists of:
 
 [cols="1,1,1,5",options="header"]
@@ -592,6 +615,7 @@ The droid file identifier can be found in the NTFS $OBJECT_ID attribute of the
 corresponding file.
 
 === The console codepage data block
+
 The console codepage data block is 12 bytes of size and consists of:
 
 [cols="1,1,1,5",options="header"]
@@ -604,6 +628,7 @@ Includes 4 bytes of the size
 |===
 
 ==== Console codepage value
+
 The console codepage value consist of the following values:
 
 [cols="1,1,5",options="header"]
@@ -615,6 +640,7 @@ The console codepage value consist of the following values:
 [yellow-background]*TODO add values*
 
 === The special folder location data block
+
 The special folder location data block is 16 bytes of size and consists of:
 
 [cols="1,1,1,5",options="header"]
@@ -633,6 +659,7 @@ specified by the known folder identifier. The offset contains the number of
 bytes relative from the start of the (shell) item identifiers list.
 
 === The Darwin properties data block
+
 The Darwin properties data block is 788 bytes of size and consists of:
 
 [cols="1,1,1,5",options="header"]
@@ -650,6 +677,7 @@ Unused bytes are set to 0
 |===
 
 === The icon location data block
+
 The icon location data block is 788 bytes of size and consists of:
 
 [cols="1,1,1,5",options="header"]
@@ -670,6 +698,7 @@ The icon location contains the path to the icon information which includes the
 use of environment variables.
 
 ==== The shim layer properties data block
+
 [yellow-background]*The shim is an intermediate layer and was added in Windows
 Vista.*
 
@@ -688,6 +717,7 @@ The value should be => 136
 |===
 
 === The metadata property store data block
+
 The metadata property store data block is variable of size and consists of:
 
 [cols="1,1,1,5",options="header"]
@@ -703,6 +733,7 @@ See: https://github.com/libyal/libfwps/blob/master/documentation/Windows%20Prope
 |===
 
 ==== The property set class identifier
+
 The following property set identifiers are known to be used.
 For more information about the property sets and values see:
 https://github.com/libyal/libfwps/blob/master/documentation/Windows%20Property%20Store%20format.asciidoc[[LIBFWPS\]].
@@ -714,6 +745,7 @@ https://github.com/libyal/libfwps/blob/master/documentation/Windows%20Property%2
 |===
 
 === The known folder location data block
+
 The known folder data block is 28 bytes of size and consists of:
 
 [cols="1,1,1,5",options="header"]
@@ -734,6 +766,7 @@ bytes relative from the start of the (shell)
 item identifiers list.
 
 === The shell item identifiers list data block
+
 [yellow-background]*The shell item identifiers list data block was added in
 Windows Vista.*
 
@@ -751,7 +784,9 @@ See: https://github.com/libyal/libfwsi/blob/master/documentation/Windows%20Shell
 |===
 
 == Windows definitions
+
 === [[file_attribute_flags]]File attribute flags
+
 The file attribute flags consist of the following values:
 
 [cols="1,1,5",options="header"]
@@ -783,6 +818,7 @@ Is virtual
 |===
 
 === [[show_window_definitions]]Show Window definitions
+
 The Show Window value contains a value used by the ShowWindow function. This value consist of one of the following values:
 
 [cols="1,1,5",options="header"]
@@ -810,6 +846,7 @@ SW_SHOWMAXIMIZED | Activates and maximizes the window.
 According to `[MS-SHLLINK]` All values other than SW_SHOWNORMAL, SW_SHOWMAXIMIZED or SW_SHOWMINNOACTIVE must be treated as SW_SHOWNORMAL.
 
 === [[hot_key_definitions]]Hot Key definitions
+
 The Hot Key values consists of 2 bytes each bytes contains part of the corresponding hot key.
 
 ==== Lower HotKey byte value
@@ -862,7 +899,9 @@ The Hot Key values consists of 2 bytes each bytes contains part of the correspon
 |===
 
 == Corruption scenarios
+
 === Empty location information
+
 In this scenario the HasLinkInfo is set but the location information is filled
 with 0-byte values.
 
@@ -872,6 +911,7 @@ Windows Explorer considers this valid LNK data.
 :numbered!:
 [appendix]
 == References
+
 `[PARSONAGE08]`
 
 [cols="1,5",options="header"]
@@ -930,6 +970,7 @@ Windows Explorer considers this valid LNK data.
 
 [appendix]
 == GNU Free Documentation License
+
 Version 1.3, 3 November 2008
 Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
 <http://fsf.org/>
@@ -938,6 +979,7 @@ Everyone is permitted to copy and distribute verbatim copies of this license
 document, but changing it is not allowed.
 
 === 0. PREAMBLE
+
 The purpose of this License is to make a manual, textbook, or other functional
 and useful document "free" in the sense of freedom: to assure everyone the
 effective freedom to copy and redistribute it, with or without modifying it,
@@ -958,6 +1000,7 @@ recommend this License principally for works whose purpose is instruction or
 reference.
 
 === 1. APPLICABILITY AND DEFINITIONS
+
 This License applies to any manual or other work, in any medium, that contains
 a notice placed by the copyright holder saying it can be distributed under the
 terms of this License. Such a notice grants a world-wide, royalty-free license,
@@ -1036,6 +1079,7 @@ disclaiming warranties: any other implication that these Warranty Disclaimers
 may have is void and has no effect on the meaning of this License.
 
 === 2. VERBATIM COPYING
+
 You may copy and distribute the Document in any medium, either commercially or
 noncommercially, provided that this License, the copyright notices, and the
 license notice saying this License applies to the Document are reproduced in
@@ -1049,6 +1093,7 @@ You may also lend copies, under the same conditions stated above, and you may
 publicly display copies.
 
 === 3. COPYING IN QUANTITY
+
 If you publish printed copies (or copies in media that commonly have printed
 covers) of the Document, numbering more than 100, and the Document's license
 notice requires Cover Texts, you must enclose the copies in covers that carry,
@@ -1082,6 +1127,7 @@ well before redistributing any large number of copies, to give them a chance to
 provide you with an updated version of the Document.
 
 === 4. MODIFICATIONS
+
 You may copy and distribute a Modified Version of the Document under the
 conditions of sections 2 and 3 above, provided that you release the Modified
 Version under precisely this License, with the Modified Version filling the
@@ -1174,6 +1220,7 @@ permission to use their names for publicity for or to assert or imply
 endorsement of any Modified Version.
 
 === 5. COMBINING DOCUMENTS
+
 You may combine the Document with other documents released under this License,
 under the terms defined in section 4 above for modified versions, provided that
 you include in the combination all of the Invariant Sections of all of the
@@ -1195,6 +1242,7 @@ combine any sections Entitled "Acknowledgements", and any sections Entitled
 "Dedications". You must delete all sections Entitled "Endorsements".
 
 === 6. COLLECTIONS OF DOCUMENTS
+
 You may make a collection consisting of the Document and other documents
 released under this License, and replace the individual copies of this License
 in the various documents with a single copy that is included in the collection,
@@ -1207,6 +1255,7 @@ into the extracted document, and follow this License in all other respects
 regarding verbatim copying of that document.
 
 === 7. AGGREGATION WITH INDEPENDENT WORKS
+
 A compilation of the Document or its derivatives with other separate and
 independent documents or works, in or on a volume of a storage or distribution
 medium, is called an "aggregate" if the copyright resulting from the
@@ -1223,6 +1272,7 @@ in electronic form. Otherwise they must appear on printed covers that bracket
 the whole aggregate.
 
 === 8. TRANSLATION
+
 Translation is considered a kind of modification, so you may distribute
 translations of the Document under the terms of section 4. Replacing Invariant
 Sections with translations requires special permission from their copyright
@@ -1240,6 +1290,7 @@ If a section in the Document is Entitled "Acknowledgements", "Dedications", or
 typically require changing the actual title.
 
 === 9. TERMINATION
+
 You may not copy, modify, sublicense, or distribute the Document except as
 expressly provided under this License. Any attempt otherwise to copy, modify,
 sublicense, or distribute it is void, and will automatically terminate your
@@ -1263,6 +1314,7 @@ your rights have been terminated and not permanently reinstated, receipt of a
 copy of some or all of the same material does not give you any rights to use it.
 
 === 10. FUTURE REVISIONS OF THIS LICENSE
+
 The Free Software Foundation may publish new, revised versions of the GNU Free
 Documentation License from time to time. Such new versions will be similar in
 spirit to the present version, but may differ in detail to address new problems
@@ -1280,6 +1332,7 @@ License can be used, that proxy's public statement of acceptance of a version
 permanently authorizes you to choose that version for the Document.
 
 === 11. RELICENSING
+
 "Massive Multiauthor Collaboration Site" (or "MMC Site") means any World Wide
 Web server that publishes copyrightable works and also provides prominent
 facilities for anybody to edit those works. A public wiki that anybody can edit

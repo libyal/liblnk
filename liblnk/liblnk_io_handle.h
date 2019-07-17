@@ -25,8 +25,6 @@
 #include <common.h>
 #include <types.h>
 
-#include "liblnk_file_header.h"
-#include "liblnk_libbfio.h"
 #include "liblnk_libcerror.h"
 
 #if defined( __cplusplus )

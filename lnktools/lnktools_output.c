@@ -94,7 +94,7 @@ int lnktools_output_initialize(
 
 /* Prints the copyright information
  */
-void lnkoutput_copyright_fprint(
+void lnktools_output_copyright_fprint(
       FILE *stream )
 {
 	if( stream == NULL )
@@ -126,7 +126,7 @@ void lnkoutput_copyright_fprint(
 
 /* Prints the version information
  */
-void lnkoutput_version_fprint(
+void lnktools_output_version_fprint(
       FILE *stream,
       const char *program )
 {
@@ -147,7 +147,7 @@ void lnkoutput_version_fprint(
 
 /* Prints the detailed version information
  */
-void lnkoutput_version_detailed_fprint(
+void lnktools_output_version_detailed_fprint(
       FILE *stream,
       const char *program )
 {

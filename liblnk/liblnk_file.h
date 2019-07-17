@@ -36,6 +36,7 @@
 #include "liblnk_link_target_identifier.h"
 #include "liblnk_location_information.h"
 #include "liblnk_special_folder_location.h"
+#include "liblnk_types.h"
 
 #if defined( __cplusplus )
 extern "C" {
