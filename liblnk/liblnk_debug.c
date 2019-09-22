@@ -257,7 +257,7 @@ void liblnk_debug_print_file_attribute_flags(
 	}
 }
 
-/* Prints the dirve type
+/* Prints the drive type
  */
 const char *liblnk_debug_print_drive_type(
              uint32_t drive_type )
