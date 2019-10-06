@@ -1071,6 +1071,7 @@ int liblnk_location_information_read_data(
 			 "%s: network share information network share name offset\t: %" PRIu32 "\n",
 			 function,
 			 network_share_name_offset );
+
 			libcnotify_printf(
 			 "%s: network share information device name offset\t\t: %" PRIu32 "\n",
 			 function,
@@ -1322,7 +1323,7 @@ int liblnk_location_information_read_data(
 			string_data = &( location_information_value_data[ device_name_offset ] );
 
 			for( value_size = 0;
-			     value_size < ( location_information_value_size - network_share_name_offset );
+			     value_size < ( location_information_value_size - device_name_offset );
 			     value_size++ )
 			{
 				if( string_data[ value_size ] == 0 )
