@@ -1164,10 +1164,10 @@ int info_handle_link_information_fprint(
 
 			goto on_error;
 		}
-		else if( result != 0 )
+		else if( ( result != 0 )
+		      && ( value_string_size > 0 ) )
 		{
-			if( ( value_string_size > (size_t) SSIZE_MAX )
-			 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+			if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -1248,10 +1248,10 @@ int info_handle_link_information_fprint(
 
 			goto on_error;
 		}
-		else if( result != 0 )
+		else if( ( result != 0 )
+		      && ( value_string_size > 0 ) )
 		{
-			if( ( value_string_size > (size_t) SSIZE_MAX )
-			 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+			if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -1332,10 +1332,10 @@ int info_handle_link_information_fprint(
 
 			goto on_error;
 		}
-		else if( result != 0 )
+		else if( ( result != 0 )
+		      && ( value_string_size > 0 ) )
 		{
-			if( ( value_string_size > (size_t) SSIZE_MAX )
-			 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+			if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -1451,10 +1451,10 @@ int info_handle_description_fprint(
 
 		goto on_error;
 	}
-	else if( result != 0 )
+	else if( ( result != 0 )
+	      && ( value_string_size > 0 ) )
 	{
-		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1569,10 +1569,10 @@ int info_handle_relative_path_fprint(
 
 		goto on_error;
 	}
-	else if( result != 0 )
+	else if( ( result != 0 )
+	      && ( value_string_size > 0 ) )
 	{
-		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1687,10 +1687,10 @@ int info_handle_working_directory_fprint(
 
 		goto on_error;
 	}
-	else if( result != 0 )
+	else if( ( result != 0 )
+	      && ( value_string_size > 0 ) )
 	{
-		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1805,10 +1805,10 @@ int info_handle_command_line_arguments_fprint(
 
 		goto on_error;
 	}
-	else if( result != 0 )
+	else if( ( result != 0 )
+	      && ( value_string_size > 0 ) )
 	{
-		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1923,10 +1923,10 @@ int info_handle_icon_location_fprint(
 
 		goto on_error;
 	}
-	else if( result != 0 )
+	else if( ( result != 0 )
+	      && ( value_string_size > 0 ) )
 	{
-		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -2041,10 +2041,10 @@ int info_handle_environment_variables_location_fprint(
 
 		goto on_error;
 	}
-	else if( result != 0 )
+	else if( ( result != 0 )
+	      && ( value_string_size > 0 ) )
 	{
-		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -2341,14 +2341,14 @@ int info_handle_distributed_link_tracking_fprint(
 
 			goto on_error;
 		}
-		if( ( value_string_size > (size_t) SSIZE_MAX )
-		 || ( ( sizeof( system_character_t ) * value_string_size )  > (size_t) SSIZE_MAX ) )
+		if( ( value_string_size == 0 )
+		 || ( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) ) )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
-			 "%s: invalid machine identifier size value exceeds maximum.",
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: invalid machine identifier size value out of bounds.",
 			 function );
 
 			goto on_error;

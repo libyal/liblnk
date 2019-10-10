@@ -1087,6 +1087,17 @@ int liblnk_location_information_read_data(
 #endif
 		if( network_share_name_offset > 20 )
 		{
+			if( location_information_value_size < 28 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+				 "%s: location information value size value out of bounds.",
+				 function );
+
+				goto on_error;
+			}
 			byte_stream_copy_to_uint32_little_endian(
 			 ( (lnk_network_share_information_t *) location_information_value_data )->unicode_network_share_name_offset,
 			 unicode_network_share_name_offset );
