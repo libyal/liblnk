@@ -100,7 +100,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_data_flags",
 	  (PyCFunction) pylnk_file_get_data_flags,
 	  METH_NOARGS,
-	  "get_data_flags() -> Integer or None\n"
+	  "get_data_flags() -> Integer\n"
 	  "\n"
 	  "Retrieves the data flags." },
 
@@ -1456,7 +1456,7 @@ PyObject *pylnk_file_get_data_flags(
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
@@ -1468,13 +1468,6 @@ PyObject *pylnk_file_get_data_flags(
 		 &error );
 
 		return( NULL );
-	}
-	else if( result == 0 )
-	{
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
 	}
 	integer_object = PyLong_FromUnsignedLong(
 	                  (unsigned long) value_32bit );
