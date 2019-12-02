@@ -37,7 +37,7 @@ then
 
 		make install DESTDIR=${PWD}/osx-pkg;
 		mkdir -p ${PWD}/osx-pkg/usr/share/doc/liblnk;
-		cp AUTHORS COPYING NEWS README ${PWD}/osx-pkg/usr/share/doc/liblnk;
+		cp AUTHORS COPYING COPYING.LESSER NEWS README ${PWD}/osx-pkg/usr/share/doc/liblnk;
 
 		pkgbuild --root osx-pkg --identifier com.github.libyal.liblnk --version ${VERSION} --ownership recommended ../liblnk-${VERSION}.pkg;
 	fi
