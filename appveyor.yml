@@ -15,7 +15,7 @@ install:
     git clone https://github.com/libyal/vstools.git ..\vstools )
 - cmd: if [%BUILD_ENVIRONMENT%]==[python] (
     "%PYTHON%\\python.exe" -m pip install -U pip setuptools twine wheel )
-- sh: if test ${BUILD_ENVIRONMENT} = "python"; then whereis python3; python3 --version; python3 -m pip install -U pip setuptools twine wheel; fi
+- sh: if test ${BUILD_ENVIRONMENT} = "python"; then which python3; python3 --version; python3 -m pip install -U pip setuptools twine wheel; fi
 - cmd: if [%BUILD_ENVIRONMENT%]==[cygwin] (
     C:\cygwin\setup-x86.exe -qgnNdO -l C:\cygwin\var\cache\setup -R c:\cygwin -s http://cygwin.mirror.constant.com -P python2-devel -P python3-devel )
 - cmd: if [%BUILD_ENVIRONMENT%]==[cygwin64] (
