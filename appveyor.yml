@@ -9,8 +9,6 @@ environment:
     BUILD_ENVIRONMENT: python
     APPVEYOR_BUILD_WORKER_IMAGE: macOS-Mojave
 
-stack: python 3.7.5
-
 install:
 - cmd: git clone https://github.com/codecov/codecov-bash.git ..\codecov-bash
 - cmd: if [%BUILD_ENVIRONMENT%]==[msbuild] (
