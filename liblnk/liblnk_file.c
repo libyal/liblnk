@@ -2623,7 +2623,7 @@ int liblnk_file_get_show_window_value(
 
 		return( -1 );
 	}
-	*show_window_value = internal_file->file_information->size;
+	*show_window_value = internal_file->file_information->show_window;
 
 	return( 1 );
 }
@@ -2674,7 +2674,7 @@ int liblnk_file_get_hot_key_value(
 
 		return( -1 );
 	}
-	*hot_key_value = internal_file->file_information->size;
+	*hot_key_value = internal_file->file_information->hot_key;
 
 	return( 1 );
 }
