@@ -168,7 +168,6 @@ build_script:
 - ps: If ($env:BUILD_ENVIRONMENT -eq "msbuild" -or ($env:BUILD_ENVIRONMENT -eq "python" -and $isWindows)) {
     .\synclibs.ps1;
     .\autogen.ps1 }
-- sh: if test ${BUILD_ENVIRONMENT} = "python"; then ./synclibs.sh && ./autogen.sh; fi
 - cmd: if [%TARGET%]==[vs2008] (
     msbuild /verbosity:quiet msvscpp\liblnk.sln /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" )
 - cmd: if [%TARGET%]==[vs2010] (
@@ -194,6 +193,7 @@ build_script:
     msbuild /verbosity:quiet vs2017\liblnk.sln /property:Platform=x64 /property:PlatformToolset=v141 /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" )
 - cmd: if [%BUILD_ENVIRONMENT%]==[python] (
     "%PYTHON%" setup.py bdist_msi bdist_wheel )
+- sh: if test ${BUILD_ENVIRONMENT} = "python"; then ./synclibs.sh && ./autogen.sh; fi
 - sh: if test ${BUILD_ENVIRONMENT} = "python"; then ${PYTHON} setup.py bdist_wheel; fi
 - cmd: if [%BUILD_ENVIRONMENT%]==[cygwin] (
     xcopy /i /q /s C:\projects\liblnk C:\cygwin\home\appveyor\liblnk &&
@@ -230,6 +230,7 @@ artifacts:
 - path: dist\*.whl
 
 deploy_script:
-- ps: If ($env:APPVEYOR_REPO_TAG -eq "true") {
+- ps: If ($env:APPVEYOR_REPO_TAG -eq "true" -and $isWindows) {
     Invoke-Expression "${env:PYTHON} -m twine upload dist/*.whl --username __token__ --password ${env:PYPI_TOKEN} --skip-existing" }
+- sh: if test ${APPVEYOR_REPO_TAG} = "true"; then ${PYTHON} -m twine upload dist/*.whl --username __token__ --password ${PYPI_TOKEN} --skip-existing; fi
 

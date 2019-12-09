@@ -29,14 +29,14 @@
 extern "C" {
 #endif
 
-#if !defined( HAVE_LOCAL_LIBLNK )
-
-#include <liblnk/codepage.h>
-
 /* Define HAVE_LOCAL_LIBLNK for local use of liblnk
  * The definitions in <liblnk/codepage.h> are copied here
  * for local use of liblnk
  */
+#if !defined( HAVE_LOCAL_LIBLNK )
+
+#include <liblnk/codepage.h>
+
 #else
 
 /* The codepage definitions
