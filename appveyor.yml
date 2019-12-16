@@ -232,5 +232,4 @@ artifacts:
 deploy_script:
 - ps: If ($env:APPVEYOR_REPO_TAG -eq "true" -and $isWindows) {
     Invoke-Expression "${env:PYTHON} -m twine upload dist/*.whl --username __token__ --password ${env:PYPI_TOKEN} --skip-existing" }
-- sh: if test ${APPVEYOR_REPO_TAG} = "true"; then ${PYTHON} -m twine upload dist/*.whl --username __token__ --password ${PYPI_TOKEN} --skip-existing; fi
 
