@@ -562,7 +562,7 @@ int lnk_test_special_folder_location_read_data(
 	result = liblnk_special_folder_location_read_data(
 	          special_folder_location,
 	          lnk_test_special_folder_location_data1,
-	          0,
+	          (size_t) SSIZE_MAX + 1,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -580,7 +580,7 @@ int lnk_test_special_folder_location_read_data(
 	result = liblnk_special_folder_location_read_data(
 	          special_folder_location,
 	          lnk_test_special_folder_location_data1,
-	          (size_t) SSIZE_MAX + 1,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(

@@ -112,8 +112,7 @@ lnk_test_file_SOURCES = \
 	lnk_test_liblnk.h \
 	lnk_test_libuna.h \
 	lnk_test_macros.h \
-	lnk_test_memory.c lnk_test_memory.h \
-	lnk_test_unused.h
+	lnk_test_memory.c lnk_test_memory.h
 
 lnk_test_file_LDADD = \
 	@LIBBFIO_LIBADD@ \

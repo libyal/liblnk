@@ -402,6 +402,8 @@ int main(
 	 "liblnk_location_information_free",
 	 lnk_test_location_information_free );
 
+	/* TODO: add tests for liblnk_location_information_read_data */
+
 	LNK_TEST_RUN(
 	 "liblnk_location_information_read",
 	 lnk_test_location_information_read );

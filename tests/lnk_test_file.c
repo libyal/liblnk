@@ -37,9 +37,16 @@
 #include "lnk_test_liblnk.h"
 #include "lnk_test_macros.h"
 #include "lnk_test_memory.h"
-#include "lnk_test_unused.h"
 
 #include "../liblnk/liblnk_file.h"
+
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER ) && SIZEOF_WCHAR_T != 2 && SIZEOF_WCHAR_T != 4
+#error Unsupported size of wchar_t
+#endif
+
+/* Define to make lnk_test_file generate verbose output
+#define LNK_TEST_FILE_VERBOSE
+ */
 
 #if !defined( LIBLNK_HAVE_BFIO )
 
@@ -56,14 +63,6 @@ int liblnk_file_open_file_io_handle(
      liblnk_error_t **error );
 
 #endif /* !defined( LIBLNK_HAVE_BFIO ) */
-
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER ) && SIZEOF_WCHAR_T != 2 && SIZEOF_WCHAR_T != 4
-#error Unsupported size of wchar_t
-#endif
-
-/* Define to make lnk_test_file generate verbose output
-#define LNK_TEST_FILE_VERBOSE
- */
 
 /* Creates and opens a source file
  * Returns 1 if successful or -1 on error
@@ -800,13 +799,13 @@ int lnk_test_file_open_file_io_handle(
 	 result,
 	 1 );
 
-        LNK_TEST_ASSERT_IS_NOT_NULL(
-         "file_io_handle",
-         file_io_handle );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "file_io_handle",
+	 file_io_handle );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	string_length = system_string_length(
 	                 source );
@@ -829,9 +828,9 @@ int lnk_test_file_open_file_io_handle(
 	 result,
 	 1 );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	result = liblnk_file_initialize(
 	          &file,
@@ -972,12 +971,12 @@ int lnk_test_file_open_file_io_handle(
 	 1 );
 
 	LNK_TEST_ASSERT_IS_NULL(
-         "file_io_handle",
-         file_io_handle );
+	 "file_io_handle",
+	 file_io_handle );
 
-        LNK_TEST_ASSERT_IS_NULL(
-         "error",
-         error );
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	return( 1 );
 
@@ -1458,7 +1457,6 @@ int lnk_test_file_get_data_flags(
 {
 	libcerror_error_t *error = NULL;
 	uint32_t data_flags      = 0;
-	int data_flags_is_set    = 0;
 	int result               = 0;
 
 	/* Test regular cases
@@ -1477,8 +1475,6 @@ int lnk_test_file_get_data_flags(
 	 "error",
 	 error );
 
-	data_flags_is_set = result;
-
 	/* Test error cases
 	 */
 	result = liblnk_file_get_data_flags(
@@ -1498,25 +1494,23 @@ int lnk_test_file_get_data_flags(
 	libcerror_error_free(
 	 &error );
 
-	if( data_flags_is_set != 0 )
-	{
-		result = liblnk_file_get_data_flags(
-		          file,
-		          NULL,
-		          &error );
+	result = liblnk_file_get_data_flags(
+	          file,
+	          NULL,
+	          &error );
 
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
-		libcerror_error_free(
-		 &error );
-	}
+	libcerror_error_free(
+	 &error );
+
 	return( 1 );
 
 on_error:
@@ -1534,10 +1528,9 @@ on_error:
 int lnk_test_file_get_file_creation_time(
      liblnk_file_t *file )
 {
-	libcerror_error_t *error      = NULL;
-	uint64_t file_creation_time   = 0;
-	int file_creation_time_is_set = 0;
-	int result                    = 0;
+	libcerror_error_t *error    = NULL;
+	uint64_t file_creation_time = 0;
+	int result                  = 0;
 
 	/* Test regular cases
 	 */
@@ -1554,8 +1547,6 @@ int lnk_test_file_get_file_creation_time(
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-
-	file_creation_time_is_set = result;
 
 	/* Test error cases
 	 */
@@ -1576,25 +1567,23 @@ int lnk_test_file_get_file_creation_time(
 	libcerror_error_free(
 	 &error );
 
-	if( file_creation_time_is_set != 0 )
-	{
-		result = liblnk_file_get_file_creation_time(
-		          file,
-		          NULL,
-		          &error );
+	result = liblnk_file_get_file_creation_time(
+	          file,
+	          NULL,
+	          &error );
 
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
-		libcerror_error_free(
-		 &error );
-	}
+	libcerror_error_free(
+	 &error );
+
 	return( 1 );
 
 on_error:
@@ -1612,10 +1601,9 @@ on_error:
 int lnk_test_file_get_file_modification_time(
      liblnk_file_t *file )
 {
-	libcerror_error_t *error          = NULL;
-	uint64_t file_modification_time   = 0;
-	int file_modification_time_is_set = 0;
-	int result                        = 0;
+	libcerror_error_t *error        = NULL;
+	uint64_t file_modification_time = 0;
+	int result                      = 0;
 
 	/* Test regular cases
 	 */
@@ -1632,8 +1620,6 @@ int lnk_test_file_get_file_modification_time(
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-
-	file_modification_time_is_set = result;
 
 	/* Test error cases
 	 */
@@ -1654,25 +1640,23 @@ int lnk_test_file_get_file_modification_time(
 	libcerror_error_free(
 	 &error );
 
-	if( file_modification_time_is_set != 0 )
-	{
-		result = liblnk_file_get_file_modification_time(
-		          file,
-		          NULL,
-		          &error );
+	result = liblnk_file_get_file_modification_time(
+	          file,
+	          NULL,
+	          &error );
 
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
-		libcerror_error_free(
-		 &error );
-	}
+	libcerror_error_free(
+	 &error );
+
 	return( 1 );
 
 on_error:
@@ -1690,10 +1674,9 @@ on_error:
 int lnk_test_file_get_file_access_time(
      liblnk_file_t *file )
 {
-	libcerror_error_t *error    = NULL;
-	uint64_t file_access_time   = 0;
-	int file_access_time_is_set = 0;
-	int result                  = 0;
+	libcerror_error_t *error  = NULL;
+	uint64_t file_access_time = 0;
+	int result                = 0;
 
 	/* Test regular cases
 	 */
@@ -1710,8 +1693,6 @@ int lnk_test_file_get_file_access_time(
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-
-	file_access_time_is_set = result;
 
 	/* Test error cases
 	 */
@@ -1732,25 +1713,23 @@ int lnk_test_file_get_file_access_time(
 	libcerror_error_free(
 	 &error );
 
-	if( file_access_time_is_set != 0 )
-	{
-		result = liblnk_file_get_file_access_time(
-		          file,
-		          NULL,
-		          &error );
+	result = liblnk_file_get_file_access_time(
+	          file,
+	          NULL,
+	          &error );
 
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
-		libcerror_error_free(
-		 &error );
-	}
+	libcerror_error_free(
+	 &error );
+
 	return( 1 );
 
 on_error:
@@ -1770,7 +1749,6 @@ int lnk_test_file_get_file_size(
 {
 	libcerror_error_t *error = NULL;
 	uint32_t file_size       = 0;
-	int file_size_is_set     = 0;
 	int result               = 0;
 
 	/* Test regular cases
@@ -1788,8 +1766,6 @@ int lnk_test_file_get_file_size(
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-
-	file_size_is_set = result;
 
 	/* Test error cases
 	 */
@@ -1810,25 +1786,23 @@ int lnk_test_file_get_file_size(
 	libcerror_error_free(
 	 &error );
 
-	if( file_size_is_set != 0 )
-	{
-		result = liblnk_file_get_file_size(
-		          file,
-		          NULL,
-		          &error );
+	result = liblnk_file_get_file_size(
+	          file,
+	          NULL,
+	          &error );
 
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
-		libcerror_error_free(
-		 &error );
-	}
+	libcerror_error_free(
+	 &error );
+
 	return( 1 );
 
 on_error:
@@ -1848,7 +1822,6 @@ int lnk_test_file_get_icon_index(
 {
 	libcerror_error_t *error = NULL;
 	uint32_t icon_index      = 0;
-	int icon_index_is_set    = 0;
 	int result               = 0;
 
 	/* Test regular cases
@@ -1867,8 +1840,6 @@ int lnk_test_file_get_icon_index(
 	 "error",
 	 error );
 
-	icon_index_is_set = result;
-
 	/* Test error cases
 	 */
 	result = liblnk_file_get_icon_index(
@@ -1888,25 +1859,23 @@ int lnk_test_file_get_icon_index(
 	libcerror_error_free(
 	 &error );
 
-	if( icon_index_is_set != 0 )
-	{
-		result = liblnk_file_get_icon_index(
-		          file,
-		          NULL,
-		          &error );
+	result = liblnk_file_get_icon_index(
+	          file,
+	          NULL,
+	          &error );
 
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
-		libcerror_error_free(
-		 &error );
-	}
+	libcerror_error_free(
+	 &error );
+
 	return( 1 );
 
 on_error:
@@ -1924,10 +1893,9 @@ on_error:
 int lnk_test_file_get_show_window_value(
      liblnk_file_t *file )
 {
-	libcerror_error_t *error     = NULL;
-	uint32_t show_window_value   = 0;
-	int result                   = 0;
-	int show_window_value_is_set = 0;
+	libcerror_error_t *error   = NULL;
+	uint32_t show_window_value = 0;
+	int result                 = 0;
 
 	/* Test regular cases
 	 */
@@ -1944,8 +1912,6 @@ int lnk_test_file_get_show_window_value(
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-
-	show_window_value_is_set = result;
 
 	/* Test error cases
 	 */
@@ -1966,25 +1932,23 @@ int lnk_test_file_get_show_window_value(
 	libcerror_error_free(
 	 &error );
 
-	if( show_window_value_is_set != 0 )
-	{
-		result = liblnk_file_get_show_window_value(
-		          file,
-		          NULL,
-		          &error );
+	result = liblnk_file_get_show_window_value(
+	          file,
+	          NULL,
+	          &error );
 
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
-		libcerror_error_free(
-		 &error );
-	}
+	libcerror_error_free(
+	 &error );
+
 	return( 1 );
 
 on_error:
@@ -2004,7 +1968,6 @@ int lnk_test_file_get_hot_key_value(
 {
 	libcerror_error_t *error = NULL;
 	uint16_t hot_key_value   = 0;
-	int hot_key_value_is_set = 0;
 	int result               = 0;
 
 	/* Test regular cases
@@ -2023,8 +1986,6 @@ int lnk_test_file_get_hot_key_value(
 	 "error",
 	 error );
 
-	hot_key_value_is_set = result;
-
 	/* Test error cases
 	 */
 	result = liblnk_file_get_hot_key_value(
@@ -2044,25 +2005,23 @@ int lnk_test_file_get_hot_key_value(
 	libcerror_error_free(
 	 &error );
 
-	if( hot_key_value_is_set != 0 )
-	{
-		result = liblnk_file_get_hot_key_value(
-		          file,
-		          NULL,
-		          &error );
+	result = liblnk_file_get_hot_key_value(
+	          file,
+	          NULL,
+	          &error );
 
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
-		libcerror_error_free(
-		 &error );
-	}
+	libcerror_error_free(
+	 &error );
+
 	return( 1 );
 
 on_error:
@@ -2080,10 +2039,9 @@ on_error:
 int lnk_test_file_get_file_attribute_flags(
      liblnk_file_t *file )
 {
-	libcerror_error_t *error        = NULL;
-	uint32_t file_attribute_flags   = 0;
-	int file_attribute_flags_is_set = 0;
-	int result                      = 0;
+	libcerror_error_t *error      = NULL;
+	uint32_t file_attribute_flags = 0;
+	int result                    = 0;
 
 	/* Test regular cases
 	 */
@@ -2100,8 +2058,6 @@ int lnk_test_file_get_file_attribute_flags(
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
-
-	file_attribute_flags_is_set = result;
 
 	/* Test error cases
 	 */
@@ -2122,25 +2078,23 @@ int lnk_test_file_get_file_attribute_flags(
 	libcerror_error_free(
 	 &error );
 
-	if( file_attribute_flags_is_set != 0 )
-	{
-		result = liblnk_file_get_file_attribute_flags(
-		          file,
-		          NULL,
-		          &error );
+	result = liblnk_file_get_file_attribute_flags(
+	          file,
+	          NULL,
+	          &error );
 
-		LNK_TEST_ASSERT_EQUAL_INT(
-		 "result",
-		 result,
-		 -1 );
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
 
-		LNK_TEST_ASSERT_IS_NOT_NULL(
-		 "error",
-		 error );
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
 
-		libcerror_error_free(
-		 &error );
-	}
+	libcerror_error_free(
+	 &error );
+
 	return( 1 );
 
 on_error:
