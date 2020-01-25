@@ -1,7 +1,7 @@
 /*
  * Library data_string type test program
  *
- * Copyright (C) 2009-2019, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (C) 2009-2020, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -375,6 +375,482 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the liblnk_data_string_get_utf8_string_size function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_data_string_get_utf8_string_size(
+     void )
+{
+	libcerror_error_t *error          = NULL;
+	liblnk_data_string_t *data_string = NULL;
+	size_t utf8_string_size           = 0;
+	int result                        = 0;
+
+	/* Initialize test
+	 */
+	result = liblnk_data_string_initialize(
+	          &data_string,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "data_string",
+	 data_string );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+/* TODO implement */
+
+	/* Test error cases
+	 */
+	result = liblnk_data_string_get_utf8_string_size(
+	          NULL,
+	          LIBLNK_CODEPAGE_WINDOWS_1252,
+	          &utf8_string_size,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_data_string_get_utf8_string_size(
+	          data_string,
+	          LIBLNK_CODEPAGE_WINDOWS_1252,
+	          NULL,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = liblnk_data_string_free(
+	          &data_string,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "data_string",
+	 data_string );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( data_string != NULL )
+	{
+		liblnk_data_string_free(
+		 &data_string,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the liblnk_data_string_get_utf8_string function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_data_string_get_utf8_string(
+     void )
+{
+	int utf8_string[ 64 ];
+
+	libcerror_error_t *error          = NULL;
+	liblnk_data_string_t *data_string = NULL;
+	int result                        = 0;
+
+	/* Initialize test
+	 */
+	result = liblnk_data_string_initialize(
+	          &data_string,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "data_string",
+	 data_string );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+/* TODO implement */
+
+	/* Test error cases
+	 */
+	result = liblnk_data_string_get_utf8_string(
+	          NULL,
+	          LIBLNK_CODEPAGE_WINDOWS_1252,
+	          utf8_string,
+	          64,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_data_string_get_utf8_string(
+	          data_string,
+	          LIBLNK_CODEPAGE_WINDOWS_1252,
+	          NULL,
+	          64,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_data_string_get_utf8_string(
+	          data_string,
+	          LIBLNK_CODEPAGE_WINDOWS_1252,
+	          utf8_string,
+	          (size_t) SSIZE_MAX + 1,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = liblnk_data_string_free(
+	          &data_string,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "data_string",
+	 data_string );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( data_string != NULL )
+	{
+		liblnk_data_string_free(
+		 &data_string,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the liblnk_data_string_get_utf16_string_size function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_data_string_get_utf16_string_size(
+     void )
+{
+	libcerror_error_t *error          = NULL;
+	liblnk_data_string_t *data_string = NULL;
+	size_t utf16_string_size          = 0;
+	int result                        = 0;
+
+	/* Initialize test
+	 */
+	result = liblnk_data_string_initialize(
+	          &data_string,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "data_string",
+	 data_string );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+/* TODO implement */
+
+	/* Test error cases
+	 */
+	result = liblnk_data_string_get_utf16_string_size(
+	          NULL,
+	          LIBLNK_CODEPAGE_WINDOWS_1252,
+	          &utf16_string_size,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_data_string_get_utf16_string_size(
+	          data_string,
+	          LIBLNK_CODEPAGE_WINDOWS_1252,
+	          NULL,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = liblnk_data_string_free(
+	          &data_string,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "data_string",
+	 data_string );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( data_string != NULL )
+	{
+		liblnk_data_string_free(
+		 &data_string,
+		 NULL );
+	}
+	return( 0 );
+}
+
+/* Tests the liblnk_data_string_get_utf16_string function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_data_string_get_utf16_string(
+     void )
+{
+	int utf16_string[ 64 ];
+
+	libcerror_error_t *error          = NULL;
+	liblnk_data_string_t *data_string = NULL;
+	int result                        = 0;
+
+	/* Initialize test
+	 */
+	result = liblnk_data_string_initialize(
+	          &data_string,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "data_string",
+	 data_string );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+/* TODO implement */
+
+	/* Test error cases
+	 */
+	result = liblnk_data_string_get_utf16_string(
+	          NULL,
+	          LIBLNK_CODEPAGE_WINDOWS_1252,
+	          utf16_string,
+	          64,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_data_string_get_utf16_string(
+	          data_string,
+	          LIBLNK_CODEPAGE_WINDOWS_1252,
+	          NULL,
+	          64,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_data_string_get_utf16_string(
+	          data_string,
+	          LIBLNK_CODEPAGE_WINDOWS_1252,
+	          utf16_string,
+	          (size_t) SSIZE_MAX + 1,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up
+	 */
+	result = liblnk_data_string_free(
+	          &data_string,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "data_string",
+	 data_string );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	if( data_string != NULL )
+	{
+		liblnk_data_string_free(
+		 &data_string,
+		 NULL );
+	}
+	return( 0 );
+}
+
 #endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 
 /* The main program
@@ -406,13 +882,21 @@ int main(
 	 "liblnk_data_string_read",
 	 lnk_test_data_string_read );
 
-	/* TODO: add tests for liblnk_data_string_get_utf8_string_size */
+	LNK_TEST_RUN(
+	 "liblnk_data_string_get_utf8_string_size",
+	 lnk_test_data_string_get_utf8_string_size );
 
-	/* TODO: add tests for liblnk_data_string_get_utf8_string */
+	LNK_TEST_RUN(
+	 "liblnk_data_string_get_utf8_string",
+	 lnk_test_data_string_get_utf8_string );
 
-	/* TODO: add tests for liblnk_data_string_get_utf16_string_size */
+	LNK_TEST_RUN(
+	 "liblnk_data_string_get_utf16_string_size",
+	 lnk_test_data_string_get_utf16_string_size );
 
-	/* TODO: add tests for liblnk_data_string_get_utf16_string */
+	LNK_TEST_RUN(
+	 "liblnk_data_string_get_utf16_string",
+	 lnk_test_data_string_get_utf16_string );
 
 #endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 

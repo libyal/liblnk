@@ -1,7 +1,7 @@
 /*
  * Library file type test program
  *
- * Copyright (C) 2009-2019, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (C) 2009-2020, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -1233,6 +1233,12 @@ on_error:
 	return( 0 );
 }
 
+#if defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT )
+
+/* TODO: add tests for liblnk_file_open_read */
+
+#endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
+
 /* Tests the liblnk_file_get_ascii_codepage function
  * Returns 1 if successful or 0 if not
  */
@@ -1466,10 +1472,10 @@ int lnk_test_file_get_data_flags(
 	          &data_flags,
 	          &error );
 
-	LNK_TEST_ASSERT_NOT_EQUAL_INT(
+	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
-	 -1 );
+	 1 );
 
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -1522,6 +1528,8 @@ on_error:
 	return( 0 );
 }
 
+/* TODO: add tests for liblnk_file_link_refers_to_file */
+
 /* Tests the liblnk_file_get_file_creation_time function
  * Returns 1 if successful or 0 if not
  */
@@ -1539,10 +1547,10 @@ int lnk_test_file_get_file_creation_time(
 	          &file_creation_time,
 	          &error );
 
-	LNK_TEST_ASSERT_NOT_EQUAL_INT(
+	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
-	 -1 );
+	 1 );
 
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -1612,10 +1620,10 @@ int lnk_test_file_get_file_modification_time(
 	          &file_modification_time,
 	          &error );
 
-	LNK_TEST_ASSERT_NOT_EQUAL_INT(
+	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
-	 -1 );
+	 1 );
 
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -1685,10 +1693,10 @@ int lnk_test_file_get_file_access_time(
 	          &file_access_time,
 	          &error );
 
-	LNK_TEST_ASSERT_NOT_EQUAL_INT(
+	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
-	 -1 );
+	 1 );
 
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -1758,10 +1766,10 @@ int lnk_test_file_get_file_size(
 	          &file_size,
 	          &error );
 
-	LNK_TEST_ASSERT_NOT_EQUAL_INT(
+	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
-	 -1 );
+	 1 );
 
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -1831,10 +1839,10 @@ int lnk_test_file_get_icon_index(
 	          &icon_index,
 	          &error );
 
-	LNK_TEST_ASSERT_NOT_EQUAL_INT(
+	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
-	 -1 );
+	 1 );
 
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -1904,10 +1912,10 @@ int lnk_test_file_get_show_window_value(
 	          &show_window_value,
 	          &error );
 
-	LNK_TEST_ASSERT_NOT_EQUAL_INT(
+	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
-	 -1 );
+	 1 );
 
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -1977,10 +1985,10 @@ int lnk_test_file_get_hot_key_value(
 	          &hot_key_value,
 	          &error );
 
-	LNK_TEST_ASSERT_NOT_EQUAL_INT(
+	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
-	 -1 );
+	 1 );
 
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -2050,10 +2058,10 @@ int lnk_test_file_get_file_attribute_flags(
 	          &file_attribute_flags,
 	          &error );
 
-	LNK_TEST_ASSERT_NOT_EQUAL_INT(
+	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
 	 result,
-	 -1 );
+	 1 );
 
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
@@ -5867,6 +5875,10 @@ on_error:
 	}
 	return( 0 );
 }
+
+/* TODO: add tests for liblnk_file_copy_link_target_identifier_data */
+
+/* TODO: add tests for liblnk_file_has_distributed_link_tracking_data */
 
 /* Tests the liblnk_file_get_utf8_machine_identifier_size function
  * Returns 1 if successful or 0 if not
