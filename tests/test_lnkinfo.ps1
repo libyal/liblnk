@@ -1,6 +1,6 @@
 # Info tool testing script
 #
-# Version: 20200223
+# Version: 20200405
 
 $ExitSuccess = 0
 $ExitFailure = 1
@@ -8,7 +8,7 @@ $ExitIgnore = 77
 
 $Profiles = @("lnkinfo")
 $OptionsPerProfile = @("")
-$OptionSets="";
+$OptionSets = "";
 
 $InputGlob = "*"
 

@@ -34,6 +34,7 @@
 #include "pylnk_file.h"
 #include "pylnk_file_attribute_flags.h"
 #include "pylnk_file_object_io_handle.h"
+#include "pylnk_libbfio.h"
 #include "pylnk_libcerror.h"
 #include "pylnk_liblnk.h"
 #include "pylnk_python.h"
@@ -542,6 +543,11 @@ PyMODINIT_FUNC initpylnk(
 	 */
 	pylnk_data_flags_type_object.tp_new = PyType_GenericNew;
 
+	if( pylnk_data_flags_init_type(
+	     &pylnk_data_flags_type_object ) != 1 )
+	{
+		goto on_error;
+	}
 	if( PyType_Ready(
 	     &pylnk_data_flags_type_object ) < 0 )
 	{
@@ -559,6 +565,11 @@ PyMODINIT_FUNC initpylnk(
 	 */
 	pylnk_drive_types_type_object.tp_new = PyType_GenericNew;
 
+	if( pylnk_drive_types_init_type(
+	     &pylnk_drive_types_type_object ) != 1 )
+	{
+		goto on_error;
+	}
 	if( PyType_Ready(
 	     &pylnk_drive_types_type_object ) < 0 )
 	{
@@ -593,6 +604,11 @@ PyMODINIT_FUNC initpylnk(
 	 */
 	pylnk_file_attribute_flags_type_object.tp_new = PyType_GenericNew;
 
+	if( pylnk_file_attribute_flags_init_type(
+	     &pylnk_file_attribute_flags_type_object ) != 1 )
+	{
+		goto on_error;
+	}
 	if( PyType_Ready(
 	     &pylnk_file_attribute_flags_type_object ) < 0 )
 	{

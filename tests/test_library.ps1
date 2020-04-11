@@ -1,6 +1,6 @@
 # Tests library functions and types.
 #
-# Version: 20200216
+# Version: 20200405
 
 $ExitSuccess = 0
 $ExitFailure = 1
@@ -8,6 +8,7 @@ $ExitIgnore = 77
 
 $LibraryTests = "data_block data_string distributed_link_tracker_properties error file_header io_handle known_folder_location link_target_identifier location_information notify special_folder_location"
 $LibraryTestsWithInput = "file support"
+$OptionSets = "";
 
 $InputGlob = "*"
 
