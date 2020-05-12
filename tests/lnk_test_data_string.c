@@ -489,7 +489,7 @@ on_error:
 int lnk_test_data_string_get_utf8_string(
      void )
 {
-	int utf8_string[ 64 ];
+	uint8_t utf8_string[ 64 ];
 
 	libcerror_error_t *error          = NULL;
 	liblnk_data_string_t *data_string = NULL;
@@ -727,7 +727,7 @@ on_error:
 int lnk_test_data_string_get_utf16_string(
      void )
 {
-	int utf16_string[ 64 ];
+	uint16_t utf16_string[ 64 ];
 
 	libcerror_error_t *error          = NULL;
 	liblnk_data_string_t *data_string = NULL;

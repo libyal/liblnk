@@ -446,7 +446,7 @@ int liblnk_debug_print_filetime_value(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-		 "%s: unable to create filetime.",
+		 "%s: unable to create FILETIME.",
 		 function );
 
 		goto on_error;
@@ -462,7 +462,7 @@ int liblnk_debug_print_filetime_value(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-		 "%s: unable to copy byte stream to filetime.",
+		 "%s: unable to copy byte stream to FILETIME.",
 		 function );
 
 		goto on_error;
@@ -478,7 +478,7 @@ int liblnk_debug_print_filetime_value(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-		 "%s: unable to copy filetime to string.",
+		 "%s: unable to copy FILETIME to string.",
 		 function );
 
 		goto on_error;
@@ -497,7 +497,7 @@ int liblnk_debug_print_filetime_value(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-		 "%s: unable to free filetime.",
+		 "%s: unable to free FILETIME.",
 		 function );
 
 		goto on_error;
