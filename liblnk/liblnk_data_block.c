@@ -140,18 +140,114 @@ int liblnk_data_block_free(
 }
 
 /* Reads a data block
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_data_block_read_data(
+     liblnk_data_block_t *data_block,
+     const uint8_t *data,
+     size_t data_size,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_data_block_read_data";
+
+	if( data_block == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data block.",
+		 function );
+
+		return( -1 );
+	}
+	if( data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_size < 4 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 "%s: invalid data size value too small.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_size > (size_t) SSIZE_MAX )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid data size value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( libcnotify_verbose != 0 )
+	{
+		libcnotify_printf(
+		 "%s: data block data:\n",
+		 function );
+		libcnotify_print_data(
+		 data,
+		 data_size,
+		 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
+	}
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+
+	byte_stream_copy_to_uint32_little_endian(
+	 data,
+	 data_block->signature );
+
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( libcnotify_verbose != 0 )
+	{
+		libcnotify_printf(
+		 "%s: data block signature\t\t\t: 0x%08" PRIx32 "\n",
+		 function,
+		 data_block->signature );
+
+		if( data_size > 4 )
+		{
+			libcnotify_printf(
+			 "%s: data block data:\n",
+			 function );
+			libcnotify_print_data(
+			 &( data[ 4 ] ),
+			 data_size - 4,
+			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
+		}
+	}
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+
+	return( 1 );
+}
+
+/* Reads a data block
  * Returns the number of bytes read if successful or -1 on error
  */
-ssize_t liblnk_data_block_read(
-         liblnk_data_block_t *data_block,
-         liblnk_io_handle_t *io_handle,
-         libbfio_handle_t *file_io_handle,
-         off64_t data_block_offset,
-         libcerror_error_t **error )
+int liblnk_data_block_read_file_io_handle(
+     liblnk_data_block_t *data_block,
+     liblnk_io_handle_t *io_handle,
+     libbfio_handle_t *file_io_handle,
+     off64_t file_offset,
+     libcerror_error_t **error )
 {
 	uint8_t data_block_size_data[ 4 ];
 
-	static char *function = "liblnk_io_handle_read_data_blocks";
+	static char *function = "liblnk_data_block_read_file_io_handle";
 	ssize_t read_count    = 0;
 
 	if( data_block == NULL )
@@ -182,13 +278,13 @@ ssize_t liblnk_data_block_read(
 		libcnotify_printf(
 		 "%s: reading data block at offset: %" PRIi64 " (0x%08" PRIx64 ")\n",
 		 function,
-		 data_block_offset,
-		 data_block_offset );
+		 file_offset,
+		 file_offset );
 	}
 #endif
 	if( libbfio_handle_seek_offset(
 	     file_io_handle,
-	     data_block_offset,
+	     file_offset,
 	     SEEK_SET,
 	     error ) == -1 )
 	{
@@ -196,9 +292,10 @@ ssize_t liblnk_data_block_read(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_IO,
 		 LIBCERROR_IO_ERROR_SEEK_FAILED,
-		 "%s: unable to seek data blocks offset: %" PRIi64 ".",
+		 "%s: unable to seek data block offset: %" PRIi64 " (0x%08" PRIx64 ").",
 		 function,
-		 data_block_offset );
+		 file_offset,
+		 file_offset );
 
 		goto on_error;
 	}
@@ -219,11 +316,9 @@ ssize_t liblnk_data_block_read(
 
 		goto on_error;
 	}
-	data_block_offset += read_count;
-
 	byte_stream_copy_to_uint32_little_endian(
 	 data_block_size_data,
-	 data_block->data_size );
+	 data_block->size );
 
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
@@ -231,35 +326,25 @@ ssize_t liblnk_data_block_read(
 		libcnotify_printf(
 		 "%s: data block size\t\t\t: %" PRIu32 "\n",
 		 function,
-		 data_block->data_size );
+		 data_block->size );
 	}
 #endif
-	if( data_block->data_size > 0 )
+	if( data_block->size > 0 )
 	{
-		if( data_block->data_size < 4 )
+		if( ( data_block->size < 4 )
+		 || ( data_block->size > ( MEMORY_MAXIMUM_ALLOCATION_SIZE + 4 ) ) )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-			 "%s: data block size too small.",
+			 "%s: invalid data block size value out of bounds.",
 			 function );
 
 			goto on_error;
 		}
-		data_block->data_size -= 4;
+		data_block->data_size = data_block->size - 4;
 
-		if( ( data_block_offset + (off64_t) data_block->data_size ) > (off64_t) io_handle->file_size )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-			 "%s: data block size exceeds file size.",
-			 function );
-
-			goto on_error;
-		}
 		data_block->data = (uint8_t *) memory_allocate(
 		                                sizeof( uint8_t ) * data_block->data_size );
 
@@ -270,6 +355,17 @@ ssize_t liblnk_data_block_read(
 			 LIBCERROR_ERROR_DOMAIN_MEMORY,
 			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 			 "%s: unable to create data block data.",
+			 function );
+
+			goto on_error;
+		}
+		if( (off64_t) data_block->size > (off64_t) ( io_handle->file_size - file_offset ) )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: invalid data block size value exceeds file size.",
 			 function );
 
 			goto on_error;
@@ -291,45 +387,23 @@ ssize_t liblnk_data_block_read(
 
 			goto on_error;
 		}
-		read_count += 4;
-
-		if( data_block->data_size < 4 )
+		if( liblnk_data_block_read_data(
+		     data_block,
+		     data_block->data,
+		     data_block->data_size,
+		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-			 "%s: data block size too small.",
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_READ_FAILED,
+			 "%s: unable to read data block.",
 			 function );
 
 			goto on_error;
 		}
-		byte_stream_copy_to_uint32_little_endian(
-		 data_block->data,
-		 data_block->signature );
-
-#if defined( HAVE_DEBUG_OUTPUT )
-		if( libcnotify_verbose != 0 )
-		{
-			libcnotify_printf(
-			 "%s: data block signature\t\t\t: 0x%08" PRIx32 "\n",
-			 function,
-			 data_block->signature );
-
-			if( data_block->data_size > 4 )
-			{
-				libcnotify_printf(
-				 "%s: data block data:\n",
-				 function );
-				libcnotify_print_data(
-				 &( data_block->data[ 4 ] ),
-				 data_block->data_size - 4,
-				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
-			}
-		}
-#endif
 	}
-	return( read_count );
+	return( 1 );
 
 on_error:
 	if( data_block->data != NULL )
@@ -339,7 +413,7 @@ on_error:
 
 		data_block->data = NULL;
 	}
-	data_block->data_size = 0;
+	data_block->size = 0;
 
 	return( -1 );
 }

@@ -215,8 +215,9 @@ ssize_t liblnk_data_string_read(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_IO,
 		 LIBCERROR_IO_ERROR_SEEK_FAILED,
-		 "%s: unable to seek data string offset: %" PRIi64 ".",
+		 "%s: unable to seek data string offset: %" PRIi64 " (0x%08" PRIx64 ").",
 		 function,
+		 data_string_offset,
 		 data_string_offset );
 
 		goto on_error;
@@ -251,116 +252,117 @@ ssize_t liblnk_data_string_read(
 		 data_string->data_size );
 	}
 #endif
-
-	/* The size contains the number of characters
-	 * a Unicode (UTF-16) string requires 2 bytes per character
-	 */
-	if( data_string->is_unicode != 0 )
+	if( data_string->data_size > 0 )
 	{
-		data_string->data_size *= 2;
-	}
-	if( data_string->data_size > (size_t) SSIZE_MAX )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
-		 "%s: data string size value exceeds maximum.",
-		 function );
-
-		goto on_error;
-	}
-	data_string->data = (uint8_t *) memory_allocate(
-	                                 sizeof( uint8_t ) * data_string->data_size );
-
-
-	if( data_string->data == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_MEMORY,
-		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-		 "%s: unable to create data string data.",
-		 function );
-
-		goto on_error;
-	}
-	read_count = libbfio_handle_read_buffer(
-	              file_io_handle,
-	              data_string->data,
-	              data_string->data_size,
-	              error );
-
-	if( read_count != (ssize_t) data_string->data_size )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_IO,
-		 LIBCERROR_IO_ERROR_READ_FAILED,
-		 "%s: unable to read data string data.",
-		 function );
-
-		goto on_error;
-	}
-#if defined( HAVE_DEBUG_OUTPUT )
-	if( libcnotify_verbose != 0 )
-	{
-		libcnotify_printf(
-		 "%s: data string data:\n",
-		 function );
-		libcnotify_print_data(
-		 data_string->data,
-		 data_string->data_size,
-		 0 );
-	}
-#endif
-#if defined( HAVE_DEBUG_OUTPUT )
-	if( libcnotify_verbose != 0 )
-	{
+		/* The size contains the number of characters
+		 * a Unicode (UTF-16) string requires 2 bytes per character
+		 */
 		if( data_string->is_unicode != 0 )
 		{
-			if( liblnk_debug_print_utf16_string_value(
-			     function,
-			     "data string\t\t\t\t\t",
-			     data_string->data,
-			     data_string->data_size,
-			     LIBUNA_ENDIAN_LITTLE,
-			     error ) != 1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-				 "%s: unable to print UTF-16 string value.",
-				 function );
-
-				goto on_error;
-			}
+			data_string->data_size *= 2;
 		}
-		else
+		if( data_string->data_size > (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE )
 		{
-			if( liblnk_debug_print_string_value(
-			     function,
-			     "data string\t\t\t\t\t",
-			     data_string->data,
-			     data_string->data_size,
-			     io_handle->ascii_codepage,
-			     error ) != 1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-				 "%s: unable to print string value.",
-				 function );
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: invalid data string size value exceed maximum allocation size.",
+			 function );
 
-				goto on_error;
-			}
+			goto on_error;
 		}
-		libcnotify_printf(
-		 "\n" );
-	}
+		data_string->data = (uint8_t *) memory_allocate(
+		                                 sizeof( uint8_t ) * data_string->data_size );
+
+		if( data_string->data == NULL )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+			 "%s: unable to create data string data.",
+			 function );
+
+			goto on_error;
+		}
+		read_count = libbfio_handle_read_buffer(
+		              file_io_handle,
+		              data_string->data,
+		              data_string->data_size,
+		              error );
+
+		if( read_count != (ssize_t) data_string->data_size )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_READ_FAILED,
+			 "%s: unable to read data string data.",
+			 function );
+
+			goto on_error;
+		}
+#if defined( HAVE_DEBUG_OUTPUT )
+		if( libcnotify_verbose != 0 )
+		{
+			libcnotify_printf(
+			 "%s: data string data:\n",
+			 function );
+			libcnotify_print_data(
+			 data_string->data,
+			 data_string->data_size,
+			 0 );
+		}
 #endif
+#if defined( HAVE_DEBUG_OUTPUT )
+		if( libcnotify_verbose != 0 )
+		{
+			if( data_string->is_unicode != 0 )
+			{
+				if( liblnk_debug_print_utf16_string_value(
+				     function,
+				     "data string\t\t\t\t\t",
+				     data_string->data,
+				     data_string->data_size,
+				     LIBUNA_ENDIAN_LITTLE,
+				     error ) != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+					 "%s: unable to print UTF-16 string value.",
+					 function );
+
+					goto on_error;
+				}
+			}
+			else
+			{
+				if( liblnk_debug_print_string_value(
+				     function,
+				     "data string\t\t\t\t\t",
+				     data_string->data,
+				     data_string->data_size,
+				     io_handle->ascii_codepage,
+				     error ) != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+					 "%s: unable to print string value.",
+					 function );
+
+					goto on_error;
+				}
+			}
+			libcnotify_printf(
+			 "\n" );
+		}
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+	}
 	return( read_count + 2 );
 
 on_error:

@@ -341,7 +341,7 @@ The network share information is variable of size and consists of:
 | Offset | Size | Value | Description
 4+| _Network share information header_
 | 0 | 4 | | The size of the network share information
-| 4 | 4 | | Network share flags
+| 4 | 4 | | Network share flags (or type)
 | 8 | 4 | | Offset to the network share name +
 The offset is relative to the start of the network share information
 | 12 | 4 | | Offset to the device name +

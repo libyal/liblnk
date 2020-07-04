@@ -170,7 +170,8 @@ int liblnk_data_block_strings_read(
 			goto on_error;
 		}
 	}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+
 	for( unicode_string_size = 0;
 	     unicode_string_size < 520;
 	     unicode_string_size += 2 )
@@ -229,7 +230,8 @@ int liblnk_data_block_strings_read(
 		libcnotify_printf(
 		 "\n" );
 	}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+
 	if( unicode_string_size > 0 )
 	{
 		data_string->data_size = unicode_string_size;
@@ -312,7 +314,8 @@ int liblnk_data_block_strings_read(
 			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 		}
 	}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+
 	return( 1 );
 
 on_error:

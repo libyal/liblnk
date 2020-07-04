@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="lnk_test_data_block"
-	ProjectGUID="{097B1572-10AE-4AF6-B212-5A59E0BAF968}"
-	RootNamespace="lnk_test_data_block"
+	Name="lnk_test_info_handle"
+	ProjectGUID="{221998C3-10F3-403C-BF47-38D069BB5B76}"
+	RootNamespace="lnk_test_info_handle"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -176,11 +176,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\tests\lnk_test_data_block.c"
+				RelativePath="..\..\lnktools\info_handle.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\tests\lnk_test_functions.c"
+				RelativePath="..\..\lnktools\shell_items.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\tests\lnk_test_info_handle.c"
 				>
 			</File>
 			<File
@@ -194,11 +198,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\tests\lnk_test_functions.h"
+				RelativePath="..\..\lnktools\info_handle.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\tests\lnk_test_libbfio.h"
+				RelativePath="..\..\lnktools\shell_items.h"
 				>
 			</File>
 			<File

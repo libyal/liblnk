@@ -1235,7 +1235,7 @@ on_error:
 
 #if defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT )
 
-/* TODO: add tests for liblnk_file_open_read */
+/* TODO: add tests for liblnk_internal_file_open_read */
 
 #endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 
@@ -6896,7 +6896,7 @@ int main(
 
 #if defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT )
 
-		/* TODO: add tests for liblnk_file_open_read */
+		/* TODO: add tests for liblnk_internal_file_open_read */
 
 #endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 

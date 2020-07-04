@@ -239,115 +239,124 @@ ssize_t liblnk_link_target_identifier_read(
 	byte_stream_copy_to_uint16_little_endian(
 	 size_data,
 	 link_target_identifier->data_size )
-	
-	link_target_identifier->data = (uint8_t *) memory_allocate(
-	                                            sizeof( uint8_t ) * link_target_identifier->data_size );
 
-
-	if( link_target_identifier->data == NULL )
+	if( link_target_identifier->data_size > 0 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_MEMORY,
-		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-		 "%s: unable to create link target identifier data.",
-		 function );
+		if( link_target_identifier->data_size > (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: invalid link target identifier data size value exceed maximum allocation size.",
+			 function );
 
-		goto on_error;
-	}
-	read_count = libbfio_handle_read_buffer(
-	              file_io_handle,
-	              link_target_identifier->data,
-	              link_target_identifier->data_size,
-	              error );
+			goto on_error;
+		}
+		link_target_identifier->data = (uint8_t *) memory_allocate(
+		                                            sizeof( uint8_t ) * link_target_identifier->data_size );
 
-	if( read_count != (ssize_t) link_target_identifier->data_size )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_IO,
-		 LIBCERROR_IO_ERROR_READ_FAILED,
-		 "%s: unable to read link target identifier data.",
-		 function );
 
-		goto on_error;
-	}
+		if( link_target_identifier->data == NULL )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+			 "%s: unable to create link target identifier data.",
+			 function );
+
+			goto on_error;
+		}
+		read_count = libbfio_handle_read_buffer(
+		              file_io_handle,
+		              link_target_identifier->data,
+		              link_target_identifier->data_size,
+		              error );
+
+		if( read_count != (ssize_t) link_target_identifier->data_size )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_IO,
+			 LIBCERROR_IO_ERROR_READ_FAILED,
+			 "%s: unable to read link target identifier data.",
+			 function );
+
+			goto on_error;
+		}
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( libcnotify_verbose != 0 )
-	{
-		if( libfwsi_item_list_initialize(
-		     &shell_item_list,
-		     error ) != 1 )
+		if( libcnotify_verbose != 0 )
 		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-			 "%s: unable to create shell item list.",
-			 function );
+			if( libfwsi_item_list_initialize(
+			     &shell_item_list,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+				 "%s: unable to create shell item list.",
+				 function );
 
-			goto on_error;
-		}
-		if( libfwsi_item_list_copy_from_byte_stream(
-		     shell_item_list,
-		     link_target_identifier->data,
-		     link_target_identifier->data_size,
-		     io_handle->ascii_codepage,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-			 "%s: unable to copy byte stream to shell item list.",
-			 function );
+				goto on_error;
+			}
+			if( libfwsi_item_list_copy_from_byte_stream(
+			     shell_item_list,
+			     link_target_identifier->data,
+			     link_target_identifier->data_size,
+			     io_handle->ascii_codepage,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+				 "%s: unable to copy byte stream to shell item list.",
+				 function );
 
-			goto on_error;
-		}
-		if( libfwsi_item_list_get_data_size(
-		     shell_item_list,
-		     &shell_item_list_data_size,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve shell item list data size.",
-			 function );
+				goto on_error;
+			}
+			if( libfwsi_item_list_get_data_size(
+			     shell_item_list,
+			     &shell_item_list_data_size,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to retrieve shell item list data size.",
+				 function );
 
-			goto on_error;
-		}
-		if( libfwsi_item_list_free(
-		     &shell_item_list,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free shell item list.",
-			 function );
+				goto on_error;
+			}
+			if( libfwsi_item_list_free(
+			     &shell_item_list,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+				 "%s: unable to free shell item list.",
+				 function );
 
-			goto on_error;
+				goto on_error;
+			}
+			if( shell_item_list_data_size < link_target_identifier->data_size )
+			{
+				libcnotify_printf(
+				 "%s: trailing data:\n",
+				 function );
+				libcnotify_print_data(
+				 &( link_target_identifier->data[ shell_item_list_data_size ] ),
+				 link_target_identifier->data_size - shell_item_list_data_size,
+				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
+			}
 		}
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
 	}
-#endif
-#if defined( HAVE_DEBUG_OUTPUT )
-	if( libcnotify_verbose != 0 )
-	{
-		if( shell_item_list_data_size < link_target_identifier->data_size )
-		{
-			libcnotify_printf(
-			 "%s: trailing data:\n",
-			 function );
-			libcnotify_print_data(
-			 &( link_target_identifier->data[ shell_item_list_data_size ] ),
-			 link_target_identifier->data_size - shell_item_list_data_size,
-			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
-		}
-	}
-#endif
 	return( (ssize_t) ( link_target_identifier->data_size + 2 ) );
 
 on_error:

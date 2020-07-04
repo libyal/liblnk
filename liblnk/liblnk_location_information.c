@@ -620,7 +620,8 @@ int liblnk_location_information_read_data(
 				 unicode_value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+
 			location_information->volume_label = (uint8_t *) memory_allocate(
 			                                                  sizeof( uint8_t ) * unicode_value_size );
 
@@ -728,7 +729,7 @@ int liblnk_location_information_read_data(
 				}
 			}
 		}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
 	}
 	/* Local path
 	 */
@@ -788,7 +789,7 @@ int liblnk_location_information_read_data(
 				 value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
 		}
 		if( unicode_local_path_offset > 0 )
 		{
@@ -845,7 +846,8 @@ int liblnk_location_information_read_data(
 				 unicode_value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+
 			location_information->local_path = (uint8_t *) memory_allocate(
 			                                                sizeof( uint8_t ) * unicode_value_size );
 
@@ -957,7 +959,7 @@ int liblnk_location_information_read_data(
 				}
 			}
 		}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
 	}
 	/* Network share information
 	 */
@@ -1027,8 +1029,9 @@ int liblnk_location_information_read_data(
 			 location_information_value_size,
 			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 		}
-#endif
-		if( location_information_value_size < 16 )
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+
+		if( location_information_value_size < 20 )
 		{
 			libcerror_error_set(
 			 error,
@@ -1084,7 +1087,8 @@ int liblnk_location_information_read_data(
 			 liblnk_debug_print_network_provider_type(
 			  location_information->network_provider_type ) );
 		}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+
 		if( network_share_name_offset > 20 )
 		{
 			if( location_information_value_size < 28 )
@@ -1119,7 +1123,7 @@ int liblnk_location_information_read_data(
 				 function,
 				 unicode_device_name_offset );
 			}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
 		}
 		if( network_share_name_offset > 0 )
 		{
@@ -1162,7 +1166,7 @@ int liblnk_location_information_read_data(
 				 value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
 		}
 		if( unicode_network_share_name_offset > 0 )
 		{
@@ -1206,7 +1210,8 @@ int liblnk_location_information_read_data(
 				 unicode_value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+
 			location_information->network_share_name = (uint8_t *) memory_allocate(
 			                                                        sizeof( uint8_t ) * unicode_value_size );
 
@@ -1317,7 +1322,8 @@ int liblnk_location_information_read_data(
 				}
 			}
 		}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+
 		if( device_name_offset > 0 )
 		{
 			if( device_name_offset > location_information_value_size )
@@ -1359,7 +1365,7 @@ int liblnk_location_information_read_data(
 				 value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
 		}
 		if( unicode_device_name_offset > 0 )
 		{
@@ -1403,7 +1409,8 @@ int liblnk_location_information_read_data(
 				 unicode_value_size,
 				 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 			}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+
 			location_information->device_name = (uint8_t *) memory_allocate(
 			                                                 sizeof( uint8_t ) * unicode_value_size );
 
@@ -1572,7 +1579,7 @@ int liblnk_location_information_read_data(
 			 value_size,
 			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 		}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
 	}
 	if( unicode_common_path_offset > 0 )
 	{
@@ -1629,7 +1636,8 @@ int liblnk_location_information_read_data(
 			 unicode_value_size,
 			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 		}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+
 		location_information->common_path = (uint8_t *) memory_allocate(
 		                                                 sizeof( uint8_t ) * unicode_value_size );
 
@@ -1742,6 +1750,7 @@ int liblnk_location_information_read_data(
 		}
 	}
 #endif /* defined( HAVE_VERBOSE_OUTPUT ) */
+
 	return( 1 );
 
 on_error:
@@ -1879,7 +1888,7 @@ ssize_t liblnk_location_information_read(
 #endif
 		return( read_count );
 	}
-	if( location_information_size > (size_t) SSIZE_MAX )
+	if( location_information_size > (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE )
 	{
 		libcerror_error_set(
 		 error,

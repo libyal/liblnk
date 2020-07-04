@@ -133,6 +133,7 @@ stamp-h[1-9]
 /tests/lnk_test_error
 /tests/lnk_test_file
 /tests/lnk_test_file_header
+/tests/lnk_test_info_handle
 /tests/lnk_test_io_handle
 /tests/lnk_test_known_folder_location
 /tests/lnk_test_link_target_identifier

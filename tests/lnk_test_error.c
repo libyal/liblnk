@@ -27,7 +27,6 @@
 #include <stdlib.h>
 #endif
 
-#include "lnk_test_libcerror.h"
 #include "lnk_test_liblnk.h"
 #include "lnk_test_macros.h"
 #include "lnk_test_unused.h"

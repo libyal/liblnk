@@ -37,6 +37,10 @@ typedef struct liblnk_data_block liblnk_data_block_t;
 
 struct liblnk_data_block
 {
+	/* The size
+	 */
+	size_t size;
+
 	/* The signature
 	 */
 	uint32_t signature;
@@ -58,12 +62,18 @@ int liblnk_data_block_free(
      liblnk_data_block_t **data_block,
      libcerror_error_t **error );
 
-ssize_t liblnk_data_block_read(
-         liblnk_data_block_t *data_block,
-         liblnk_io_handle_t *io_handle,
-         libbfio_handle_t *file_io_handle,
-         off64_t data_block_offset,
-         libcerror_error_t **error );
+int liblnk_data_block_read_data(
+     liblnk_data_block_t *data_block,
+     const uint8_t *data,
+     size_t data_size,
+     libcerror_error_t **error );
+
+int liblnk_data_block_read_file_io_handle(
+     liblnk_data_block_t *data_block,
+     liblnk_io_handle_t *io_handle,
+     libbfio_handle_t *file_io_handle,
+     off64_t file_offset,
+     libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }

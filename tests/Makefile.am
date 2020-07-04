@@ -1,3 +1,5 @@
+AUTOMAKE_OPTIONS = subdir-objects
+
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/common \
@@ -26,6 +28,7 @@ endif
 
 TESTS = \
 	test_library.sh \
+	test_tools.sh \
 	test_lnkinfo.sh \
 	$(TESTS_PYLNK)
 
@@ -36,7 +39,8 @@ check_SCRIPTS = \
 	test_lnkinfo.sh \
 	test_manpage.sh \
 	test_python_module.sh \
-	test_runner.sh
+	test_runner.sh \
+	test_tools.sh
 
 EXTRA_DIST = \
 	$(check_SCRIPTS)
@@ -48,6 +52,7 @@ check_PROGRAMS = \
 	lnk_test_error \
 	lnk_test_file \
 	lnk_test_file_header \
+	lnk_test_info_handle \
 	lnk_test_io_handle \
 	lnk_test_known_folder_location \
 	lnk_test_link_target_identifier \
@@ -58,6 +63,8 @@ check_PROGRAMS = \
 
 lnk_test_data_block_SOURCES = \
 	lnk_test_data_block.c \
+	lnk_test_functions.c lnk_test_functions.h \
+	lnk_test_libbfio.h \
 	lnk_test_libcerror.h \
 	lnk_test_liblnk.h \
 	lnk_test_macros.h \
@@ -65,6 +72,14 @@ lnk_test_data_block_SOURCES = \
 	lnk_test_unused.h
 
 lnk_test_data_block_LDADD = \
+	@LIBBFIO_LIBADD@ \
+	@LIBCPATH_LIBADD@ \
+	@LIBCFILE_LIBADD@ \
+	@LIBUNA_LIBADD@ \
+	@LIBCSPLIT_LIBADD@ \
+	@LIBCNOTIFY_LIBADD@ \
+	@LIBCLOCALE_LIBADD@ \
+	@LIBCDATA_LIBADD@ \
 	../liblnk/liblnk.la \
 	@LIBCERROR_LIBADD@
 
@@ -145,6 +160,26 @@ lnk_test_file_header_LDADD = \
 	@LIBUNA_LIBADD@ \
 	@LIBCSPLIT_LIBADD@ \
 	@LIBCNOTIFY_LIBADD@ \
+	@LIBCLOCALE_LIBADD@ \
+	@LIBCDATA_LIBADD@ \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
+lnk_test_info_handle_SOURCES = \
+	../lnktools/info_handle.c ../lnktools/info_handle.h \
+	../lnktools/shell_items.c ../lnktools/shell_items.h \
+	lnk_test_info_handle.c \
+	lnk_test_libcerror.h \
+	lnk_test_liblnk.h \
+	lnk_test_macros.h \
+	lnk_test_memory.c lnk_test_memory.h \
+	lnk_test_unused.h
+
+lnk_test_info_handle_LDADD = \
+	@LIBFWSI_LIBADD@ \
+	@LIBFGUID_LIBADD@ \
+	@LIBFDATETIME_LIBADD@ \
+	@LIBUNA_LIBADD@ \
 	@LIBCLOCALE_LIBADD@ \
 	@LIBCDATA_LIBADD@ \
 	../liblnk/liblnk.la \

@@ -161,10 +161,16 @@ int liblnk_file_close(
      liblnk_file_t *file,
      libcerror_error_t **error );
 
-int liblnk_file_open_read(
+int liblnk_internal_file_open_read(
      liblnk_internal_file_t *internal_file,
      libbfio_handle_t *file_io_handle,
      libcerror_error_t **error );
+
+ssize_t liblnk_internal_file_read_extra_data_blocks(
+         liblnk_internal_file_t *internal_file,
+         libbfio_handle_t *file_io_handle,
+         off64_t file_offset,
+         libcerror_error_t **error );
 
 LIBLNK_EXTERN \
 int liblnk_file_get_ascii_codepage(
