@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="lnk_test_info_handle"
-	ProjectGUID="{221998C3-10F3-403C-BF47-38D069BB5B76}"
-	RootNamespace="lnk_test_info_handle"
+	Name="lnk_test_tools_info_handle"
+	ProjectGUID="{D0F8EDC2-037E-492B-9CE7-6E5AC75178E2}"
+	RootNamespace="lnk_test_tools_info_handle"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -184,11 +184,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\tests\lnk_test_info_handle.c"
+				RelativePath="..\..\tests\lnk_test_memory.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\tests\lnk_test_memory.c"
+				RelativePath="..\..\tests\lnk_test_tools_info_handle.c"
 				>
 			</File>
 		</Filter>
@@ -207,10 +207,6 @@
 			</File>
 			<File
 				RelativePath="..\..\tests\lnk_test_libcerror.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\tests\lnk_test_liblnk.h"
 				>
 			</File>
 			<File

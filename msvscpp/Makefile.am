@@ -21,16 +21,16 @@ MSVSCPP_FILES = \
 	lnk_test_error/lnk_test_error.vcproj \
 	lnk_test_file/lnk_test_file.vcproj \
 	lnk_test_file_header/lnk_test_file_header.vcproj \
-	lnk_test_info_handle/lnk_test_info_handle.vcproj \
 	lnk_test_io_handle/lnk_test_io_handle.vcproj \
 	lnk_test_known_folder_location/lnk_test_known_folder_location.vcproj \
 	lnk_test_link_target_identifier/lnk_test_link_target_identifier.vcproj \
 	lnk_test_location_information/lnk_test_location_information.vcproj \
 	lnk_test_notify/lnk_test_notify.vcproj \
-	lnk_test_output/lnk_test_output.vcproj \
-	lnk_test_signal/lnk_test_signal.vcproj \
 	lnk_test_special_folder_location/lnk_test_special_folder_location.vcproj \
 	lnk_test_support/lnk_test_support.vcproj \
+	lnk_test_tools_info_handle/lnk_test_tools_info_handle.vcproj \
+	lnk_test_tools_output/lnk_test_tools_output.vcproj \
+	lnk_test_tools_signal/lnk_test_tools_signal.vcproj \
 	lnkinfo/lnkinfo.vcproj \
 	pylnk/pylnk.vcproj \
 	liblnk.sln

@@ -52,16 +52,16 @@ check_PROGRAMS = \
 	lnk_test_error \
 	lnk_test_file \
 	lnk_test_file_header \
-	lnk_test_info_handle \
 	lnk_test_io_handle \
 	lnk_test_known_folder_location \
 	lnk_test_link_target_identifier \
 	lnk_test_location_information \
 	lnk_test_notify \
-	lnk_test_output \
-	lnk_test_signal \
 	lnk_test_special_folder_location \
-	lnk_test_support
+	lnk_test_support \
+	lnk_test_tools_info_handle \
+	lnk_test_tools_output \
+	lnk_test_tools_signal
 
 lnk_test_data_block_SOURCES = \
 	lnk_test_data_block.c \
@@ -167,26 +167,6 @@ lnk_test_file_header_LDADD = \
 	../liblnk/liblnk.la \
 	@LIBCERROR_LIBADD@
 
-lnk_test_info_handle_SOURCES = \
-	../lnktools/info_handle.c ../lnktools/info_handle.h \
-	../lnktools/shell_items.c ../lnktools/shell_items.h \
-	lnk_test_info_handle.c \
-	lnk_test_libcerror.h \
-	lnk_test_liblnk.h \
-	lnk_test_macros.h \
-	lnk_test_memory.c lnk_test_memory.h \
-	lnk_test_unused.h
-
-lnk_test_info_handle_LDADD = \
-	@LIBFWSI_LIBADD@ \
-	@LIBFGUID_LIBADD@ \
-	@LIBFDATETIME_LIBADD@ \
-	@LIBUNA_LIBADD@ \
-	@LIBCLOCALE_LIBADD@ \
-	@LIBCDATA_LIBADD@ \
-	../liblnk/liblnk.la \
-	@LIBCERROR_LIBADD@
-
 lnk_test_io_handle_SOURCES = \
 	lnk_test_io_handle.c \
 	lnk_test_libcerror.h \
@@ -246,30 +226,6 @@ lnk_test_notify_LDADD = \
 	../liblnk/liblnk.la \
 	@LIBCERROR_LIBADD@
 
-lnk_test_output_SOURCES = \
-	../lnktools/lnktools_output.c ../lnktools/lnktools_output.h \
-	lnk_test_libcerror.h \
-	lnk_test_liblnk.h \
-	lnk_test_macros.h \
-	lnk_test_output.c \
-	lnk_test_unused.h
-
-lnk_test_output_LDADD = \
-	../liblnk/liblnk.la \
-	@LIBCERROR_LIBADD@
-
-lnk_test_signal_SOURCES = \
-	../lnktools/lnktools_signal.c ../lnktools/lnktools_signal.h \
-	lnk_test_libcerror.h \
-	lnk_test_liblnk.h \
-	lnk_test_macros.h \
-	lnk_test_signal.c \
-	lnk_test_unused.h
-
-lnk_test_signal_LDADD = \
-	../liblnk/liblnk.la \
-	@LIBCERROR_LIBADD@
-
 lnk_test_special_folder_location_SOURCES = \
 	lnk_test_libcerror.h \
 	lnk_test_liblnk.h \
@@ -305,6 +261,47 @@ lnk_test_support_LDADD = \
 	@LIBCNOTIFY_LIBADD@ \
 	@LIBCLOCALE_LIBADD@ \
 	@LIBCDATA_LIBADD@ \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
+lnk_test_tools_info_handle_SOURCES = \
+	../lnktools/info_handle.c ../lnktools/info_handle.h \
+	../lnktools/shell_items.c ../lnktools/shell_items.h \
+	lnk_test_libcerror.h \
+	lnk_test_macros.h \
+	lnk_test_memory.c lnk_test_memory.h \
+	lnk_test_tools_info_handle.c \
+	lnk_test_unused.h
+
+lnk_test_tools_info_handle_LDADD = \
+	@LIBFWSI_LIBADD@ \
+	@LIBFGUID_LIBADD@ \
+	@LIBFDATETIME_LIBADD@ \
+	@LIBUNA_LIBADD@ \
+	@LIBCLOCALE_LIBADD@ \
+	@LIBCDATA_LIBADD@ \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
+lnk_test_tools_output_SOURCES = \
+	../lnktools/lnktools_output.c ../lnktools/lnktools_output.h \
+	lnk_test_libcerror.h \
+	lnk_test_macros.h \
+	lnk_test_tools_output.c \
+	lnk_test_unused.h
+
+lnk_test_tools_output_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
+lnk_test_tools_signal_SOURCES = \
+	../lnktools/lnktools_signal.c ../lnktools/lnktools_signal.h \
+	lnk_test_libcerror.h \
+	lnk_test_macros.h \
+	lnk_test_tools_signal.c \
+	lnk_test_unused.h
+
+lnk_test_tools_signal_LDADD = \
 	../liblnk/liblnk.la \
 	@LIBCERROR_LIBADD@
 

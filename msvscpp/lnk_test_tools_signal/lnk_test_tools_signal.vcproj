@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="lnk_test_signal"
-	ProjectGUID="{7BB62627-0B3F-49B2-80A9-20408A475824}"
-	RootNamespace="lnk_test_signal"
+	Name="lnk_test_tools_signal"
+	ProjectGUID="{2F0AF625-C1AC-4B9E-A8ED-F14221D02FEC}"
+	RootNamespace="lnk_test_tools_signal"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -180,7 +180,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\tests\lnk_test_signal.c"
+				RelativePath="..\..\tests\lnk_test_tools_signal.c"
 				>
 			</File>
 		</Filter>
@@ -195,10 +195,6 @@
 			</File>
 			<File
 				RelativePath="..\..\tests\lnk_test_libcerror.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\tests\lnk_test_liblnk.h"
 				>
 			</File>
 			<File

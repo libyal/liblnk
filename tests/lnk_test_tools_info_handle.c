@@ -29,7 +29,6 @@
 #endif
 
 #include "lnk_test_libcerror.h"
-#include "lnk_test_liblnk.h"
 #include "lnk_test_macros.h"
 #include "lnk_test_memory.h"
 #include "lnk_test_unused.h"
@@ -39,7 +38,7 @@
 /* Tests the info_handle_initialize function
  * Returns 1 if successful or 0 if not
  */
-int lnk_test_info_handle_initialize(
+int lnk_test_tools_info_handle_initialize(
      void )
 {
 	info_handle_t *info_handle      = NULL;
@@ -234,7 +233,7 @@ on_error:
 /* Tests the info_handle_free function
  * Returns 1 if successful or 0 if not
  */
-int lnk_test_info_handle_free(
+int lnk_test_tools_info_handle_free(
      void )
 {
 	libcerror_error_t *error = NULL;
@@ -286,11 +285,11 @@ int main(
 
 	LNK_TEST_RUN(
 	 "info_handle_initialize",
-	 lnk_test_info_handle_initialize );
+	 lnk_test_tools_info_handle_initialize );
 
 	LNK_TEST_RUN(
 	 "info_handle_free",
-	 lnk_test_info_handle_free );
+	 lnk_test_tools_info_handle_free );
 
 	return( EXIT_SUCCESS );
 

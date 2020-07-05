@@ -1,5 +1,5 @@
 /*
- * Tools output functions test program
+ * Tools signal functions test program
  *
  * Copyright (C) 2009-2020, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -23,34 +23,65 @@
 #include <file_stream.h>
 #include <types.h>
 
-#include <stdio.h>
-
-#if defined( HAVE_IO_H ) || defined( WINAPI )
-#include <io.h>
-#endif
-
 #if defined( HAVE_STDLIB_H ) || defined( WINAPI )
 #include <stdlib.h>
 #endif
 
 #include "lnk_test_libcerror.h"
-#include "lnk_test_liblnk.h"
 #include "lnk_test_macros.h"
 #include "lnk_test_unused.h"
 
-#include "../lnktools/lnktools_output.h"
+#include "../lnktools/lnktools_signal.h"
 
-/* Tests the lnktools_output_initialize and function
+void lnk_test_tools_signal_handler(
+      lnktools_signal_t signal LNK_TEST_ATTRIBUTE_UNUSED )
+{
+	LNK_TEST_UNREFERENCED_PARAMETER( signal )
+}
+
+/* Tests the lnktools_signal_attach and function
  * Returns 1 if successful or 0 if not
  */
-int lnk_test_output_initialize(
+int lnk_test_tools_signal_attach(
      void )
 {
 	libcerror_error_t *error = NULL;
 	int result               = 0;
 
-	result = lnktools_output_initialize(
-	          _IONBF,
+	result = lnktools_signal_attach(
+	          lnk_test_tools_signal_handler,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	return( 0 );
+}
+
+/* Tests the lnktools_signal_detach and function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_tools_signal_detach(
+     void )
+{
+	libcerror_error_t *error = NULL;
+	int result               = 0;
+
+	result = lnktools_signal_detach(
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -88,15 +119,23 @@ int main(
 	LNK_TEST_UNREFERENCED_PARAMETER( argc )
 	LNK_TEST_UNREFERENCED_PARAMETER( argv )
 
+#if defined( WINAPI )
+
+	/* TODO add tests for lnktools_signal_handler */
+#endif
+
+#if defined( WINAPI ) && defined( _MSC_VER )
+
+	/* TODO add tests for lnktools_signal_initialize_memory_debug */
+#endif
+
 	LNK_TEST_RUN(
-	 "lnktools_output_initialize",
-	 lnk_test_output_initialize )
+	 "lnktools_signal_attach",
+	 lnk_test_tools_signal_attach )
 
-	/* TODO add tests for lnktools_output_copyright_fprint */
-
-	/* TODO add tests for lnktools_output_version_fprint */
-
-	/* TODO add tests for lnktools_output_version_detailed_fprint */
+	LNK_TEST_RUN(
+	 "lnktools_signal_detach",
+	 lnk_test_tools_signal_detach )
 
 	return( EXIT_SUCCESS );
 
