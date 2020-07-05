@@ -36,6 +36,7 @@
 #include "lnk_test_unused.h"
 
 #include "../liblnk/liblnk_data_block.h"
+#include "../liblnk/liblnk_io_handle.h"
 
 uint8_t lnk_test_data_block_data1[ 788 ] = {
 	0x14, 0x03, 0x00, 0x00, 0x01, 0x00, 0x00, 0xa0, 0x25, 0x50, 0x72, 0x6f, 0x67, 0x72, 0x61, 0x6d,
@@ -486,12 +487,33 @@ on_error:
 int lnk_test_data_block_read_file_io_handle(
      void )
 {
-	libcerror_error_t *error        = NULL;
-	liblnk_data_block_t *data_block = NULL;
-	int result                      = 0;
+	libbfio_handle_t *file_io_handle = NULL;
+	libcerror_error_t *error         = NULL;
+	liblnk_data_block_t *data_block  = NULL;
+	liblnk_io_handle_t *io_handle    = NULL;
+	int result                       = 0;
 
 	/* Initialize test
 	 */
+	result = liblnk_io_handle_initialize(
+	          &io_handle,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "io_handle",
+	 io_handle );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	io_handle->file_size = 4096;
+
 	result = liblnk_data_block_initialize(
 	          &data_block,
 	          &error );
@@ -509,12 +531,36 @@ int lnk_test_data_block_read_file_io_handle(
 	 "error",
 	 error );
 
+	/* Initialize file IO handle
+	 */
+	result = lnk_test_open_file_io_handle(
+	          &file_io_handle,
+	          lnk_test_data_block_data1,
+	          788,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "file_io_handle",
+	 file_io_handle );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test regular cases
+	 */
+
 	/* Test error cases
 	 */
 	result = liblnk_data_block_read_file_io_handle(
 	          NULL,
-	          NULL,
-	          NULL,
+	          io_handle,
+	          file_io_handle,
 	          0,
 	          &error );
 
@@ -533,6 +579,25 @@ int lnk_test_data_block_read_file_io_handle(
 	result = liblnk_data_block_read_file_io_handle(
 	          data_block,
 	          NULL,
+	          file_io_handle,
+	          0,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_data_block_read_file_io_handle(
+	          data_block,
+	          io_handle,
 	          NULL,
 	          0,
 	          &error );
@@ -548,6 +613,93 @@ int lnk_test_data_block_read_file_io_handle(
 
 	libcerror_error_free(
 	 &error );
+
+	result = liblnk_data_block_read_file_io_handle(
+	          data_block,
+	          io_handle,
+	          file_io_handle,
+	          -1,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	/* Clean up file IO handle
+	 */
+	result = lnk_test_close_file_io_handle(
+	          &file_io_handle,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test data too small
+	 */
+	result = lnk_test_open_file_io_handle(
+	          &file_io_handle,
+	          lnk_test_data_block_data1,
+	          8,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "file_io_handle",
+	 file_io_handle );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	result = liblnk_data_block_read_file_io_handle(
+	          data_block,
+	          io_handle,
+	          file_io_handle,
+	          0,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = lnk_test_close_file_io_handle(
+	          &file_io_handle,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 0 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	/* Clean up
 	 */
@@ -568,6 +720,23 @@ int lnk_test_data_block_read_file_io_handle(
 	 "error",
 	 error );
 
+	result = liblnk_io_handle_free(
+	          &io_handle,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "io_handle",
+	 io_handle );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
 	return( 1 );
 
 on_error:
@@ -580,6 +749,12 @@ on_error:
 	{
 		liblnk_data_block_free(
 		 &data_block,
+		 NULL );
+	}
+	if( io_handle != NULL )
+	{
+		liblnk_io_handle_free(
+		 &io_handle,
 		 NULL );
 	}
 	return( 0 );

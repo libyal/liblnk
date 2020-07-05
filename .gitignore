@@ -139,6 +139,8 @@ stamp-h[1-9]
 /tests/lnk_test_link_target_identifier
 /tests/lnk_test_location_information
 /tests/lnk_test_notify
+/tests/lnk_test_output
+/tests/lnk_test_signal
 /tests/lnk_test_special_folder_location
 /tests/lnk_test_support
 /tests/tmp*

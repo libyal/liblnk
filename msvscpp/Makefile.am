@@ -27,6 +27,8 @@ MSVSCPP_FILES = \
 	lnk_test_link_target_identifier/lnk_test_link_target_identifier.vcproj \
 	lnk_test_location_information/lnk_test_location_information.vcproj \
 	lnk_test_notify/lnk_test_notify.vcproj \
+	lnk_test_output/lnk_test_output.vcproj \
+	lnk_test_signal/lnk_test_signal.vcproj \
 	lnk_test_special_folder_location/lnk_test_special_folder_location.vcproj \
 	lnk_test_support/lnk_test_support.vcproj \
 	lnkinfo/lnkinfo.vcproj \

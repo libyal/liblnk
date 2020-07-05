@@ -58,6 +58,8 @@ check_PROGRAMS = \
 	lnk_test_link_target_identifier \
 	lnk_test_location_information \
 	lnk_test_notify \
+	lnk_test_output \
+	lnk_test_signal \
 	lnk_test_special_folder_location \
 	lnk_test_support
 
@@ -241,6 +243,30 @@ lnk_test_notify_SOURCES = \
 	lnk_test_unused.h
 
 lnk_test_notify_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
+lnk_test_output_SOURCES = \
+	../lnktools/lnktools_output.c ../lnktools/lnktools_output.h \
+	lnk_test_libcerror.h \
+	lnk_test_liblnk.h \
+	lnk_test_macros.h \
+	lnk_test_output.c \
+	lnk_test_unused.h
+
+lnk_test_output_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
+lnk_test_signal_SOURCES = \
+	../lnktools/lnktools_signal.c ../lnktools/lnktools_signal.h \
+	lnk_test_libcerror.h \
+	lnk_test_liblnk.h \
+	lnk_test_macros.h \
+	lnk_test_signal.c \
+	lnk_test_unused.h
+
+lnk_test_signal_LDADD = \
 	../liblnk/liblnk.la \
 	@LIBCERROR_LIBADD@
 
