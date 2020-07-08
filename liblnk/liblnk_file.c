@@ -1763,6 +1763,19 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 		}
 		if( data_block->size == 0 )
 		{
+			if( liblnk_data_block_free(
+			     &data_block,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+				 "%s: unable to free data block.",
+				 function );
+
+				goto on_error;
+			}
 			read_count += 4;
 
 			break;
