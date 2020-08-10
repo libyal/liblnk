@@ -25,7 +25,7 @@ AC_DEFUN([AX_LNKTOOLS_CHECK_LOCAL],
 dnl Function to check if DLL support is needed
 AC_DEFUN([AX_LIBLNK_CHECK_DLL_SUPPORT],
   [AS_IF(
-    [test "x$enable_shared" = xyes],
+    [test "x$enable_shared" = xyes && test "x$ac_cv_enable_static_executables" = xno],
     [AS_CASE(
       [$host],
       [*cygwin* | *mingw* | *msys*],

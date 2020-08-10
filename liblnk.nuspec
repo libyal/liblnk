@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>liblnk</id>
+    <version>20200810</version>
+    <authors>Joachim Metz</authors>
+    <owners>joachimmetz</owners>
+    <licenseUrl>https://raw.githubusercontent.com/libyal/liblnk/master/COPYING.LESSER</licenseUrl>
+    <projectUrl>https://github.com/libyal/liblnk</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <title>liblnk</title>
+    <description>Library to access the Windows Shortcut File (LNK) format</description>
+    <releaseNotes>Release of liblnk 20200810</releaseNotes>
+    <copyright>Copyright (C) 2009-2020</copyright>
+    <tags>native</tags>
+  </metadata>
+  <files>
+    <file src="include\*.h" target="lib\native\include\" />
+    <file src="include\liblnk\*.h" target="lib\native\include\liblnk\" />
+    <file src="msvscpp\Release\Win32\liblnk.dll" target="lib\native\lib\Win32\" />
+    <file src="msvscpp\Release\Win32\liblnk.lib" target="lib\native\lib\Win32\" />
+    <file src="msvscpp\Release\Win32\liblnk.pdb" target="lib\native\lib\Win32\" />
+    <file src="msvscpp\Release\x64\liblnk.dll" target="lib\native\lib\x64\" />
+    <file src="msvscpp\Release\x64\liblnk.lib" target="lib\native\lib\x64\" />
+    <file src="msvscpp\Release\x64\liblnk.pdb" target="lib\native\lib\x64\" />
+  </files>
+</package>
