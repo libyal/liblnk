@@ -284,7 +284,7 @@ on_error:
 	return( NULL );
 }
 
-/* Intializes a drive types object
+/* Initializes a drive types object
  * Returns 0 if successful or -1 on error
  */
 int pylnk_drive_types_init(

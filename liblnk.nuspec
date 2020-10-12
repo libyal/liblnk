@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>liblnk</id>
-    <version>20200810</version>
+    <version>20201012</version>
     <authors>Joachim Metz</authors>
     <owners>joachimmetz</owners>
     <licenseUrl>https://raw.githubusercontent.com/libyal/liblnk/master/COPYING.LESSER</licenseUrl>
@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>liblnk</title>
     <description>Library to access the Windows Shortcut File (LNK) format</description>
-    <releaseNotes>Release of liblnk 20200810</releaseNotes>
+    <releaseNotes>Release of liblnk 20201012</releaseNotes>
     <copyright>Copyright (C) 2009-2020</copyright>
     <tags>native</tags>
   </metadata>

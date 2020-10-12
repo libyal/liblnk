@@ -452,7 +452,7 @@ on_error:
 	return( NULL );
 }
 
-/* Intializes a data flags object
+/* Initializes a data flags object
  * Returns 0 if successful or -1 on error
  */
 int pylnk_data_flags_init(
