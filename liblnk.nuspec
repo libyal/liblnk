@@ -2,15 +2,15 @@
 <package >
   <metadata>
     <id>liblnk</id>
-    <version>20201012</version>
+    <version>20201129</version>
     <authors>Joachim Metz</authors>
     <owners>joachimmetz</owners>
-    <licenseUrl>https://raw.githubusercontent.com/libyal/liblnk/master/COPYING.LESSER</licenseUrl>
+    <license type="expression">LGPL-3.0-or-later</license>
     <projectUrl>https://github.com/libyal/liblnk</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>liblnk</title>
     <description>Library to access the Windows Shortcut File (LNK) format</description>
-    <releaseNotes>Release of liblnk 20201012</releaseNotes>
+    <releaseNotes>Release of liblnk 20201129</releaseNotes>
     <copyright>Copyright (C) 2009-2020</copyright>
     <tags>native</tags>
   </metadata>
