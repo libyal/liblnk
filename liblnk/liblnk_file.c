@@ -2144,8 +2144,9 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 				if( libcnotify_verbose != 0 )
 				{
 					libcnotify_printf(
-					 "%s: unsupported extra data block type.\n\n",
-					 function );
+					 "%s: unsupported extra data block type: 0x%08" PRIx32 ".\n\n",
+					 function,
+					 data_block->signature );
 				}
 #endif
 				break;

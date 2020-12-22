@@ -30,7 +30,7 @@
 
 #include <liblnk/extern.h>
 
-#if defined( __CYGWIN__ )
+#if defined( __CYGWIN__ ) || defined( __MINGW32__ )
 #define LIBLNK_EXTERN_VARIABLE	extern
 #else
 #define LIBLNK_EXTERN_VARIABLE	LIBLNK_EXTERN
