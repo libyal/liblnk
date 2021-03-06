@@ -33,13 +33,55 @@
 
 #include "../lnktools/lnktools_signal.h"
 
-void lnk_test_tools_signal_handler(
+void lnk_test_tools_signal_handler_function(
       lnktools_signal_t signal LNK_TEST_ATTRIBUTE_UNUSED )
 {
 	LNK_TEST_UNREFERENCED_PARAMETER( signal )
 }
 
-/* Tests the lnktools_signal_attach and function
+#if defined( WINAPI )
+
+/* Tests the lnktools_signal_handler function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_tools_signal_handler(
+     void )
+{
+	BOOL result = 0;
+
+	/* Test regular cases
+	 */
+	result = lnktools_signal_handler(
+	          CTRL_C_EVENT );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 (int) TRUE );
+
+	result = lnktools_signal_handler(
+	          CTRL_LOGOFF_EVENT );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 (int) FALSE );
+
+	return( 1 );
+
+on_error:
+	return( 0 );
+}
+
+#if defined( _MSC_VER )
+
+	/* TODO add tests for lnktools_signal_initialize_memory_debug */
+
+#endif /* defined( _MSC_VER ) */
+
+#endif /* defined( WINAPI ) */
+
+/* Tests the lnktools_signal_attach function
  * Returns 1 if successful or 0 if not
  */
 int lnk_test_tools_signal_attach(
@@ -48,8 +90,10 @@ int lnk_test_tools_signal_attach(
 	libcerror_error_t *error = NULL;
 	int result               = 0;
 
+	/* Test regular cases
+	 */
 	result = lnktools_signal_attach(
-	          lnk_test_tools_signal_handler,
+	          lnk_test_tools_signal_handler_function,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -60,6 +104,24 @@ int lnk_test_tools_signal_attach(
 	LNK_TEST_ASSERT_IS_NULL(
 	 "error",
 	 error );
+
+	/* Test error cases
+	 */
+	result = lnktools_signal_attach(
+	          NULL,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
 
 	return( 1 );
 
@@ -72,7 +134,7 @@ on_error:
 	return( 0 );
 }
 
-/* Tests the lnktools_signal_detach and function
+/* Tests the lnktools_signal_detach function
  * Returns 1 if successful or 0 if not
  */
 int lnk_test_tools_signal_detach(
@@ -81,6 +143,8 @@ int lnk_test_tools_signal_detach(
 	libcerror_error_t *error = NULL;
 	int result               = 0;
 
+	/* Test regular cases
+	 */
 	result = lnktools_signal_detach(
 	          &error );
 
@@ -121,13 +185,17 @@ int main(
 
 #if defined( WINAPI )
 
-	/* TODO add tests for lnktools_signal_handler */
-#endif
+	LNK_TEST_RUN(
+	 "lnktools_signal_handler",
+	 lnk_test_tools_signal_handler )
 
-#if defined( WINAPI ) && defined( _MSC_VER )
+#if defined( _MSC_VER )
 
 	/* TODO add tests for lnktools_signal_initialize_memory_debug */
-#endif
+
+#endif /* defined( _MSC_VER ) */
+
+#endif /* defined( WINAPI ) */
 
 	LNK_TEST_RUN(
 	 "lnktools_signal_attach",

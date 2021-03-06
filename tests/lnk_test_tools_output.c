@@ -39,7 +39,7 @@
 
 #include "../lnktools/lnktools_output.h"
 
-/* Tests the lnktools_output_initialize and function
+/* Tests the lnktools_output_initialize function
  * Returns 1 if successful or 0 if not
  */
 int lnk_test_tools_output_initialize(
