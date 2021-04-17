@@ -38,15 +38,16 @@ class FileTypeTests(unittest.TestCase):
 
   def test_open(self):
     """Tests the open function."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     with self.assertRaises(IOError):
-      lnk_file.open(unittest.source)
+      lnk_file.open(test_source)
 
     lnk_file.close()
 
@@ -54,19 +55,20 @@ class FileTypeTests(unittest.TestCase):
       lnk_file.open(None)
 
     with self.assertRaises(ValueError):
-      lnk_file.open(unittest.source, mode="w")
+      lnk_file.open(test_source, mode="w")
 
   def test_open_file_object(self):
     """Tests the open_file_object function."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
-    if not os.path.isfile(unittest.source):
+    if not os.path.isfile(test_source):
       raise unittest.SkipTest("source not a regular file")
 
     lnk_file = pylnk.file()
 
-    with open(unittest.source, "rb") as file_object:
+    with open(test_source, "rb") as file_object:
 
       lnk_file.open_file_object(file_object)
 
@@ -83,7 +85,8 @@ class FileTypeTests(unittest.TestCase):
 
   def test_close(self):
     """Tests the close function."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
@@ -93,21 +96,22 @@ class FileTypeTests(unittest.TestCase):
 
   def test_open_close(self):
     """Tests the open and close functions."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       return
 
     lnk_file = pylnk.file()
 
     # Test open and close.
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
     lnk_file.close()
 
     # Test open and close a second time to validate clean up on close.
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
     lnk_file.close()
 
-    if os.path.isfile(unittest.source):
-      with open(unittest.source, "rb") as file_object:
+    if os.path.isfile(test_source):
+      with open(test_source, "rb") as file_object:
 
         # Test open_file_object and close.
         lnk_file.open_file_object(file_object)
@@ -146,12 +150,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_ascii_codepage(self):
     """Tests the get_ascii_codepage function and ascii_codepage property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     ascii_codepage = lnk_file.get_ascii_codepage()
     self.assertIsNotNone(ascii_codepage)
@@ -162,12 +167,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_data_flags(self):
     """Tests the get_data_flags function and data_flags property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     data_flags = lnk_file.get_data_flags()
     self.assertIsNotNone(data_flags)
@@ -178,12 +184,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_file_creation_time(self):
     """Tests the get_file_creation_time function and file_creation_time property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     file_creation_time = lnk_file.get_file_creation_time()
     self.assertIsNotNone(file_creation_time)
@@ -194,12 +201,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_file_modification_time(self):
     """Tests the get_file_modification_time function and file_modification_time property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     file_modification_time = lnk_file.get_file_modification_time()
     self.assertIsNotNone(file_modification_time)
@@ -210,12 +218,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_file_access_time(self):
     """Tests the get_file_access_time function and file_access_time property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     file_access_time = lnk_file.get_file_access_time()
     self.assertIsNotNone(file_access_time)
@@ -226,12 +235,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_file_size(self):
     """Tests the get_file_size function and file_size property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     file_size = lnk_file.get_file_size()
     self.assertIsNotNone(file_size)
@@ -242,12 +252,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_icon_index(self):
     """Tests the get_icon_index function and icon_index property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     icon_index = lnk_file.get_icon_index()
     self.assertIsNotNone(icon_index)
@@ -258,12 +269,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_show_window_value(self):
     """Tests the get_show_window_value function and show_window_value property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     show_window_value = lnk_file.get_show_window_value()
     self.assertIsNotNone(show_window_value)
@@ -274,12 +286,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_hot_key_value(self):
     """Tests the get_hot_key_value function and hot_key_value property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     hot_key_value = lnk_file.get_hot_key_value()
     self.assertIsNotNone(hot_key_value)
@@ -290,12 +303,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_file_attribute_flags(self):
     """Tests the get_file_attribute_flags function and file_attribute_flags property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     file_attribute_flags = lnk_file.get_file_attribute_flags()
     self.assertIsNotNone(file_attribute_flags)
@@ -306,12 +320,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_drive_type(self):
     """Tests the get_drive_type function and drive_type property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     _ = lnk_file.get_drive_type()
 
@@ -321,12 +336,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_drive_serial_number(self):
     """Tests the get_drive_serial_number function and drive_serial_number property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     _ = lnk_file.get_drive_serial_number()
 
@@ -336,12 +352,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_volume_label(self):
     """Tests the get_volume_label function and volume_label property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     _ = lnk_file.get_volume_label()
 
@@ -351,12 +368,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_local_path(self):
     """Tests the get_local_path function and local_path property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     _ = lnk_file.get_local_path()
 
@@ -366,12 +384,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_network_path(self):
     """Tests the get_network_path function and network_path property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     _ = lnk_file.get_network_path()
 
@@ -381,12 +400,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_description(self):
     """Tests the get_description function and description property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     _ = lnk_file.get_description()
 
@@ -396,12 +416,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_relative_path(self):
     """Tests the get_relative_path function and relative_path property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     _ = lnk_file.get_relative_path()
 
@@ -411,12 +432,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_working_directory(self):
     """Tests the get_working_directory function and working_directory property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     _ = lnk_file.get_working_directory()
 
@@ -426,12 +448,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_command_line_arguments(self):
     """Tests the get_command_line_arguments function and command_line_arguments property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     _ = lnk_file.get_command_line_arguments()
 
@@ -441,12 +464,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_icon_location(self):
     """Tests the get_icon_location function and icon_location property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     _ = lnk_file.get_icon_location()
 
@@ -456,12 +480,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_environment_variables_location(self):
     """Tests the get_environment_variables_location function and environment_variables_location property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     _ = lnk_file.get_environment_variables_location()
 
@@ -471,12 +496,13 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_machine_identifier(self):
     """Tests the get_machine_identifier function and machine_identifier property."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
     lnk_file = pylnk.file()
 
-    lnk_file.open(unittest.source)
+    lnk_file.open(test_source)
 
     _ = lnk_file.get_machine_identifier()
 

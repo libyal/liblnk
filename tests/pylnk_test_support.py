@@ -37,27 +37,30 @@ class SupportFunctionsTests(unittest.TestCase):
 
   def test_check_file_signature(self):
     """Tests the check_file_signature function."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
-    result = pylnk.check_file_signature(unittest.source)
+    result = pylnk.check_file_signature(test_source)
     self.assertTrue(result)
 
   def test_check_file_signature_file_object(self):
     """Tests the check_file_signature_file_object function."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
-    with open(unittest.source, "rb") as file_object:
+    with open(test_source, "rb") as file_object:
       result = pylnk.check_file_signature_file_object(file_object)
       self.assertTrue(result)
 
   def test_open(self):
     """Tests the open function."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
-    lnk_file = pylnk.open(unittest.source)
+    lnk_file = pylnk.open(test_source)
     self.assertIsNotNone(lnk_file)
 
     lnk_file.close()
@@ -66,17 +69,18 @@ class SupportFunctionsTests(unittest.TestCase):
       pylnk.open(None)
 
     with self.assertRaises(ValueError):
-      pylnk.open(unittest.source, mode="w")
+      pylnk.open(test_source, mode="w")
 
   def test_open_file_object(self):
     """Tests the open_file_object function."""
-    if not unittest.source:
+    test_source = unittest.source
+    if not test_source:
       raise unittest.SkipTest("missing source")
 
-    if not os.path.isfile(unittest.source):
+    if not os.path.isfile(test_source):
       raise unittest.SkipTest("source not a regular file")
 
-    with open(unittest.source, "rb") as file_object:
+    with open(test_source, "rb") as file_object:
       lnk_file = pylnk.open_file_object(file_object)
       self.assertIsNotNone(lnk_file)
 
