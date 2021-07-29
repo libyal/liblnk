@@ -27,6 +27,7 @@
 #include "liblnk_debug.h"
 #include "liblnk_file_header.h"
 #include "liblnk_io_handle.h"
+#include "liblnk_libbfio.h"
 #include "liblnk_libcerror.h"
 #include "liblnk_libcnotify.h"
 #include "liblnk_libfdatetime.h"
