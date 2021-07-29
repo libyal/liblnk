@@ -1317,25 +1317,23 @@ int liblnk_internal_file_open_read(
 			 "Reading description data string:\n" );
 		}
 #endif
-		read_count = liblnk_data_string_read(
-		              internal_file->description,
-		              internal_file->io_handle,
-		              file_io_handle,
-		              file_offset,
-		              error );
-
-		if( read_count <= -1 )
+		if( liblnk_data_string_read_file_io_handle(
+		     internal_file->description,
+		     internal_file->io_handle,
+		     file_io_handle,
+		     file_offset,
+		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_IO,
 			 LIBCERROR_IO_ERROR_READ_FAILED,
-			 "%s: unable to read description.",
+			 "%s: unable to read description data string.",
 			 function );
 
 			goto on_error;
 		}
-		file_offset += read_count;
+		file_offset += 2 + internal_file->description->data_size;
 	}
 	if( ( internal_file->file_information->data_flags & LIBLNK_DATA_FLAG_HAS_RELATIVE_PATH_STRING ) != 0 )
 	{
@@ -1359,25 +1357,23 @@ int liblnk_internal_file_open_read(
 			 "Reading relative path data string:\n" );
 		}
 #endif
-		read_count = liblnk_data_string_read(
-		              internal_file->relative_path,
-		              internal_file->io_handle,
-		              file_io_handle,
-		              file_offset,
-		              error );
-
-		if( read_count <= -1 )
+		if( liblnk_data_string_read_file_io_handle(
+		     internal_file->relative_path,
+		     internal_file->io_handle,
+		     file_io_handle,
+		     file_offset,
+		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_IO,
 			 LIBCERROR_IO_ERROR_READ_FAILED,
-			 "%s: unable to read relative path.",
+			 "%s: unable to read relative path data string.",
 			 function );
 
 			goto on_error;
 		}
-		file_offset += read_count;
+		file_offset += 2 + internal_file->relative_path->data_size;
 	}
 	if( ( internal_file->file_information->data_flags & LIBLNK_DATA_FLAG_HAS_WORKING_DIRECTORY_STRING ) != 0 )
 	{
@@ -1401,25 +1397,23 @@ int liblnk_internal_file_open_read(
 			 "Reading working directory data string:\n" );
 		}
 #endif
-		read_count = liblnk_data_string_read(
-		              internal_file->working_directory,
-		              internal_file->io_handle,
-		              file_io_handle,
-		              file_offset,
-		              error );
-
-		if( read_count <= -1 )
+		if( liblnk_data_string_read_file_io_handle(
+		     internal_file->working_directory,
+		     internal_file->io_handle,
+		     file_io_handle,
+		     file_offset,
+		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_IO,
 			 LIBCERROR_IO_ERROR_READ_FAILED,
-			 "%s: unable to read working directory.",
+			 "%s: unable to read working directory data string.",
 			 function );
 
 			goto on_error;
 		}
-		file_offset += read_count;
+		file_offset += 2 + internal_file->working_directory->data_size;
 	}
 	if( ( internal_file->file_information->data_flags & LIBLNK_DATA_FLAG_HAS_COMMAND_LINE_ARGUMENTS_STRING ) != 0 )
 	{
@@ -1443,25 +1437,23 @@ int liblnk_internal_file_open_read(
 			 "Reading command line arguments data string:\n" );
 		}
 #endif
-		read_count = liblnk_data_string_read(
-		              internal_file->command_line_arguments,
-		              internal_file->io_handle,
-		              file_io_handle,
-		              file_offset,
-		              error );
-
-		if( read_count <= -1 )
+		if( liblnk_data_string_read_file_io_handle(
+		     internal_file->command_line_arguments,
+		     internal_file->io_handle,
+		     file_io_handle,
+		     file_offset,
+		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_IO,
 			 LIBCERROR_IO_ERROR_READ_FAILED,
-			 "%s: unable to read command line arguments.",
+			 "%s: unable to read command line arguments data string.",
 			 function );
 
 			goto on_error;
 		}
-		file_offset += read_count;
+		file_offset += 2 + internal_file->command_line_arguments->data_size;
 	}
 	if( ( internal_file->file_information->data_flags & LIBLNK_DATA_FLAG_HAS_ICON_LOCATION_STRING ) != 0 )
 	{
@@ -1485,25 +1477,23 @@ int liblnk_internal_file_open_read(
 			 "Reading icon location data string:\n" );
 		}
 #endif
-		read_count = liblnk_data_string_read(
-		              internal_file->icon_location,
-		              internal_file->io_handle,
-		              file_io_handle,
-		              file_offset,
-		              error );
-
-		if( read_count <= -1 )
+		if( liblnk_data_string_read_file_io_handle(
+		     internal_file->icon_location,
+		     internal_file->io_handle,
+		     file_io_handle,
+		     file_offset,
+		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_IO,
 			 LIBCERROR_IO_ERROR_READ_FAILED,
-			 "%s: unable to read icon location.",
+			 "%s: unable to read icon location data string.",
 			 function );
 
 			goto on_error;
 		}
-		file_offset += read_count;
+		file_offset += 2 + internal_file->icon_location->data_size;
 	}
 	if( file_offset < (off64_t) internal_file->io_handle->file_size )
 	{

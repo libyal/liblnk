@@ -144,18 +144,260 @@ int liblnk_data_string_free(
 }
 
 /* Reads a data string
- * Returns the number of bytes read if successful or -1 on error
+ * Returns 1 if successful or -1 on error
  */
-ssize_t liblnk_data_string_read(
-         liblnk_data_string_t *data_string,
-         liblnk_io_handle_t *io_handle,
-         libbfio_handle_t *file_io_handle,
-         off64_t data_string_offset,
-         libcerror_error_t **error )
+int liblnk_data_string_read_data(
+     liblnk_data_string_t *data_string,
+     liblnk_io_handle_t *io_handle,
+     const uint8_t *data,
+     size_t data_size,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_data_string_read_data";
+
+	if( data_string == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data string.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_string->data != NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: invalid data string - data already set.",
+		 function );
+
+		return( -1 );
+	}
+	if( io_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( data_size < 2 )
+	 || ( data_size > (size_t) SSIZE_MAX ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid data size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	/* Store is unicode value for internal use
+	 */
+	data_string->is_unicode = io_handle->is_unicode;
+
+	byte_stream_copy_to_uint16_little_endian(
+	 data,
+	 data_string->data_size );
+
+#if defined( HAVE_DEBUG_OUTPUT )
+	if( libcnotify_verbose != 0 )
+	{
+		libcnotify_printf(
+		 "%s: data string size\t\t: %" PRIzd "\n",
+		 function,
+		 data_string->data_size );
+	}
+#endif
+	if( data_string->data_size > 0 )
+	{
+		/* The size contains the number of characters
+		 * a Unicode (UTF-16) string requires 2 bytes per character
+		 */
+		if( data_string->is_unicode != 0 )
+		{
+			if( data_string->data_size > ( ( data_size - 2 ) / 2 ) )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+				 "%s: invalid data string size value out of bounds.",
+				 function );
+
+				goto on_error;
+			}
+			data_string->data_size *= 2;
+		}
+		else
+		{
+			if( data_string->data_size > ( data_size - 2 ) )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+				 "%s: invalid data string size value out of bounds.",
+				 function );
+
+				goto on_error;
+			}
+		}
+		if( data_string->data_size > (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: invalid data string size value exceed maximum allocation size.",
+			 function );
+
+			goto on_error;
+		}
+		data_string->data = (uint8_t *) memory_allocate(
+		                                 sizeof( uint8_t ) * data_string->data_size );
+
+		if( data_string->data == NULL )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+			 "%s: unable to create data string data.",
+			 function );
+
+			goto on_error;
+		}
+		if( memory_copy(
+		     data_string->data,
+		     &( data[ 2 ] ),
+		     data_string->data_size ) == NULL )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+			 "%s: unable to copy data string data.",
+			 function );
+
+			goto on_error;
+		}
+		if( data_string->data == NULL )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+			 "%s: unable to create data string data.",
+			 function );
+
+			goto on_error;
+		}
+#if defined( HAVE_DEBUG_OUTPUT )
+		if( libcnotify_verbose != 0 )
+		{
+			libcnotify_printf(
+			 "%s: data string data:\n",
+			 function );
+			libcnotify_print_data(
+			 data_string->data,
+			 data_string->data_size,
+			 0 );
+		}
+#endif
+#if defined( HAVE_DEBUG_OUTPUT )
+		if( libcnotify_verbose != 0 )
+		{
+			if( data_string->is_unicode != 0 )
+			{
+				if( liblnk_debug_print_utf16_string_value(
+				     function,
+				     "data string\t\t\t",
+				     data_string->data,
+				     data_string->data_size,
+				     LIBUNA_ENDIAN_LITTLE,
+				     error ) != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+					 "%s: unable to print UTF-16 string value.",
+					 function );
+
+					goto on_error;
+				}
+			}
+			else
+			{
+				if( liblnk_debug_print_string_value(
+				     function,
+				     "data string\t\t\t",
+				     data_string->data,
+				     data_string->data_size,
+				     io_handle->ascii_codepage,
+				     error ) != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+					 "%s: unable to print string value.",
+					 function );
+
+					goto on_error;
+				}
+			}
+			libcnotify_printf(
+			 "\n" );
+		}
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+	}
+	return( 1 );
+
+on_error:
+	if( data_string->data != NULL )
+	{
+		memory_free(
+		 data_string->data );
+
+		data_string->data = NULL;
+	}
+	return( -1 );
+}
+
+/* Reads a data string
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_data_string_read_file_io_handle(
+     liblnk_data_string_t *data_string,
+     liblnk_io_handle_t *io_handle,
+     libbfio_handle_t *file_io_handle,
+     off64_t file_offset,
+     libcerror_error_t **error )
 {
 	uint8_t data_string_size_data[ 2 ];
 
-	static char *function = "liblnk_data_string_read";
+	static char *function = "liblnk_data_string_read_file_io_handle";
 	ssize_t read_count    = 0;
 
 	if( data_string == NULL )
@@ -201,15 +443,15 @@ ssize_t liblnk_data_string_read(
 		libcnotify_printf(
 		 "%s: reading data string at offset: %" PRIi64 " (0x%08" PRIx64 ")\n",
 		 function,
-		 data_string_offset,
-		 data_string_offset );
+		 file_offset,
+		 file_offset );
 	}
 #endif
 	read_count = libbfio_handle_read_buffer_at_offset(
 	              file_io_handle,
 	              data_string_size_data,
 	              2,
-	              data_string_offset,
+	              file_offset,
 	              error );
 
 	if( read_count != (ssize_t) 2 )
@@ -220,20 +462,20 @@ ssize_t liblnk_data_string_read(
 		 LIBCERROR_IO_ERROR_READ_FAILED,
 		 "%s: unable to read data string size at offset: %" PRIi64 " (0x%08" PRIx64 ").",
 		 function,
-		 data_string_offset,
-		 data_string_offset );
+		 file_offset,
+		 file_offset );
 
 		goto on_error;
 	}
 	byte_stream_copy_to_uint16_little_endian(
 	 data_string_size_data,
 	 data_string->data_size );
-	
+
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
 	{
 		libcnotify_printf(
-		 "%s: data string size\t\t\t\t: %" PRIzd "\n",
+		 "%s: data string size\t\t: %" PRIzd "\n",
 		 function,
 		 data_string->data_size );
 	}
@@ -308,7 +550,7 @@ ssize_t liblnk_data_string_read(
 			{
 				if( liblnk_debug_print_utf16_string_value(
 				     function,
-				     "data string\t\t\t\t\t",
+				     "data string\t\t\t",
 				     data_string->data,
 				     data_string->data_size,
 				     LIBUNA_ENDIAN_LITTLE,
@@ -328,7 +570,7 @@ ssize_t liblnk_data_string_read(
 			{
 				if( liblnk_debug_print_string_value(
 				     function,
-				     "data string\t\t\t\t\t",
+				     "data string\t\t\t",
 				     data_string->data,
 				     data_string->data_size,
 				     io_handle->ascii_codepage,
@@ -349,7 +591,7 @@ ssize_t liblnk_data_string_read(
 		}
 #endif /* defined( HAVE_DEBUG_OUTPUT ) */
 	}
-	return( read_count + 2 );
+	return( 1 );
 
 on_error:
 	if( data_string->data != NULL )

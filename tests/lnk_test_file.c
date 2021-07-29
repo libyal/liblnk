@@ -1528,7 +1528,58 @@ on_error:
 	return( 0 );
 }
 
-/* TODO: add tests for liblnk_file_link_refers_to_file */
+/* Tests the liblnk_file_link_refers_to_file function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_file_link_refers_to_file(
+     liblnk_file_t *file )
+{
+	libcerror_error_t *error = NULL;
+	int result               = 0;
+
+	/* Test regular cases
+	 */
+	result = liblnk_file_link_refers_to_file(
+	          file,
+	          &error );
+
+	LNK_TEST_ASSERT_NOT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = liblnk_file_link_refers_to_file(
+	          NULL,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	return( 0 );
+}
 
 /* Tests the liblnk_file_get_file_creation_time function
  * Returns 1 if successful or 0 if not
@@ -5878,7 +5929,58 @@ on_error:
 
 /* TODO: add tests for liblnk_file_copy_link_target_identifier_data */
 
-/* TODO: add tests for liblnk_file_has_distributed_link_tracking_data */
+/* Tests the liblnk_file_has_distributed_link_tracking_data function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_file_has_distributed_link_tracking_data(
+     liblnk_file_t *file )
+{
+	libcerror_error_t *error = NULL;
+	int result               = 0;
+
+	/* Test regular cases
+	 */
+	result = liblnk_file_has_distributed_link_tracking_data(
+	          file,
+	          &error );
+
+	LNK_TEST_ASSERT_NOT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = liblnk_file_has_distributed_link_tracking_data(
+	          NULL,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	return( 0 );
+}
 
 /* Tests the liblnk_file_get_utf8_machine_identifier_size function
  * Returns 1 if successful or 0 if not
@@ -6898,6 +7000,8 @@ int main(
 
 		/* TODO: add tests for liblnk_internal_file_open_read */
 
+		/* TODO: add tests for liblnk_internal_file_read_extra_data_blocks */
+
 #endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 
 		LNK_TEST_RUN_WITH_ARGS(
@@ -6915,7 +7019,10 @@ int main(
 		 lnk_test_file_get_data_flags,
 		 file );
 
-		/* TODO: add tests for liblnk_file_link_refers_to_file */
+		LNK_TEST_RUN_WITH_ARGS(
+		 "liblnk_file_link_refers_to_file",
+		 lnk_test_file_link_refers_to_file,
+		 file );
 
 		LNK_TEST_RUN_WITH_ARGS(
 		 "liblnk_file_get_file_creation_time",
@@ -7154,7 +7261,10 @@ int main(
 
 		/* TODO: add tests for liblnk_file_copy_link_target_identifier_data */
 
-		/* TODO: add tests for liblnk_file_has_distributed_link_tracking_data */
+		LNK_TEST_RUN_WITH_ARGS(
+		 "liblnk_file_has_distributed_link_tracking_data",
+		 lnk_test_file_has_distributed_link_tracking_data,
+		 file );
 
 		LNK_TEST_RUN_WITH_ARGS(
 		 "liblnk_file_get_utf8_machine_identifier_size",
