@@ -67,6 +67,7 @@ members:
 - name: header_size
   aliases: [HeaderSize]
   data_type: uint32
+  value: 76
 - name: class_identifier
   aliases: [LinkCLSID]
   type: uuid
@@ -101,15 +102,15 @@ members:
 - name: hot_key
   aliases: [HotKey]
   data_type: uint16
-- name: reserved1
+- name: unknown1
   aliases: [Reserved1]
   data_type: uint16
   value: 0
-- name: reserved2
+- name: unknown2
   aliases: [Reserved2]
   data_type: uint32
   value: 0
-- name: reserved3
+- name: unknown3
   aliases: [Reserved3]
   data_type: uint32
   value: 0

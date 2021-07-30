@@ -1,5 +1,5 @@
 /*
- * File header of a Windows Shortcut File (LNK) format
+ * File header of the Windows Shortcut File (LNK) format
  *
  * Copyright (C) 2009-2021, Joachim Metz <joachim.metz@gmail.com>
  *

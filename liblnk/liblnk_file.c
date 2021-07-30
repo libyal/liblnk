@@ -1190,6 +1190,7 @@ int liblnk_internal_file_open_read(
 	if( liblnk_file_header_read_file_io_handle(
 	     internal_file->file_information,
 	     file_io_handle,
+	     0,
 	     error ) != 1 )
 	{
 		libcerror_error_set(
@@ -2591,7 +2592,7 @@ int liblnk_file_get_file_size(
 
 		return( -1 );
 	}
-	*file_size = internal_file->file_information->size;
+	*file_size = internal_file->file_information->file_size;
 
 	return( 1 );
 }
@@ -2796,7 +2797,7 @@ int liblnk_file_get_file_attribute_flags(
 
 		return( -1 );
 	}
-	*file_attribute_flags = internal_file->file_information->attribute_flags;
+	*file_attribute_flags = internal_file->file_information->file_attribute_flags;
 
 	return( 1 );
 }

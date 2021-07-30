@@ -35,7 +35,7 @@
 
 #include "lnk_file_header.h"
 
-/* Creates file header
+/* Creates a file header
  * Make sure the value file_header is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
@@ -108,7 +108,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees file header
+/* Frees a file header
  * Returns 1 if successful or -1 on error
  */
 int liblnk_file_header_free(
@@ -246,11 +246,11 @@ int liblnk_file_header_read_data(
 
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_file_header_t *) data )->file_attribute_flags,
-	 file_header->attribute_flags );
+	 file_header->file_attribute_flags );
 
 	byte_stream_copy_to_uint64_little_endian(
 	 ( (lnk_file_header_t *) data )->creation_time,
-	 file_header->creation_time )
+	 file_header->creation_time );
 
 	byte_stream_copy_to_uint64_little_endian(
 	 ( (lnk_file_header_t *) data )->access_time,
@@ -262,7 +262,7 @@ int liblnk_file_header_read_data(
 
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_file_header_t *) data )->file_size,
-	 file_header->size );
+	 file_header->file_size );
 
 	byte_stream_copy_to_uint32_little_endian(
 	 ( (lnk_file_header_t *) data )->icon_index,
@@ -314,9 +314,9 @@ int liblnk_file_header_read_data(
 		libcnotify_printf(
 		 "%s: file attribute flags\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
-		 file_header->attribute_flags );
+		 file_header->file_attribute_flags );
 		liblnk_debug_print_file_attribute_flags(
-		 file_header->attribute_flags );
+		 file_header->file_attribute_flags );
 		libcnotify_printf(
 		 "\n" );
 
@@ -333,7 +333,7 @@ int liblnk_file_header_read_data(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-			 "%s: unable to print filetime value.",
+			 "%s: unable to print FILETIME value.",
 			 function );
 
 			return( -1 );
@@ -351,7 +351,7 @@ int liblnk_file_header_read_data(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-			 "%s: unable to print filetime value.",
+			 "%s: unable to print FILETIME value.",
 			 function );
 
 			return( -1 );
@@ -369,7 +369,7 @@ int liblnk_file_header_read_data(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-			 "%s: unable to print filetime value.",
+			 "%s: unable to print FILETIME value.",
 			 function );
 
 			return( -1 );
@@ -377,7 +377,7 @@ int liblnk_file_header_read_data(
 		libcnotify_printf(
 		 "%s: file size\t\t\t\t\t: %" PRIu32 " bytes\n",
 		 function,
-		 file_header->size );
+		 file_header->file_size );
 
 		libcnotify_printf(
 		 "%s: icon index\t\t\t\t: 0x%08" PRIx32 "\n",
@@ -413,6 +413,7 @@ int liblnk_file_header_read_data(
 int liblnk_file_header_read_file_io_handle(
      liblnk_file_header_t *file_header,
      libbfio_handle_t *file_io_handle,
+     off64_t file_offset,
      libcerror_error_t **error )
 {
 	uint8_t file_header_data[ sizeof( lnk_file_header_t ) ];
@@ -435,15 +436,17 @@ int liblnk_file_header_read_file_io_handle(
 	if( libcnotify_verbose != 0 )
 	{
 		libcnotify_printf(
-		 "%s: reading file header at offset: 0 (0x00000000)\n",
-		 function );
+		 "%s: reading file header at offset: %" PRIi64 " (0x%08" PRIx64 ")\n",
+		 function,
+		 file_offset,
+		 file_offset );
 	}
 #endif
 	read_count = libbfio_handle_read_buffer_at_offset(
 	              file_io_handle,
 	              file_header_data,
 	              sizeof( lnk_file_header_t ),
-	              0,
+	              file_offset,
 	              error );
 
 	if( read_count != (ssize_t) sizeof( lnk_file_header_t ) )
@@ -452,8 +455,10 @@ int liblnk_file_header_read_file_io_handle(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_IO,
 		 LIBCERROR_IO_ERROR_READ_FAILED,
-		 "%s: unable to read file header data at offset: 0 (0x00000000).",
-		 function );
+		 "%s: unable to read file header data at offset: %" PRIi64 " (0x%08" PRIx64 ").",
+		 function,
+		 file_offset,
+		 file_offset );
 
 		return( -1 );
 	}

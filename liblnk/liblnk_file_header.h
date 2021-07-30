@@ -44,28 +44,28 @@ struct liblnk_file_header
 	 */
 	uint32_t data_flags;
 
-	/* The size
+	/* The file attribute flags
 	 */
-	uint32_t size;
-
-	/* The attribute flags
-	 */
-	uint32_t attribute_flags;
+	uint32_t file_attribute_flags;
 
 	/* The creation date and time
 	 * Contains a 64-bit filetime value
 	 */
 	uint64_t creation_time;
 
-	/* The last modificatoin date and time
-	 * Contains a 64-bit filetime value
-	 */
-	uint64_t modification_time;
-
 	/* The last access date and time
 	 * Contains a 64-bit filetime value
 	 */
 	uint64_t access_time;
+
+	/* The last modification date and time
+	 * Contains a 64-bit filetime value
+	 */
+	uint64_t modification_time;
+
+	/* The file size
+	 */
+	uint32_t file_size;
 
 	/* The icon index
 	 */
@@ -97,6 +97,7 @@ int liblnk_file_header_read_data(
 int liblnk_file_header_read_file_io_handle(
      liblnk_file_header_t *file_header,
      libbfio_handle_t *file_io_handle,
+     off64_t file_offset,
      libcerror_error_t **error );
 
 #if defined( __cplusplus )

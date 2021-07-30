@@ -327,8 +327,8 @@ int lnk_test_file_header_read_data(
 	 error );
 
 	LNK_TEST_ASSERT_EQUAL_UINT32(
-	 "file_header->size",
-	 file_header->size,
+	 "file_header->file_size",
+	 file_header->file_size,
 	 709904 );
 
 	/* Test error cases
@@ -585,6 +585,7 @@ int lnk_test_file_header_read_file_io_handle(
 	result = liblnk_file_header_read_file_io_handle(
 	          file_header,
 	          file_io_handle,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -601,6 +602,7 @@ int lnk_test_file_header_read_file_io_handle(
 	result = liblnk_file_header_read_file_io_handle(
 	          NULL,
 	          file_io_handle,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -618,6 +620,7 @@ int lnk_test_file_header_read_file_io_handle(
 	result = liblnk_file_header_read_file_io_handle(
 	          file_header,
 	          NULL,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -671,6 +674,7 @@ int lnk_test_file_header_read_file_io_handle(
 	result = liblnk_file_header_read_file_io_handle(
 	          file_header,
 	          file_io_handle,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -726,6 +730,7 @@ int lnk_test_file_header_read_file_io_handle(
 	result = liblnk_file_header_read_file_io_handle(
 	          file_header,
 	          file_io_handle,
+	          0,
 	          &error );
 
 	byte_stream_copy_from_uint32_little_endian(
@@ -838,7 +843,11 @@ int main(
 
 	return( EXIT_SUCCESS );
 
+#if defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT )
+
 on_error:
 	return( EXIT_FAILURE );
+
+#endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 }
 
