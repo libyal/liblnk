@@ -672,7 +672,7 @@ int liblnk_debug_print_string_value(
 		goto on_error;
 	}
 	string = system_string_allocate(
-			string_size );
+	          string_size );
 
 	if( string == NULL )
 	{

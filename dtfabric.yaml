@@ -3,7 +3,7 @@ type: format
 description: Windows Shortcut File (LNK) format
 urls:
 - 'https://msdn.microsoft.com/en-us/library/dd871305.aspx'
-- 'https://github.com/libyal/liblnk/blob/master/documentation/Windows%20Shortcut%20File%20(LNK)%20format.asciidoc'
+- 'https://github.com/libyal/liblnk/blob/main/documentation/Windows%20Shortcut%20File%20(LNK)%20format.asciidoc'
 metadata:
   authors: ['Joachim Metz <joachim.metz@gmail.com>']
   year: 2009
