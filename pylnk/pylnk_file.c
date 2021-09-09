@@ -648,6 +648,15 @@ void pylnk_file_free(
 
 		return;
 	}
+	if( pylnk_file->file_io_handle != NULL )
+	{
+		if( pylnk_file_close(
+		     pylnk_file,
+		     NULL ) == NULL )
+		{
+			return;
+		}
+	}
 	if( pylnk_file->file != NULL )
 	{
 		Py_BEGIN_ALLOW_THREADS
