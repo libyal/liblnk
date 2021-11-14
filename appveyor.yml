@@ -1,6 +1,6 @@
 environment:
   nuget_token:
-    secure: s3Sl1ZiRw+J7YD+2wr1elu0unq6koZek+JmOcYKfDPfwrz2NigSu5SD8WvlwdIcH
+    secure: HYYxq3O5WWQ5cjS9AMu1OxtPtevYd1f8pglgXUCrb9uK8T6C+P8cUgfCpiX/Z2YJ
   pypi_token:
     secure: VHuZiUWgTqTciKE2nsv/LnOzyM4uRdrNKBIdRDMmLDusmU2artgxHGP07emAy+w4uqx0yIn6p2YpJz6Kk9VaNyY92bNcH6XfudcwiiHNx5YodywIlLablGAwO85gHT5Acr7rJVvBErJcex8mM+bfkiLQTTXQlMBT3q2PtGwhImCGWRzdE08qJLfzEjcrgrYrpWcYntto6MTsLHI8OB+Pij8Ha2kHuw1kEb0VUzDasfi+gMTquzev4L3mOW3wbnPBdWzW5h3TWb7rcGrpMXiXRg==
   matrix:
