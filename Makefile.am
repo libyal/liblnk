@@ -38,7 +38,6 @@ DPKG_FILES = \
 	dpkg/rules \
 	dpkg/liblnk.install \
 	dpkg/liblnk-dev.install \
-	dpkg/liblnk-python.install \
 	dpkg/liblnk-python3.install \
 	dpkg/liblnk-tools.install \
 	dpkg/source/format
