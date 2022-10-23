@@ -6675,6 +6675,7 @@ int liblnk_file_get_utf16_machine_identifier(
 }
 
 /* Retrieves the droid volume identifier
+ * The identifier is a GUID stored in little-endian and is 16 bytes of size
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_droid_volume_identifier(
@@ -6754,6 +6755,7 @@ int liblnk_file_get_droid_volume_identifier(
 }
 
 /* Retrieves the droid file identifier
+ * The identifier is a GUID stored in little-endian and is 16 bytes of size
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_droid_file_identifier(
@@ -6833,6 +6835,7 @@ int liblnk_file_get_droid_file_identifier(
 }
 
 /* Retrieves the birth droid volume identifier
+ * The identifier is a GUID stored in little-endian and is 16 bytes of size
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_birth_droid_volume_identifier(
@@ -6912,6 +6915,7 @@ int liblnk_file_get_birth_droid_volume_identifier(
 }
 
 /* Retrieves the birth droid file identifier
+ * The identifier is a GUID stored in little-endian and is 16 bytes of size
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
 int liblnk_file_get_birth_droid_file_identifier(
