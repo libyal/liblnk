@@ -1703,6 +1703,17 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 
 		return( -1 );
 	}
+	if( internal_file->io_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
 	if( internal_file->file_information == NULL )
 	{
 		libcerror_error_set(
@@ -1750,7 +1761,22 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 			 "%s: unable to read data block.",
 			 function );
 
-			goto on_error;
+#if defined( HAVE_DEBUG_OUTPUT )
+			if( ( error != NULL )
+			 && ( *error != NULL ) )
+			{
+				libcnotify_print_error_backtrace(
+				 *error );
+			}
+#endif
+			libcerror_error_free(
+			 error );
+
+			internal_file->io_handle->flags |= LIBLNK_IO_HANDLE_FLAG_IS_CORRUPTED;
+
+			read_count += 4;
+
+			break;
 		}
 		if( data_block->size == 0 )
 		{
@@ -2290,6 +2316,78 @@ int liblnk_file_set_ascii_codepage(
 	internal_file->io_handle->ascii_codepage = ascii_codepage;
 
 	return( 1 );
+}
+
+/* Determine if the file corrupted
+ * Returns 1 if corrupted, 0 if not or -1 on error
+ */
+int liblnk_file_is_corrupted(
+     liblnk_file_t *file,
+     libcerror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_is_corrupted";
+	int result                            = 0;
+
+	if( file == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( internal_file->io_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid file - missing IO handle.",
+		 function );
+
+		return( -1 );
+	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
+	if( ( internal_file->io_handle->flags & LIBLNK_IO_HANDLE_FLAG_IS_CORRUPTED ) != 0 )
+	{
+		result = 1;
+	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
+	return( result );
 }
 
 /* -------------------------------------------------------------------------

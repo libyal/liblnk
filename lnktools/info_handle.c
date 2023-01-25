@@ -734,10 +734,6 @@ int info_handle_data_flags_fprint(
 
 		return( -1 );
 	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "Windows Shortcut information:\n" );
-
 	if( ( data_flags & LIBLNK_DATA_FLAG_HAS_LINK_TARGET_IDENTIFIER ) != 0 )
 	{
 		fprintf(
@@ -797,10 +793,6 @@ int info_handle_data_flags_fprint(
 		 "\tContains no distributed link tracking data block\n" );
 	}
 /* TODO */
-	fprintf(
-	 info_handle->notify_stream,
-	 "\n" );
-
 	return( 1 );
 }
 
@@ -2544,6 +2536,7 @@ int info_handle_file_fprint(
      libcerror_error_t **error )
 {
 	static char *function = "info_handle_file_fprint";
+	int is_corrupted      = 0;
 
 	if( info_handle == NULL )
 	{
@@ -2556,6 +2549,10 @@ int info_handle_file_fprint(
 
 		return( -1 );
 	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "Windows Shortcut information:\n" );
+
 	if( info_handle_data_flags_fprint(
 	     info_handle,
 	     error ) != 1 )
@@ -2569,6 +2566,31 @@ int info_handle_file_fprint(
 
 		return( -1 );
 	}
+	is_corrupted = liblnk_file_is_corrupted(
+	                info_handle->input_file,
+	                error );
+
+	if( is_corrupted == -1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to determine if file is corrupted.",
+		 function );
+
+		return( -1 );
+	}
+	if( is_corrupted != 0 )
+	{
+		fprintf(
+		 info_handle->notify_stream,
+		 "\tIs corrupted\n" );
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\n" );
+
 	if( info_handle_link_information_fprint(
 	     info_handle,
 	     error ) != 1 )

@@ -184,6 +184,11 @@ int liblnk_file_set_ascii_codepage(
      int ascii_codepage,
      libcerror_error_t **error );
 
+LIBLNK_EXTERN \
+int liblnk_file_is_corrupted(
+     liblnk_file_t *file,
+     libcerror_error_t **error );
+
 /* -------------------------------------------------------------------------
  * Link information functions
  * ------------------------------------------------------------------------- */

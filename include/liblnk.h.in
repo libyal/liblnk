@@ -278,6 +278,14 @@ int liblnk_file_set_ascii_codepage(
      int ascii_codepage,
      liblnk_error_t **error );
 
+/* Determine if the file is corrupted
+ * Returns 1 if corrupted, 0 if not or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_is_corrupted(
+     liblnk_file_t *file,
+     liblnk_error_t **error );
+
 /* -------------------------------------------------------------------------
  * Link information functions
  * ------------------------------------------------------------------------- */

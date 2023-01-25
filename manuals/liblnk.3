@@ -1,4 +1,4 @@
-.Dd April 15, 2019
+.Dd January 15, 2023
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -64,6 +64,8 @@ File functions
 .Fn liblnk_file_get_ascii_codepage "liblnk_file_t *file" "int *ascii_codepage" "liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_set_ascii_codepage "liblnk_file_t *file" "int ascii_codepage" "liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_is_corrupted "liblnk_file_t *file" "liblnk_error_t **error"
 .Pp
 Available when compiled with wide character string support:
 .Ft int
