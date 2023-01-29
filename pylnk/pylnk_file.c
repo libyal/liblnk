@@ -82,6 +82,13 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  "\n"
 	  "Closes a file." },
 
+	{ "is_corrupted",
+	  (PyCFunction) pylnk_file_is_corrupted,
+	  METH_NOARGS,
+	  "is_corrupted() -> Boolean\n"
+	  "\n"
+	  "Determines if the file is corrupted." },
+
 	{ "get_ascii_codepage",
 	  (PyCFunction) pylnk_file_get_ascii_codepage,
 	  METH_NOARGS,
@@ -1148,6 +1155,62 @@ PyObject *pylnk_file_close(
 	 Py_None );
 
 	return( Py_None );
+}
+
+/* Determines if the file is corrupted
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_is_corrupted(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_file_is_corrupted";
+	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_is_corrupted(
+	          pylnk_file->file,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to determine if file is corrupted.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	if( result != 0 )
+	{
+		Py_IncRef(
+		 (PyObject *) Py_True );
+
+		return( Py_True );
+	}
+	Py_IncRef(
+	 (PyObject *) Py_False );
+
+	return( Py_False );
 }
 
 /* Retrieves the codepage used for ASCII strings in the file

@@ -77,6 +77,10 @@ PyObject *pylnk_file_close(
            pylnk_file_t *pylnk_file,
            PyObject *arguments );
 
+PyObject *pylnk_file_is_corrupted(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
+
 PyObject *pylnk_file_get_ascii_codepage(
            pylnk_file_t *pylnk_file,
            PyObject *arguments );

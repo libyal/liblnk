@@ -1687,6 +1687,7 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 	liblnk_data_block_t *data_block     = NULL;
 	static char *function               = "liblnk_internal_file_read_extra_data_blocks";
 	ssize_t read_count                  = 0;
+	int result                          = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
         libfwps_storage_t *property_storage = NULL;
@@ -1747,12 +1748,14 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 
 			goto on_error;
 		}
-		if( liblnk_data_block_read_file_io_handle(
-		     data_block,
-		     internal_file->io_handle,
-		     file_io_handle,
-		     file_offset,
-		     error ) != 1 )
+		result = liblnk_data_block_read_file_io_handle(
+		          data_block,
+		          internal_file->io_handle,
+		          file_io_handle,
+		          file_offset,
+		          error );
+
+		if( result != 1 )
 		{
 			libcerror_error_set(
 			 error,
@@ -1773,12 +1776,9 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 			 error );
 
 			internal_file->io_handle->flags |= LIBLNK_IO_HANDLE_FLAG_IS_CORRUPTED;
-
-			read_count += 4;
-
-			break;
 		}
-		if( data_block->size == 0 )
+		if( ( result != 1 )
+		 || ( data_block->size == 0 ) )
 		{
 			if( liblnk_data_block_free(
 			     &data_block,
