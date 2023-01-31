@@ -25,6 +25,7 @@
 #include <common.h>
 #include <types.h>
 
+#include "liblnk_extern.h"
 #include "liblnk_io_handle.h"
 #include "liblnk_libcerror.h"
 #include "liblnk_libbfio.h"
@@ -33,13 +34,13 @@
 extern "C" {
 #endif
 
-typedef struct liblnk_data_block liblnk_data_block_t;
+typedef struct liblnk_internal_data_block liblnk_internal_data_block_t;
 
-struct liblnk_data_block
+struct liblnk_internal_data_block
 {
 	/* The size
 	 */
-	size_t size;
+	uint32_t size;
 
 	/* The signature
 	 */
@@ -51,15 +52,36 @@ struct liblnk_data_block
 
 	/* The data size
 	 */
-	size_t data_size;
+	uint32_t data_size;
+
+	/* The item value
+	 */
+	intptr_t *value;
+
+	/* The item free value function
+	 */
+	int (*free_value)(
+	       intptr_t **value,
+	       libcerror_error_t **error );
 };
 
 int liblnk_data_block_initialize(
      liblnk_data_block_t **data_block,
      libcerror_error_t **error );
 
+LIBLNK_EXTERN \
 int liblnk_data_block_free(
      liblnk_data_block_t **data_block,
+     libcerror_error_t **error );
+
+int liblnk_internal_data_block_free(
+     liblnk_internal_data_block_t **internal_data_block,
+     libcerror_error_t **error );
+
+int liblnk_data_block_set_data(
+     liblnk_data_block_t *data_block,
+     const uint8_t *data,
+     size_t data_size,
      libcerror_error_t **error );
 
 int liblnk_data_block_read_data(
@@ -73,6 +95,30 @@ int liblnk_data_block_read_file_io_handle(
      liblnk_io_handle_t *io_handle,
      libbfio_handle_t *file_io_handle,
      off64_t file_offset,
+     libcerror_error_t **error );
+
+int liblnk_internal_data_block_get_size(
+     liblnk_internal_data_block_t *internal_data_block,
+     uint32_t *size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_data_block_get_signature(
+     liblnk_data_block_t *data_block,
+     uint32_t *signature,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_data_block_get_data_size(
+     liblnk_data_block_t *data_block,
+     size_t *data_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_data_block_copy_data(
+     liblnk_data_block_t *data_block,
+     uint8_t *data,
+     size_t data_size,
      libcerror_error_t **error );
 
 #if defined( __cplusplus )

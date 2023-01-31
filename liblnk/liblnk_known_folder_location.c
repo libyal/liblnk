@@ -145,7 +145,8 @@ int liblnk_known_folder_location_read_data_block(
      const liblnk_data_block_t *data_block,
      libcerror_error_t **error )
 {
-	static char *function = "liblnk_known_folder_location_read_data_block";
+	liblnk_internal_data_block_t *internal_data_block = NULL;
+	static char *function                             = "liblnk_known_folder_location_read_data_block";
 
 	if( known_folder_location == NULL )
 	{
@@ -169,10 +170,12 @@ int liblnk_known_folder_location_read_data_block(
 
 		return( -1 );
 	}
+	internal_data_block = (liblnk_internal_data_block_t *) data_block;
+
 	if( liblnk_known_folder_location_read_data(
 	     known_folder_location,
-	     data_block->data,
-	     data_block->data_size,
+	     internal_data_block->data,
+	     internal_data_block->data_size,
 	     error ) != 1 )
 	{
 		libcerror_error_set(

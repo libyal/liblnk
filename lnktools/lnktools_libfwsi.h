@@ -52,7 +52,7 @@
 
 #include <libfwsi.h>
 
-#endif
+#endif /* defined( HAVE_LOCAL_LIBFWSI ) */
 
-#endif
+#endif /* !defined( _LNKTOOLS_LIBFWSI_H ) */
 

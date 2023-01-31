@@ -73,7 +73,7 @@ int shell_items_network_location_fprint(
      FILE *notify_stream,
      libcerror_error_t **error );
 
-int shell_items_item_list_fprint(
+int shell_items_list_fprint(
      libfwsi_item_list_t *shell_item_list,
      FILE *notify_stream,
      libcerror_error_t **error );

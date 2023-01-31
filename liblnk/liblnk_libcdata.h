@@ -1,7 +1,7 @@
 /*
- * The libfwps header wrapper
+ * The libcdata header wrapper
  *
- * Copyright (C) 2009-2023, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (C) 2009-2022, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -19,35 +19,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_LIBFWPS_H )
-#define _LIBLNK_LIBFWPS_H
+#if !defined( _LIBLNK_LIBCDATA_H )
+#define _LIBLNK_LIBCDATA_H
 
 #include <common.h>
 
-/* Define HAVE_LOCAL_LIBFWPS for local use of libfwps
+/* Define HAVE_LOCAL_LIBCDATA for local use of libcdata
  */
-#if defined( HAVE_LOCAL_LIBFWPS )
+#if defined( HAVE_LOCAL_LIBCDATA )
 
-#include <libfwps_definitions.h>
-#include <libfwps_format_class_identifier.h>
-#include <libfwps_property_identifier.h>
-#include <libfwps_record.h>
-#include <libfwps_set.h>
-#include <libfwps_store.h>
-#include <libfwps_types.h>
+#include <libcdata_array.h>
+#include <libcdata_btree.h>
+#include <libcdata_definitions.h>
+#include <libcdata_list.h>
+#include <libcdata_list_element.h>
+#include <libcdata_range_list.h>
+#include <libcdata_tree_node.h>
+#include <libcdata_types.h>
 
 #else
 
-/* If libtool DLL support is enabled set LIBFWPS_DLL_IMPORT
- * before including libfwps.h
+/* If libtool DLL support is enabled set LIBCDATA_DLL_IMPORT
+ * before including libcdata.h
  */
 #if defined( _WIN32 ) && defined( DLL_IMPORT )
-#define LIBFWPS_DLL_IMPORT
+#define LIBCDATA_DLL_IMPORT
 #endif
 
-#include <libfwps.h>
+#include <libcdata.h>
 
-#endif /* defined( HAVE_LOCAL_LIBFWPS ) */
+#endif /* defined( HAVE_LOCAL_LIBCDATA ) */
 
-#endif /* !defined( _LIBLNK_LIBFWPS_H ) */
+#endif /* !defined( _LIBLNK_LIBCDATA_H ) */
 

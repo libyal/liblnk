@@ -296,6 +296,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\liblnk\liblnk_libcdata.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\liblnk\liblnk_libcerror.h"
 				>
 			</File>

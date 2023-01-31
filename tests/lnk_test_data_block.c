@@ -127,8 +127,8 @@ int lnk_test_data_block_initialize(
 	 "error",
 	 error );
 
-	result = liblnk_data_block_free(
-	          &data_block,
+	result = liblnk_internal_data_block_free(
+	          (liblnk_internal_data_block_t **) &data_block,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -202,8 +202,8 @@ int lnk_test_data_block_initialize(
 
 			if( data_block != NULL )
 			{
-				liblnk_data_block_free(
-				 &data_block,
+				liblnk_internal_data_block_free(
+				 (liblnk_internal_data_block_t **) &data_block,
 				 NULL );
 			}
 		}
@@ -244,8 +244,8 @@ int lnk_test_data_block_initialize(
 
 			if( data_block != NULL )
 			{
-				liblnk_data_block_free(
-				 &data_block,
+				liblnk_internal_data_block_free(
+				 (liblnk_internal_data_block_t **) &data_block,
 				 NULL );
 			}
 		}
@@ -280,8 +280,8 @@ on_error:
 	}
 	if( data_block != NULL )
 	{
-		liblnk_data_block_free(
-		 &data_block,
+		liblnk_internal_data_block_free(
+		 (liblnk_internal_data_block_t **) &data_block,
 		 NULL );
 	}
 	return( 0 );
@@ -447,8 +447,8 @@ int lnk_test_data_block_read_data(
 
 	/* Clean up
 	 */
-	result = liblnk_data_block_free(
-	          &data_block,
+	result = liblnk_internal_data_block_free(
+	          (liblnk_internal_data_block_t **) &data_block,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -474,8 +474,8 @@ on_error:
 	}
 	if( data_block != NULL )
 	{
-		liblnk_data_block_free(
-		 &data_block,
+		liblnk_internal_data_block_free(
+		 (liblnk_internal_data_block_t **) &data_block,
 		 NULL );
 	}
 	return( 0 );
@@ -593,8 +593,8 @@ int lnk_test_data_block_read_file_io_handle(
 
 	/* Clean up
 	 */
-	result = liblnk_data_block_free(
-	          &data_block,
+	result = liblnk_internal_data_block_free(
+	          (liblnk_internal_data_block_t **) &data_block,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -777,8 +777,8 @@ int lnk_test_data_block_read_file_io_handle(
 
 	/* Clean up
 	 */
-	result = liblnk_data_block_free(
-	          &data_block,
+	result = liblnk_internal_data_block_free(
+	          (liblnk_internal_data_block_t **) &data_block,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -821,8 +821,8 @@ on_error:
 	}
 	if( data_block != NULL )
 	{
-		liblnk_data_block_free(
-		 &data_block,
+		liblnk_internal_data_block_free(
+		 (liblnk_internal_data_block_t **) &data_block,
 		 NULL );
 	}
 	if( io_handle != NULL )

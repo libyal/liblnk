@@ -1,4 +1,4 @@
-.Dd January 15, 2023
+.Dd January 29, 2023
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -196,6 +196,22 @@ Distributed link tracking data functions
 .Fn liblnk_file_get_birth_droid_volume_identifier "liblnk_file_t *file" "uint8_t *guid_data" "size_t guid_data_size" "liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_get_birth_droid_file_identifier "liblnk_file_t *file" "uint8_t *guid_data" "size_t guid_data_size" "liblnk_error_t **error"
+.Pp
+Extra data block functions
+.Ft int
+.Fn liblnk_file_get_number_of_data_blocks "liblnk_file_t *file" "int number_of_data_blocks" "liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_data_block_by_index "liblnk_file_t *file" "int data_block_index" "liblnk_data_block_t **data_block" "liblnk_error_t **error"
+.Pp
+Data block functions
+.Ft int
+.Fn liblnk_data_block_free "liblnk_data_block_t **data_block" "liblnk_error_t **error"
+.Ft int
+.Fn liblnk_data_block_get_signature "liblnk_data_block_t *data_block" "uint32_t *signature" "liblnk_error_t **error"
+.Ft int
+.Fn liblnk_data_block_get_data_size "liblnk_data_block_t *data_block" "size_t *data_size" "liblnk_error_t **error"
+.Ft int
+.Fn liblnk_data_block_copy_data "liblnk_data_block_t *data_block" "uint8_t *data" "size_t data_size" "liblnk_error_t **error"
 .Sh DESCRIPTION
 The
 .Fn liblnk_get_version

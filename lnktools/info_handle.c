@@ -32,8 +32,10 @@
 #include "lnktools_libclocale.h"
 #include "lnktools_libfdatetime.h"
 #include "lnktools_libfguid.h"
+#include "lnktools_libfwps.h"
 #include "lnktools_libfwsi.h"
 #include "lnktools_liblnk.h"
+#include "property_store.h"
 #include "shell_items.h"
 
 #define INFO_HANDLE_NOTIFY_STREAM	stdout
@@ -1159,7 +1161,7 @@ int info_handle_link_information_fprint(
 		else if( ( result != 0 )
 		      && ( value_string_size > 0 ) )
 		{
-			if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
+			if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
 			{
 				libcerror_error_set(
 				 error,
@@ -1243,7 +1245,7 @@ int info_handle_link_information_fprint(
 		else if( ( result != 0 )
 		      && ( value_string_size > 0 ) )
 		{
-			if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
+			if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
 			{
 				libcerror_error_set(
 				 error,
@@ -1327,7 +1329,7 @@ int info_handle_link_information_fprint(
 		else if( ( result != 0 )
 		      && ( value_string_size > 0 ) )
 		{
-			if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
+			if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
 			{
 				libcerror_error_set(
 				 error,
@@ -1446,7 +1448,7 @@ int info_handle_description_fprint(
 	else if( ( result != 0 )
 	      && ( value_string_size > 0 ) )
 	{
-		if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
+		if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
 		{
 			libcerror_error_set(
 			 error,
@@ -1564,7 +1566,7 @@ int info_handle_relative_path_fprint(
 	else if( ( result != 0 )
 	      && ( value_string_size > 0 ) )
 	{
-		if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
+		if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
 		{
 			libcerror_error_set(
 			 error,
@@ -1682,7 +1684,7 @@ int info_handle_working_directory_fprint(
 	else if( ( result != 0 )
 	      && ( value_string_size > 0 ) )
 	{
-		if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
+		if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
 		{
 			libcerror_error_set(
 			 error,
@@ -1800,7 +1802,7 @@ int info_handle_command_line_arguments_fprint(
 	else if( ( result != 0 )
 	      && ( value_string_size > 0 ) )
 	{
-		if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
+		if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
 		{
 			libcerror_error_set(
 			 error,
@@ -1918,7 +1920,7 @@ int info_handle_icon_location_fprint(
 	else if( ( result != 0 )
 	      && ( value_string_size > 0 ) )
 	{
-		if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
+		if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
 		{
 			libcerror_error_set(
 			 error,
@@ -2036,7 +2038,7 @@ int info_handle_environment_variables_location_fprint(
 	else if( ( result != 0 )
 	      && ( value_string_size > 0 ) )
 	{
-		if( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) )
+		if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
 		{
 			libcerror_error_set(
 			 error,
@@ -2087,7 +2089,7 @@ int info_handle_environment_variables_location_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tEnvironment variables location\t: %" PRIs_SYSTEM "\n",
+		 "\tLocation\t\t\t: %" PRIs_SYSTEM "\n",
 		 value_string );
 
 		memory_free(
@@ -2095,6 +2097,10 @@ int info_handle_environment_variables_location_fprint(
 
 		value_string = NULL;
 	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\n" );
+
 	return( 1 );
 
 on_error:
@@ -2148,6 +2154,18 @@ int info_handle_link_target_identifier_fprint(
 	}
 	else if( result != 0 )
 	{
+		if( ( link_target_identifier_data_size == 0 )
+		 || ( link_target_identifier_data_size > MEMORY_MAXIMUM_ALLOCATION_SIZE ) )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+			 "%s: invalid link target identifier data size value out of bounds.",
+			 function );
+
+			goto on_error;
+		}
 		link_target_identifier_data = (uint8_t *) memory_allocate(
 		                                           sizeof( uint8_t ) * link_target_identifier_data_size );
 
@@ -2212,7 +2230,7 @@ int info_handle_link_target_identifier_fprint(
 
 			goto on_error;
 		}
-		if( shell_items_item_list_fprint(
+		if( shell_items_list_fprint(
 		     shell_item_list,
 		     info_handle->notify_stream,
 		     error ) == -1 )
@@ -2239,10 +2257,6 @@ int info_handle_link_target_identifier_fprint(
 
 			goto on_error;
 		}
-		fprintf(
-		 info_handle->notify_stream,
-		 "\n" );
-
 		memory_free(
 		 link_target_identifier_data );
 
@@ -2307,10 +2321,6 @@ int info_handle_distributed_link_tracking_fprint(
 	}
 	else if( result != 0 )
 	{
-		fprintf(
-		 info_handle->notify_stream,
-		 "Distributed link tracking data:\n" );
-
 #if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 		result = liblnk_file_get_utf16_machine_identifier_size(
 			  info_handle->input_file,
@@ -2334,7 +2344,7 @@ int info_handle_distributed_link_tracking_fprint(
 			goto on_error;
 		}
 		if( ( value_string_size == 0 )
-		 || ( value_string_size > ( (size_t) SSIZE_MAX / sizeof( system_character_t ) ) ) )
+		 || ( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -2513,10 +2523,11 @@ int info_handle_distributed_link_tracking_fprint(
 
 			goto on_error;
 		}
-		fprintf(
-		 info_handle->notify_stream,
-		 "\n" );
 	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\n" );
+
 	return( 1 );
 
 on_error:
@@ -2531,12 +2542,351 @@ on_error:
 /* Prints the file information
  * Returns 1 if successful or -1 on error
  */
+int info_handle_data_block_fprint(
+     info_handle_t *info_handle,
+     liblnk_data_block_t *data_block,
+     libcerror_error_t **error )
+{
+	static char *function = "info_handle_data_block_fprint";
+	uint32_t signature    = 0;
+
+	if( info_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid info handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( liblnk_data_block_get_signature(
+	     data_block,
+	     &signature,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve signature.",
+		 function );
+
+		return( -1 );
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\tSignature\t\t\t: 0x%08" PRIx32 "",
+	 signature );
+
+	switch( signature )
+	{
+		case LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (Environment variables location)" );
+			break;
+
+		case LIBLNK_DATA_BLOCK_SIGNATURE_CONSOLE_PROPERTIES:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (Console properties)" );
+			break;
+
+		case LIBLNK_DATA_BLOCK_SIGNATURE_DISTRIBUTED_LINK_TRACKER_PROPERTIES:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (Distributed link tracker properties)" );
+			break;
+
+		case LIBLNK_DATA_BLOCK_SIGNATURE_CONSOLE_CODEPAGE:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (Console codepage)" );
+			break;
+
+		case LIBLNK_DATA_BLOCK_SIGNATURE_SPECIAL_FOLDER_LOCATION:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (Special folder location)" );
+			break;
+
+		case LIBLNK_DATA_BLOCK_SIGNATURE_DARWIN_PROPERTIES:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (Darwin properties)" );
+			break;
+
+		case LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (Icon location)" );
+			break;
+
+		case LIBLNK_DATA_BLOCK_SIGNATURE_SHIM_LAYER_PROPERTIES:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (Shim layer properties)" );
+			break;
+
+		case LIBLNK_DATA_BLOCK_SIGNATURE_METADATA_PROPERTY_STORE:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (Metadata property store)" );
+			break;
+
+		case LIBLNK_DATA_BLOCK_SIGNATURE_KNOWN_FOLDER_LOCATION:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (Known folder location)" );
+			break;
+
+		case LIBLNK_DATA_BLOCK_SIGNATURE_SHELL_ITEMS_IDENTIFIERS_LIST:
+			fprintf(
+			 info_handle->notify_stream,
+			 " (Shell item identifiers list)" );
+			break;
+
+		default:
+			break;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\n" );
+
+	switch( signature )
+	{
+		case LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION:
+			if( info_handle_environment_variables_location_fprint(
+			     info_handle,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+				 "%s: unable to print environment variables location.",
+				 function );
+
+				return( -1 );
+			}
+			break;
+
+		case LIBLNK_DATA_BLOCK_SIGNATURE_DISTRIBUTED_LINK_TRACKER_PROPERTIES:
+			if( info_handle_distributed_link_tracking_fprint(
+			     info_handle,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+				 "%s: unable to print distributed link tracking data.",
+				 function );
+
+				return( -1 );
+			}
+			break;
+
+		case LIBLNK_DATA_BLOCK_SIGNATURE_METADATA_PROPERTY_STORE:
+			if( info_handle_metadata_property_store_data_block_fprint(
+			     info_handle,
+			     data_block,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+				 "%s: unable to print metadata property store data block.",
+				 function );
+
+				return( -1 );
+			}
+			break;
+
+		default:
+			fprintf(
+			 info_handle->notify_stream,
+			 "\n" );
+
+			break;
+	}
+/* TODO print additional values */
+
+	return( 1 );
+}
+
+/* Prints a metadata property store data block
+ * Returns 1 if successful or -1 on error
+ */
+int info_handle_metadata_property_store_data_block_fprint(
+     info_handle_t *info_handle,
+     liblnk_data_block_t *data_block,
+     libcerror_error_t **error )
+{
+        libfwps_store_t *property_store          = NULL;
+	uint8_t *metadata_property_store_data    = NULL;
+	static char *function                    = "info_handle_metadata_property_store_data_block_fprint";
+	size_t metadata_property_store_data_size = 0;
+
+	if( info_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid info handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( liblnk_data_block_get_data_size(
+	     data_block,
+	     &metadata_property_store_data_size,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve metadata property store data size.",
+		 function );
+
+		goto on_error;
+	}
+	if( ( metadata_property_store_data_size == 0 )
+	 || ( metadata_property_store_data_size > MEMORY_MAXIMUM_ALLOCATION_SIZE ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid metadata property store data size value out of bounds.",
+		 function );
+
+		goto on_error;
+	}
+	metadata_property_store_data = (uint8_t *) memory_allocate(
+	                                            sizeof( uint8_t ) * metadata_property_store_data_size );
+
+	if( metadata_property_store_data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+		 "%s: unable to create metadata property store data.",
+		 function );
+
+		goto on_error;
+	}
+	if( liblnk_data_block_copy_data(
+	     data_block,
+	     metadata_property_store_data,
+	     metadata_property_store_data_size,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+		 "%s: unable to copy metadata property store data.",
+		 function );
+
+		goto on_error;
+	}
+	if( libfwps_store_initialize(
+	     &property_store,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 "%s: unable to create property store.",
+		 function );
+
+		goto on_error;
+	}
+	if( libfwps_store_copy_from_byte_stream(
+	     property_store,
+	     metadata_property_store_data,
+	     metadata_property_store_data_size,
+	     info_handle->ascii_codepage,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+		 "%s: unable to copy byte stream to property store.",
+		 function );
+
+		goto on_error;
+	}
+	if( property_store_fprint(
+	     property_store,
+	     info_handle->notify_stream,
+	     error ) == -1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 "%s: unable to print property store.",
+		 function );
+
+		goto on_error;
+	}
+	if( libfwps_store_free(
+	     &property_store,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+		 "%s: unable to free property store.",
+		 function );
+
+		goto on_error;
+	}
+	memory_free(
+	 metadata_property_store_data );
+
+	metadata_property_store_data = NULL;
+
+	return( 1 );
+
+on_error:
+	if( property_store != NULL )
+	{
+		libfwps_store_free(
+		 &property_store,
+		 NULL );
+	}
+	if( metadata_property_store_data != NULL )
+	{
+		memory_free(
+		 metadata_property_store_data );
+	}
+	return( -1 );
+}
+
+/* Prints the file information
+ * Returns 1 if successful or -1 on error
+ */
 int info_handle_file_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error )
 {
-	static char *function = "info_handle_file_fprint";
-	int is_corrupted      = 0;
+	liblnk_data_block_t *data_block = NULL;
+	static char *function           = "info_handle_file_fprint";
+	int data_block_index            = 0;
+	int is_corrupted                = 0;
+	int number_of_data_blocks       = 0;
 
 	if( info_handle == NULL )
 	{
@@ -2564,8 +2914,27 @@ int info_handle_file_fprint(
 		 "%s: unable to print data flags.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
+	if( liblnk_file_get_number_of_data_blocks(
+	     info_handle->input_file,
+	     &number_of_data_blocks,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve number of data blocks.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\tNumber of data blocks\t\t: %d\n",
+	 number_of_data_blocks );
+
 	is_corrupted = liblnk_file_is_corrupted(
 	                info_handle->input_file,
 	                error );
@@ -2579,7 +2948,7 @@ int info_handle_file_fprint(
 		 "%s: unable to determine if file is corrupted.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	if( is_corrupted != 0 )
 	{
@@ -2602,7 +2971,7 @@ int info_handle_file_fprint(
 		 "%s: unable to print link information.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	if( info_handle_description_fprint(
 	     info_handle,
@@ -2615,7 +2984,7 @@ int info_handle_file_fprint(
 		 "%s: unable to print description.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	if( info_handle_relative_path_fprint(
 	     info_handle,
@@ -2628,7 +2997,7 @@ int info_handle_file_fprint(
 		 "%s: unable to print relative path.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	if( info_handle_working_directory_fprint(
 	     info_handle,
@@ -2641,7 +3010,7 @@ int info_handle_file_fprint(
 		 "%s: unable to print working directory.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	if( info_handle_command_line_arguments_fprint(
 	     info_handle,
@@ -2654,7 +3023,7 @@ int info_handle_file_fprint(
 		 "%s: unable to print command line arguments.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	if( info_handle_icon_location_fprint(
 	     info_handle,
@@ -2667,20 +3036,7 @@ int info_handle_file_fprint(
 		 "%s: unable to print icon location.",
 		 function );
 
-		return( -1 );
-	}
-	if( info_handle_environment_variables_location_fprint(
-	     info_handle,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-		 "%s: unable to print environment variables location.",
-		 function );
-
-		return( -1 );
+		goto on_error;
 	}
 	fprintf(
 	 info_handle->notify_stream,
@@ -2697,23 +3053,72 @@ int info_handle_file_fprint(
 		 "%s: unable to print link target identifier data.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
-	if( info_handle_distributed_link_tracking_fprint(
-	     info_handle,
-	     error ) != 1 )
+	for( data_block_index = 0;
+	     data_block_index < number_of_data_blocks;
+	     data_block_index++ )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-		 "%s: unable to print distributed link tracking data.",
-		 function );
+		fprintf(
+		 info_handle->notify_stream,
+		 "Data block: %d\n",
+		 data_block_index + 1 );
 
-		return( -1 );
+		if( liblnk_file_get_data_block_by_index(
+		     info_handle->input_file,
+		     data_block_index,
+		     &data_block,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve data block: %d.",
+			 function,
+			 data_block_index );
+
+			goto on_error;
+		}
+		if( info_handle_data_block_fprint(
+		     info_handle,
+		     data_block,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print data block: %d.",
+			 function,
+			 data_block_index );
+
+			goto on_error;
+		}
+		if( liblnk_data_block_free(
+		     &data_block,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free data block: %d.",
+			 function,
+			 data_block_index );
+
+			goto on_error;
+		}
 	}
-/* TODO print more info */
-
 	return( 1 );
+
+on_error:
+	if( data_block != NULL )
+	{
+		liblnk_data_block_free(
+		 &data_block,
+		 NULL );
+	}
+	return( -1 );
 }
 

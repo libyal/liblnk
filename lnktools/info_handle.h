@@ -132,6 +132,16 @@ int info_handle_distributed_link_tracking_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error );
 
+int info_handle_data_block_fprint(
+     info_handle_t *info_handle,
+     liblnk_data_block_t *data_block,
+     libcerror_error_t **error );
+
+int info_handle_metadata_property_store_data_block_fprint(
+     info_handle_t *info_handle,
+     liblnk_data_block_t *data_block,
+     libcerror_error_t **error );
+
 int info_handle_file_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error );

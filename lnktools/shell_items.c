@@ -1666,13 +1666,13 @@ on_error:
 /* Prints the shell item list to the notify stream
  * Returns 1 if successful or -1 on error
  */
-int shell_items_item_list_fprint(
+int shell_items_list_fprint(
      libfwsi_item_list_t *shell_item_list,
      FILE *notify_stream,
      libcerror_error_t **error )
 {
 	libfwsi_item_t *shell_item = NULL;
-	static char *function      = "shell_items_item_list_fprint";
+	static char *function      = "shell_items_list_fprint";
 	int item_index             = 0;
 	int number_of_items        = 0;
 
@@ -1754,10 +1754,6 @@ int shell_items_item_list_fprint(
 			goto on_error;
 		}
 	}
-	fprintf(
-	 notify_stream,
-	 "\n" );
-
 	return( 1 );
 
 on_error:

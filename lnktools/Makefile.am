@@ -33,12 +33,14 @@ lnkinfo_SOURCES = \
 	lnktools_libcnotify.h \
 	lnktools_libfdatetime.h \
 	lnktools_libfguid.h \
+	lnktools_libfwps.h \
 	lnktools_libfwsi.h \
 	lnktools_liblnk.h \
 	lnktools_libuna.h \
 	lnktools_output.c lnktools_output.h \
 	lnktools_signal.c lnktools_signal.h \
 	lnktools_unused.h \
+	property_store.c property_store.h \
 	shell_items.c shell_items.h
 
 lnkinfo_LDADD = \

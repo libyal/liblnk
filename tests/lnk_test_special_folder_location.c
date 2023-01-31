@@ -284,7 +284,6 @@ int lnk_test_special_folder_location_read_data_block(
 	libcerror_error_t *error                                  = NULL;
 	liblnk_data_block_t *data_block                           = NULL;
 	liblnk_special_folder_location_t *special_folder_location = NULL;
-	void *memcpy_result                                       = NULL;
 	int result                                                = 0;
 
 	/* Initialize test
@@ -325,23 +324,24 @@ int lnk_test_special_folder_location_read_data_block(
 	 "error",
 	 error );
 
-	data_block->data_size = 16;
+	result = liblnk_data_block_set_data(
+	          data_block,
+	          lnk_test_special_folder_location_data1,
+	          16,
+	          &error );
 
-	data_block->data = (uint8_t *) memory_allocate(
-	                                data_block->data_size );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "data_block->data",
-	 data_block->data );
-
-	memcpy_result = memory_copy(
-	                 data_block->data,
-	                 lnk_test_special_folder_location_data1,
-	                 data_block->data_size );
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
 
 	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "memcpy_result",
-	 memcpy_result );
+	 "data_block",
+	 data_block );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
 
 	/* Test regular cases
 	 */
@@ -395,12 +395,14 @@ int lnk_test_special_folder_location_read_data_block(
 	libcerror_error_free(
 	 &error );
 
-	data_block->data_size = 8;
+	( (liblnk_internal_data_block_t *) data_block )->data_size = 8;
 
 	result = liblnk_special_folder_location_read_data_block(
 	          special_folder_location,
 	          data_block,
 	          &error );
+
+	( (liblnk_internal_data_block_t *) data_block )->data_size = 16;
 
 	LNK_TEST_ASSERT_EQUAL_INT(
 	 "result",
@@ -416,8 +418,8 @@ int lnk_test_special_folder_location_read_data_block(
 
 	/* Clean up data block
 	 */
-	result = liblnk_data_block_free(
-	          &data_block,
+	result = liblnk_internal_data_block_free(
+	          (liblnk_internal_data_block_t **) &data_block,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -462,8 +464,8 @@ on_error:
 	}
 	if( data_block != NULL )
 	{
-		liblnk_data_block_free(
-		 &data_block,
+		liblnk_internal_data_block_free(
+		 (liblnk_internal_data_block_t **) &data_block,
 		 NULL );
 	}
 	if( special_folder_location != NULL )

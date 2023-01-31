@@ -147,6 +147,7 @@ int liblnk_distributed_link_tracker_properties_read(
      liblnk_io_handle_t *io_handle,
      libcerror_error_t **error )
 {
+	liblnk_internal_data_block_t *internal_data_block                                              = NULL;
 	lnk_data_block_distributed_link_tracker_properties_t *distributed_link_tracker_properties_data = NULL;
 	static char *function                                                                          = "liblnk_distributed_link_tracker_properties_read";
 	uint32_t data_size                                                                             = 0;
@@ -174,7 +175,9 @@ int liblnk_distributed_link_tracker_properties_read(
 
 		return( -1 );
 	}
-	if( data_block->data == NULL )
+	internal_data_block = (liblnk_internal_data_block_t *) data_block;
+
+	if( internal_data_block->data == NULL )
 	{
 		libcerror_error_set(
 		 error,
@@ -185,7 +188,7 @@ int liblnk_distributed_link_tracker_properties_read(
 
 		return( -1 );
 	}
-	if( data_block->data_size < sizeof( lnk_data_block_distributed_link_tracker_properties_t ) )
+	if( internal_data_block->data_size < sizeof( lnk_data_block_distributed_link_tracker_properties_t ) )
 	{
 		libcerror_error_set(
 		 error,
@@ -196,7 +199,7 @@ int liblnk_distributed_link_tracker_properties_read(
 
 		return( -1 );
 	}
-	distributed_link_tracker_properties_data = (lnk_data_block_distributed_link_tracker_properties_t *) data_block->data;
+	distributed_link_tracker_properties_data = (lnk_data_block_distributed_link_tracker_properties_t *) internal_data_block->data;
 
 	if( io_handle == NULL )
 	{
@@ -429,14 +432,14 @@ int liblnk_distributed_link_tracker_properties_read(
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
 	{
-		if( data_block->data_size > sizeof( lnk_data_block_distributed_link_tracker_properties_t ) )
+		if( internal_data_block->data_size > sizeof( lnk_data_block_distributed_link_tracker_properties_t ) )
 		{
 			libcnotify_printf(
 			 "%s: trailing data:\n",
 			 function );
 			libcnotify_print_data(
-			 &( data_block->data[ sizeof( lnk_data_block_distributed_link_tracker_properties_t ) ] ),
-			 data_block->data_size - sizeof( lnk_data_block_distributed_link_tracker_properties_t ),
+			 &( internal_data_block->data[ sizeof( lnk_data_block_distributed_link_tracker_properties_t ) ] ),
+			 internal_data_block->data_size - sizeof( lnk_data_block_distributed_link_tracker_properties_t ),
 			 0 );
 		}
 	}

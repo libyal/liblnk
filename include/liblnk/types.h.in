@@ -201,6 +201,7 @@ typedef int64_t off64_t;
 
 /* The following type definitions hide internal data structures
  */
+typedef intptr_t liblnk_data_block_t;
 typedef intptr_t liblnk_file_t;
 
 #ifdef __cplusplus

@@ -276,6 +276,7 @@ lnk_test_support_LDADD = \
 
 lnk_test_tools_info_handle_SOURCES = \
 	../lnktools/info_handle.c ../lnktools/info_handle.h \
+	../lnktools/property_store.c ../lnktools/property_store.h \
 	../lnktools/shell_items.c ../lnktools/shell_items.h \
 	lnk_test_libcerror.h \
 	lnk_test_macros.h \
@@ -285,6 +286,7 @@ lnk_test_tools_info_handle_SOURCES = \
 
 lnk_test_tools_info_handle_LDADD = \
 	@LIBFWSI_LIBADD@ \
+	@LIBFWPS_LIBADD@ \
 	@LIBFGUID_LIBADD@ \
 	@LIBFDATETIME_LIBADD@ \
 	@LIBUNA_LIBADD@ \

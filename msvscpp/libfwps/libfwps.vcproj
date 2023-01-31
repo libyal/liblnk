@@ -163,15 +163,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfwps\libfwps_storage.c"
+				RelativePath="..\..\libfwps\libfwps_record.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwps\libfwps_set.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwps\libfwps_store.c"
 				>
 			</File>
 			<File
 				RelativePath="..\..\libfwps\libfwps_support.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\libfwps\libfwps_value.c"
 				>
 			</File>
 		</Filter>
@@ -201,6 +205,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwps\libfwps_libcdata.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwps\libfwps_libcerror.h"
 				>
 			</File>
@@ -225,7 +233,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfwps\libfwps_storage.h"
+				RelativePath="..\..\libfwps\libfwps_record.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwps\libfwps_set.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwps\libfwps_store.h"
 				>
 			</File>
 			<File
@@ -238,10 +254,6 @@
 			</File>
 			<File
 				RelativePath="..\..\libfwps\libfwps_unused.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\libfwps\libfwps_value.h"
 				>
 			</File>
 		</Filter>

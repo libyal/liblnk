@@ -37,6 +37,7 @@
 #include "liblnk_io_handle.h"
 #include "liblnk_known_folder_location.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_libcdata.h"
 #include "liblnk_libcerror.h"
 #include "liblnk_libcnotify.h"
 #include "liblnk_libfwps.h"
@@ -105,7 +106,10 @@ int liblnk_file_initialize(
 		 "%s: unable to clear file.",
 		 function );
 
-		goto on_error;
+		memory_free(
+		 internal_file );
+
+		return( -1 );
 	}
 	if( liblnk_io_handle_initialize(
 	     &( internal_file->io_handle ),
@@ -120,6 +124,20 @@ int liblnk_file_initialize(
 
 		goto on_error;
 	}
+	if( libcdata_array_initialize(
+	     &( internal_file->data_blocks_array ),
+	     0,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 "%s: unable to create data blocks array.",
+		 function );
+
+		goto on_error;
+	}
 	*file = (liblnk_file_t *) internal_file;
 
 	return( 1 );
@@ -127,6 +145,12 @@ int liblnk_file_initialize(
 on_error:
 	if( internal_file != NULL )
 	{
+		if( internal_file->io_handle != NULL )
+		{
+			liblnk_io_handle_free(
+			 &( internal_file->io_handle ),
+			 NULL );
+		}
 		memory_free(
 		 internal_file );
 	}
@@ -177,6 +201,20 @@ int liblnk_file_free(
 		}
 		*file = NULL;
 
+		if( libcdata_array_free(
+		     &( internal_file->data_blocks_array ),
+		     (int(*)(intptr_t **, libcerror_error_t **)) &liblnk_internal_data_block_free,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free data blocks array.",
+			 function );
+
+			result = -1;
+		}
 		if( liblnk_io_handle_free(
 		     &( internal_file->io_handle ),
 		     error ) != 1 )
@@ -1684,13 +1722,16 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
          off64_t file_offset,
          libcerror_error_t **error )
 {
-	liblnk_data_block_t *data_block     = NULL;
-	static char *function               = "liblnk_internal_file_read_extra_data_blocks";
-	ssize_t read_count                  = 0;
-	int result                          = 0;
+	liblnk_data_block_t *data_block = NULL;
+	static char *function           = "liblnk_internal_file_read_extra_data_blocks";
+	ssize_t read_count              = 0;
+	uint32_t data_block_signature   = 0;
+	uint32_t data_block_size        = 0;
+	int entry_index                 = 0;
+	int result                      = 0;
 
 #if defined( HAVE_DEBUG_OUTPUT )
-        libfwps_storage_t *property_storage = NULL;
+        libfwps_store_t *property_store = NULL;
 #endif
 
 	if( internal_file == NULL )
@@ -1748,6 +1789,8 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 
 			goto on_error;
 		}
+		data_block_size = 0;
+
 		result = liblnk_data_block_read_file_io_handle(
 		          data_block,
 		          internal_file->io_handle,
@@ -1777,11 +1820,27 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 
 			internal_file->io_handle->flags |= LIBLNK_IO_HANDLE_FLAG_IS_CORRUPTED;
 		}
-		if( ( result != 1 )
-		 || ( data_block->size == 0 ) )
+		else
 		{
-			if( liblnk_data_block_free(
-			     &data_block,
+			if( liblnk_internal_data_block_get_size(
+			     (liblnk_internal_data_block_t *) data_block,
+			     &data_block_size,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to retrieve data block size.",
+				 function );
+
+				goto on_error;
+			}
+		}
+		if( data_block_size == 0 )
+		{
+			if( liblnk_internal_data_block_free(
+			     (liblnk_internal_data_block_t **) &data_block,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
@@ -1797,21 +1856,24 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 
 			break;
 		}
-		if( data_block->size < 8 )
+		if( liblnk_data_block_get_signature(
+		     data_block,
+		     &data_block_signature,
+		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-			 "%s: invalid data block size value out of bounds.",
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve data block signature.",
 			 function );
 
 			goto on_error;
 		}
-		file_offset += data_block->size;
-		read_count  += data_block->size;
+		file_offset += data_block_size;
+		read_count  += data_block_size;
 
-		switch( data_block->signature )
+		switch( data_block_signature )
 		{
 			case LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION:
 #if defined( HAVE_DEBUG_OUTPUT )
@@ -2109,23 +2171,23 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 				if( libcnotify_verbose != 0 )
 				{
 /* TODO add support for more than one store */
-					if( libfwps_storage_initialize(
-					     &property_storage,
+					if( libfwps_store_initialize(
+					     &property_store,
 					     error ) != 1 )
 					{
 						libcerror_error_set(
 						 error,
 						 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 						 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-						 "%s: unable to create property storage.",
+						 "%s: unable to create property store.",
 						 function );
 
 						goto on_error;
 					}
-					if( libfwps_storage_copy_from_byte_stream(
-					     property_storage,
-					     &( data_block->data[ 4 ] ),
-					     data_block->data_size,
+					if( libfwps_store_copy_from_byte_stream(
+					     property_store,
+					     &( ( (liblnk_internal_data_block_t *) data_block )->data[ 4 ] ),
+					     ( (liblnk_internal_data_block_t *) data_block )->data_size,
 					     internal_file->io_handle->ascii_codepage,
 					     error ) != 1 )
 					{
@@ -2133,20 +2195,20 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 						 error,
 						 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 						 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-						 "%s: unable to copy byte stream to property storage.",
+						 "%s: unable to copy byte stream to property store.",
 						 function );
 
 						goto on_error;
 					}
-					if( libfwps_storage_free(
-					     &property_storage,
+					if( libfwps_store_free(
+					     &property_store,
 					     error ) != 1 )
 					{
 						libcerror_error_set(
 						 error,
 						 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 						 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-						 "%s: unable to free property storage.",
+						 "%s: unable to free property store.",
 						 function );
 
 						goto on_error;
@@ -2163,42 +2225,50 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 					libcnotify_printf(
 					 "%s: unsupported extra data block type: 0x%08" PRIx32 ".\n\n",
 					 function,
-					 data_block->signature );
+					 data_block_signature );
 				}
 #endif
 				break;
 		}
-		if( liblnk_data_block_free(
-		     &data_block,
+		if( libcdata_array_append_entry(
+		     internal_file->data_blocks_array,
+		     &entry_index,
+		     (intptr_t *) data_block,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free data block.",
+			 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+			 "%s: unable to append data block to array.",
 			 function );
 
 			goto on_error;
 		}
+		data_block = NULL;
 	}
 	return( read_count );
 
 on_error:
 #if defined( HAVE_DEBUG_OUTPUT )
-	if( property_storage != NULL )
+	if( property_store != NULL )
 	{
-		libfwps_storage_free(
-		 &property_storage,
+		libfwps_store_free(
+		 &property_store,
 		 NULL );
 	}
 #endif
 	if( data_block != NULL )
 	{
-		liblnk_data_block_free(
-		 &data_block,
+		liblnk_internal_data_block_free(
+		 (liblnk_internal_data_block_t **) &data_block,
 		 NULL );
 	}
+	libcdata_array_empty(
+	 internal_file->data_blocks_array,
+	 (int(*)(intptr_t **, libcerror_error_t **)) &liblnk_internal_data_block_free,
+	 NULL );
+
 	return( -1 );
 }
 
@@ -7086,6 +7156,95 @@ int liblnk_file_get_birth_droid_file_identifier(
 		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
 		 "%s: unable to copy birth droid file identifier.",
 		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* -------------------------------------------------------------------------
+ * Data block functions
+ * ------------------------------------------------------------------------- */
+
+/* Retrieves the number of (extra) data blocks
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_file_get_number_of_data_blocks(
+     liblnk_file_t *file,
+     int *number_of_data_blocks,
+     libcerror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_number_of_data_blocks";
+
+	if( file == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( libcdata_array_get_number_of_entries(
+	     internal_file->data_blocks_array,
+	     number_of_data_blocks,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve number of data blocks.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves a specific (extra) data block
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_file_get_data_block_by_index(
+     liblnk_file_t *file,
+     int data_block_index,
+     liblnk_data_block_t **data_block,
+     libcerror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_data_block_by_index";
+
+	if( file == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( libcdata_array_get_entry_by_index(
+	     internal_file->data_blocks_array,
+	     data_block_index,
+	     (intptr_t **) data_block,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve data block: %d.",
+		 function,
+		 data_block_index );
 
 		return( -1 );
 	}

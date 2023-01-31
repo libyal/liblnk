@@ -196,6 +196,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lnktools\property_store.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lnktools\shell_items.c"
 				>
 			</File>
@@ -242,6 +246,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lnktools\lnktools_libfwps.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lnktools\lnktools_libfwsi.h"
 				>
 			</File>
@@ -263,6 +271,10 @@
 			</File>
 			<File
 				RelativePath="..\..\lnktools\lnktools_unused.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lnktools\property_store.h"
 				>
 			</File>
 			<File

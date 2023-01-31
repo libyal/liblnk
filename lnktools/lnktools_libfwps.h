@@ -19,8 +19,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_LIBFWPS_H )
-#define _LIBLNK_LIBFWPS_H
+#if !defined( _LNKTOOLS_LIBFWPS_H )
+#define _LNKTOOLS_LIBFWPS_H
 
 #include <common.h>
 
@@ -49,5 +49,5 @@
 
 #endif /* defined( HAVE_LOCAL_LIBFWPS ) */
 
-#endif /* !defined( _LIBLNK_LIBFWPS_H ) */
+#endif /* !defined( _LNKTOOLS_LIBFWPS_H ) */
 

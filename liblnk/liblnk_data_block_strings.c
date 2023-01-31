@@ -43,6 +43,7 @@ int liblnk_data_block_strings_read(
      liblnk_io_handle_t *io_handle,
      libcerror_error_t **error )
 {
+	liblnk_internal_data_block_t *internal_data_block = NULL;
 	lnk_data_block_strings_t *data_block_strings_data = NULL;
 	static char *function                             = "liblnk_data_block_strings_read";
 	size_t string_size                                = 0;
@@ -81,7 +82,9 @@ int liblnk_data_block_strings_read(
 
 		return( -1 );
 	}
-	if( data_block->data == NULL )
+	internal_data_block = (liblnk_internal_data_block_t *) data_block;
+
+	if( internal_data_block->data == NULL )
 	{
 		libcerror_error_set(
 		 error,
@@ -92,7 +95,7 @@ int liblnk_data_block_strings_read(
 
 		return( -1 );
 	}
-	if( data_block->data_size < sizeof( lnk_data_block_strings_t ) )
+	if( internal_data_block->data_size < sizeof( lnk_data_block_strings_t ) )
 	{
 		libcerror_error_set(
 		 error,
@@ -103,7 +106,7 @@ int liblnk_data_block_strings_read(
 
 		return( -1 );
 	}
-	data_block_strings_data = (lnk_data_block_strings_t *) data_block->data;
+	data_block_strings_data = (lnk_data_block_strings_t *) internal_data_block->data;
 
 	if( io_handle == NULL )
 	{
@@ -303,14 +306,14 @@ int liblnk_data_block_strings_read(
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
 	{
-		if( data_block->data_size > sizeof( lnk_data_block_strings_t ) )
+		if( internal_data_block->data_size > sizeof( lnk_data_block_strings_t ) )
 		{
 			libcnotify_printf(
 			 "%s: trailing data:\n",
 			 function );
 			libcnotify_print_data(
-			 &( data_block->data[ sizeof( lnk_data_block_strings_t ) ] ),
-			 data_block->data_size - sizeof( lnk_data_block_strings_t ),
+			 &( internal_data_block->data[ sizeof( lnk_data_block_strings_t ) ] ),
+			 internal_data_block->data_size - sizeof( lnk_data_block_strings_t ),
 			 LIBCNOTIFY_PRINT_DATA_FLAG_GROUP_DATA );
 		}
 	}

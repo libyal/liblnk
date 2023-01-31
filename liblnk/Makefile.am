@@ -37,6 +37,7 @@ liblnk_la_SOURCES = \
 	liblnk_io_handle.c liblnk_io_handle.h \
 	liblnk_known_folder_location.c liblnk_known_folder_location.h \
 	liblnk_libbfio.h \
+	liblnk_libcdata.h \
 	liblnk_libcerror.h \
 	liblnk_libclocale.h \
 	liblnk_libcnotify.h \

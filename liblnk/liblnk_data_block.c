@@ -39,7 +39,8 @@ int liblnk_data_block_initialize(
      liblnk_data_block_t **data_block,
      libcerror_error_t **error )
 {
-	static char *function = "liblnk_data_block_initialize";
+	liblnk_internal_data_block_t *internal_data_block = NULL;
+	static char *function                             = "liblnk_data_block_initialize";
 
 	if( data_block == NULL )
 	{
@@ -63,10 +64,10 @@ int liblnk_data_block_initialize(
 
 		return( -1 );
 	}
-	*data_block = memory_allocate_structure(
-	               liblnk_data_block_t );
+	internal_data_block = memory_allocate_structure(
+	                       liblnk_internal_data_block_t );
 
-	if( *data_block == NULL )
+	if( internal_data_block == NULL )
 	{
 		libcerror_error_set(
 		 error,
@@ -78,9 +79,9 @@ int liblnk_data_block_initialize(
 		goto on_error;
 	}
 	if( memory_set(
-	     *data_block,
+	     internal_data_block,
 	     0,
-	     sizeof( liblnk_data_block_t ) ) == NULL )
+	     sizeof( liblnk_internal_data_block_t ) ) == NULL )
 	{
 		libcerror_error_set(
 		 error,
@@ -91,15 +92,15 @@ int liblnk_data_block_initialize(
 
 		goto on_error;
 	}
+	*data_block = (liblnk_data_block_t *) internal_data_block;
+
 	return( 1 );
 
 on_error:
-	if( *data_block != NULL )
+	if( internal_data_block != NULL )
 	{
 		memory_free(
-		 *data_block );
-
-		*data_block = NULL;
+		 internal_data_block );
 	}
 	return( -1 );
 }
@@ -126,29 +127,77 @@ int liblnk_data_block_free(
 	}
 	if( *data_block != NULL )
 	{
-		if( ( *data_block )->data != NULL )
-		{
-			memory_free(
-			 ( *data_block )->data );
-		}
-		memory_free(
-		 *data_block );
-
 		*data_block = NULL;
 	}
 	return( 1 );
 }
 
-/* Reads a data block
+/* Frees a data block
  * Returns 1 if successful or -1 on error
  */
-int liblnk_data_block_read_data(
+int liblnk_internal_data_block_free(
+     liblnk_internal_data_block_t **internal_data_block,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_internal_data_block_free";
+	int result            = 1;
+
+	if( internal_data_block == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data block.",
+		 function );
+
+		return( -1 );
+	}
+	if( *internal_data_block != NULL )
+	{
+		if( ( *internal_data_block )->value != NULL )
+		{
+			if( ( *internal_data_block )->free_value != NULL )
+			{
+				if( ( *internal_data_block )->free_value(
+				     &( ( *internal_data_block )->value ),
+				     error ) != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+					 "%s: unable to free data block value.",
+					 function );
+
+					result = -1;
+				}
+			}
+		}
+		if( ( *internal_data_block )->data != NULL )
+		{
+			memory_free(
+			 ( *internal_data_block )->data );
+		}
+		memory_free(
+		 *internal_data_block );
+
+		*internal_data_block = NULL;
+	}
+	return( result );
+}
+
+/* Sets the data of a data block
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_data_block_set_data(
      liblnk_data_block_t *data_block,
      const uint8_t *data,
      size_t data_size,
      libcerror_error_t **error )
 {
-	static char *function = "liblnk_data_block_read_data";
+	liblnk_internal_data_block_t *internal_data_block = NULL;
+	static char *function                             = "liblnk_data_block_set_data";
 
 	if( data_block == NULL )
 	{
@@ -161,6 +210,8 @@ int liblnk_data_block_read_data(
 
 		return( -1 );
 	}
+	internal_data_block = (liblnk_internal_data_block_t *) data_block;
+
 	if( data == NULL )
 	{
 		libcerror_error_set(
@@ -172,24 +223,106 @@ int liblnk_data_block_read_data(
 
 		return( -1 );
 	}
-	if( data_size < 4 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-		 "%s: invalid data size value too small.",
-		 function );
-
-		return( -1 );
-	}
-	if( data_size > (size_t) SSIZE_MAX )
+	if( data_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
-		 "%s: invalid data size value exceeds maximum.",
+		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid data size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	internal_data_block->data = (uint8_t *) memory_allocate(
+	                                         sizeof( uint8_t ) * data_size );
+
+	if( internal_data_block->data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+		 "%s: unable to create data block data.",
+		 function );
+
+		goto on_error;
+	}
+	internal_data_block->data_size = data_size;
+
+	if( memory_copy(
+	     internal_data_block->data,
+	     data,
+	     data_size ) == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+		 "%s: unable to copy data.",
+		 function );
+
+		goto on_error;
+	}
+	return( 1 );
+
+on_error:
+	if( internal_data_block->data != NULL )
+	{
+		memory_free(
+		 internal_data_block->data );
+
+		internal_data_block->data = NULL;
+	}
+	internal_data_block->size = 0;
+
+	return( -1 );
+}
+
+/* Reads a data block
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_data_block_read_data(
+     liblnk_data_block_t *data_block,
+     const uint8_t *data,
+     size_t data_size,
+     libcerror_error_t **error )
+{
+	liblnk_internal_data_block_t *internal_data_block = NULL;
+	static char *function                             = "liblnk_data_block_read_data";
+
+	if( data_block == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data block.",
+		 function );
+
+		return( -1 );
+	}
+	internal_data_block = (liblnk_internal_data_block_t *) data_block;
+
+	if( data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( data_size < 4 )
+	 || ( data_size > (size_t) SSIZE_MAX ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid data size value out of bounds.",
 		 function );
 
 		return( -1 );
@@ -209,7 +342,7 @@ int liblnk_data_block_read_data(
 
 	byte_stream_copy_to_uint32_little_endian(
 	 data,
-	 data_block->signature );
+	 internal_data_block->signature );
 
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
@@ -217,7 +350,7 @@ int liblnk_data_block_read_data(
 		libcnotify_printf(
 		 "%s: data block signature\t\t\t: 0x%08" PRIx32 "\n",
 		 function,
-		 data_block->signature );
+		 internal_data_block->signature );
 
 		if( data_size > 4 )
 		{
@@ -247,8 +380,9 @@ int liblnk_data_block_read_file_io_handle(
 {
 	uint8_t data_block_size_data[ 4 ];
 
-	static char *function = "liblnk_data_block_read_file_io_handle";
-	ssize_t read_count    = 0;
+	liblnk_internal_data_block_t *internal_data_block = NULL;
+	static char *function                             = "liblnk_data_block_read_file_io_handle";
+	ssize_t read_count                                = 0;
 
 	if( data_block == NULL )
 	{
@@ -261,7 +395,9 @@ int liblnk_data_block_read_file_io_handle(
 
 		return( -1 );
 	}
-	if( data_block->data != NULL )
+	internal_data_block = (liblnk_internal_data_block_t *) data_block;
+
+	if( internal_data_block->data != NULL )
 	{
 		libcerror_error_set(
 		 error,
@@ -315,7 +451,7 @@ int liblnk_data_block_read_file_io_handle(
 	}
 	byte_stream_copy_to_uint32_little_endian(
 	 data_block_size_data,
-	 data_block->size );
+	 internal_data_block->size );
 
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
@@ -323,13 +459,13 @@ int liblnk_data_block_read_file_io_handle(
 		libcnotify_printf(
 		 "%s: data block size\t\t\t: %" PRIu32 "\n",
 		 function,
-		 data_block->size );
+		 internal_data_block->size );
 	}
 #endif
-	if( data_block->size > 0 )
+	if( internal_data_block->size > 0 )
 	{
-		if( ( data_block->size < 4 )
-		 || ( data_block->size > ( MEMORY_MAXIMUM_ALLOCATION_SIZE + 4 ) ) )
+		if( ( internal_data_block->size < 4 )
+		 || ( internal_data_block->size > ( MEMORY_MAXIMUM_ALLOCATION_SIZE + 4 ) ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -340,12 +476,12 @@ int liblnk_data_block_read_file_io_handle(
 
 			goto on_error;
 		}
-		data_block->data_size = data_block->size - 4;
+		internal_data_block->data_size = internal_data_block->size - 4;
 
-		data_block->data = (uint8_t *) memory_allocate(
-		                                sizeof( uint8_t ) * data_block->data_size );
+		internal_data_block->data = (uint8_t *) memory_allocate(
+		                                         sizeof( uint8_t ) * internal_data_block->data_size );
 
-		if( data_block->data == NULL )
+		if( internal_data_block->data == NULL )
 		{
 			libcerror_error_set(
 			 error,
@@ -356,7 +492,7 @@ int liblnk_data_block_read_file_io_handle(
 
 			goto on_error;
 		}
-		if( (off64_t) data_block->size > (off64_t) ( io_handle->file_size - file_offset ) )
+		if( (off64_t) internal_data_block->size > (off64_t) ( io_handle->file_size - file_offset ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -369,11 +505,11 @@ int liblnk_data_block_read_file_io_handle(
 		}
 		read_count = libbfio_handle_read_buffer(
 			      file_io_handle,
-			      data_block->data,
-			      data_block->data_size,
+			      internal_data_block->data,
+			      internal_data_block->data_size,
 			      error );
 
-		if( read_count != (ssize_t) data_block->data_size )
+		if( read_count != (ssize_t) internal_data_block->data_size )
 		{
 			libcerror_error_set(
 			 error,
@@ -386,8 +522,8 @@ int liblnk_data_block_read_file_io_handle(
 		}
 		if( liblnk_data_block_read_data(
 		     data_block,
-		     data_block->data,
-		     data_block->data_size,
+		     internal_data_block->data,
+		     internal_data_block->data_size,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -403,15 +539,240 @@ int liblnk_data_block_read_file_io_handle(
 	return( 1 );
 
 on_error:
-	if( data_block->data != NULL )
+	if( internal_data_block->data != NULL )
 	{
 		memory_free(
-		 data_block->data );
+		 internal_data_block->data );
 
-		data_block->data = NULL;
+		internal_data_block->data = NULL;
 	}
-	data_block->size = 0;
+	internal_data_block->size = 0;
 
 	return( -1 );
+}
+
+/* Retrieves the size
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_internal_data_block_get_size(
+     liblnk_internal_data_block_t *internal_data_block,
+     uint32_t *size,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_internal_data_block_get_size";
+
+	if( internal_data_block == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data block.",
+		 function );
+
+		return( -1 );
+	}
+	if( size == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid size.",
+		 function );
+
+		return( -1 );
+	}
+	*size = internal_data_block->size;
+
+	return( 1 );
+}
+
+/* Retrieves the signature
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_data_block_get_signature(
+     liblnk_data_block_t *data_block,
+     uint32_t *signature,
+     libcerror_error_t **error )
+{
+	liblnk_internal_data_block_t *internal_data_block = NULL;
+	static char *function                             = "liblnk_data_block_get_signature";
+
+	if( data_block == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data block.",
+		 function );
+
+		return( -1 );
+	}
+	internal_data_block = (liblnk_internal_data_block_t *) data_block;
+
+	if( internal_data_block->data_size < 4 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid data block - data size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	if( signature == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid signature.",
+		 function );
+
+		return( -1 );
+	}
+	*signature = internal_data_block->signature;
+
+	return( 1 );
+}
+
+/* Retrieves the data block data size
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_data_block_get_data_size(
+     liblnk_data_block_t *data_block,
+     size_t *data_size,
+     libcerror_error_t **error )
+{
+	liblnk_internal_data_block_t *internal_data_block = NULL;
+	static char *function                             = "liblnk_data_block_get_data_size";
+
+	if( data_block == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data block.",
+		 function );
+
+		return( -1 );
+	}
+	internal_data_block = (liblnk_internal_data_block_t *) data_block;
+
+	if( internal_data_block->data_size < 4 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid data block - data size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_size == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data size.",
+		 function );
+
+		return( -1 );
+	}
+	*data_size = (size_t) internal_data_block->data_size - 4;
+
+	return( 1 );
+}
+
+/* Copies the data block data to the buffer
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_data_block_copy_data(
+     liblnk_data_block_t *data_block,
+     uint8_t *data,
+     size_t data_size,
+     libcerror_error_t **error )
+{
+	liblnk_internal_data_block_t *internal_data_block = NULL;
+	static char *function                             = "liblnk_data_block_copy_data";
+
+	if( data_block == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data block.",
+		 function );
+
+		return( -1 );
+	}
+	internal_data_block = (liblnk_internal_data_block_t *) data_block;
+
+	if( internal_data_block->data_size < 4 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid data block - data size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	if( data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_size > (size_t) SSIZE_MAX )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid data size value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
+	if( data_size < (size_t) ( internal_data_block->data_size - 4 ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 "%s: data value too small.",
+		 function );
+
+		return( -1 );
+	}
+	if( memory_copy(
+	     data,
+	     &( internal_data_block->data[ 4 ] ),
+	     internal_data_block->data_size - 4 ) == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+		 "%s: unable to copy data block data.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
 }
 

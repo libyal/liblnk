@@ -32,6 +32,7 @@
 #include "liblnk_io_handle.h"
 #include "liblnk_known_folder_location.h"
 #include "liblnk_libbfio.h"
+#include "liblnk_libcdata.h"
 #include "liblnk_libcerror.h"
 #include "liblnk_link_target_identifier.h"
 #include "liblnk_location_information.h"
@@ -114,6 +115,10 @@ struct liblnk_internal_file
 	/* The distributed link tracker properties
 	 */
 	liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties;
+
+	/* The (extra) data blocks array
+	 */
+	libcdata_array_t *data_blocks_array;
 };
 
 LIBLNK_EXTERN \
@@ -574,6 +579,23 @@ int liblnk_file_get_birth_droid_file_identifier(
      liblnk_file_t *file,
      uint8_t *guid_data,
      size_t guid_data_size,
+     libcerror_error_t **error );
+
+/* -------------------------------------------------------------------------
+ * Data block functions
+ * ------------------------------------------------------------------------- */
+
+LIBLNK_EXTERN \
+int liblnk_file_get_number_of_data_blocks(
+     liblnk_file_t *file,
+     int *number_of_data_blocks,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_file_get_data_block_by_index(
+     liblnk_file_t *file,
+     int data_block_index,
+     liblnk_data_block_t **data_block,
      libcerror_error_t **error );
 
 #if defined( __cplusplus )

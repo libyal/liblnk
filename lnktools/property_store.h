@@ -1,5 +1,5 @@
 /*
- * The libfwps header wrapper
+ * Property store functions
  *
  * Copyright (C) 2009-2023, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,35 +19,39 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_LIBFWPS_H )
-#define _LIBLNK_LIBFWPS_H
+#if !defined( _PROPERTY_STORE_H )
+#define _PROPERTY_STORE_H
 
 #include <common.h>
+#include <file_stream.h>
+#include <types.h>
 
-/* Define HAVE_LOCAL_LIBFWPS for local use of libfwps
- */
-#if defined( HAVE_LOCAL_LIBFWPS )
+#include "lnktools_libfwps.h"
 
-#include <libfwps_definitions.h>
-#include <libfwps_format_class_identifier.h>
-#include <libfwps_property_identifier.h>
-#include <libfwps_record.h>
-#include <libfwps_set.h>
-#include <libfwps_store.h>
-#include <libfwps_types.h>
-
-#else
-
-/* If libtool DLL support is enabled set LIBFWPS_DLL_IMPORT
- * before including libfwps.h
- */
-#if defined( _WIN32 ) && defined( DLL_IMPORT )
-#define LIBFWPS_DLL_IMPORT
+#if defined( __cplusplus )
+extern "C" {
 #endif
 
-#include <libfwps.h>
+int property_store_record_fprint(
+     const uint8_t *property_set_identifier,
+     libfwps_record_t *property_record,
+     int record_index,
+     FILE *notify_stream,
+     libcerror_error_t **error );
 
-#endif /* defined( HAVE_LOCAL_LIBFWPS ) */
+int property_store_set_fprint(
+     libfwps_set_t *property_set,
+     FILE *notify_stream,
+     libcerror_error_t **error );
 
-#endif /* !defined( _LIBLNK_LIBFWPS_H ) */
+int property_store_fprint(
+     libfwps_store_t *property_store,
+     FILE *notify_stream,
+     libcerror_error_t **error );
+
+#if defined( __cplusplus )
+}
+#endif
+
+#endif /* !defined( _PROPERTY_STORE_H ) */
 

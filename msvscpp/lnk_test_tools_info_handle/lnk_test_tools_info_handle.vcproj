@@ -180,6 +180,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lnktools\property_store.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lnktools\shell_items.c"
 				>
 			</File>
@@ -199,6 +203,10 @@
 			>
 			<File
 				RelativePath="..\..\lnktools\info_handle.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lnktools\property_store.h"
 				>
 			</File>
 			<File

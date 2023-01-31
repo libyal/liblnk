@@ -1,4 +1,8 @@
 TODO
+* liblnk: move distributed link tracker API functions to data block specific API functions
+* liblnk: move environment variables location API functions to data block specific API functions
+* pylnk: add support for data blocks
+
 * lnkinfo: show corrupted information
 * lnkinfo: : should be before \t
 * check behavior of liblnk_file_link_refers_to_file() seems to block certain time values from being printed.

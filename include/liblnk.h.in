@@ -914,6 +914,69 @@ int liblnk_file_get_birth_droid_file_identifier(
      size_t guid_data_size,
      liblnk_error_t **error );
 
+/* -------------------------------------------------------------------------
+ * Extra data block functions
+ * ------------------------------------------------------------------------- */
+
+/* Retrieves the number of (extra) data blocks
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_number_of_data_blocks(
+     liblnk_file_t *file,
+     int *number_of_data_blocks,
+     liblnk_error_t **error );
+
+/* Retrieves a specific (extra) data block
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_file_get_data_block_by_index(
+     liblnk_file_t *file,
+     int data_block_index,
+     liblnk_data_block_t **data_block,
+     liblnk_error_t **error );
+
+/* -------------------------------------------------------------------------
+ * Data block functions
+ * ------------------------------------------------------------------------- */
+
+/* Frees a data block
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_data_block_free(
+     liblnk_data_block_t **data_block,
+     liblnk_error_t **error );
+
+/* Retrieves the signature
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_data_block_get_signature(
+     liblnk_data_block_t *data_block,
+     uint32_t *signature,
+     liblnk_error_t **error );
+
+/* Retrieves the data block data size
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_data_block_get_data_size(
+     liblnk_data_block_t *data_block,
+     size_t *data_size,
+     liblnk_error_t **error );
+
+/* Copies the data block data to the buffer
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_data_block_copy_data(
+     liblnk_data_block_t *data_block,
+     uint8_t *data,
+     size_t data_size,
+     liblnk_error_t **error );
+
 #if defined( __cplusplus )
 }
 #endif
