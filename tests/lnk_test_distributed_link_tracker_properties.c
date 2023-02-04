@@ -299,12 +299,14 @@ int lnk_test_distributed_link_tracker_properties_read(
 	 "error",
 	 error );
 
+/* TODO add tests */
+
 	/* Test error cases
 	 */
 	result = liblnk_distributed_link_tracker_properties_read(
 	          NULL,
 	          NULL,
-	          NULL,
+	          LIBLNK_CODEPAGE_WINDOWS_1252,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -322,7 +324,7 @@ int lnk_test_distributed_link_tracker_properties_read(
 	result = liblnk_distributed_link_tracker_properties_read(
 	          distributed_link_tracker_properties,
 	          NULL,
-	          NULL,
+	          LIBLNK_CODEPAGE_WINDOWS_1252,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -408,7 +410,11 @@ int main(
 
 	return( EXIT_SUCCESS );
 
+#if defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT )
+
 on_error:
 	return( EXIT_FAILURE );
+
+#endif /* defined( __GNUC__ ) && !defined( LIBLNK_DLL_IMPORT ) */
 }
 

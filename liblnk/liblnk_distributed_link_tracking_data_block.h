@@ -1,5 +1,5 @@
 /*
- * Data block functions
+ * Distributed link tracking data block functions
  *
  * Copyright (C) 2009-2023, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,116 +19,81 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_DATA_BLOCK_H )
-#define _LIBLNK_DATA_BLOCK_H
+#if !defined( _LIBLNK_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK_H )
+#define _LIBLNK_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK_H
 
 #include <common.h>
 #include <types.h>
 
 #include "liblnk_extern.h"
-#include "liblnk_io_handle.h"
 #include "liblnk_libcerror.h"
-#include "liblnk_libbfio.h"
 #include "liblnk_types.h"
 
 #if defined( __cplusplus )
 extern "C" {
 #endif
 
-typedef struct liblnk_internal_data_block liblnk_internal_data_block_t;
-
-struct liblnk_internal_data_block
-{
-	/* The size
-	 */
-	uint32_t size;
-
-	/* The signature
-	 */
-	uint32_t signature;
-
-	/* The data
-	 */
-	uint8_t *data;
-
-	/* The data size
-	 */
-	uint32_t data_size;
-
-	/* The item value
-	 */
-	intptr_t *value;
-
-	/* The item free value function
-	 */
-	int (*free_value)(
-	       intptr_t **value,
-	       libcerror_error_t **error );
-
-	/* The codepage of the extended ASCII strings
-	 */
-	int ascii_codepage;
-};
-
-int liblnk_data_block_initialize(
-     liblnk_data_block_t **data_block,
+int liblnk_distributed_link_tracking_data_block_read(
+     liblnk_data_block_t *internal_data_block,
      libcerror_error_t **error );
 
 LIBLNK_EXTERN \
-int liblnk_data_block_free(
-     liblnk_data_block_t **data_block,
-     libcerror_error_t **error );
-
-int liblnk_internal_data_block_free(
-     liblnk_internal_data_block_t **internal_data_block,
-     libcerror_error_t **error );
-
-int liblnk_data_block_set_data(
+int liblnk_distributed_link_tracking_data_block_get_utf8_machine_identifier_size(
      liblnk_data_block_t *data_block,
-     const uint8_t *data,
-     size_t data_size,
-     libcerror_error_t **error );
-
-int liblnk_data_block_read_data(
-     liblnk_data_block_t *data_block,
-     const uint8_t *data,
-     size_t data_size,
-     libcerror_error_t **error );
-
-int liblnk_data_block_read_file_io_handle(
-     liblnk_data_block_t *data_block,
-     liblnk_io_handle_t *io_handle,
-     libbfio_handle_t *file_io_handle,
-     off64_t file_offset,
-     libcerror_error_t **error );
-
-int liblnk_internal_data_block_get_size(
-     liblnk_internal_data_block_t *internal_data_block,
-     uint32_t *size,
+     size_t *utf8_string_size,
      libcerror_error_t **error );
 
 LIBLNK_EXTERN \
-int liblnk_data_block_get_signature(
+int liblnk_distributed_link_tracking_data_block_get_utf8_machine_identifier(
      liblnk_data_block_t *data_block,
-     uint32_t *signature,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
      libcerror_error_t **error );
 
 LIBLNK_EXTERN \
-int liblnk_data_block_get_data_size(
+int liblnk_distributed_link_tracking_data_block_get_utf16_machine_identifier_size(
      liblnk_data_block_t *data_block,
-     size_t *data_size,
+     size_t *utf16_string_size,
      libcerror_error_t **error );
 
 LIBLNK_EXTERN \
-int liblnk_data_block_copy_data(
+int liblnk_distributed_link_tracking_data_block_get_utf16_machine_identifier(
      liblnk_data_block_t *data_block,
-     uint8_t *data,
-     size_t data_size,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_distributed_link_tracking_data_block_get_droid_volume_identifier(
+     liblnk_data_block_t *data_block,
+     uint8_t *guid_data,
+     size_t guid_data_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_distributed_link_tracking_data_block_get_droid_file_identifier(
+     liblnk_data_block_t *data_block,
+     uint8_t *guid_data,
+     size_t guid_data_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_distributed_link_tracking_data_block_get_birth_droid_volume_identifier(
+     liblnk_data_block_t *data_block,
+     uint8_t *guid_data,
+     size_t guid_data_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_distributed_link_tracking_data_block_get_birth_droid_file_identifier(
+     liblnk_data_block_t *data_block,
+     uint8_t *guid_data,
+     size_t guid_data_size,
      libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }
 #endif
 
-#endif /* !defined( _LIBLNK_DATA_BLOCK_H ) */
+#endif /* !defined( _LIBLNK_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK_H ) */
 

@@ -1199,7 +1199,7 @@ int info_handle_link_information_fprint(
 			          value_string_size,
 			          error );
 #endif
-			if( result == -1 )
+			if( result != 1 )
 			{
 				libcerror_error_set(
 				 error,
@@ -1283,7 +1283,7 @@ int info_handle_link_information_fprint(
 			          value_string_size,
 			          error );
 #endif
-			if( result == -1 )
+			if( result != 1 )
 			{
 				libcerror_error_set(
 				 error,
@@ -1367,7 +1367,7 @@ int info_handle_link_information_fprint(
 			          value_string_size,
 			          error );
 #endif
-			if( result == -1 )
+			if( result != 1 )
 			{
 				libcerror_error_set(
 				 error,
@@ -1486,7 +1486,7 @@ int info_handle_description_fprint(
 			  value_string_size,
 			  error );
 #endif
-		if( result == -1 )
+		if( result != 1 )
 		{
 			libcerror_error_set(
 			 error,
@@ -1604,7 +1604,7 @@ int info_handle_relative_path_fprint(
 			  value_string_size,
 			  error );
 #endif
-		if( result == -1 )
+		if( result != 1 )
 		{
 			libcerror_error_set(
 			 error,
@@ -1722,7 +1722,7 @@ int info_handle_working_directory_fprint(
 			  value_string_size,
 			  error );
 #endif
-		if( result == -1 )
+		if( result != 1 )
 		{
 			libcerror_error_set(
 			 error,
@@ -1840,7 +1840,7 @@ int info_handle_command_line_arguments_fprint(
 			  value_string_size,
 			  error );
 #endif
-		if( result == -1 )
+		if( result != 1 )
 		{
 			libcerror_error_set(
 			 error,
@@ -1958,7 +1958,7 @@ int info_handle_icon_location_fprint(
 			  value_string_size,
 			  error );
 #endif
-		if( result == -1 )
+		if( result != 1 )
 		{
 			libcerror_error_set(
 			 error,
@@ -1979,128 +1979,6 @@ int info_handle_icon_location_fprint(
 
 		value_string = NULL;
 	}
-	return( 1 );
-
-on_error:
-	if( value_string != NULL )
-	{
-		memory_free(
-		 value_string );
-	}
-	return( -1 );
-}
-
-/* Prints the environment variables location
- * Returns 1 if successful or -1 on error
- */
-int info_handle_environment_variables_location_fprint(
-     info_handle_t *info_handle,
-     libcerror_error_t **error )
-{
-	system_character_t *value_string = NULL;
-	static char *function            = "info_handle_environment_variables_location_fprint";
-	size_t value_string_size         = 0;
-	int result                       = 0;
-
-	if( info_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid info handle.",
-		 function );
-
-		return( -1 );
-	}
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-	result = liblnk_file_get_utf16_environment_variables_location_size(
-		  info_handle->input_file,
-		  &value_string_size,
-		  error );
-#else
-	result = liblnk_file_get_utf8_environment_variables_location_size(
-		  info_handle->input_file,
-		  &value_string_size,
-		  error );
-#endif
-	if( result == -1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve environment variables location string size.",
-		 function );
-
-		goto on_error;
-	}
-	else if( ( result != 0 )
-	      && ( value_string_size > 0 ) )
-	{
-		if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
-			 "%s: invalid environment variables location string size value exceeds maximum.",
-			 function );
-
-			goto on_error;
-		}
-		value_string = system_string_allocate(
-				value_string_size );
-
-		if( value_string == NULL )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_MEMORY,
-			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create environment variables location string.",
-			 function );
-
-			goto on_error;
-		}
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-		result = liblnk_file_get_utf16_environment_variables_location(
-			  info_handle->input_file,
-			  (uint16_t *) value_string,
-			  value_string_size,
-			  error );
-#else
-		result = liblnk_file_get_utf8_environment_variables_location(
-			  info_handle->input_file,
-			  (uint8_t *) value_string,
-			  value_string_size,
-			  error );
-#endif
-		if( result == -1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve environment variables location.",
-			 function );
-
-			goto on_error;
-		}
-		fprintf(
-		 info_handle->notify_stream,
-		 "\tLocation\t\t\t: %" PRIs_SYSTEM "\n",
-		 value_string );
-
-		memory_free(
-		 value_string );
-
-		value_string = NULL;
-	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "\n" );
-
 	return( 1 );
 
 on_error:
@@ -2279,266 +2157,6 @@ on_error:
 	return( -1 );
 }
 
-/* Prints the distributed link tracking data
- * Returns 1 if successful or -1 on error
- */
-int info_handle_distributed_link_tracking_fprint(
-     info_handle_t *info_handle,
-     libcerror_error_t **error )
-{
-	uint8_t guid_data[ 16 ];
-
-	system_character_t *value_string = NULL;
-	static char *function            = "info_handle_distributed_link_tracking_fprint";
-	size_t value_string_size         = 0;
-	int result                       = 0;
-
-	if( info_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid info handle.",
-		 function );
-
-		return( -1 );
-	}
-	result = liblnk_file_has_distributed_link_tracking_data(
-	          info_handle->input_file,
-	          error );
-
-	if( result == -1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine if file contains distributed link tracking data.",
-		 function );
-
-		goto on_error;
-	}
-	else if( result != 0 )
-	{
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-		result = liblnk_file_get_utf16_machine_identifier_size(
-			  info_handle->input_file,
-			  &value_string_size,
-			  error );
-#else
-		result = liblnk_file_get_utf8_machine_identifier_size(
-			  info_handle->input_file,
-			  &value_string_size,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve machine identifier string size.",
-			 function );
-
-			goto on_error;
-		}
-		if( ( value_string_size == 0 )
-		 || ( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE ) )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-			 "%s: invalid machine identifier size value out of bounds.",
-			 function );
-
-			goto on_error;
-		}
-		value_string = system_string_allocate(
-				value_string_size );
-
-		if( value_string == NULL )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_MEMORY,
-			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create machine identifier string.",
-			 function );
-
-			goto on_error;
-		}
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-		result = liblnk_file_get_utf16_machine_identifier(
-			  info_handle->input_file,
-			  (uint16_t *) value_string,
-			  value_string_size,
-			  error );
-#else
-		result = liblnk_file_get_utf8_machine_identifier(
-			  info_handle->input_file,
-			  (uint8_t *) value_string,
-			  value_string_size,
-			  error );
-#endif
-		if( result != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve machine identifier.",
-			 function );
-
-			goto on_error;
-		}
-		fprintf(
-		 info_handle->notify_stream,
-		 "\tMachine identifier\t\t: %" PRIs_SYSTEM "\n",
-		 value_string );
-
-		memory_free(
-		 value_string );
-
-		value_string = NULL;
-
-		if( liblnk_file_get_droid_volume_identifier(
-		     info_handle->input_file,
-		     guid_data,
-		     16,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve droid volume identifier.",
-			 function );
-
-			goto on_error;
-		}
-		if( info_handle_guid_value_fprint(
-		     info_handle,
-		     "\tDroid volume identifier\t\t",
-		     guid_data,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-			 "%s: unable to print GUID value.",
-			 function );
-
-			goto on_error;
-		}
-		if( liblnk_file_get_droid_file_identifier(
-		     info_handle->input_file,
-		     guid_data,
-		     16,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve droid file identifier.",
-			 function );
-
-			goto on_error;
-		}
-		if( info_handle_guid_value_fprint(
-		     info_handle,
-		     "\tDroid file identifier\t\t",
-		     guid_data,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-			 "%s: unable to print GUID value.",
-			 function );
-
-			goto on_error;
-		}
-		if( liblnk_file_get_birth_droid_volume_identifier(
-		     info_handle->input_file,
-		     guid_data,
-		     16,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve birth droid volume identifier.",
-			 function );
-
-			goto on_error;
-		}
-		if( info_handle_guid_value_fprint(
-		     info_handle,
-		     "\tBirth droid volume identifier\t",
-		     guid_data,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-			 "%s: unable to print GUID value.",
-			 function );
-
-			goto on_error;
-		}
-		if( liblnk_file_get_birth_droid_file_identifier(
-		     info_handle->input_file,
-		     guid_data,
-		     16,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to retrieve birth droid file identifier.",
-			 function );
-
-			goto on_error;
-		}
-		if( info_handle_guid_value_fprint(
-		     info_handle,
-		     "\tBirth droid file identifier\t",
-		     guid_data,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-			 "%s: unable to print GUID value.",
-			 function );
-
-			goto on_error;
-		}
-	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "\n" );
-
-	return( 1 );
-
-on_error:
-	if( value_string != NULL )
-	{
-		memory_free(
-		 value_string );
-	}
-	return( -1 );
-}
-
 /* Prints the file information
  * Returns 1 if successful or -1 on error
  */
@@ -2547,8 +2165,11 @@ int info_handle_data_block_fprint(
      liblnk_data_block_t *data_block,
      libcerror_error_t **error )
 {
-	static char *function = "info_handle_data_block_fprint";
-	uint32_t signature    = 0;
+	system_character_t *value_string = NULL;
+	static char *function            = "info_handle_data_block_fprint";
+	size_t value_string_size         = 0;
+	uint32_t signature               = 0;
+	int result                       = 0;
 
 	if( info_handle == NULL )
 	{
@@ -2573,7 +2194,7 @@ int info_handle_data_block_fprint(
 		 "%s: unable to retrieve signature.",
 		 function );
 
-		return( -1 );
+		goto on_error;
 	}
 	fprintf(
 	 info_handle->notify_stream,
@@ -2658,34 +2279,111 @@ int info_handle_data_block_fprint(
 	switch( signature )
 	{
 		case LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION:
-			if( info_handle_environment_variables_location_fprint(
-			     info_handle,
-			     error ) != 1 )
+		case LIBLNK_DATA_BLOCK_SIGNATURE_DARWIN_PROPERTIES:
+		case LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION:
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+			result = liblnk_strings_data_block_get_utf16_string_size(
+				  data_block,
+				  &value_string_size,
+				  error );
+#else
+			result = liblnk_strings_data_block_get_utf8_string_size(
+				  data_block,
+				  &value_string_size,
+				  error );
+#endif
+			if( result != 1 )
 			{
 				libcerror_error_set(
 				 error,
 				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-				 "%s: unable to print environment variables location.",
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to retrieve strings data block string size.",
 				 function );
 
-				return( -1 );
+				goto on_error;
 			}
+			else if( value_string_size > 0 )
+			{
+				if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+					 "%s: invalid strings data block string size value exceeds maximum.",
+					 function );
+
+					goto on_error;
+				}
+				value_string = system_string_allocate(
+						value_string_size );
+
+				if( value_string == NULL )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_MEMORY,
+					 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+					 "%s: unable to create strings data block string.",
+					 function );
+
+					goto on_error;
+				}
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+				result = liblnk_strings_data_block_get_utf16_string(
+					  data_block,
+					  (uint16_t *) value_string,
+					  value_string_size,
+					  error );
+#else
+				result = liblnk_strings_data_block_get_utf8_string(
+					  data_block,
+					  (uint8_t *) value_string,
+					  value_string_size,
+					  error );
+#endif
+				if( result != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+					 "%s: unable to retrieve strings data block string.",
+					 function );
+
+					goto on_error;
+				}
+				fprintf(
+				 info_handle->notify_stream,
+				 "\tString\t\t\t\t: %" PRIs_SYSTEM "\n",
+				 value_string );
+
+				memory_free(
+				 value_string );
+
+				value_string = NULL;
+			}
+			fprintf(
+			 info_handle->notify_stream,
+			 "\n" );
+
 			break;
 
 		case LIBLNK_DATA_BLOCK_SIGNATURE_DISTRIBUTED_LINK_TRACKER_PROPERTIES:
-			if( info_handle_distributed_link_tracking_fprint(
+			if( info_handle_distributed_link_tracking_data_block_fprint(
 			     info_handle,
+			     data_block,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
 				 error,
 				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
-				 "%s: unable to print distributed link tracking data.",
+				 "%s: unable to print distributed link tracking data block.",
 				 function );
 
-				return( -1 );
+				goto on_error;
 			}
 			break;
 
@@ -2702,7 +2400,7 @@ int info_handle_data_block_fprint(
 				 "%s: unable to print metadata property store data block.",
 				 function );
 
-				return( -1 );
+				goto on_error;
 			}
 			break;
 
@@ -2716,6 +2414,257 @@ int info_handle_data_block_fprint(
 /* TODO print additional values */
 
 	return( 1 );
+
+on_error:
+	if( value_string != NULL )
+	{
+		memory_free(
+		 value_string );
+	}
+	return( -1 );
+}
+
+/* Prints a distributed link tracking data block
+ * Returns 1 if successful or -1 on error
+ */
+int info_handle_distributed_link_tracking_data_block_fprint(
+     info_handle_t *info_handle,
+     liblnk_data_block_t *data_block,
+     libcerror_error_t **error )
+{
+	uint8_t guid_data[ 16 ];
+
+	system_character_t *value_string = NULL;
+	static char *function            = "info_handle_distributed_link_tracking_data_block_fprint";
+	size_t value_string_size         = 0;
+	int result                       = 0;
+
+	if( info_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid info handle.",
+		 function );
+
+		return( -1 );
+	}
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+	result = liblnk_distributed_link_tracking_data_block_get_utf16_machine_identifier_size(
+		  data_block,
+		  &value_string_size,
+		  error );
+#else
+	result = liblnk_distributed_link_tracking_data_block_get_utf8_machine_identifier_size(
+		  data_block,
+		  &value_string_size,
+		  error );
+#endif
+	if( result != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve machine identifier string size.",
+		 function );
+
+		goto on_error;
+	}
+	if( ( value_string_size == 0 )
+	 || ( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid machine identifier size value out of bounds.",
+		 function );
+
+		goto on_error;
+	}
+	value_string = system_string_allocate(
+			value_string_size );
+
+	if( value_string == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+		 "%s: unable to create machine identifier string.",
+		 function );
+
+		goto on_error;
+	}
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+	result = liblnk_distributed_link_tracking_data_block_get_utf16_machine_identifier(
+		  data_block,
+		  (uint16_t *) value_string,
+		  value_string_size,
+		  error );
+#else
+	result = liblnk_distributed_link_tracking_data_block_get_utf8_machine_identifier(
+		  data_block,
+		  (uint8_t *) value_string,
+		  value_string_size,
+		  error );
+#endif
+	if( result != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve machine identifier.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\tMachine identifier\t\t: %" PRIs_SYSTEM "\n",
+	 value_string );
+
+	memory_free(
+	 value_string );
+
+	value_string = NULL;
+
+	if( liblnk_distributed_link_tracking_data_block_get_droid_volume_identifier(
+	     data_block,
+	     guid_data,
+	     16,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve droid volume identifier.",
+		 function );
+
+		goto on_error;
+	}
+	if( info_handle_guid_value_fprint(
+	     info_handle,
+	     "\tDroid volume identifier\t\t",
+	     guid_data,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 "%s: unable to print GUID value.",
+		 function );
+
+		goto on_error;
+	}
+	if( liblnk_distributed_link_tracking_data_block_get_droid_file_identifier(
+	     data_block,
+	     guid_data,
+	     16,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve droid file identifier.",
+		 function );
+
+		goto on_error;
+	}
+	if( info_handle_guid_value_fprint(
+	     info_handle,
+	     "\tDroid file identifier\t\t",
+	     guid_data,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 "%s: unable to print GUID value.",
+		 function );
+
+		goto on_error;
+	}
+	if( liblnk_distributed_link_tracking_data_block_get_birth_droid_volume_identifier(
+	     data_block,
+	     guid_data,
+	     16,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve birth droid volume identifier.",
+		 function );
+
+		goto on_error;
+	}
+	if( info_handle_guid_value_fprint(
+	     info_handle,
+	     "\tBirth droid volume identifier\t",
+	     guid_data,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 "%s: unable to print GUID value.",
+		 function );
+
+		goto on_error;
+	}
+	if( liblnk_distributed_link_tracking_data_block_get_birth_droid_file_identifier(
+	     data_block,
+	     guid_data,
+	     16,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve birth droid file identifier.",
+		 function );
+
+		goto on_error;
+	}
+	if( info_handle_guid_value_fprint(
+	     info_handle,
+	     "\tBirth droid file identifier\t",
+	     guid_data,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+		 "%s: unable to print GUID value.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "\n" );
+
+	return( 1 );
+
+on_error:
+	if( value_string != NULL )
+	{
+		memory_free(
+		 value_string );
+	}
+	return( -1 );
 }
 
 /* Prints a metadata property store data block

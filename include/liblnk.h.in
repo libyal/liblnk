@@ -754,9 +754,13 @@ int liblnk_file_get_utf16_icon_location(
      liblnk_error_t **error );
 
 /* Retrieves the size of the UTF-8 encoded environment variables location
+ *
+ * This function is deprecated use liblnk_strings_data_block_get_utf8_string_size instead
+ *
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
+LIBLNK_DEPRECATED \
 LIBLNK_EXTERN \
 int liblnk_file_get_utf8_environment_variables_location_size(
      liblnk_file_t *file,
@@ -764,9 +768,13 @@ int liblnk_file_get_utf8_environment_variables_location_size(
      liblnk_error_t **error );
 
 /* Retrieves the UTF-8 encoded environment variables location
+ *
+ * This function is deprecated use liblnk_strings_data_block_get_utf8_string instead
+ *
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
+LIBLNK_DEPRECATED \
 LIBLNK_EXTERN \
 int liblnk_file_get_utf8_environment_variables_location(
      liblnk_file_t *file,
@@ -775,9 +783,13 @@ int liblnk_file_get_utf8_environment_variables_location(
      liblnk_error_t **error );
 
 /* Retrieves the size of the UTF-16 encoded environment variables location
+ *
+ * This function is deprecated use liblnk_strings_data_block_get_utf16_string_size instead
+ *
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
+LIBLNK_DEPRECATED \
 LIBLNK_EXTERN \
 int liblnk_file_get_utf16_environment_variables_location_size(
      liblnk_file_t *file,
@@ -785,9 +797,13 @@ int liblnk_file_get_utf16_environment_variables_location_size(
      liblnk_error_t **error );
 
 /* Retrieves the UTF-16 encoded environment variables location
+ *
+ * This function is deprecated use liblnk_strings_data_block_get_utf16_string instead
+ *
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
+LIBLNK_DEPRECATED \
 LIBLNK_EXTERN \
 int liblnk_file_get_utf16_environment_variables_location(
      liblnk_file_t *file,
@@ -828,20 +844,28 @@ int liblnk_file_has_distributed_link_tracking_data(
      liblnk_file_t *file,
      liblnk_error_t **error );
 
-/* Retrieves the size of the UTF-8 encoded local path
+/* Retrieves the size of the UTF-8 machine identifier
+ *
+ * This function is deprecated use liblnk_distributed_link_tracking_data_block_get_utf8_machine_identifier_size instead
+ *
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
+LIBLNK_DEPRECATED \
 LIBLNK_EXTERN \
 int liblnk_file_get_utf8_machine_identifier_size(
      liblnk_file_t *file,
      size_t *utf8_string_size,
      liblnk_error_t **error );
 
-/* Retrieves the UTF-8 encoded local path
+/* Retrieves the UTF-8 machine identifier
+ *
+ * This function is deprecated use liblnk_distributed_link_tracking_data_block_get_utf8_machine_identifier instead
+ *
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
+LIBLNK_DEPRECATED \
 LIBLNK_EXTERN \
 int liblnk_file_get_utf8_machine_identifier(
      liblnk_file_t *file,
@@ -849,20 +873,28 @@ int liblnk_file_get_utf8_machine_identifier(
      size_t utf8_string_size,
      liblnk_error_t **error );
 
-/* Retrieves the size of the UTF-16 encoded local path
+/* Retrieves the size of the UTF-16 encoded machine identifier
+ *
+ * This function is deprecated use liblnk_distributed_link_tracking_data_block_get_utf16_machine_identifier_size instead
+ *
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
+LIBLNK_DEPRECATED \
 LIBLNK_EXTERN \
 int liblnk_file_get_utf16_machine_identifier_size(
      liblnk_file_t *file,
      size_t *utf16_string_size,
      liblnk_error_t **error );
 
-/* Retrieves the UTF-16 encoded local path
+/* Retrieves the UTF-16 encoded machine identifier
+ *
+ * This function is deprecated use liblnk_distributed_link_tracking_data_block_get_utf16_machine_identifier instead
+ *
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
+LIBLNK_DEPRECATED \
 LIBLNK_EXTERN \
 int liblnk_file_get_utf16_machine_identifier(
      liblnk_file_t *file,
@@ -871,9 +903,13 @@ int liblnk_file_get_utf16_machine_identifier(
      liblnk_error_t **error );
 
 /* Retrieves the droid volume identifier
+ *
+ * This function is deprecated use liblnk_distributed_link_tracking_data_block_get_droid_volume_identifier instead
+ *
  * The identifier is a GUID stored in little-endian and is 16 bytes of size
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
+LIBLNK_DEPRECATED \
 LIBLNK_EXTERN \
 int liblnk_file_get_droid_volume_identifier(
      liblnk_file_t *file,
@@ -882,9 +918,13 @@ int liblnk_file_get_droid_volume_identifier(
      liblnk_error_t **error );
 
 /* Retrieves the droid file identifier
+ *
+ * This function is deprecated use liblnk_distributed_link_tracking_data_block_get_droid_file_identifier instead
+ *
  * The identifier is a GUID stored in little-endian and is 16 bytes of size
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
+LIBLNK_DEPRECATED \
 LIBLNK_EXTERN \
 int liblnk_file_get_droid_file_identifier(
      liblnk_file_t *file,
@@ -893,9 +933,13 @@ int liblnk_file_get_droid_file_identifier(
      liblnk_error_t **error );
 
 /* Retrieves the birth droid volume identifier
+ *
+ * This function is deprecated use liblnk_distributed_link_tracking_data_block_get_birth_droid_volume_identifier instead
+ *
  * The identifier is a GUID stored in little-endian and is 16 bytes of size
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
+LIBLNK_DEPRECATED \
 LIBLNK_EXTERN \
 int liblnk_file_get_birth_droid_volume_identifier(
      liblnk_file_t *file,
@@ -904,9 +948,13 @@ int liblnk_file_get_birth_droid_volume_identifier(
      liblnk_error_t **error );
 
 /* Retrieves the birth droid file identifier
+ *
+ * This function is deprecated use liblnk_distributed_link_tracking_data_block_get_birth_droid_file_identifier instead
+ *
  * The identifier is a GUID stored in little-endian and is 16 bytes of size
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
+LIBLNK_DEPRECATED \
 LIBLNK_EXTERN \
 int liblnk_file_get_birth_droid_file_identifier(
      liblnk_file_t *file,
@@ -975,6 +1023,142 @@ int liblnk_data_block_copy_data(
      liblnk_data_block_t *data_block,
      uint8_t *data,
      size_t data_size,
+     liblnk_error_t **error );
+
+/* -------------------------------------------------------------------------
+ * Strings data block functions
+ * ------------------------------------------------------------------------- */
+
+/* Retrieves the size of the UTF-8 string
+ * The size includes the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf8_string_size(
+     liblnk_data_block_t *data_block,
+     size_t *utf8_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the UTF-8 string
+ * The size should include the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf8_string(
+     liblnk_data_block_t *data_block,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the size of the UTF-16 string
+ * The size includes the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf16_string_size(
+     liblnk_data_block_t *data_block,
+     size_t *utf16_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the UTF-16 string
+ * The size should include the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf16_string(
+     liblnk_data_block_t *data_block,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liblnk_error_t **error );
+
+/* -------------------------------------------------------------------------
+ * Distributed link tracking data block functions
+ * ------------------------------------------------------------------------- */
+
+/* Retrieves the size of the UTF-8 encoded machine identifier
+ * The size includes the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_distributed_link_tracking_data_block_get_utf8_machine_identifier_size(
+     liblnk_data_block_t *data_block,
+     size_t *utf8_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the UTF-8 encoded machine identifier
+ * The size should include the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_distributed_link_tracking_data_block_get_utf8_machine_identifier(
+     liblnk_data_block_t *data_block,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the size of the UTF-16 encoded machine identifier
+ * The size includes the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_distributed_link_tracking_data_block_get_utf16_machine_identifier_size(
+     liblnk_data_block_t *data_block,
+     size_t *utf16_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the UTF-16 encoded machine identifier
+ * The size should include the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_distributed_link_tracking_data_block_get_utf16_machine_identifier(
+     liblnk_data_block_t *data_block,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the droid volume identifier
+ * The identifier is a GUID stored in little-endian and is 16 bytes of size
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_distributed_link_tracking_data_block_get_droid_volume_identifier(
+     liblnk_data_block_t *data_block,
+     uint8_t *guid_data,
+     size_t guid_data_size,
+     liblnk_error_t **error );
+
+/* Retrieves the droid file identifier
+ * The identifier is a GUID stored in little-endian and is 16 bytes of size
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_distributed_link_tracking_data_block_get_droid_file_identifier(
+     liblnk_data_block_t *data_block,
+     uint8_t *guid_data,
+     size_t guid_data_size,
+     liblnk_error_t **error );
+
+/* Retrieves the birth droid volume identifier
+ * The identifier is a GUID stored in little-endian and is 16 bytes of size
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_distributed_link_tracking_data_block_get_birth_droid_volume_identifier(
+     liblnk_data_block_t *data_block,
+     uint8_t *guid_data,
+     size_t guid_data_size,
+     liblnk_error_t **error );
+
+/* Retrieves the birth droid file identifier
+ * The identifier is a GUID stored in little-endian and is 16 bytes of size
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_distributed_link_tracking_data_block_get_birth_droid_file_identifier(
+     liblnk_data_block_t *data_block,
+     uint8_t *guid_data,
+     size_t guid_data_size,
      liblnk_error_t **error );
 
 #if defined( __cplusplus )

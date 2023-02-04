@@ -1,5 +1,5 @@
 /*
- * Data string functions
+ * Data block functions
  *
  * Copyright (C) 2009-2023, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -25,11 +25,9 @@
 #include <types.h>
 
 #include "liblnk_data_block.h"
-#include "liblnk_definitions.h"
 #include "liblnk_libbfio.h"
 #include "liblnk_libcerror.h"
 #include "liblnk_libcnotify.h"
-#include "liblnk_libuna.h"
 
 /* Creates a data block
  * Make sure the value data_block is referencing, is set to NULL
@@ -536,6 +534,8 @@ int liblnk_data_block_read_file_io_handle(
 			goto on_error;
 		}
 	}
+	internal_data_block->ascii_codepage = io_handle->ascii_codepage;
+
 	return( 1 );
 
 on_error:

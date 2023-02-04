@@ -25,8 +25,8 @@
 #include <common.h>
 #include <types.h>
 
+#include "liblnk_data_block.h"
 #include "liblnk_data_string.h"
-#include "liblnk_distributed_link_tracker_properties.h"
 #include "liblnk_extern.h"
 #include "liblnk_file_header.h"
 #include "liblnk_io_handle.h"
@@ -96,13 +96,9 @@ struct liblnk_internal_file
 	 */
 	liblnk_data_string_t *icon_location;
 
-	/* The environment variables location
+	/* The environment variables location data block
 	 */
-	liblnk_data_string_t *environment_variables_location;
-
-	/* The darwin application identifier
-	 */
-	liblnk_data_string_t *darwin_application_identifier;
+	liblnk_data_block_t *environment_variables_location_data_block;
 
 	/* The special folder location
 	 */
@@ -112,9 +108,9 @@ struct liblnk_internal_file
 	 */
 	liblnk_known_folder_location_t *known_folder_location;
 
-	/* The distributed link tracker properties
+	/* The distributed link tracking data block
 	 */
-	liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties;
+	liblnk_data_block_t *distributed_link_tracking_data_block;
 
 	/* The (extra) data blocks array
 	 */

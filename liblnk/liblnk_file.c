@@ -27,11 +27,10 @@
 
 #include "liblnk_codepage.h"
 #include "liblnk_data_block.h"
-#include "liblnk_data_block_strings.h"
 #include "liblnk_data_string.h"
 #include "liblnk_debug.h"
 #include "liblnk_definitions.h"
-#include "liblnk_distributed_link_tracker_properties.h"
+#include "liblnk_distributed_link_tracking_data_block.h"
 #include "liblnk_file.h"
 #include "liblnk_file_header.h"
 #include "liblnk_io_handle.h"
@@ -45,6 +44,7 @@
 #include "liblnk_link_target_identifier.h"
 #include "liblnk_location_information.h"
 #include "liblnk_special_folder_location.h"
+#include "liblnk_strings_data_block.h"
 #include "liblnk_types.h"
 
 /* Creates a file
@@ -926,38 +926,6 @@ int liblnk_file_close(
 			result = -1;
 		}
 	}
-	if( internal_file->environment_variables_location != NULL )
-	{
-		if( liblnk_data_string_free(
-		     &( internal_file->environment_variables_location ),
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free environment variables location.",
-			 function );
-
-			result = -1;
-		}
-	}
-	if( internal_file->darwin_application_identifier != NULL )
-	{
-		if( liblnk_data_string_free(
-		     &( internal_file->darwin_application_identifier ),
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free darwin application identifier.",
-			 function );
-
-			result = -1;
-		}
-	}
 	if( internal_file->special_folder_location != NULL )
 	{
 		if( liblnk_special_folder_location_free(
@@ -990,22 +958,23 @@ int liblnk_file_close(
 			result = -1;
 		}
 	}
-	if( internal_file->distributed_link_tracker_properties != NULL )
+	if( libcdata_array_empty(
+	     internal_file->data_blocks_array,
+	     (int(*)(intptr_t **, libcerror_error_t **)) &liblnk_internal_data_block_free,
+	     error ) != 1 )
 	{
-		if( liblnk_distributed_link_tracker_properties_free(
-		     &( internal_file->distributed_link_tracker_properties ),
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free distributed link tracker properties.",
-			 function );
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+		 "%s: unable to empty data blocks array.",
+		 function );
 
-			result = -1;
-		}
+		result = -1;
 	}
+	internal_file->environment_variables_location_data_block = NULL;
+	internal_file->distributed_link_tracking_data_block      = NULL;
+
 	return( result );
 }
 
@@ -1136,28 +1105,6 @@ int liblnk_internal_file_open_read(
 
 		return( -1 );
 	}
-	if( internal_file->environment_variables_location != NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
-		 "%s: invalid file - environment variables location value already set.",
-		 function );
-
-		return( -1 );
-	}
-	if( internal_file->darwin_application_identifier != NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
-		 "%s: invalid file - darwin application identifier value already set.",
-		 function );
-
-		return( -1 );
-	}
 	if( internal_file->special_folder_location != NULL )
 	{
 		libcerror_error_set(
@@ -1176,17 +1123,6 @@ int liblnk_internal_file_open_read(
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
 		 "%s: invalid file - known folder location value already set.",
-		 function );
-
-		return( -1 );
-	}
-	if( internal_file->distributed_link_tracker_properties != NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
-		 "%s: invalid file - distributed link tracker properties value already set.",
 		 function );
 
 		return( -1 );
@@ -1632,12 +1568,6 @@ on_error:
 		 trailing_data );
 	}
 #endif
-	if( internal_file->distributed_link_tracker_properties != NULL )
-	{
-		liblnk_distributed_link_tracker_properties_free(
-		 &( internal_file->distributed_link_tracker_properties ),
-		 NULL );
-	}
 	if( internal_file->known_folder_location != NULL )
 	{
 		liblnk_known_folder_location_free(
@@ -1648,18 +1578,6 @@ on_error:
 	{
 		liblnk_special_folder_location_free(
 		 &( internal_file->special_folder_location ),
-		 NULL );
-	}
-	if( internal_file->darwin_application_identifier != NULL )
-	{
-		liblnk_data_string_free(
-		 &( internal_file->darwin_application_identifier ),
-		 NULL );
-	}
-	if( internal_file->environment_variables_location != NULL )
-	{
-		liblnk_data_string_free(
-		 &( internal_file->environment_variables_location ),
 		 NULL );
 	}
 	if( internal_file->icon_location != NULL )
@@ -1891,30 +1809,19 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 				}
 #endif /* defined( HAVE_DEBUG_OUTPUT ) */
 
-				if( liblnk_data_string_initialize(
-				     &( internal_file->environment_variables_location ),
-				     error ) != 1 )
+				if( internal_file->environment_variables_location_data_block == NULL )
 				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-					 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-					 "%s: unable to create environment variables location.",
-					 function );
-
-					goto on_error;
+					internal_file->environment_variables_location_data_block = data_block;
 				}
-				if( liblnk_data_block_strings_read(
-				     internal_file->environment_variables_location,
+				if( liblnk_strings_data_block_read(
 				     data_block,
-				     internal_file->io_handle,
 				     error ) != 1 )
 				{
 					libcerror_error_set(
 					 error,
 					 LIBCERROR_ERROR_DOMAIN_IO,
 					 LIBCERROR_IO_ERROR_READ_FAILED,
-					 "%s: unable to read environment variables data block.",
+					 "%s: unable to read strings in environment variables data block.",
 					 function );
 
 					goto on_error;
@@ -1937,30 +1844,19 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 				}
 #endif /* defined( HAVE_DEBUG_OUTPUT ) */
 
-				if( liblnk_distributed_link_tracker_properties_initialize(
-				     &( internal_file->distributed_link_tracker_properties ),
-				     error ) != 1 )
+				if( internal_file->distributed_link_tracking_data_block == NULL )
 				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-					 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-					 "%s: unable to create distributed link tracker properties.",
-					 function );
-
-					goto on_error;
+					internal_file->distributed_link_tracking_data_block = data_block;
 				}
-				if( liblnk_distributed_link_tracker_properties_read(
-				     internal_file->distributed_link_tracker_properties,
+				if( liblnk_distributed_link_tracking_data_block_read(
 				     data_block,
-				     internal_file->io_handle,
 				     error ) != 1 )
 				{
 					libcerror_error_set(
 					 error,
 					 LIBCERROR_ERROR_DOMAIN_IO,
 					 LIBCERROR_IO_ERROR_READ_FAILED,
-					 "%s: unable to read distributed link tracker properties data block.",
+					 "%s: unable to read distributed link tracking data block.",
 					 function );
 
 					goto on_error;
@@ -2020,30 +1916,15 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 				}
 #endif /* defined( HAVE_DEBUG_OUTPUT ) */
 
-				if( liblnk_data_string_initialize(
-				     &( internal_file->darwin_application_identifier ),
-				     error ) != 1 )
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-					 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-					 "%s: unable to create darwin application identifier.",
-					 function );
-
-					goto on_error;
-				}
-				if( liblnk_data_block_strings_read(
-				     internal_file->darwin_application_identifier,
+				if( liblnk_strings_data_block_read(
 				     data_block,
-				     internal_file->io_handle,
 				     error ) != 1 )
 				{
 					libcerror_error_set(
 					 error,
 					 LIBCERROR_ERROR_DOMAIN_IO,
 					 LIBCERROR_IO_ERROR_READ_FAILED,
-					 "%s: unable to read darwin application identifier data block.",
+					 "%s: unable to read Darwin application identifier data block.",
 					 function );
 
 					goto on_error;
@@ -2066,39 +1947,8 @@ ssize_t liblnk_internal_file_read_extra_data_blocks(
 				}
 #endif /* defined( HAVE_DEBUG_OUTPUT ) */
 
-				if( internal_file->icon_location != NULL )
-				{
-					if( liblnk_data_string_free(
-					     &( internal_file->icon_location ),
-					     error ) != 1 )
-					{
-						libcerror_error_set(
-						 error,
-						 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-						 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-						 "%s: unable to free icon location.",
-						 function );
-
-						goto on_error;
-					}
-				}
-				if( liblnk_data_string_initialize(
-				     &( internal_file->icon_location ),
-				     error ) != 1 )
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-					 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-					 "%s: unable to create icon location.",
-					 function );
-
-					goto on_error;
-				}
-				if( liblnk_data_block_strings_read(
-				     internal_file->icon_location,
+				if( liblnk_strings_data_block_read(
 				     data_block,
-				     internal_file->io_handle,
 				     error ) != 1 )
 				{
 					libcerror_error_set(
@@ -2268,6 +2118,9 @@ on_error:
 	 internal_file->data_blocks_array,
 	 (int(*)(intptr_t **, libcerror_error_t **)) &liblnk_internal_data_block_free,
 	 NULL );
+
+	internal_file->environment_variables_location_data_block = NULL;
+	internal_file->distributed_link_tracking_data_block      = NULL;
 
 	return( -1 );
 }
@@ -6199,24 +6052,12 @@ int liblnk_file_get_utf8_environment_variables_location_size(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
-	if( internal_file->io_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid file - missing IO handle.",
-		 function );
-
-		return( -1 );
-	}
-	if( internal_file->environment_variables_location == NULL )
+	if( internal_file->environment_variables_location_data_block == NULL )
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf8_string_size(
-	     internal_file->environment_variables_location,
-	     internal_file->io_handle->ascii_codepage,
+	if( liblnk_strings_data_block_get_utf8_string_size(
+	     internal_file->environment_variables_location_data_block,
 	     utf8_string_size,
 	     error ) != 1 )
 	{
@@ -6258,24 +6099,12 @@ int liblnk_file_get_utf8_environment_variables_location(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
-	if( internal_file->io_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid file - missing IO handle.",
-		 function );
-
-		return( -1 );
-	}
-	if( internal_file->environment_variables_location == NULL )
+	if( internal_file->environment_variables_location_data_block == NULL )
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf8_string(
-	     internal_file->environment_variables_location,
-	     internal_file->io_handle->ascii_codepage,
+	if( liblnk_strings_data_block_get_utf8_string(
+	     internal_file->environment_variables_location_data_block,
 	     utf8_string,
 	     utf8_string_size,
 	     error ) != 1 )
@@ -6317,24 +6146,12 @@ int liblnk_file_get_utf16_environment_variables_location_size(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
-	if( internal_file->io_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid file - missing IO handle.",
-		 function );
-
-		return( -1 );
-	}
-	if( internal_file->environment_variables_location == NULL )
+	if( internal_file->environment_variables_location_data_block == NULL )
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf16_string_size(
-	     internal_file->environment_variables_location,
-	     internal_file->io_handle->ascii_codepage,
+	if( liblnk_strings_data_block_get_utf16_string_size(
+	     internal_file->environment_variables_location_data_block,
 	     utf16_string_size,
 	     error ) != 1 )
 	{
@@ -6376,24 +6193,12 @@ int liblnk_file_get_utf16_environment_variables_location(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
-	if( internal_file->io_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid file - missing IO handle.",
-		 function );
-
-		return( -1 );
-	}
-	if( internal_file->environment_variables_location == NULL )
+	if( internal_file->environment_variables_location_data_block == NULL )
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf16_string(
-	     internal_file->environment_variables_location,
-	     internal_file->io_handle->ascii_codepage,
+	if( liblnk_strings_data_block_get_utf16_string(
+	     internal_file->environment_variables_location_data_block,
 	     utf16_string,
 	     utf16_string_size,
 	     error ) != 1 )
@@ -6595,7 +6400,7 @@ int liblnk_file_has_distributed_link_tracking_data(
 
 		return( -1 );
 	}
-	if( internal_file->distributed_link_tracker_properties == NULL )
+	if( internal_file->distributed_link_tracking_data_block == NULL )
 	{
 		return( 0 );
 	}
@@ -6638,14 +6443,12 @@ int liblnk_file_get_utf8_machine_identifier_size(
 
 		return( -1 );
 	}
-	if( internal_file->distributed_link_tracker_properties == NULL )
+	if( internal_file->distributed_link_tracking_data_block == NULL )
 	{
 		return( 0 );
 	}
-	if( libuna_utf8_string_size_from_byte_stream(
-	     internal_file->distributed_link_tracker_properties->machine_identifier_string,
-	     16,
-	     internal_file->io_handle->ascii_codepage,
+	if( liblnk_distributed_link_tracking_data_block_get_utf8_machine_identifier_size(
+	     internal_file->distributed_link_tracking_data_block,
 	     utf8_string_size,
 	     error ) != 1 )
 	{
@@ -6698,23 +6501,21 @@ int liblnk_file_get_utf8_machine_identifier(
 
 		return( -1 );
 	}
-	if( internal_file->distributed_link_tracker_properties == NULL )
+	if( internal_file->distributed_link_tracking_data_block == NULL )
 	{
 		return( 0 );
 	}
-	if( libuna_utf8_string_copy_from_byte_stream(
+	if( liblnk_distributed_link_tracking_data_block_get_utf8_machine_identifier(
+	     internal_file->distributed_link_tracking_data_block,
 	     utf8_string,
 	     utf8_string_size,
-	     internal_file->distributed_link_tracker_properties->machine_identifier_string,
-	     16,
-	     internal_file->io_handle->ascii_codepage,
 	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set UTF-8 data string.",
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-8 machine identifier string.",
 		 function );
 
 		return( -1 );
@@ -6758,14 +6559,12 @@ int liblnk_file_get_utf16_machine_identifier_size(
 
 		return( -1 );
 	}
-	if( internal_file->distributed_link_tracker_properties == NULL )
+	if( internal_file->distributed_link_tracking_data_block == NULL )
 	{
 		return( 0 );
 	}
-	if( libuna_utf16_string_size_from_byte_stream(
-	     internal_file->distributed_link_tracker_properties->machine_identifier_string,
-	     16,
-	     internal_file->io_handle->ascii_codepage,
+	if( liblnk_distributed_link_tracking_data_block_get_utf16_machine_identifier_size(
+	     internal_file->distributed_link_tracking_data_block,
 	     utf16_string_size,
 	     error ) != 1 )
 	{
@@ -6818,23 +6617,21 @@ int liblnk_file_get_utf16_machine_identifier(
 
 		return( -1 );
 	}
-	if( internal_file->distributed_link_tracker_properties == NULL )
+	if( internal_file->distributed_link_tracking_data_block == NULL )
 	{
 		return( 0 );
 	}
-	if( libuna_utf16_string_copy_from_byte_stream(
+	if( liblnk_distributed_link_tracking_data_block_get_utf16_machine_identifier(
+	     internal_file->distributed_link_tracking_data_block,
 	     utf16_string,
 	     utf16_string_size,
-	     internal_file->distributed_link_tracker_properties->machine_identifier_string,
-	     16,
-	     internal_file->io_handle->ascii_codepage,
 	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set UTF-16 data string.",
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-16 machine identifier string.",
 		 function );
 
 		return( -1 );
@@ -6868,47 +6665,15 @@ int liblnk_file_get_droid_volume_identifier(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
-	if( guid_data == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid GUID data.",
-		 function );
-
-		return( -1 );
-	}
-	if( guid_data_size > (size_t) SSIZE_MAX )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
-		 "%s: GUID data size value exceeds maximum.",
-		 function );
-
-		return( -1 );
-	}
-	if( guid_data_size < 16 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-		 "%s: GUID data size value too small.",
-		 function );
-
-		return( -1 );
-	}
-	if( internal_file->distributed_link_tracker_properties == NULL )
+	if( internal_file->distributed_link_tracking_data_block == NULL )
 	{
 		return( 0 );
 	}
-	if( memory_copy(
+	if( liblnk_distributed_link_tracking_data_block_get_droid_volume_identifier(
+	     internal_file->distributed_link_tracking_data_block,
 	     guid_data,
-	     internal_file->distributed_link_tracker_properties->droid_volume_identifier,
-	     16 ) == NULL )
+	     guid_data_size,
+	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,
@@ -6948,47 +6713,15 @@ int liblnk_file_get_droid_file_identifier(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
-	if( guid_data == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid GUID data.",
-		 function );
-
-		return( -1 );
-	}
-	if( guid_data_size > (size_t) SSIZE_MAX )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
-		 "%s: GUID data size value exceeds maximum.",
-		 function );
-
-		return( -1 );
-	}
-	if( guid_data_size < 16 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-		 "%s: GUID data size value too small.",
-		 function );
-
-		return( -1 );
-	}
-	if( internal_file->distributed_link_tracker_properties == NULL )
+	if( internal_file->distributed_link_tracking_data_block == NULL )
 	{
 		return( 0 );
 	}
-	if( memory_copy(
+	if( liblnk_distributed_link_tracking_data_block_get_droid_file_identifier(
+	     internal_file->distributed_link_tracking_data_block,
 	     guid_data,
-	     internal_file->distributed_link_tracker_properties->droid_file_identifier,
-	     16 ) == NULL )
+	     guid_data_size,
+	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,
@@ -7028,47 +6761,15 @@ int liblnk_file_get_birth_droid_volume_identifier(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
-	if( guid_data == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid GUID data.",
-		 function );
-
-		return( -1 );
-	}
-	if( guid_data_size > (size_t) SSIZE_MAX )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
-		 "%s: GUID data size value exceeds maximum.",
-		 function );
-
-		return( -1 );
-	}
-	if( guid_data_size < 16 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-		 "%s: GUID data size value too small.",
-		 function );
-
-		return( -1 );
-	}
-	if( internal_file->distributed_link_tracker_properties == NULL )
+	if( internal_file->distributed_link_tracking_data_block == NULL )
 	{
 		return( 0 );
 	}
-	if( memory_copy(
+	if( liblnk_distributed_link_tracking_data_block_get_birth_droid_volume_identifier(
+	     internal_file->distributed_link_tracking_data_block,
 	     guid_data,
-	     internal_file->distributed_link_tracker_properties->birth_droid_volume_identifier,
-	     16 ) == NULL )
+	     guid_data_size,
+	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,
@@ -7108,47 +6809,15 @@ int liblnk_file_get_birth_droid_file_identifier(
 	}
 	internal_file = (liblnk_internal_file_t *) file;
 
-	if( guid_data == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid GUID data.",
-		 function );
-
-		return( -1 );
-	}
-	if( guid_data_size > (size_t) SSIZE_MAX )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
-		 "%s: GUID data size value exceeds maximum.",
-		 function );
-
-		return( -1 );
-	}
-	if( guid_data_size < 16 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
-		 "%s: GUID data size value too small.",
-		 function );
-
-		return( -1 );
-	}
-	if( internal_file->distributed_link_tracker_properties == NULL )
+	if( internal_file->distributed_link_tracking_data_block == NULL )
 	{
 		return( 0 );
 	}
-	if( memory_copy(
+	if( liblnk_distributed_link_tracking_data_block_get_birth_droid_file_identifier(
+	     internal_file->distributed_link_tracking_data_block,
 	     guid_data,
-	     internal_file->distributed_link_tracker_properties->birth_droid_file_identifier,
-	     16 ) == NULL )
+	     guid_data_size,
+	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,

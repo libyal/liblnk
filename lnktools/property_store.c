@@ -72,7 +72,6 @@ int property_store_record_fprint(
      const uint8_t *property_set_identifier,
      const system_character_t *property_set_identifier_string,
      libfwps_record_t *property_record,
-     int record_index,
      FILE *notify_stream,
      libcerror_error_t **error )
 {
@@ -1043,7 +1042,6 @@ int property_store_set_fprint(
 		     property_set_identifier,
 		     guid_string,
 		     property_record,
-		     record_index + 1,
 		     notify_stream,
 		     error ) == -1 )
 		{

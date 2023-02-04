@@ -6422,60 +6422,6 @@ int lnk_test_file_get_droid_volume_identifier(
 	libcerror_error_free(
 	 &error );
 
-	result = liblnk_file_get_droid_volume_identifier(
-	          file,
-	          NULL,
-	          16,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
-	result = liblnk_file_get_droid_volume_identifier(
-	          file,
-	          guid_data,
-	          0,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
-	result = liblnk_file_get_droid_volume_identifier(
-	          file,
-	          guid_data,
-	          (size_t) SSIZE_MAX + 1,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
 	return( 1 );
 
 on_error:
@@ -6521,60 +6467,6 @@ int lnk_test_file_get_droid_file_identifier(
 	          NULL,
 	          guid_data,
 	          16,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
-	result = liblnk_file_get_droid_file_identifier(
-	          file,
-	          NULL,
-	          16,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
-	result = liblnk_file_get_droid_file_identifier(
-	          file,
-	          guid_data,
-	          0,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
-	result = liblnk_file_get_droid_file_identifier(
-	          file,
-	          guid_data,
-	          (size_t) SSIZE_MAX + 1,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -6648,60 +6540,6 @@ int lnk_test_file_get_birth_droid_volume_identifier(
 	libcerror_error_free(
 	 &error );
 
-	result = liblnk_file_get_birth_droid_volume_identifier(
-	          file,
-	          NULL,
-	          16,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
-	result = liblnk_file_get_birth_droid_volume_identifier(
-	          file,
-	          guid_data,
-	          0,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
-	result = liblnk_file_get_birth_droid_volume_identifier(
-	          file,
-	          guid_data,
-	          (size_t) SSIZE_MAX + 1,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
 	return( 1 );
 
 on_error:
@@ -6747,60 +6585,6 @@ int lnk_test_file_get_birth_droid_file_identifier(
 	          NULL,
 	          guid_data,
 	          16,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
-	result = liblnk_file_get_birth_droid_file_identifier(
-	          file,
-	          NULL,
-	          16,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
-	result = liblnk_file_get_birth_droid_file_identifier(
-	          file,
-	          guid_data,
-	          0,
-	          &error );
-
-	LNK_TEST_ASSERT_EQUAL_INT(
-	 "result",
-	 result,
-	 -1 );
-
-	LNK_TEST_ASSERT_IS_NOT_NULL(
-	 "error",
-	 error );
-
-	libcerror_error_free(
-	 &error );
-
-	result = liblnk_file_get_birth_droid_file_identifier(
-	          file,
-	          guid_data,
-	          (size_t) SSIZE_MAX + 1,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(

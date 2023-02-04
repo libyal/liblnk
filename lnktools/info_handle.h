@@ -128,11 +128,12 @@ int info_handle_link_target_identifier_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error );
 
-int info_handle_distributed_link_tracking_fprint(
+int info_handle_data_block_fprint(
      info_handle_t *info_handle,
+     liblnk_data_block_t *data_block,
      libcerror_error_t **error );
 
-int info_handle_data_block_fprint(
+int info_handle_distributed_link_tracking_data_block_fprint(
      info_handle_t *info_handle,
      liblnk_data_block_t *data_block,
      libcerror_error_t **error );

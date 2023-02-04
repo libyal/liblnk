@@ -26,7 +26,6 @@
 #include <types.h>
 
 #include "liblnk_data_block.h"
-#include "liblnk_io_handle.h"
 #include "liblnk_libcerror.h"
 
 #if defined( __cplusplus )
@@ -69,7 +68,57 @@ int liblnk_distributed_link_tracker_properties_free(
 int liblnk_distributed_link_tracker_properties_read(
      liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
      liblnk_data_block_t *data_block,
-     liblnk_io_handle_t *io_handle,
+     int ascii_codepage,
+     libcerror_error_t **error );
+
+int liblnk_distributed_link_tracker_properties_get_utf8_machine_identifier_size(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     size_t *utf8_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error );
+
+int liblnk_distributed_link_tracker_properties_get_utf8_machine_identifier(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error );
+
+int liblnk_distributed_link_tracker_properties_get_utf16_machine_identifier_size(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     size_t *utf16_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error );
+
+int liblnk_distributed_link_tracker_properties_get_utf16_machine_identifier(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error );
+
+int liblnk_distributed_link_tracker_properties_get_droid_volume_identifier(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     uint8_t *guid_data,
+     size_t guid_data_size,
+     libcerror_error_t **error );
+
+int liblnk_distributed_link_tracker_properties_get_droid_file_identifier(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     uint8_t *guid_data,
+     size_t guid_data_size,
+     libcerror_error_t **error );
+
+int liblnk_distributed_link_tracker_properties_get_birth_droid_volume_identifier(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     uint8_t *guid_data,
+     size_t guid_data_size,
+     libcerror_error_t **error );
+
+int liblnk_distributed_link_tracker_properties_get_birth_droid_file_identifier(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     uint8_t *guid_data,
+     size_t guid_data_size,
      libcerror_error_t **error );
 
 #if defined( __cplusplus )

@@ -1,16 +1,11 @@
 TODO
-* liblnk: move distributed link tracker API functions to data block specific API functions
-* liblnk: move environment variables location API functions to data block specific API functions
 * pylnk: add support for data blocks
 
-* lnkinfo: show corrupted information
 * lnkinfo: : should be before \t
 * check behavior of liblnk_file_link_refers_to_file() seems to block certain time values from being printed.
 * what about trailing data in xp lnk files ?
 * what about shell items
-* what about ole properties
 * pylnk add functions
-* add support for 0xa0000009
 * rename liblnk_file_copy_link_target_identifier_data to liblnk_file_get_link_target_identifier_data ?
 
 File format:
@@ -38,7 +33,6 @@ Debug
 
 Library
 * create API functions to access link information values
-* add libfvalue
 
 API
 * add functions

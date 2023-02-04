@@ -144,7 +144,7 @@ int liblnk_distributed_link_tracker_properties_free(
 int liblnk_distributed_link_tracker_properties_read(
      liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
      liblnk_data_block_t *data_block,
-     liblnk_io_handle_t *io_handle,
+     int ascii_codepage,
      libcerror_error_t **error )
 {
 	liblnk_internal_data_block_t *internal_data_block                                              = NULL;
@@ -201,17 +201,6 @@ int liblnk_distributed_link_tracker_properties_read(
 	}
 	distributed_link_tracker_properties_data = (lnk_data_block_distributed_link_tracker_properties_t *) internal_data_block->data;
 
-	if( io_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid IO handle.",
-		 function );
-
-		return( -1 );
-	}
 	byte_stream_copy_to_uint32_little_endian(
 	 distributed_link_tracker_properties_data->data_size,
 	 data_size );
@@ -341,7 +330,7 @@ int liblnk_distributed_link_tracker_properties_read(
 		     "machine identifier string\t",
 		     distributed_link_tracker_properties_data->machine_identifier_string,
 		     16,
-		     io_handle->ascii_codepage,
+		     ascii_codepage,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -444,6 +433,430 @@ int liblnk_distributed_link_tracker_properties_read(
 		}
 	}
 #endif
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-8 encoded machine identifier
+ * The size includes the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_distributed_link_tracker_properties_get_utf8_machine_identifier_size(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     size_t *utf8_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_distributed_link_tracker_properties_get_utf8_machine_identifier_size";
+
+	if( distributed_link_tracker_properties == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid distributed link tracker properties.",
+		 function );
+
+		return( -1 );
+	}
+	if( libuna_utf8_string_size_from_byte_stream(
+	     distributed_link_tracker_properties->machine_identifier_string,
+	     16,
+	     ascii_codepage,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-8 machine identifier string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-8 encoded machine identifier
+ * The size should include the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_distributed_link_tracker_properties_get_utf8_machine_identifier(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_distributed_link_tracker_properties_get_utf8_machine_identifier";
+
+	if( distributed_link_tracker_properties == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid distributed link tracker properties.",
+		 function );
+
+		return( -1 );
+	}
+	if( libuna_utf8_string_copy_from_byte_stream(
+	     utf8_string,
+	     utf8_string_size,
+	     distributed_link_tracker_properties->machine_identifier_string,
+	     16,
+	     ascii_codepage,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-8 machine identifier string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-16 encoded machine identifier
+ * The size includes the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_distributed_link_tracker_properties_get_utf16_machine_identifier_size(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     size_t *utf16_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_distributed_link_tracker_properties_get_utf16_machine_identifier_size";
+
+	if( distributed_link_tracker_properties == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid distributed link tracker properties.",
+		 function );
+
+		return( -1 );
+	}
+	if( libuna_utf16_string_size_from_byte_stream(
+	     distributed_link_tracker_properties->machine_identifier_string,
+	     16,
+	     ascii_codepage,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-16 machine identifier string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-16 encoded machine identifier
+ * The size should include the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_distributed_link_tracker_properties_get_utf16_machine_identifier(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_distributed_link_tracker_properties_get_utf16_machine_identifier";
+
+	if( distributed_link_tracker_properties == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid distributed link tracker properties.",
+		 function );
+
+		return( -1 );
+	}
+	if( libuna_utf16_string_copy_from_byte_stream(
+	     utf16_string,
+	     utf16_string_size,
+	     distributed_link_tracker_properties->machine_identifier_string,
+	     16,
+	     ascii_codepage,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-16 machine identifier string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the droid volume identifier
+ * The identifier is a GUID stored in little-endian and is 16 bytes of size
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_distributed_link_tracker_properties_get_droid_volume_identifier(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     uint8_t *guid_data,
+     size_t guid_data_size,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_distributed_link_tracker_properties_get_droid_volume_identifier";
+
+	if( distributed_link_tracker_properties == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid distributed link tracker properties.",
+		 function );
+
+		return( -1 );
+	}
+	if( guid_data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid GUID data.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( guid_data_size < 16 )
+	 || ( guid_data_size > (size_t) SSIZE_MAX ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: GUID data size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	if( memory_copy(
+	     guid_data,
+	     distributed_link_tracker_properties->droid_volume_identifier,
+	     16 ) == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+		 "%s: unable to copy droid volume identifier.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the droid file identifier
+ * The identifier is a GUID stored in little-endian and is 16 bytes of size
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_distributed_link_tracker_properties_get_droid_file_identifier(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     uint8_t *guid_data,
+     size_t guid_data_size,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_distributed_link_tracker_properties_get_droid_file_identifier";
+
+	if( distributed_link_tracker_properties == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid distributed link tracker properties.",
+		 function );
+
+		return( -1 );
+	}
+	if( guid_data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid GUID data.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( guid_data_size < 16 )
+	 || ( guid_data_size > (size_t) SSIZE_MAX ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: GUID data size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	if( memory_copy(
+	     guid_data,
+	     distributed_link_tracker_properties->droid_file_identifier,
+	     16 ) == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+		 "%s: unable to copy droid file identifier.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the birth droid volume identifier
+ * The identifier is a GUID stored in little-endian and is 16 bytes of size
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_distributed_link_tracker_properties_get_birth_droid_volume_identifier(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     uint8_t *guid_data,
+     size_t guid_data_size,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_distributed_link_tracker_properties_get_birth_droid_volume_identifier";
+
+	if( distributed_link_tracker_properties == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid distributed link tracker properties.",
+		 function );
+
+		return( -1 );
+	}
+	if( guid_data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid GUID data.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( guid_data_size < 16 )
+	 || ( guid_data_size > (size_t) SSIZE_MAX ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: GUID data size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	if( memory_copy(
+	     guid_data,
+	     distributed_link_tracker_properties->birth_droid_volume_identifier,
+	     16 ) == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+		 "%s: unable to copy birth droid volume identifier.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the birth droid file identifier
+ * The identifier is a GUID stored in little-endian and is 16 bytes of size
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_distributed_link_tracker_properties_get_birth_droid_file_identifier(
+     liblnk_distributed_link_tracker_properties_t *distributed_link_tracker_properties,
+     uint8_t *guid_data,
+     size_t guid_data_size,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_distributed_link_tracker_properties_get_birth_droid_file_identifier";
+
+	if( distributed_link_tracker_properties == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid distributed link tracker properties.",
+		 function );
+
+		return( -1 );
+	}
+	if( guid_data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid GUID data.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( guid_data_size < 16 )
+	 || ( guid_data_size > (size_t) SSIZE_MAX ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: GUID data size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	if( memory_copy(
+	     guid_data,
+	     distributed_link_tracker_properties->birth_droid_file_identifier,
+	     16 ) == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+		 "%s: unable to copy birth droid file identifier.",
+		 function );
+
+		return( -1 );
+	}
 	return( 1 );
 }
 

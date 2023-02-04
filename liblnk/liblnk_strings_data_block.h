@@ -1,5 +1,5 @@
 /*
- * Data block strings functions
+ * Strings data block functions
  *
  * Copyright (C) 2009-2023, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,30 +19,53 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBLNK_DATA_BLOCK_STRINGS_H )
-#define _LIBLNK_DATA_BLOCK_STRINGS_H
+#if !defined( _LIBLNK_STRINGS_DATA_BLOCK_H )
+#define _LIBLNK_STRINGS_DATA_BLOCK_H
 
 #include <common.h>
 #include <types.h>
 
-#include "liblnk_data_block.h"
-#include "liblnk_data_string.h"
-#include "liblnk_io_handle.h"
+#include "liblnk_extern.h"
 #include "liblnk_libcerror.h"
+#include "liblnk_types.h"
 
 #if defined( __cplusplus )
 extern "C" {
 #endif
 
-int liblnk_data_block_strings_read(
-     liblnk_data_string_t *data_string,
+int liblnk_strings_data_block_read(
+     liblnk_data_block_t *internal_data_block,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf8_string_size(
      liblnk_data_block_t *data_block,
-     liblnk_io_handle_t *io_handle,
+     size_t *utf8_string_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf8_string(
+     liblnk_data_block_t *data_block,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf16_string_size(
+     liblnk_data_block_t *data_block,
+     size_t *utf16_string_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf16_string(
+     liblnk_data_block_t *data_block,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
      libcerror_error_t **error );
 
 #if defined( __cplusplus )
 }
 #endif
 
-#endif /* !defined( _LIBLNK_DATA_BLOCK_STRINGS_H ) */
+#endif /* !defined( _LIBLNK_STRINGS_DATA_BLOCK_H ) */
 

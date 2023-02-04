@@ -178,10 +178,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\liblnk\liblnk_data_block_strings.c"
-				>
-			</File>
-			<File
 				RelativePath="..\..\liblnk\liblnk_data_string.c"
 				>
 			</File>
@@ -191,6 +187,10 @@
 			</File>
 			<File
 				RelativePath="..\..\liblnk\liblnk_distributed_link_tracker_properties.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\liblnk\liblnk_distributed_link_tracking_data_block.c"
 				>
 			</File>
 			<File
@@ -230,6 +230,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\liblnk\liblnk_strings_data_block.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\liblnk\liblnk_support.c"
 				>
 			</File>
@@ -248,10 +252,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\liblnk\liblnk_data_block_strings.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\liblnk\liblnk_data_string.h"
 				>
 			</File>
@@ -265,6 +265,10 @@
 			</File>
 			<File
 				RelativePath="..\..\liblnk\liblnk_distributed_link_tracker_properties.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\liblnk\liblnk_distributed_link_tracking_data_block.h"
 				>
 			</File>
 			<File
@@ -345,6 +349,10 @@
 			</File>
 			<File
 				RelativePath="..\..\liblnk\liblnk_special_folder_location.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\liblnk\liblnk_strings_data_block.h"
 				>
 			</File>
 			<File
