@@ -123,7 +123,7 @@ The following version of programs were used to test the information within this 
 
 * Windows 95
 * Windows 98
-* [yellow-background]*TODO: Windows Me*
+* Windows Me
 * Windows NT4
 * Windows 2000
 * Windows XP
@@ -134,6 +134,8 @@ The following version of programs were used to test the information within this 
 * Windows 8
 * [yellow-background]*TODO: Windows 2012*
 * Windows 10
+* [yellow-background]*TODO: Windows 2019*
+* [yellow-background]*TODO: Windows 11*
 
 == File header
 

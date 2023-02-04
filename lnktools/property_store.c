@@ -28,22 +28,40 @@
 #include <wide_string.h>
 
 #include "lnktools_libcerror.h"
+#include "lnktools_libfdatetime.h"
 #include "lnktools_libfguid.h"
 #include "lnktools_libfwps.h"
 #include "property_store.h"
 
+/* 446d16b1-8dad-4870-a748-402ea43d788c */
 uint8_t property_store_format_class_identifier_system1[ 16 ] = {
 	0xb1, 0x16, 0x6d, 0x44, 0xad, 0x8d, 0x70, 0x48, 0xa7, 0x48, 0x40, 0x2e, 0xa4, 0x3d, 0x78, 0x8c };
 
+/* b725f130-47ef-101a-a5f1-02608c9eebac */
 uint8_t property_store_format_class_identifier_system2[ 16 ] = {
 	0x30, 0xf1, 0x25, 0xb7, 0xef, 0x47, 0x1a, 0x10, 0xa5, 0xf1, 0x02, 0x60, 0x8c, 0x9e, 0xeb, 0xac };
 
+/* 9f4c2855-9f79-4b39-a8d0-e1d42de1d5f3 */
 uint8_t property_store_format_class_identifier_system3[ 16 ] = {
 	0x55, 0x28, 0x4c, 0x9f, 0x79, 0x9f, 0x39, 0x4b, 0xa8, 0xd0, 0xe1, 0xd4, 0x2d, 0xe1, 0xd5, 0xf3 };
 
+/* 28636aa6-953d-11d2-b5d6-00c04fd918d0 */
+uint8_t property_store_format_class_identifier_system4[ 16 ] = {
+	0xa6, 0x6a, 0x63, 0x28, 0x3d, 0x95, 0xd2, 0x11, 0xb5, 0xd6, 0x00, 0xc0, 0x4f, 0xd9, 0x18, 0xd0 };
+
+/* dabd30ed-0043-4789-a7f8-d013a4736622 */
+uint8_t property_store_format_class_identifier_system5[ 16 ] = {
+	0xed, 0x30, 0xbd, 0xda, 0x43, 0x00, 0x89, 0x47, 0xa7, 0xf8, 0xd0, 0x13, 0xa4, 0x73, 0x66, 0x22 };
+
+/* f29f85e0-4ff9-1068-ab91-08002b27b3d9 */
+uint8_t property_store_format_class_identifier_system6[ 16 ] = {
+	0xe0, 0x85, 0x9f, 0xf2, 0xf9, 0x4f, 0x68, 0x10, 0xab, 0x91, 0x08, 0x00, 0x2b, 0x27, 0xb3, 0xd9 };
+
+/* 86d40b4d-9069-443c-819a-2a54090dccec */
 uint8_t property_store_format_class_identifier_tile[ 16 ] = {
 	0x4d, 0x0b, 0xd4, 0x86, 0x69, 0x90, 0x3c, 0x44, 0x81, 0x9a, 0x2a, 0x54, 0x09, 0x0d, 0xcc, 0xec };
 
+/* fb8d2d7b-90d1-4e34-bf60-6eac09922bbf */
 uint8_t property_store_format_class_identifier_winx_hash[ 16 ] = {
 	0x7b, 0x2d, 0x8d, 0xfb, 0xd1, 0x90, 0x34, 0x4e, 0xbf, 0x60, 0x6e, 0xac, 0x09, 0x92, 0x2b, 0xbf };
 
@@ -52,6 +70,7 @@ uint8_t property_store_format_class_identifier_winx_hash[ 16 ] = {
  */
 int property_store_record_fprint(
      const uint8_t *property_set_identifier,
+     const system_character_t *property_set_identifier_string,
      libfwps_record_t *property_record,
      int record_index,
      FILE *notify_stream,
@@ -60,20 +79,22 @@ int property_store_record_fprint(
 	uint8_t guid_data[ 16 ];
 
 	system_character_t guid_string[ 48 ];
+	system_character_t date_time_string[ 48 ];
 
-	libfguid_identifier_t *guid      = NULL;
-	system_character_t *value_string = NULL;
-	const char *description          = "Unknown";
-	static char *function            = "property_store_record_fprint";
-	size_t value_string_size         = 0;
-	uint64_t value_64bit             = 0;
-	uint32_t entry_type              = 0;
-	uint32_t value_32bit             = 0;
-	uint32_t value_type              = 0;
-	uint16_t value_16bit             = 0;
-	uint8_t value_8bit               = 0;
-	double value_floating_point      = 0.0;
-	int result                       = 0;
+	libfdatetime_filetime_t *filetime = NULL;
+	libfguid_identifier_t *guid       = NULL;
+	system_character_t *value_string  = NULL;
+	const char *description           = "Unknown";
+	static char *function             = "property_store_record_fprint";
+	size_t value_string_size          = 0;
+	uint64_t value_64bit              = 0;
+	uint32_t entry_type               = 0;
+	uint32_t value_32bit              = 0;
+	uint32_t value_type               = 0;
+	uint16_t value_16bit              = 0;
+	uint8_t value_8bit                = 0;
+	double value_floating_point       = 0.0;
+	int result                        = 0;
 
 	if( property_set_identifier == NULL )
 	{
@@ -126,8 +147,24 @@ int property_store_record_fprint(
 		{
 			switch( entry_type )
 			{
+				case 4:
+					description = "PKEY_ItemTypeText";
+					break;
+
 				case 10:
-					description = "System.ItemNameDisplay";
+					description = "PKEY_ItemNameDisplay";
+					break;
+
+				case 14:
+					description = "PKEY_DateModified";
+					break;
+
+				case 15:
+					description = "PKEY_DateCreated";
+					break;
+
+				case 23:
+					description = "PKEY_ItemNameSortOverride";
 					break;
 
 				default:
@@ -154,7 +191,7 @@ int property_store_record_fprint(
 					break;
 
 				case 5:
-					description = "System.AppUserModel.ID";
+					description = "PKEY_AppUserModel_ID";
 					break;
 
 				case 6:
@@ -170,7 +207,7 @@ int property_store_record_fprint(
 					break;
 
 				case 9:
-					description = "System.AppUserModel.PreventPinning";
+					description = "PKEY_AppUserModel_PreventPinning";
 					break;
 
 				case 10:
@@ -178,11 +215,11 @@ int property_store_record_fprint(
 					break;
 
 				case 11:
-					description = "System.AppUserModel.IsDualMode";
+					description = "PKEY_AppUserModel_IsDualMode";
 					break;
 
 				case 12:
-					description = "System.AppUserModel.StartPinOption";
+					description = "PKEY_AppUserModel_StartPinOption";
 					break;
 
 				case 13:
@@ -190,11 +227,23 @@ int property_store_record_fprint(
 					break;
 
 				case 14:
-					description = "System.AppUserModel.HostEnvironment";
+					description = "PKEY_AppUserModel_HostEnvironment";
+					break;
+
+				case 15:
+					description = "PKEY_AppUserModel_PackageInstallPath";
+					break;
+
+				case 17:
+					description = "PKEY_AppUserModel_PackageFamilyName";
 					break;
 
 				case 18:
-					description = "System.AppUserModel.InstalledBy";
+					description = "PKEY_AppUserModel_InstalledBy";
+					break;
+
+				case 21:
+					description = "PKEY_AppUserModel_PackageFullName";
 					break;
 
 				case 23:
@@ -203,6 +252,55 @@ int property_store_record_fprint(
 
 				case 26:
 					description = "System.AppUserModel.ToastActivatorCLSID";
+					break;
+
+				default:
+					break;
+			}
+		}
+		else if( memory_compare(
+		          property_set_identifier,
+		          property_store_format_class_identifier_system4,
+		          16 ) == 0 )
+		{
+			switch( entry_type )
+			{
+				case 30:
+					description = "PKEY_ParsingPath";
+					break;
+
+				default:
+					break;
+			}
+		}
+		else if( memory_compare(
+		          property_set_identifier,
+		          property_store_format_class_identifier_system5,
+		          16 ) == 0 )
+		{
+			switch( entry_type )
+			{
+				case 100:
+					description = "PKEY_ItemFolderPathDisplayNarrow";
+					break;
+
+				default:
+					break;
+			}
+		}
+		else if( memory_compare(
+		          property_set_identifier,
+		          property_store_format_class_identifier_system6,
+		          16 ) == 0 )
+		{
+			switch( entry_type )
+			{
+				case 4:
+					description = "PKEY_Author";
+					break;
+
+				case 6:
+					description = "PKEY_Comment";
 					break;
 
 				default:
@@ -301,7 +399,8 @@ int property_store_record_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t\tProperty: %d\t\t: %s\n",
+		 "\t{%s}/%d (%s)\n",
+		 property_set_identifier_string,
 		 entry_type,
 		 description );
 	}
@@ -323,11 +422,40 @@ int property_store_record_fprint(
 	}
 	fprintf(
 	 notify_stream,
-	 "\t\tValue: 0x%04" PRIx32 "\t\t:",
+	 "\t\tValue (0x%04" PRIx32 ")\t\t:",
 	 value_type );
 
 	switch( value_type )
 	{
+		case LIBFWPS_VALUE_TYPE_BOOLEAN:
+			if( libfwps_record_get_data_as_boolean(
+			     property_record,
+			     &value_8bit,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to retrieve boolean value.",
+				 function );
+
+				goto on_error;
+			}
+			if( value_8bit == 0 )
+			{
+				fprintf(
+				 notify_stream,
+				 " false" );
+			}
+			else
+			{
+				fprintf(
+				 notify_stream,
+				 " true" );
+			}
+			break;
+
 		case LIBFWPS_VALUE_TYPE_INTEGER_8BIT_SIGNED:
 		case LIBFWPS_VALUE_TYPE_INTEGER_8BIT_UNSIGNED:
 			if( libfwps_record_get_data_as_8bit_integer(
@@ -479,6 +607,7 @@ int property_store_record_fprint(
 
 			break;
 
+		case LIBFWPS_VALUE_TYPE_BINARY_STRING:
 		case LIBFWPS_VALUE_TYPE_STRING_ASCII:
 		case LIBFWPS_VALUE_TYPE_STRING_UNICODE:
 #if defined( HAVE_WIDE_SYSTEM_CHARACTER )
@@ -553,6 +682,103 @@ int property_store_record_fprint(
 				 value_string );
 
 				value_string = NULL;
+			}
+			break;
+
+		case LIBFWPS_VALUE_TYPE_FILETIME:
+			if( libfwps_record_get_data_as_filetime(
+			     property_record,
+			     &value_64bit,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to retrieve FILETIME value.",
+				 function );
+
+				goto on_error;
+			}
+			if( value_64bit == 0 )
+			{
+				fprintf(
+				 notify_stream,
+				 " Not set (0)" );
+			}
+			else
+			{
+				if( libfdatetime_filetime_initialize(
+				     &filetime,
+				     error ) != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+					 "%s: unable to create FILETIME.",
+					 function );
+
+					goto on_error;
+				}
+				if( libfdatetime_filetime_copy_from_64bit(
+				     filetime,
+				     value_64bit,
+				     error ) != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+					 "%s: unable to copy 64-bit value to FILETIME.",
+					 function );
+
+					goto on_error;
+				}
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+				result = libfdatetime_filetime_copy_to_utf16_string(
+					  filetime,
+					  (uint16_t *) date_time_string,
+					  48,
+					  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
+					  error );
+#else
+				result = libfdatetime_filetime_copy_to_utf8_string(
+					  filetime,
+					  (uint8_t *) date_time_string,
+					  48,
+					  LIBFDATETIME_STRING_FORMAT_TYPE_CTIME | LIBFDATETIME_STRING_FORMAT_FLAG_DATE_TIME_NANO_SECONDS,
+			  error );
+#endif
+				if( result != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+					 "%s: unable to copy FILETIME to string.",
+					 function );
+
+					goto on_error;
+				}
+				fprintf(
+				 notify_stream,
+				 " %" PRIs_SYSTEM " UTC",
+				 date_time_string );
+
+				if( libfdatetime_filetime_free(
+				     &filetime,
+				     error ) != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+					 "%s: unable to free FILETIME.",
+					 function );
+
+					goto on_error;
+				}
 			}
 			break;
 
@@ -663,6 +889,12 @@ on_error:
 		 &guid,
 		 NULL );
 	}
+	if( filetime != NULL )
+	{
+		libfdatetime_filetime_free(
+		 &filetime,
+		 NULL );
+	}
 	if( value_string != NULL )
 	{
 		memory_free(
@@ -760,11 +992,6 @@ int property_store_set_fprint(
 
 		goto on_error;
 	}
-	fprintf(
-	 notify_stream,
-	 "\tProperty set\t\t\t: %" PRIs_SYSTEM "\n",
-	 guid_string );
-
 	if( libfguid_identifier_free(
 	     &guid,
 	     error ) != 1 )
@@ -814,6 +1041,7 @@ int property_store_set_fprint(
 		}
 		if( property_store_record_fprint(
 		     property_set_identifier,
+		     guid_string,
 		     property_record,
 		     record_index + 1,
 		     notify_stream,
@@ -843,6 +1071,12 @@ int property_store_set_fprint(
 
 			goto on_error;
 		}
+	}
+	if( number_of_records == 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\n" );
 	}
 	return( 1 );
 
@@ -938,6 +1172,12 @@ int property_store_fprint(
 
 			goto on_error;
 		}
+	}
+	if( number_of_sets == 0 )
+	{
+		fprintf(
+		 notify_stream,
+		 "\n" );
 	}
 	return( 1 );
 

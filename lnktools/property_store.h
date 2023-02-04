@@ -34,6 +34,7 @@ extern "C" {
 
 int property_store_record_fprint(
      const uint8_t *property_set_identifier,
+     const system_character_t *property_set_identifier_string,
      libfwps_record_t *property_record,
      int record_index,
      FILE *notify_stream,
