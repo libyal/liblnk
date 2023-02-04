@@ -175,7 +175,7 @@ Distributed link tracking data functions
 .Pp
 Extra data block functions
 .Ft int
-.Fn liblnk_file_get_number_of_data_blocks "liblnk_file_t *file" "int number_of_data_blocks" "liblnk_error_t **error"
+.Fn liblnk_file_get_number_of_data_blocks "liblnk_file_t *file" "int *number_of_data_blocks" "liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_get_data_block_by_index "liblnk_file_t *file" "int data_block_index" "liblnk_data_block_t **data_block" "liblnk_error_t **error"
 .Pp
@@ -198,7 +198,6 @@ Strings data block functions
 .Fn liblnk_strings_data_block_get_utf16_string_size "liblnk_data_block_t *data_block" "size_t *utf16_string_size" "liblnk_error_t **error"
 .Ft int
 .Fn liblnk_strings_data_block_get_utf16_string "liblnk_data_block_t *data_block" "uint16_t *utf16_string" "size_t utf16_string_size" "liblnk_error_t **error"
-.Ft int
 .Pp
 Distributed link tracking data block functions
 .Ft int

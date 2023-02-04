@@ -28,6 +28,8 @@
 #endif
 
 #include "pylnk_codepage.h"
+#include "pylnk_data_block.h"
+#include "pylnk_data_blocks.h"
 #include "pylnk_datetime.h"
 #include "pylnk_error.h"
 #include "pylnk_file.h"
@@ -82,13 +84,6 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  "\n"
 	  "Closes a file." },
 
-	{ "is_corrupted",
-	  (PyCFunction) pylnk_file_is_corrupted,
-	  METH_NOARGS,
-	  "is_corrupted() -> Boolean\n"
-	  "\n"
-	  "Determines if the file is corrupted." },
-
 	{ "get_ascii_codepage",
 	  (PyCFunction) pylnk_file_get_ascii_codepage,
 	  METH_NOARGS,
@@ -104,6 +99,13 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  "Sets the codepage for ASCII strings used in the file.\n"
 	  "Expects the codepage to be a string containing a Python codec definition." },
 
+	{ "is_corrupted",
+	  (PyCFunction) pylnk_file_is_corrupted,
+	  METH_NOARGS,
+	  "is_corrupted() -> Boolean or None\n"
+	  "\n"
+	  "Determines if the file is corrupted." },
+
 	{ "get_data_flags",
 	  (PyCFunction) pylnk_file_get_data_flags,
 	  METH_NOARGS,
@@ -114,7 +116,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_file_creation_time",
 	  (PyCFunction) pylnk_file_get_file_creation_time,
 	  METH_NOARGS,
-	  "get_file_creation_time() -> Datetime or None\n"
+	  "get_file_creation_time() -> Datetime\n"
 	  "\n"
 	  "Retrieves the file creation time." },
 
@@ -128,7 +130,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_file_modification_time",
 	  (PyCFunction) pylnk_file_get_file_modification_time,
 	  METH_NOARGS,
-	  "get_file_modification_time() -> Datetime or None\n"
+	  "get_file_modification_time() -> Datetime\n"
 	  "\n"
 	  "Retrieves the file modification time." },
 
@@ -142,7 +144,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_file_access_time",
 	  (PyCFunction) pylnk_file_get_file_access_time,
 	  METH_NOARGS,
-	  "get_file_access_time() -> Datetime or None\n"
+	  "get_file_access_time() -> Datetime\n"
 	  "\n"
 	  "Retrieves the file access time." },
 
@@ -156,35 +158,35 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_file_size",
 	  (PyCFunction) pylnk_file_get_file_size,
 	  METH_NOARGS,
-	  "get_file_size() -> Integer or None\n"
+	  "get_file_size() -> Integer\n"
 	  "\n"
 	  "Retrieves the file size." },
 
 	{ "get_icon_index",
 	  (PyCFunction) pylnk_file_get_icon_index,
 	  METH_NOARGS,
-	  "get_icon_index() -> Integer or None\n"
+	  "get_icon_index() -> Integer\n"
 	  "\n"
 	  "Retrieves the icon index." },
 
 	{ "get_show_window_value",
 	  (PyCFunction) pylnk_file_get_show_window_value,
 	  METH_NOARGS,
-	  "get_show_window_value() -> Integer or None\n"
+	  "get_show_window_value() -> Integer\n"
 	  "\n"
 	  "Retrieves the show window value." },
 
 	{ "get_hot_key_value",
 	  (PyCFunction) pylnk_file_get_hot_key_value,
 	  METH_NOARGS,
-	  "get_hot_key_value() -> Integer or None\n"
+	  "get_hot_key_value() -> Integer\n"
 	  "\n"
 	  "Retrieves the hot key value." },
 
 	{ "get_file_attribute_flags",
 	  (PyCFunction) pylnk_file_get_file_attribute_flags,
 	  METH_NOARGS,
-	  "get_file_attribute_flags() -> Integer or None\n"
+	  "get_file_attribute_flags() -> Integer\n"
 	  "\n"
 	  "Retrieves the file attribute flags." },
 
@@ -306,6 +308,20 @@ PyMethodDef pylnk_file_object_methods[] = {
 	  "get_birth_droid_file_identifier() -> Unicode string or None\n"
 	  "\n"
 	  "Retrieves the birth droid file identifier." },
+
+	{ "get_number_of_data_blocks",
+	  (PyCFunction) pylnk_file_get_number_of_data_blocks,
+	  METH_NOARGS,
+	  "get_number_of_data_blocks() -> Integer\n"
+	  "\n"
+	  "Retrieves the number of (extra) data blocks." },
+
+	{ "get_data_block",
+	  (PyCFunction) pylnk_file_get_data_block,
+	  METH_VARARGS | METH_KEYWORDS,
+	  "get_data_block(data_block_index) -> Object\n"
+	  "\n"
+	  "Retrieves the (extra) data block specified by the index." },
 
 	/* Sentinel */
 	{ NULL, NULL, 0, NULL }
@@ -473,6 +489,18 @@ PyGetSetDef pylnk_file_object_get_set_definitions[] = {
 	  (getter) pylnk_file_get_birth_droid_file_identifier,
 	  (setter) 0,
 	  "The birth droid file identifier.",
+	  NULL },
+
+	{ "number_of_data_blocks",
+	  (getter) pylnk_file_get_number_of_data_blocks,
+	  (setter) 0,
+	  "The number of (extra) data blocks.",
+	  NULL },
+
+	{ "data_blocks",
+	  (getter) pylnk_file_get_data_blocks,
+	  (setter) 0,
+	  "The (extra) data blocks.",
 	  NULL },
 
 	/* Sentinel */
@@ -747,13 +775,13 @@ PyObject *pylnk_file_open(
            PyObject *arguments,
            PyObject *keywords )
 {
-	PyObject *string_object      = NULL;
-	libcerror_error_t *error     = NULL;
-	const char *filename_narrow  = NULL;
-	static char *function        = "pylnk_file_open";
-	static char *keyword_list[]  = { "filename", "mode", NULL };
-	char *mode                   = NULL;
-	int result                   = 0;
+	PyObject *string_object     = NULL;
+	libcerror_error_t *error    = NULL;
+	const char *filename_narrow = NULL;
+	static char *function       = "pylnk_file_open";
+	static char *keyword_list[] = { "filename", "mode", NULL };
+	char *mode                  = NULL;
+	int result                  = 0;
 
 #if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 	const wchar_t *filename_wide = NULL;
@@ -806,7 +834,7 @@ PyObject *pylnk_file_open(
 	{
 		pylnk_error_fetch_and_raise(
 		 PyExc_RuntimeError,
-		 "%s: unable to determine if string object is of type unicode.",
+		 "%s: unable to determine if string object is of type Unicode.",
 		 function );
 
 		return( NULL );
@@ -835,7 +863,7 @@ PyObject *pylnk_file_open(
 		{
 			pylnk_error_fetch_and_raise(
 			 PyExc_RuntimeError,
-			 "%s: unable to convert unicode string to UTF-8.",
+			 "%s: unable to convert Unicode string to UTF-8.",
 			 function );
 
 			return( NULL );
@@ -1028,7 +1056,7 @@ PyObject *pylnk_file_open_file_object(
 		 "%s: invalid file - file IO handle already set.",
 		 function );
 
-		goto on_error;
+		return( NULL );
 	}
 	if( pylnk_file_object_initialize(
 	     &( pylnk_file->file_io_handle ),
@@ -1141,7 +1169,7 @@ PyObject *pylnk_file_close(
 		{
 			pylnk_error_raise(
 			 error,
-			 PyExc_IOError,
+			 PyExc_MemoryError,
 			 "%s: unable to free libbfio file IO handle.",
 			 function );
 
@@ -1155,62 +1183,6 @@ PyObject *pylnk_file_close(
 	 Py_None );
 
 	return( Py_None );
-}
-
-/* Determines if the file is corrupted
- * Returns a Python object if successful or NULL on error
- */
-PyObject *pylnk_file_is_corrupted(
-           pylnk_file_t *pylnk_file,
-           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
-{
-	libcerror_error_t *error = NULL;
-	static char *function    = "pylnk_file_is_corrupted";
-	int result               = 0;
-
-	PYLNK_UNREFERENCED_PARAMETER( arguments )
-
-	if( pylnk_file == NULL )
-	{
-		PyErr_Format(
-		 PyExc_ValueError,
-		 "%s: invalid file.",
-		 function );
-
-		return( NULL );
-	}
-	Py_BEGIN_ALLOW_THREADS
-
-	result = liblnk_file_is_corrupted(
-	          pylnk_file->file,
-	          &error );
-
-	Py_END_ALLOW_THREADS
-
-	if( result == -1 )
-	{
-		pylnk_error_raise(
-		 error,
-		 PyExc_IOError,
-		 "%s: unable to determine if file is corrupted.",
-		 function );
-
-		libcerror_error_free(
-		 &error );
-
-		return( NULL );
-	}
-	if( result != 0 )
-	{
-		Py_IncRef(
-		 (PyObject *) Py_True );
-
-		return( Py_True );
-	}
-	Py_IncRef(
-	 (PyObject *) Py_False );
-
-	return( Py_False );
 }
 
 /* Retrieves the codepage used for ASCII strings in the file
@@ -1432,7 +1404,7 @@ int pylnk_file_set_ascii_codepage_setter(
 	{
 		pylnk_error_fetch_and_raise(
 		 PyExc_RuntimeError,
-		 "%s: unable to determine if string object is of type unicode.",
+		 "%s: unable to determine if string object is of type Unicode.",
 		 function );
 
 		return( -1 );
@@ -1448,7 +1420,7 @@ int pylnk_file_set_ascii_codepage_setter(
 		{
 			pylnk_error_fetch_and_raise(
 			 PyExc_RuntimeError,
-			 "%s: unable to convert unicode string to UTF-8.",
+			 "%s: unable to convert Unicode string to UTF-8.",
 			 function );
 
 			return( -1 );
@@ -1523,6 +1495,62 @@ int pylnk_file_set_ascii_codepage_setter(
 	 function );
 
 	return( -1 );
+}
+
+/* Determines if the file is corrupted
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_is_corrupted(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_file_is_corrupted";
+	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_is_corrupted(
+	          pylnk_file->file,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to determine if file is corrupted.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	if( result != 0 )
+	{
+		Py_IncRef(
+		 (PyObject *) Py_True );
+
+		return( Py_True );
+	}
+	Py_IncRef(
+	 (PyObject *) Py_False );
+
+	return( Py_False );
 }
 
 /* Retrieves the data flags
@@ -1964,7 +1992,7 @@ PyObject *pylnk_file_get_file_size(
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
@@ -1976,13 +2004,6 @@ PyObject *pylnk_file_get_file_size(
 		 &error );
 
 		return( NULL );
-	}
-	else if( result == 0 )
-	{
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
 	}
 	integer_object = PyLong_FromUnsignedLong(
 	                  (unsigned long) value_32bit );
@@ -2023,7 +2044,7 @@ PyObject *pylnk_file_get_icon_index(
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
@@ -2035,13 +2056,6 @@ PyObject *pylnk_file_get_icon_index(
 		 &error );
 
 		return( NULL );
-	}
-	else if( result == 0 )
-	{
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
 	}
 	integer_object = PyLong_FromUnsignedLong(
 	                  (unsigned long) value_32bit );
@@ -2082,7 +2096,7 @@ PyObject *pylnk_file_get_show_window_value(
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
@@ -2094,13 +2108,6 @@ PyObject *pylnk_file_get_show_window_value(
 		 &error );
 
 		return( NULL );
-	}
-	else if( result == 0 )
-	{
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
 	}
 	integer_object = PyLong_FromUnsignedLong(
 	                  (unsigned long) value_32bit );
@@ -2141,7 +2148,7 @@ PyObject *pylnk_file_get_hot_key_value(
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
@@ -2153,13 +2160,6 @@ PyObject *pylnk_file_get_hot_key_value(
 		 &error );
 
 		return( NULL );
-	}
-	else if( result == 0 )
-	{
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
 	}
 #if PY_MAJOR_VERSION >= 3
 	integer_object = PyLong_FromLong(
@@ -2204,7 +2204,7 @@ PyObject *pylnk_file_get_file_attribute_flags(
 
 	Py_END_ALLOW_THREADS
 
-	if( result == -1 )
+	if( result != 1 )
 	{
 		pylnk_error_raise(
 		 error,
@@ -2216,13 +2216,6 @@ PyObject *pylnk_file_get_file_attribute_flags(
 		 &error );
 
 		return( NULL );
-	}
-	else if( result == 0 )
-	{
-		Py_IncRef(
-		 Py_None );
-
-		return( Py_None );
 	}
 	integer_object = PyLong_FromUnsignedLong(
 	                  (unsigned long) value_32bit );
@@ -3751,6 +3744,15 @@ PyObject *pylnk_file_get_droid_volume_identifier(
 	                 guid_data,
 	                 16 );
 
+	if( string_object == NULL )
+	{
+		PyErr_Format(
+		 PyExc_IOError,
+		 "%s: unable to convert GUID into Unicode object.",
+		 function );
+
+		return( NULL );
+	}
 	return( string_object );
 }
 
@@ -3813,6 +3815,15 @@ PyObject *pylnk_file_get_droid_file_identifier(
 	                 guid_data,
 	                 16 );
 
+	if( string_object == NULL )
+	{
+		PyErr_Format(
+		 PyExc_IOError,
+		 "%s: unable to convert GUID into Unicode object.",
+		 function );
+
+		return( NULL );
+	}
 	return( string_object );
 }
 
@@ -3875,6 +3886,15 @@ PyObject *pylnk_file_get_birth_droid_volume_identifier(
 	                 guid_data,
 	                 16 );
 
+	if( string_object == NULL )
+	{
+		PyErr_Format(
+		 PyExc_IOError,
+		 "%s: unable to convert GUID into Unicode object.",
+		 function );
+
+		return( NULL );
+	}
 	return( string_object );
 }
 
@@ -3937,6 +3957,234 @@ PyObject *pylnk_file_get_birth_droid_file_identifier(
 	                 guid_data,
 	                 16 );
 
+	if( string_object == NULL )
+	{
+		PyErr_Format(
+		 PyExc_IOError,
+		 "%s: unable to convert GUID into Unicode object.",
+		 function );
+
+		return( NULL );
+	}
 	return( string_object );
+}
+
+/* Retrieves the number of (extra) data blocks
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_number_of_data_blocks(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	PyObject *integer_object  = NULL;
+	libcerror_error_t *error  = NULL;
+	static char *function     = "pylnk_file_get_number_of_data_blocks";
+	int number_of_data_blocks = 0;
+	int result                = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_number_of_data_blocks(
+	          pylnk_file->file,
+	          &number_of_data_blocks,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve number of.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+#if PY_MAJOR_VERSION >= 3
+	integer_object = PyLong_FromLong(
+	                  (long) number_of_data_blocks );
+#else
+	integer_object = PyInt_FromLong(
+	                  (long) number_of_data_blocks );
+#endif
+	return( integer_object );
+}
+
+/* Retrieves a specific (extra) data block by index
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_data_block_by_index(
+           PyObject *pylnk_file,
+           int data_block_index )
+{
+	PyObject *data_block_object     = NULL;
+	libcerror_error_t *error        = NULL;
+	liblnk_data_block_t *data_block = NULL;
+	static char *function           = "pylnk_file_get_data_block_by_index";
+	int result                      = 0;
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_data_block_by_index(
+	          ( (pylnk_file_t *) pylnk_file )->file,
+	          data_block_index,
+	          &data_block,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve : %d.",
+		 function,
+		 data_block_index );
+
+		libcerror_error_free(
+		 &error );
+
+		goto on_error;
+	}
+	data_block_object = pylnk_data_block_new(
+	                     data_block,
+	                     pylnk_file );
+
+	if( data_block_object == NULL )
+	{
+		PyErr_Format(
+		 PyExc_MemoryError,
+		 "%s: unable to create data block object.",
+		 function );
+
+		goto on_error;
+	}
+	return( data_block_object );
+
+on_error:
+	if( data_block != NULL )
+	{
+		liblnk_data_block_free(
+		 &data_block,
+		 NULL );
+	}
+	return( NULL );
+}
+
+/* Retrieves a specific data block
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_data_block(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments,
+           PyObject *keywords )
+{
+	PyObject *data_block_object = NULL;
+	static char *keyword_list[] = { "data_block_index", NULL };
+	int data_block_index        = 0;
+
+	if( PyArg_ParseTupleAndKeywords(
+	     arguments,
+	     keywords,
+	     "i",
+	     keyword_list,
+	     &data_block_index ) == 0 )
+	{
+		return( NULL );
+	}
+	data_block_object = pylnk_file_get_data_block_by_index(
+	                     (PyObject *) pylnk_file,
+	                     data_block_index );
+
+	return( data_block_object );
+}
+
+/* Retrieves a sequence and iterator object for the data blocks
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_file_get_data_blocks(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	PyObject *sequence_object = NULL;
+	libcerror_error_t *error  = NULL;
+	static char *function     = "pylnk_file_get_data_blocks";
+	int number_of_data_blocks = 0;
+	int result                = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_file == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid file.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_file_get_number_of_data_blocks(
+	          pylnk_file->file,
+	          &number_of_data_blocks,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve number of data blocks.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	sequence_object = pylnk_data_blocks_new(
+	                   (PyObject *) pylnk_file,
+	                   &pylnk_file_get_data_block_by_index,
+	                   number_of_data_blocks );
+
+	if( sequence_object == NULL )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_MemoryError,
+		 "%s: unable to create sequence object.",
+		 function );
+
+		return( NULL );
+	}
+	return( sequence_object );
 }
 

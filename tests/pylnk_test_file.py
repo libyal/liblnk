@@ -494,6 +494,20 @@ class FileTypeTests(unittest.TestCase):
 
     lnk_file.close()
 
+  def test_get_link_target_identifier_data(self):
+    """Tests the get_link_target_identifier_data function and link_target_identifier_data property."""
+    test_source = unittest.source
+    if not test_source:
+      raise unittest.SkipTest("missing source")
+
+    lnk_file = pylnk.file()
+
+    lnk_file.open(test_source)
+
+    _ = lnk_file.get_link_target_identifier_data()
+
+    lnk_file.close()
+
   def test_get_machine_identifier(self):
     """Tests the get_machine_identifier function and machine_identifier property."""
     test_source = unittest.source
@@ -507,6 +521,23 @@ class FileTypeTests(unittest.TestCase):
     _ = lnk_file.get_machine_identifier()
 
     _ = lnk_file.machine_identifier
+
+    lnk_file.close()
+
+  def test_get_number_of_data_blocks(self):
+    """Tests the get_number_of_data_blocks function and number_of_data_blocks property."""
+    test_source = unittest.source
+    if not test_source:
+      raise unittest.SkipTest("missing source")
+
+    lnk_file = pylnk.file()
+
+    lnk_file.open(test_source)
+
+    number_of_data_blocks = lnk_file.get_number_of_data_blocks()
+    self.assertIsNotNone(number_of_data_blocks)
+
+    self.assertIsNotNone(lnk_file.number_of_data_blocks)
 
     lnk_file.close()
 

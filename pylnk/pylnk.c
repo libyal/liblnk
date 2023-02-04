@@ -28,6 +28,8 @@
 #endif
 
 #include "pylnk.h"
+#include "pylnk_data_block.h"
+#include "pylnk_data_blocks.h"
 #include "pylnk_data_flags.h"
 #include "pylnk_drive_types.h"
 #include "pylnk_error.h"
@@ -595,6 +597,40 @@ PyMODINIT_FUNC initpylnk(
 	PyEval_InitThreads();
 #endif
 	gil_state = PyGILState_Ensure();
+
+	/* Setup the data_block type object
+	 */
+	pylnk_data_block_type_object.tp_new = PyType_GenericNew;
+
+	if( PyType_Ready(
+	     &pylnk_data_block_type_object ) < 0 )
+	{
+		goto on_error;
+	}
+	Py_IncRef(
+	 (PyObject *) &pylnk_data_block_type_object );
+
+	PyModule_AddObject(
+	 module,
+	 "data_block",
+	 (PyObject *) &pylnk_data_block_type_object );
+
+	/* Setup the data_blocks type object
+	 */
+	pylnk_data_blocks_type_object.tp_new = PyType_GenericNew;
+
+	if( PyType_Ready(
+	     &pylnk_data_blocks_type_object ) < 0 )
+	{
+		goto on_error;
+	}
+	Py_IncRef(
+	 (PyObject *) &pylnk_data_blocks_type_object );
+
+	PyModule_AddObject(
+	 module,
+	 "data_blocks",
+	 (PyObject *) &pylnk_data_blocks_type_object );
 
 	/* Setup the data_flags type object
 	 */

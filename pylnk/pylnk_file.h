@@ -77,10 +77,6 @@ PyObject *pylnk_file_close(
            pylnk_file_t *pylnk_file,
            PyObject *arguments );
 
-PyObject *pylnk_file_is_corrupted(
-           pylnk_file_t *pylnk_file,
-           PyObject *arguments );
-
 PyObject *pylnk_file_get_ascii_codepage(
            pylnk_file_t *pylnk_file,
            PyObject *arguments );
@@ -98,6 +94,10 @@ int pylnk_file_set_ascii_codepage_setter(
      pylnk_file_t *pylnk_file,
      PyObject *string_object,
      void *closure );
+
+PyObject *pylnk_file_is_corrupted(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
 
 PyObject *pylnk_file_get_data_flags(
            pylnk_file_t *pylnk_file,
@@ -212,6 +212,23 @@ PyObject *pylnk_file_get_birth_droid_volume_identifier(
            PyObject *arguments );
 
 PyObject *pylnk_file_get_birth_droid_file_identifier(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
+
+PyObject *pylnk_file_get_number_of_data_blocks(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments );
+
+PyObject *pylnk_file_get_data_block_by_index(
+           PyObject *pylnk_file,
+           int data_block_index );
+
+PyObject *pylnk_file_get_data_block(
+           pylnk_file_t *pylnk_file,
+           PyObject *arguments,
+           PyObject *keywords );
+
+PyObject *pylnk_file_get_data_blocks(
            pylnk_file_t *pylnk_file,
            PyObject *arguments );
 

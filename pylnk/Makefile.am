@@ -18,6 +18,8 @@ pyexec_LTLIBRARIES = pylnk.la
 pylnk_la_SOURCES = \
 	pylnk.c pylnk.h \
 	pylnk_codepage.c pylnk_codepage.h \
+	pylnk_data_block.c pylnk_data_block.h \
+	pylnk_data_blocks.c pylnk_data_blocks.h \
 	pylnk_data_flags.c pylnk_data_flags.h \
 	pylnk_datetime.c pylnk_datetime.h \
 	pylnk_drive_types.c pylnk_drive_types.h \

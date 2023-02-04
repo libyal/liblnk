@@ -178,6 +178,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\pylnk\pylnk_data_block.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_data_blocks.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\pylnk\pylnk_data_flags.c"
 				>
 			</File>
@@ -225,6 +233,14 @@
 			</File>
 			<File
 				RelativePath="..\..\pylnk\pylnk_codepage.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_data_block.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_data_blocks.h"
 				>
 			</File>
 			<File
