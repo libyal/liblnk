@@ -194,6 +194,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\pylnk\pylnk_distributed_link_tracking_data_block.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\pylnk\pylnk_drive_types.c"
 				>
 			</File>
@@ -219,6 +223,10 @@
 			</File>
 			<File
 				RelativePath="..\..\pylnk\pylnk_integer.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_strings_data_block.c"
 				>
 			</File>
 		</Filter>
@@ -249,6 +257,10 @@
 			</File>
 			<File
 				RelativePath="..\..\pylnk\pylnk_datetime.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_distributed_link_tracking_data_block.h"
 				>
 			</File>
 			<File
@@ -301,6 +313,10 @@
 			</File>
 			<File
 				RelativePath="..\..\pylnk\pylnk_python.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_strings_data_block.h"
 				>
 			</File>
 			<File

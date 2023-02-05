@@ -1,5 +1,5 @@
 /*
- * Python object wrapper of liblnk_data_block_t
+ * Python object wrapper of liblnk_data_block_t with distributed link tracker properties
  *
  * Copyright (C) 2009-2023, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,12 +19,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#if !defined( _PYLNK_DATA_BLOCK_H )
-#define _PYLNK_DATA_BLOCK_H
+#if !defined( _PYLNK_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK_H )
+#define _PYLNK_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK_H
 
 #include <common.h>
 #include <types.h>
 
+#include "pylnk_data_block.h"
 #include "pylnk_liblnk.h"
 #include "pylnk_python.h"
 
@@ -32,45 +33,26 @@
 extern "C" {
 #endif
 
-typedef struct pylnk_data_block pylnk_data_block_t;
+extern PyMethodDef pylnk_distributed_link_tracking_data_block_object_methods[];
+extern PyTypeObject pylnk_distributed_link_tracking_data_block_type_object;
 
-struct pylnk_data_block
-{
-	/* Python object initialization
-	 */
-	PyObject_HEAD
-
-	/* The liblnk data block
-	 */
-	liblnk_data_block_t *data_block;
-
-	/* The parent object
-	 */
-	PyObject *parent_object;
-};
-
-extern PyMethodDef pylnk_data_block_object_methods[];
-extern PyTypeObject pylnk_data_block_type_object;
-
-PyTypeObject *pylnk_data_block_get_type_object(
-               liblnk_data_block_t *data_block );
-
-PyObject *pylnk_data_block_new(
-           PyTypeObject *type_object,
-           liblnk_data_block_t *data_block,
-           PyObject *parent_object );
-
-int pylnk_data_block_init(
-     pylnk_data_block_t *pylnk_data_block );
-
-void pylnk_data_block_free(
-      pylnk_data_block_t *pylnk_data_block );
-
-PyObject *pylnk_data_block_get_signature(
+PyObject *pylnk_distributed_link_tracking_data_block_get_machine_identifier(
            pylnk_data_block_t *pylnk_data_block,
            PyObject *arguments );
 
-PyObject *pylnk_data_block_get_data(
+PyObject *pylnk_distributed_link_tracking_data_block_get_droid_volume_identifier(
+           pylnk_data_block_t *pylnk_data_block,
+           PyObject *arguments );
+
+PyObject *pylnk_distributed_link_tracking_data_block_get_droid_file_identifier(
+           pylnk_data_block_t *pylnk_data_block,
+           PyObject *arguments );
+
+PyObject *pylnk_distributed_link_tracking_data_block_get_birth_droid_volume_identifier(
+           pylnk_data_block_t *pylnk_data_block,
+           PyObject *arguments );
+
+PyObject *pylnk_distributed_link_tracking_data_block_get_birth_droid_file_identifier(
            pylnk_data_block_t *pylnk_data_block,
            PyObject *arguments );
 
@@ -78,5 +60,5 @@ PyObject *pylnk_data_block_get_data(
 }
 #endif
 
-#endif /* !defined( _PYLNK_DATA_BLOCK_H ) */
+#endif /* !defined( _PYLNK_DISTRIBUTED_LINK_TRACKING_DATA_BLOCK_H ) */
 

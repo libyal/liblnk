@@ -31,6 +31,12 @@
 #include "liblnk_libbfio.h"
 #include "liblnk_types.h"
 
+/* The following imports are necessary as a work-around for CygWin and MinGW
+ * not including exported functions in the DLL.
+ */
+#include "liblnk_distributed_link_tracking_data_block.h"
+#include "liblnk_strings_data_block.h"
+
 #if defined( __cplusplus )
 extern "C" {
 #endif

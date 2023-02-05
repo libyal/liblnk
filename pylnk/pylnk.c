@@ -31,6 +31,7 @@
 #include "pylnk_data_block.h"
 #include "pylnk_data_blocks.h"
 #include "pylnk_data_flags.h"
+#include "pylnk_distributed_link_tracking_data_block.h"
 #include "pylnk_drive_types.h"
 #include "pylnk_error.h"
 #include "pylnk_file.h"
@@ -40,6 +41,7 @@
 #include "pylnk_libcerror.h"
 #include "pylnk_liblnk.h"
 #include "pylnk_python.h"
+#include "pylnk_strings_data_block.h"
 #include "pylnk_unused.h"
 
 #if !defined( LIBLNK_HAVE_BFIO )
@@ -654,6 +656,23 @@ PyMODINIT_FUNC initpylnk(
 	 "data_flags",
 	 (PyObject *) &pylnk_data_flags_type_object );
 
+	/* Setup the distributed_link_tracking_data_block type object
+	 */
+	pylnk_distributed_link_tracking_data_block_type_object.tp_new = PyType_GenericNew;
+
+	if( PyType_Ready(
+	     &pylnk_distributed_link_tracking_data_block_type_object ) < 0 )
+	{
+		goto on_error;
+	}
+	Py_IncRef(
+	 (PyObject *) &pylnk_distributed_link_tracking_data_block_type_object );
+
+	PyModule_AddObject(
+	 module,
+	 "distributed_link_tracking_data_block",
+	 (PyObject *) &pylnk_distributed_link_tracking_data_block_type_object );
+
 	/* Setup the drive_types type object
 	 */
 	pylnk_drive_types_type_object.tp_new = PyType_GenericNew;
@@ -714,6 +733,23 @@ PyMODINIT_FUNC initpylnk(
 	 module,
 	 "file_attribute_flags",
 	 (PyObject *) &pylnk_file_attribute_flags_type_object );
+
+	/* Setup the strings_data_block type object
+	 */
+	pylnk_strings_data_block_type_object.tp_new = PyType_GenericNew;
+
+	if( PyType_Ready(
+	     &pylnk_strings_data_block_type_object ) < 0 )
+	{
+		goto on_error;
+	}
+	Py_IncRef(
+	 (PyObject *) &pylnk_strings_data_block_type_object );
+
+	PyModule_AddObject(
+	 module,
+	 "strings_data_block",
+	 (PyObject *) &pylnk_strings_data_block_type_object );
 
 	PyGILState_Release(
 	 gil_state );

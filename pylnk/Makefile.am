@@ -22,6 +22,7 @@ pylnk_la_SOURCES = \
 	pylnk_data_blocks.c pylnk_data_blocks.h \
 	pylnk_data_flags.c pylnk_data_flags.h \
 	pylnk_datetime.c pylnk_datetime.h \
+	pylnk_distributed_link_tracking_data_block.c pylnk_distributed_link_tracking_data_block.h \
 	pylnk_drive_types.c pylnk_drive_types.h \
 	pylnk_error.c pylnk_error.h \
 	pylnk_file.c pylnk_file.h \
@@ -35,6 +36,7 @@ pylnk_la_SOURCES = \
 	pylnk_libfguid.h \
 	pylnk_liblnk.h \
 	pylnk_python.h \
+	pylnk_strings_data_block.c pylnk_strings_data_block.h \
 	pylnk_unused.h
 
 pylnk_la_LIBADD = \

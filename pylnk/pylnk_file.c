@@ -4033,6 +4033,7 @@ PyObject *pylnk_file_get_data_block_by_index(
            int data_block_index )
 {
 	PyObject *data_block_object     = NULL;
+	PyTypeObject *type_object       = NULL;
 	libcerror_error_t *error        = NULL;
 	liblnk_data_block_t *data_block = NULL;
 	static char *function           = "pylnk_file_get_data_block_by_index";
@@ -4071,7 +4072,20 @@ PyObject *pylnk_file_get_data_block_by_index(
 
 		goto on_error;
 	}
+	type_object = pylnk_data_block_get_type_object(
+	               data_block );
+
+	if( type_object == NULL )
+	{
+		PyErr_Format(
+		 PyExc_IOError,
+		 "%s: unable to retrieve data block type object.",
+		 function );
+
+		goto on_error;
+	}
 	data_block_object = pylnk_data_block_new(
+	                     type_object,
 	                     data_block,
 	                     pylnk_file );
 

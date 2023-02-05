@@ -27,10 +27,12 @@
 #endif
 
 #include "pylnk_data_block.h"
+#include "pylnk_distributed_link_tracking_data_block.h"
 #include "pylnk_error.h"
 #include "pylnk_libcerror.h"
 #include "pylnk_liblnk.h"
 #include "pylnk_python.h"
+#include "pylnk_strings_data_block.h"
 #include "pylnk_unused.h"
 
 PyMethodDef pylnk_data_block_object_methods[] = {
@@ -166,10 +168,69 @@ PyTypeObject pylnk_data_block_type_object = {
 	0
 };
 
+/* Retrieves the data block type object
+ * Returns a Python type object if successful or NULL on error
+ */
+PyTypeObject *pylnk_data_block_get_type_object(
+               liblnk_data_block_t *data_block )
+{
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_data_block_get_type_object";
+	uint32_t signature       = 0;
+	int result               = 0;
+
+	if( data_block == NULL )
+	{
+		PyErr_Format(
+		 PyExc_TypeError,
+		 "%s: invalid data block.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_data_block_get_signature(
+	          data_block,
+	          &signature,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve signature.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		return( NULL );
+	}
+	switch( signature )
+	{
+		case LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION:
+		case LIBLNK_DATA_BLOCK_SIGNATURE_DARWIN_PROPERTIES:
+		case LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION:
+			return( &pylnk_strings_data_block_type_object );
+
+		case LIBLNK_DATA_BLOCK_SIGNATURE_DISTRIBUTED_LINK_TRACKER_PROPERTIES:
+			return( &pylnk_distributed_link_tracking_data_block_type_object );
+
+		default:
+			break;
+	}
+	return( &pylnk_data_block_type_object );
+}
+
 /* Creates a new data block object
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_data_block_new(
+           PyTypeObject *type_object,
            liblnk_data_block_t *data_block,
            PyObject *parent_object )
 {
@@ -189,7 +250,7 @@ PyObject *pylnk_data_block_new(
 	 */
 	pylnk_data_block = PyObject_New(
 	                    struct pylnk_data_block,
-	                    &pylnk_data_block_type_object );
+	                    type_object );
 
 	if( pylnk_data_block == NULL )
 	{

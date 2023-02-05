@@ -34,7 +34,7 @@ extern "C" {
 #endif
 
 int liblnk_distributed_link_tracking_data_block_read(
-     liblnk_data_block_t *internal_data_block,
+     liblnk_data_block_t *data_block,
      libcerror_error_t **error );
 
 LIBLNK_EXTERN \
