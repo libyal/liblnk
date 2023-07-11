@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="lnk_test_tools_info_handle"
-	ProjectGUID="{D0F8EDC2-037E-492B-9CE7-6E5AC75178E2}"
-	RootNamespace="lnk_test_tools_info_handle"
+	Name="lnk_test_tools_path_string"
+	ProjectGUID="{3FEA089C-DC89-46A5-9883-8F2CCFDBD381}"
+	RootNamespace="lnk_test_tools_path_string"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -176,27 +176,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\lnktools\info_handle.c"
-				>
-			</File>
-			<File
 				RelativePath="..\..\lnktools\path_string.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\lnktools\property_store.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lnktools\shell_items.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\tests\lnk_test_memory.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\tests\lnk_test_tools_info_handle.c"
+				RelativePath="..\..\tests\lnk_test_tools_path_string.c"
 				>
 			</File>
 		</Filter>
@@ -206,19 +190,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\lnktools\info_handle.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\lnktools\path_string.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lnktools\property_store.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lnktools\shell_items.h"
 				>
 			</File>
 			<File
@@ -226,11 +198,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\tests\lnk_test_macros.h"
+				RelativePath="..\..\tests\lnk_test_libcpath.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\tests\lnk_test_memory.h"
+				RelativePath="..\..\tests\lnk_test_macros.h"
 				>
 			</File>
 			<File

@@ -40,6 +40,7 @@ lnkinfo_SOURCES = \
 	lnktools_output.c lnktools_output.h \
 	lnktools_signal.c lnktools_signal.h \
 	lnktools_unused.h \
+	path_string.c path_string.h \
 	property_store.c property_store.h \
 	shell_items.c shell_items.h
 

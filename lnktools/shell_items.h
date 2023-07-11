@@ -36,6 +36,12 @@ void shell_items_file_attribute_flags_fprint(
       uint32_t file_attribute_flags,
       FILE *notify_stream );
 
+int shell_items_path_string_fprint(
+     const system_character_t *file_entry_path,
+     size_t file_entry_path_length,
+     FILE *notify_stream,
+     libcerror_error_t **error );
+
 int shell_items_extension_block_fprint(
      libfwsi_extension_block_t *extension_block,
      int extension_block_index,

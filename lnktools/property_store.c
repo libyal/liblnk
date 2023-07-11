@@ -31,6 +31,8 @@
 #include "lnktools_libfdatetime.h"
 #include "lnktools_libfguid.h"
 #include "lnktools_libfwps.h"
+#include "lnktools_libuna.h"
+#include "path_string.h"
 #include "property_store.h"
 
 /* 446d16b1-8dad-4870-a748-402ea43d788c */
@@ -65,6 +67,65 @@ uint8_t property_store_format_class_identifier_tile[ 16 ] = {
 uint8_t property_store_format_class_identifier_winx_hash[ 16 ] = {
 	0x7b, 0x2d, 0x8d, 0xfb, 0xd1, 0x90, 0x34, 0x4e, 0xbf, 0x60, 0x6e, 0xac, 0x09, 0x92, 0x2b, 0xbf };
 
+/* Prints a path string
+ * Returns 1 if successful or -1 on error
+ */
+int property_store_path_string_fprint(
+     const system_character_t *file_entry_path,
+     size_t file_entry_path_length,
+     FILE *notify_stream,
+     libcerror_error_t **error )
+{
+	system_character_t *escaped_path_string = NULL;
+	static char *function                   = "property_store_path_string_print";
+	size_t escaped_path_string_size         = 0;
+
+	if( path_string_copy_from_file_entry_path(
+	     &escaped_path_string,
+	     &escaped_path_string_size,
+	     file_entry_path,
+	     file_entry_path_length,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+		 "%s: unable to copy path from file entry path.",
+		 function );
+
+		goto on_error;
+	}
+	if( escaped_path_string == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: missing escaped path string.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 notify_stream,
+	 " %" PRIs_SYSTEM "",
+	 escaped_path_string );
+
+	memory_free(
+	 escaped_path_string );
+
+	return( 1 );
+
+on_error:
+	if( escaped_path_string != NULL )
+	{
+		memory_free(
+		 escaped_path_string );
+	}
+	return( -1 );
+}
+
 /* Prints the property record to the notify stream
  * Returns 1 if successful or -1 on error
  */
@@ -93,6 +154,7 @@ int property_store_record_fprint(
 	uint16_t value_16bit              = 0;
 	uint8_t value_8bit                = 0;
 	double value_floating_point       = 0.0;
+	int is_path_string                = 0;
 	int result                        = 0;
 
 	if( property_set_identifier == NULL )
@@ -151,7 +213,8 @@ int property_store_record_fprint(
 					break;
 
 				case 10:
-					description = "PKEY_ItemNameDisplay";
+					description    = "PKEY_ItemNameDisplay";
+					is_path_string = 1;
 					break;
 
 				case 14:
@@ -265,7 +328,8 @@ int property_store_record_fprint(
 			switch( entry_type )
 			{
 				case 30:
-					description = "PKEY_ParsingPath";
+					description    = "PKEY_ParsingPath";
+					is_path_string = 1;
 					break;
 
 				default:
@@ -609,56 +673,17 @@ int property_store_record_fprint(
 		case LIBFWPS_VALUE_TYPE_BINARY_STRING:
 		case LIBFWPS_VALUE_TYPE_STRING_ASCII:
 		case LIBFWPS_VALUE_TYPE_STRING_UNICODE:
-#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-			result = libfwps_record_get_data_as_utf16_string_size(
-			          property_record,
-				  &value_string_size,
-				  error );
-#else
-			result = libfwps_record_get_data_as_utf8_string_size(
-			          property_record,
-				  &value_string_size,
-				  error );
-#endif
-			if( result == -1 )
+			if( is_path_string == 0 )
 			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-				 "%s: unable to retrieve value string size.",
-				 function );
-
-				goto on_error;
-			}
-			if( ( result != 0 )
-			 && ( value_string_size > 0 ) )
-			{
-				value_string = system_string_allocate(
-				                value_string_size );
-
-				if( value_string == NULL )
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_MEMORY,
-					 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-					 "%s: unable to create value string.",
-					 function );
-
-					goto on_error;
-				}
 #if defined( HAVE_WIDE_SYSTEM_CHARACTER )
-				result = libfwps_record_get_data_as_utf16_string(
+				result = libfwps_record_get_data_as_utf16_string_size(
 				          property_record,
-					  (uint16_t *) value_string,
-					  value_string_size,
+					  &value_string_size,
 					  error );
 #else
-				result = libfwps_record_get_data_as_utf8_string(
+				result = libfwps_record_get_data_as_utf8_string_size(
 				          property_record,
-					  (uint8_t *) value_string,
-					  value_string_size,
+					  &value_string_size,
 					  error );
 #endif
 				if( result == -1 )
@@ -667,20 +692,148 @@ int property_store_record_fprint(
 					 error,
 					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-					 "%s: unable to retrieve value string.",
+					 "%s: unable to retrieve value string size.",
 					 function );
 
 					goto on_error;
 				}
-				fprintf(
-				 notify_stream,
-				 " %" PRIs_SYSTEM "",
-				 value_string );
+				if( ( result != 0 )
+				 && ( value_string_size > 0 ) )
+				{
+					value_string = system_string_allocate(
+					                value_string_size );
 
-				memory_free(
-				 value_string );
+					if( value_string == NULL )
+					{
+						libcerror_error_set(
+						 error,
+						 LIBCERROR_ERROR_DOMAIN_MEMORY,
+						 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+						 "%s: unable to create value string.",
+						 function );
 
-				value_string = NULL;
+						goto on_error;
+					}
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+					result = libfwps_record_get_data_as_utf16_string(
+					          property_record,
+						  (uint16_t *) value_string,
+						  value_string_size,
+						  error );
+#else
+					result = libfwps_record_get_data_as_utf8_string(
+					          property_record,
+						  (uint8_t *) value_string,
+						  value_string_size,
+						  error );
+#endif
+					if( result == -1 )
+					{
+						libcerror_error_set(
+						 error,
+						 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+						 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+						 "%s: unable to retrieve value string.",
+						 function );
+
+						goto on_error;
+					}
+					fprintf(
+					 notify_stream,
+					 " %" PRIs_SYSTEM "",
+					 value_string );
+
+					memory_free(
+					 value_string );
+
+					value_string = NULL;
+				}
+			}
+			else
+			{
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+				result = libfwps_record_get_data_as_utf16_path_string_size(
+				          property_record,
+					  &value_string_size,
+					  error );
+#else
+				result = libfwps_record_get_data_as_utf8_path_string_size(
+				          property_record,
+					  &value_string_size,
+					  error );
+#endif
+				if( result == -1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+					 "%s: unable to retrieve path string size.",
+					 function );
+
+					goto on_error;
+				}
+				if( ( result != 0 )
+				 && ( value_string_size > 0 ) )
+				{
+					value_string = system_string_allocate(
+					                value_string_size );
+
+					if( value_string == NULL )
+					{
+						libcerror_error_set(
+						 error,
+						 LIBCERROR_ERROR_DOMAIN_MEMORY,
+						 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+						 "%s: unable to create path string.",
+						 function );
+
+						goto on_error;
+					}
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+					result = libfwps_record_get_data_as_utf16_path_string(
+					          property_record,
+						  (uint16_t *) value_string,
+						  value_string_size,
+						  error );
+#else
+					result = libfwps_record_get_data_as_utf8_path_string(
+					          property_record,
+						  (uint8_t *) value_string,
+						  value_string_size,
+						  error );
+#endif
+					if( result == -1 )
+					{
+						libcerror_error_set(
+						 error,
+						 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+						 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+						 "%s: unable to retrieve path string.",
+						 function );
+
+						goto on_error;
+					}
+					if( property_store_path_string_fprint(
+					     value_string,
+					     value_string_size - 1,
+					     notify_stream,
+					     error ) != 1 )
+					{
+						libcerror_error_set(
+						 error,
+						 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+						 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+						 "%s: unable to print path string.",
+						 function );
+
+						goto on_error;
+					}
+					memory_free(
+					 value_string );
+
+					value_string = NULL;
+				}
 			}
 			break;
 

@@ -196,6 +196,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\lnktools\path_string.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\lnktools\property_store.c"
 				>
 			</File>
@@ -271,6 +275,10 @@
 			</File>
 			<File
 				RelativePath="..\..\lnktools\lnktools_unused.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\lnktools\path_string.h"
 				>
 			</File>
 			<File

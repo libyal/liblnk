@@ -1297,6 +1297,7 @@ int liblnk_internal_file_open_read(
 		     internal_file->io_handle,
 		     file_io_handle,
 		     file_offset,
+		     0,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -1337,6 +1338,7 @@ int liblnk_internal_file_open_read(
 		     internal_file->io_handle,
 		     file_io_handle,
 		     file_offset,
+		     LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -1377,6 +1379,7 @@ int liblnk_internal_file_open_read(
 		     internal_file->io_handle,
 		     file_io_handle,
 		     file_offset,
+		     LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -1417,6 +1420,7 @@ int liblnk_internal_file_open_read(
 		     internal_file->io_handle,
 		     file_io_handle,
 		     file_offset,
+		     0,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -1457,6 +1461,7 @@ int liblnk_internal_file_open_read(
 		     internal_file->io_handle,
 		     file_io_handle,
 		     file_offset,
+		     LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -3328,6 +3333,7 @@ int liblnk_file_get_utf16_volume_label(
 }
 
 /* Retrieves the size of the UTF-8 encoded local path
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size includes the end of string character
  * The local path is only set if the link refers to a file on a local volume
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -3391,7 +3397,7 @@ int liblnk_file_get_utf8_local_path_size(
 		result = libuna_utf8_string_size_from_utf16_stream(
 			  internal_file->location_information->local_path,
 			  internal_file->location_information->local_path_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 			  &utf8_local_path_size,
 			  error );
 	}
@@ -3473,7 +3479,7 @@ int liblnk_file_get_utf8_local_path_size(
 		result = libuna_utf8_string_size_from_utf16_stream(
 			  internal_file->location_information->common_path,
 			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 			  &utf8_common_path_size,
 			  error );
 	}
@@ -3503,6 +3509,7 @@ int liblnk_file_get_utf8_local_path_size(
 }
 
 /* Retrieves the UTF-8 encoded local path
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size should include the end of string character
  * The local path is only set if the link refers to a file on a local volume
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -3580,7 +3587,7 @@ int liblnk_file_get_utf8_local_path(
 			  &string_index,
 			  internal_file->location_information->local_path,
 			  internal_file->location_information->local_path_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 			  error );
 	}
 	else
@@ -3679,7 +3686,7 @@ int liblnk_file_get_utf8_local_path(
 			  &string_index,
 			  internal_file->location_information->common_path,
 			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 			  error );
 	}
 	else
@@ -3708,6 +3715,7 @@ int liblnk_file_get_utf8_local_path(
 }
 
 /* Retrieves the size of the UTF-16 encoded local path
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size includes the end of string character
  * The local path is only set if the link refers to a file on a local volume
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -3771,7 +3779,7 @@ int liblnk_file_get_utf16_local_path_size(
 		result = libuna_utf16_string_size_from_utf16_stream(
 			  internal_file->location_information->local_path,
 			  internal_file->location_information->local_path_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 			  &utf16_local_path_size,
 			  error );
 	}
@@ -3853,7 +3861,7 @@ int liblnk_file_get_utf16_local_path_size(
 		result = libuna_utf16_string_size_from_utf16_stream(
 			  internal_file->location_information->common_path,
 			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 			  &utf16_common_path_size,
 			  error );
 	}
@@ -3883,6 +3891,7 @@ int liblnk_file_get_utf16_local_path_size(
 }
 
 /* Retrieves the UTF-16 encoded local path
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size should include the end of string character
  * The local path is only set if the link refers to a file on a local volume
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -3960,7 +3969,7 @@ int liblnk_file_get_utf16_local_path(
 			  &string_index,
 			  internal_file->location_information->local_path,
 			  internal_file->location_information->local_path_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 			  error );
 	}
 	else
@@ -4059,7 +4068,7 @@ int liblnk_file_get_utf16_local_path(
 			  &string_index,
 			  internal_file->location_information->common_path,
 			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 			  error );
 	}
 	else
@@ -4088,6 +4097,7 @@ int liblnk_file_get_utf16_local_path(
 }
 
 /* Retrieves the size of the UTF-8 encoded network path
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size includes the end of string character
  * The network path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -4233,7 +4243,7 @@ int liblnk_file_get_utf8_network_path_size(
 		result = libuna_utf8_string_size_from_utf16_stream(
 			  internal_file->location_information->common_path,
 			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 			  &utf8_common_path_size,
 			  error );
 	}
@@ -4263,6 +4273,7 @@ int liblnk_file_get_utf8_network_path_size(
 }
 
 /* Retrieves the UTF-8 encoded network path
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size should include the end of string character
  * The network path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -4439,7 +4450,7 @@ int liblnk_file_get_utf8_network_path(
 		          &string_index,
 			  internal_file->location_information->common_path,
 			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 			  error );
 	}
 	else
@@ -4468,6 +4479,7 @@ int liblnk_file_get_utf8_network_path(
 }
 
 /* Retrieves the size of the UTF-16 encoded network path
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size includes the end of string character
  * The network path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -4613,7 +4625,7 @@ int liblnk_file_get_utf16_network_path_size(
 		result = libuna_utf16_string_size_from_utf16_stream(
 			  internal_file->location_information->common_path,
 			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 			  &utf16_common_path_size,
 			  error );
 	}
@@ -4643,6 +4655,7 @@ int liblnk_file_get_utf16_network_path_size(
 }
 
 /* Retrieves the UTF-16 encoded network path
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size should include the end of string character
  * The network path is only set if the link refers to a file on a network share
  * Returns 1 if successful, 0 if value is not available or -1 on error
@@ -4819,7 +4832,7 @@ int liblnk_file_get_utf16_network_path(
 			  &string_index,
 			  internal_file->location_information->common_path,
 			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 			  error );
 	}
 	else
@@ -5084,6 +5097,7 @@ int liblnk_file_get_utf16_description(
 }
 
 /* Retrieves the size of the UTF-8 encoded relative path
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5142,6 +5156,7 @@ int liblnk_file_get_utf8_relative_path_size(
 }
 
 /* Retrieves the UTF-8 encoded relative path
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5202,6 +5217,7 @@ int liblnk_file_get_utf8_relative_path(
 }
 
 /* Retrieves the size of the UTF-16 encoded relative path
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5260,6 +5276,7 @@ int liblnk_file_get_utf16_relative_path_size(
 }
 
 /* Retrieves the UTF-16 encoded relative path
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5320,6 +5337,7 @@ int liblnk_file_get_utf16_relative_path(
 }
 
 /* Retrieves the size of the UTF-8 encoded working directory
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5378,6 +5396,7 @@ int liblnk_file_get_utf8_working_directory_size(
 }
 
 /* Retrieves the UTF-8 encoded working directory
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5438,6 +5457,7 @@ int liblnk_file_get_utf8_working_directory(
 }
 
 /* Retrieves the size of the UTF-16 encoded working directory
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5496,6 +5516,7 @@ int liblnk_file_get_utf16_working_directory_size(
 }
 
 /* Retrieves the UTF-16 encoded working directory
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5792,6 +5813,7 @@ int liblnk_file_get_utf16_command_line_arguments(
 }
 
 /* Retrieves the size of the UTF-8 encoded icon location
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5850,6 +5872,7 @@ int liblnk_file_get_utf8_icon_location_size(
 }
 
 /* Retrieves the UTF-8 encoded icon location
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5910,6 +5933,7 @@ int liblnk_file_get_utf8_icon_location(
 }
 
 /* Retrieves the size of the UTF-16 encoded icon location
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5968,6 +5992,7 @@ int liblnk_file_get_utf16_icon_location_size(
 }
 
 /* Retrieves the UTF-16 encoded icon location
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -6028,6 +6053,7 @@ int liblnk_file_get_utf16_icon_location(
 }
 
 /* Retrieves the size of the UTF-8 encoded environment variables location
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -6074,6 +6100,7 @@ int liblnk_file_get_utf8_environment_variables_location_size(
 }
 
 /* Retrieves the UTF-8 encoded environment variables location
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -6122,6 +6149,7 @@ int liblnk_file_get_utf8_environment_variables_location(
 }
 
 /* Retrieves the size of the UTF-16 encoded environment variables location
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -6168,6 +6196,7 @@ int liblnk_file_get_utf16_environment_variables_location_size(
 }
 
 /* Retrieves the UTF-16 encoded environment variables location
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */

@@ -61,6 +61,7 @@ check_PROGRAMS = \
 	lnk_test_support \
 	lnk_test_tools_info_handle \
 	lnk_test_tools_output \
+	lnk_test_tools_path_string \
 	lnk_test_tools_signal
 
 lnk_test_data_block_SOURCES = \
@@ -276,6 +277,7 @@ lnk_test_support_LDADD = \
 
 lnk_test_tools_info_handle_SOURCES = \
 	../lnktools/info_handle.c ../lnktools/info_handle.h \
+	../lnktools/path_string.c ../lnktools/path_string.h \
 	../lnktools/property_store.c ../lnktools/property_store.h \
 	../lnktools/shell_items.c ../lnktools/shell_items.h \
 	lnk_test_libcerror.h \
@@ -303,6 +305,19 @@ lnk_test_tools_output_SOURCES = \
 	lnk_test_unused.h
 
 lnk_test_tools_output_LDADD = \
+	../liblnk/liblnk.la \
+	@LIBCERROR_LIBADD@
+
+lnk_test_tools_path_string_SOURCES = \
+	../lnktools/path_string.c ../lnktools/path_string.h \
+	lnk_test_libcerror.h \
+	lnk_test_libcpath.h \
+	lnk_test_macros.h \
+	lnk_test_tools_path_string.c \
+	lnk_test_unused.h
+
+lnk_test_tools_path_string_LDADD = \
+	@LIBUNA_LIBADD@ \
 	../liblnk/liblnk.la \
 	@LIBCERROR_LIBADD@
 

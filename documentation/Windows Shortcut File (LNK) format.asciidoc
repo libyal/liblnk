@@ -72,6 +72,7 @@ in the section entitled "GNU Free Documentation License".
 | 0.0.24 | J.B. Metz | December 2020 | Small changes.
 | 0.0.25 | J.B. Metz | July 2021 | Textual changes.
 | 0.0.26 | J.B. Metz | January 2023 | Additional information about corruption scenarios.
+| 0.0.27 | J.B. Metz | July 2023 | Additional information regarding encoding of filenames.
 |===
 
 :numbered:
@@ -266,6 +267,10 @@ UTF-16 little-endian string terminated by an end-of-string character
 | ... | ... | | The Unicode common path +
 UTF-16 little-endian string terminated by an end-of-string character
 |===
+
+[NOTE]
+The local and common path strings are not strict UTF-16 since it allows for
+unpaired surrogates, such as "U+d800" and "U+dc00".
 
 The full filename can be determined by:
 
@@ -505,6 +510,10 @@ UTF-16 little-endian string terminated by an end-of-string character +
 Unused bytes can contain remnant data
 |===
 
+[NOTE]
+The Unicode environment variables location string is not strict UTF-16 since
+it allows for unpaired surrogates, such as "U+d800" and "U+dc00".
+
 The environment variables location contains the path to the environment variables information.
 
 === The console properties data block
@@ -697,6 +706,10 @@ Unused bytes can contain remnant data
 UTF-16 little-endian string terminated by an end-of-string character +
 Unused bytes can contain remnant data
 |===
+
+[NOTE]
+The Unicode icon location string is not strict UTF-16 since it allows for
+unpaired surrogates, such as "U+d800" and "U+dc00".
 
 The icon location contains the path to the icon information which includes the
 use of environment variables.

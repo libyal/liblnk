@@ -47,6 +47,7 @@ int liblnk_strings_data_block_read(
 	static char *function                             = "liblnk_data_block_strings_read";
 	size_t string_size                                = 0;
 	size_t unicode_string_size                        = 0;
+	uint32_t encoding_flags                           = 0;
 
 	if( data_block == NULL )
 	{
@@ -165,6 +166,11 @@ int liblnk_strings_data_block_read(
 	}
 #endif /* defined( HAVE_DEBUG_OUTPUT ) */
 
+	if( ( internal_data_block->signature == LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION )
+	 || ( internal_data_block->signature == LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION ) )
+	{
+		encoding_flags = LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE;
+	}
 	unicode_string_data = ( (lnk_data_block_strings_t *) internal_data_block->data )->unicode_string;
 
 	for( unicode_string_size = 0;
@@ -210,7 +216,7 @@ int liblnk_strings_data_block_read(
 		     "Unicode string\t\t\t\t",
 		     unicode_string_data,
 		     520,
-		     LIBUNA_ENDIAN_LITTLE,
+		     LIBUNA_ENDIAN_LITTLE | encoding_flags,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -259,7 +265,8 @@ int liblnk_strings_data_block_read(
 
 			goto on_error;
 		}
-		data_string->is_unicode = 1;
+		data_string->is_unicode     = 1;
+		data_string->encoding_flags = encoding_flags;
 	}
 	else if( string_size > 0 )
 	{
@@ -311,8 +318,8 @@ int liblnk_strings_data_block_read(
 	}
 #endif /* defined( HAVE_DEBUG_OUTPUT ) */
 
-	internal_data_block->value          = (intptr_t *) data_string;
-	internal_data_block->free_value     = (int(*)(intptr_t **, libcerror_error_t **)) &liblnk_data_string_free;
+	internal_data_block->value      = (intptr_t *) data_string;
+	internal_data_block->free_value = (int(*)(intptr_t **, libcerror_error_t **)) &liblnk_data_string_free;
 
 	return( 1 );
 
@@ -327,6 +334,7 @@ on_error:
 }
 
 /* Retrieves the size of the UTF-8 string
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful or -1 on error
  */
@@ -405,6 +413,7 @@ int liblnk_strings_data_block_get_utf8_string_size(
 }
 
 /* Retrieves the UTF-8 string
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful or -1 on error
  */
@@ -485,6 +494,7 @@ int liblnk_strings_data_block_get_utf8_string(
 }
 
 /* Retrieves the size of the UTF-16 string
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful or -1 on error
  */
@@ -563,6 +573,7 @@ int liblnk_strings_data_block_get_utf16_string_size(
 }
 
 /* Retrieves the UTF-16 string
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful or -1 on error
  */

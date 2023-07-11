@@ -334,6 +334,7 @@ int lnk_test_data_string_read_data(
 	          io_handle,
 	          lnk_test_data_string_data1,
 	          60,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -352,6 +353,7 @@ int lnk_test_data_string_read_data(
 	          io_handle,
 	          lnk_test_data_string_data1,
 	          60,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -411,6 +413,7 @@ int lnk_test_data_string_read_data(
 	          io_handle,
 	          lnk_test_data_string_data1,
 	          60,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -430,6 +433,7 @@ int lnk_test_data_string_read_data(
 	          NULL,
 	          lnk_test_data_string_data1,
 	          60,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -449,6 +453,7 @@ int lnk_test_data_string_read_data(
 	          io_handle,
 	          NULL,
 	          60,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -468,6 +473,7 @@ int lnk_test_data_string_read_data(
 	          io_handle,
 	          lnk_test_data_string_data1,
 	          (size_t) SSIZE_MAX + 1,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -486,6 +492,7 @@ int lnk_test_data_string_read_data(
 	          data_string,
 	          io_handle,
 	          lnk_test_data_string_data1,
+	          0,
 	          0,
 	          &error );
 
@@ -638,6 +645,7 @@ int lnk_test_data_string_read_file_io_handle(
 	          io_handle,
 	          file_io_handle,
 	          0,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -655,6 +663,7 @@ int lnk_test_data_string_read_file_io_handle(
 	          data_string,
 	          io_handle,
 	          file_io_handle,
+	          0,
 	          0,
 	          &error );
 
@@ -715,6 +724,7 @@ int lnk_test_data_string_read_file_io_handle(
 	          io_handle,
 	          file_io_handle,
 	          0,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -734,6 +744,7 @@ int lnk_test_data_string_read_file_io_handle(
 	          NULL,
 	          file_io_handle,
 	          0,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -752,6 +763,7 @@ int lnk_test_data_string_read_file_io_handle(
 	          data_string,
 	          io_handle,
 	          NULL,
+	          0,
 	          0,
 	          &error );
 
@@ -772,6 +784,7 @@ int lnk_test_data_string_read_file_io_handle(
 	          io_handle,
 	          file_io_handle,
 	          -1,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(
@@ -826,6 +839,7 @@ int lnk_test_data_string_read_file_io_handle(
 	          data_string,
 	          io_handle,
 	          file_io_handle,
+	          0,
 	          0,
 	          &error );
 
@@ -1364,6 +1378,7 @@ int main(
 	          io_handle,
 	          lnk_test_data_string_data1,
 	          60,
+	          0,
 	          &error );
 
 	LNK_TEST_ASSERT_EQUAL_INT(

@@ -32,6 +32,7 @@
 #include "lnktools_libfguid.h"
 #include "lnktools_libfwsi.h"
 #include "lnktools_libuna.h"
+#include "path_string.h"
 #include "shell_items.h"
 
 /* Prints the file attribute flags to the notify stream
@@ -132,6 +133,65 @@ void shell_items_file_attribute_flags_fprint(
 		 notify_stream,
 		 "\t\t\tIs virtual (FILE_ATTRIBUTE_VIRTUAL)\n" );
 	}
+}
+
+/* Prints a path string
+ * Returns 1 if successful or -1 on error
+ */
+int shell_items_path_string_fprint(
+     const system_character_t *file_entry_path,
+     size_t file_entry_path_length,
+     FILE *notify_stream,
+     libcerror_error_t **error )
+{
+	system_character_t *escaped_path_string = NULL;
+	static char *function                   = "shell_items_path_string_print";
+	size_t escaped_path_string_size         = 0;
+
+	if( path_string_copy_from_file_entry_path(
+	     &escaped_path_string,
+	     &escaped_path_string_size,
+	     file_entry_path,
+	     file_entry_path_length,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+		 "%s: unable to copy path from file entry path.",
+		 function );
+
+		goto on_error;
+	}
+	if( escaped_path_string == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: missing escaped path string.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 notify_stream,
+	 "%" PRIs_SYSTEM "",
+	 escaped_path_string );
+
+	memory_free(
+	 escaped_path_string );
+
+	return( 1 );
+
+on_error:
+	if( escaped_path_string != NULL )
+	{
+		memory_free(
+		 escaped_path_string );
+	}
+	return( -1 );
 }
 
 /* Prints the extension block to the notify stream
@@ -293,8 +353,26 @@ int shell_items_file_entry_extension_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t\tLong name\t\t: %" PRIs_SYSTEM "\n",
-		 value_string );
+		 "\t\tLong name\t\t: " );
+
+		if( shell_items_path_string_fprint(
+		     value_string,
+		     value_string_size - 1,
+		     notify_stream,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print name string.",
+			 function );
+
+			goto on_error;
+		}
+		fprintf(
+		 notify_stream,
+		 "\n" );
 
 		memory_free(
 		 value_string );
@@ -1281,8 +1359,26 @@ int shell_items_file_entry_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t\tName\t\t\t: %" PRIs_SYSTEM "\n",
-		 value_string );
+		 "\t\tName\t\t\t: " );
+
+		if( shell_items_path_string_fprint(
+		     value_string,
+		     value_string_size - 1,
+		     notify_stream,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print name string.",
+			 function );
+
+			goto on_error;
+		}
+		fprintf(
+		 notify_stream,
+		 "\n" );
 
 		memory_free(
 		 value_string );

@@ -96,6 +96,12 @@ int info_handle_guid_value_fprint(
      const uint8_t *guid_data,
      libcerror_error_t **error );
 
+int info_handle_name_value_fprint(
+     info_handle_t *info_handle,
+     const system_character_t *value_string,
+     size_t value_string_length,
+     libcerror_error_t **error );
+
 int info_handle_data_flags_fprint(
      info_handle_t *info_handle,
      libcerror_error_t **error );

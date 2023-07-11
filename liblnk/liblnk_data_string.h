@@ -48,6 +48,10 @@ struct liblnk_data_string
 	/* The data size
 	 */
 	size_t data_size;
+
+	/* The encoding flags
+	 */
+	uint32_t encoding_flags;
 };
 
 int liblnk_data_string_initialize(
@@ -63,6 +67,7 @@ int liblnk_data_string_read_data(
      liblnk_io_handle_t *io_handle,
      const uint8_t *data,
      size_t data_size,
+     uint32_t encoding_flags,
      libcerror_error_t **error );
 
 int liblnk_data_string_read_file_io_handle(
@@ -70,6 +75,7 @@ int liblnk_data_string_read_file_io_handle(
      liblnk_io_handle_t *io_handle,
      libbfio_handle_t *file_io_handle,
      off64_t file_offset,
+     uint32_t encoding_flags,
      libcerror_error_t **error );
 
 int liblnk_data_string_get_utf8_string_size(

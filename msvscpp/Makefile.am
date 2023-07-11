@@ -30,6 +30,7 @@ MSVSCPP_FILES = \
 	lnk_test_support/lnk_test_support.vcproj \
 	lnk_test_tools_info_handle/lnk_test_tools_info_handle.vcproj \
 	lnk_test_tools_output/lnk_test_tools_output.vcproj \
+	lnk_test_tools_path_string/lnk_test_tools_path_string.vcproj \
 	lnk_test_tools_signal/lnk_test_tools_signal.vcproj \
 	lnkinfo/lnkinfo.vcproj \
 	pylnk/pylnk.vcproj \

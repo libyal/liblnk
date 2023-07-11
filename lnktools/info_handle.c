@@ -35,6 +35,7 @@
 #include "lnktools_libfwps.h"
 #include "lnktools_libfwsi.h"
 #include "lnktools_liblnk.h"
+#include "path_string.h"
 #include "property_store.h"
 #include "shell_items.h"
 
@@ -701,6 +702,76 @@ on_error:
 	return( -1 );
 }
 
+/* Prints a file entry name
+ * Returns 1 if successful or -1 on error
+ */
+int info_handle_name_value_fprint(
+     info_handle_t *info_handle,
+     const system_character_t *value_string,
+     size_t value_string_length,
+     libcerror_error_t **error )
+{
+	system_character_t *escaped_value_string = NULL;
+	static char *function                    = "info_handle_name_value_fprint";
+	size_t escaped_value_string_size         = 0;
+
+	if( info_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid info handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( path_string_copy_from_file_entry_path(
+	     &escaped_value_string,
+	     &escaped_value_string_size,
+	     value_string,
+	     value_string_length,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+		 "%s: unable to copy path from file entry path.",
+		 function );
+
+		goto on_error;
+	}
+	if( escaped_value_string == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: missing escaped value string.",
+		 function );
+
+		goto on_error;
+	}
+	fprintf(
+	 info_handle->notify_stream,
+	 "%" PRIs_SYSTEM "",
+	 escaped_value_string );
+
+	memory_free(
+	 escaped_value_string );
+
+	return( 1 );
+
+on_error:
+	if( escaped_value_string != NULL )
+	{
+		memory_free(
+		 escaped_value_string );
+	}
+	return( -1 );
+}
+
 /* Prints the data flags
  * Returns 1 if successful or -1 on error
  */
@@ -1296,8 +1367,26 @@ int info_handle_link_information_fprint(
 			}
 			fprintf(
 			 info_handle->notify_stream,
-			 "\tLocal path\t\t\t: %" PRIs_SYSTEM "\n",
-			 value_string );
+			 "\tLocal path\t\t\t: " );
+
+			if( info_handle_name_value_fprint(
+			     info_handle,
+			     value_string,
+			     value_string_size - 1,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+				 "%s: unable to print local path string.",
+				 function );
+
+				goto on_error;
+			}
+			fprintf(
+			 info_handle->notify_stream,
+			 "\n" );
 
 			memory_free(
 			 value_string );
@@ -1380,8 +1469,26 @@ int info_handle_link_information_fprint(
 			}
 			fprintf(
 			 info_handle->notify_stream,
-			 "\tNetwork path\t\t\t: %" PRIs_SYSTEM "\n",
-			 value_string );
+			 "\tNetwork path\t\t\t: " );
+
+			if( info_handle_name_value_fprint(
+			     info_handle,
+			     value_string,
+			     value_string_size - 1,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+				 "%s: unable to print network path string.",
+				 function );
+
+				goto on_error;
+			}
+			fprintf(
+			 info_handle->notify_stream,
+			 "\n" );
 
 			memory_free(
 			 value_string );
@@ -1617,8 +1724,26 @@ int info_handle_relative_path_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tRelative path\t\t\t: %" PRIs_SYSTEM "\n",
-		 value_string );
+		 "\tRelative path\t\t\t: " );
+
+		if( info_handle_name_value_fprint(
+		     info_handle,
+		     value_string,
+		     value_string_size - 1,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print relative path string.",
+			 function );
+
+			goto on_error;
+		}
+		fprintf(
+		 info_handle->notify_stream,
+		 "\n" );
 
 		memory_free(
 		 value_string );
@@ -1735,8 +1860,26 @@ int info_handle_working_directory_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tWorking directory\t\t: %" PRIs_SYSTEM "\n",
-		 value_string );
+		 "\tWorking directory\t\t: " );
+
+		if( info_handle_name_value_fprint(
+		     info_handle,
+		     value_string,
+		     value_string_size - 1,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print working directory string.",
+			 function );
+
+			goto on_error;
+		}
+		fprintf(
+		 info_handle->notify_stream,
+		 "\n" );
 
 		memory_free(
 		 value_string );
@@ -1971,8 +2114,26 @@ int info_handle_icon_location_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tIcon location\t\t\t: %" PRIs_SYSTEM "\n",
-		 value_string );
+		 "\tIcon location\t\t\t: " );
+
+		if( info_handle_name_value_fprint(
+		     info_handle,
+		     value_string,
+		     value_string_size - 1,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print icon location string.",
+			 function );
+
+			goto on_error;
+		}
+		fprintf(
+		 info_handle->notify_stream,
+		 "\n" );
 
 		memory_free(
 		 value_string );

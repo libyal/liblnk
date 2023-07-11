@@ -151,6 +151,7 @@ int liblnk_data_string_read_data(
      liblnk_io_handle_t *io_handle,
      const uint8_t *data,
      size_t data_size,
+     uint32_t encoding_flags,
      libcerror_error_t **error )
 {
 	static char *function = "liblnk_data_string_read_data";
@@ -213,7 +214,8 @@ int liblnk_data_string_read_data(
 	}
 	/* Store is unicode value for internal use
 	 */
-	data_string->is_unicode = io_handle->is_unicode;
+	data_string->is_unicode     = io_handle->is_unicode;
+	data_string->encoding_flags = encoding_flags;
 
 	byte_stream_copy_to_uint16_little_endian(
 	 data,
@@ -334,7 +336,7 @@ int liblnk_data_string_read_data(
 				     "data string\t\t\t",
 				     data_string->data,
 				     data_string->data_size,
-				     LIBUNA_ENDIAN_LITTLE,
+				     LIBUNA_ENDIAN_LITTLE | data_string->encoding_flags,
 				     error ) != 1 )
 				{
 					libcerror_error_set(
@@ -393,6 +395,7 @@ int liblnk_data_string_read_file_io_handle(
      liblnk_io_handle_t *io_handle,
      libbfio_handle_t *file_io_handle,
      off64_t file_offset,
+     uint32_t encoding_flags,
      libcerror_error_t **error )
 {
 	uint8_t data_string_size_data[ 2 ];
@@ -435,7 +438,8 @@ int liblnk_data_string_read_file_io_handle(
 	}
 	/* Store is unicode value for internal use
 	 */
-	data_string->is_unicode = io_handle->is_unicode;
+	data_string->is_unicode     = io_handle->is_unicode;
+	data_string->encoding_flags = encoding_flags;
 
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
@@ -553,7 +557,7 @@ int liblnk_data_string_read_file_io_handle(
 				     "data string\t\t\t",
 				     data_string->data,
 				     data_string->data_size,
-				     LIBUNA_ENDIAN_LITTLE,
+				     LIBUNA_ENDIAN_LITTLE | data_string->encoding_flags,
 				     error ) != 1 )
 				{
 					libcerror_error_set(
@@ -605,6 +609,7 @@ on_error:
 }
 
 /* Retrieves the size of the UTF-8 encoded data string
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -655,7 +660,7 @@ int liblnk_data_string_get_utf8_string_size(
 		result = libuna_utf8_string_size_from_utf16_stream(
 			  data_string->data,
 			  data_string->data_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | data_string->encoding_flags,
 			  utf8_string_size,
 			  error );
 	}
@@ -683,6 +688,7 @@ int liblnk_data_string_get_utf8_string_size(
 }
 
 /* Retrieves the UTF-8 encoded data string
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -747,7 +753,7 @@ int liblnk_data_string_get_utf8_string(
 			  utf8_string_size,
 			  data_string->data,
 			  data_string->data_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | data_string->encoding_flags,
 			  error );
 	}
 	else
@@ -775,6 +781,7 @@ int liblnk_data_string_get_utf8_string(
 }
 
 /* Retrieves the size of the UTF-16 encoded data string
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -825,7 +832,7 @@ int liblnk_data_string_get_utf16_string_size(
 		result = libuna_utf16_string_size_from_utf16_stream(
 			  data_string->data,
 			  data_string->data_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | data_string->encoding_flags,
 			  utf16_string_size,
 			  error );
 	}
@@ -853,6 +860,7 @@ int liblnk_data_string_get_utf16_string_size(
 }
 
 /* Retrieves the UTF-16 encoded data string
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -917,7 +925,7 @@ int liblnk_data_string_get_utf16_string(
 			  utf16_string_size,
 			  data_string->data,
 			  data_string->data_size,
-			  LIBUNA_ENDIAN_LITTLE,
+			  LIBUNA_ENDIAN_LITTLE | data_string->encoding_flags,
 			  error );
 	}
 	else
