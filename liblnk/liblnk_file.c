@@ -5137,7 +5137,7 @@ int liblnk_file_get_utf8_relative_path_size(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf8_string_size(
+	if( liblnk_data_string_get_utf8_path_string_size(
 	     internal_file->relative_path,
 	     internal_file->io_handle->ascii_codepage,
 	     utf8_string_size,
@@ -5197,7 +5197,7 @@ int liblnk_file_get_utf8_relative_path(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf8_string(
+	if( liblnk_data_string_get_utf8_path_string(
 	     internal_file->relative_path,
 	     internal_file->io_handle->ascii_codepage,
 	     utf8_string,
@@ -5257,7 +5257,7 @@ int liblnk_file_get_utf16_relative_path_size(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf16_string_size(
+	if( liblnk_data_string_get_utf16_path_string_size(
 	     internal_file->relative_path,
 	     internal_file->io_handle->ascii_codepage,
 	     utf16_string_size,
@@ -5317,7 +5317,7 @@ int liblnk_file_get_utf16_relative_path(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf16_string(
+	if( liblnk_data_string_get_utf16_path_string(
 	     internal_file->relative_path,
 	     internal_file->io_handle->ascii_codepage,
 	     utf16_string,
@@ -5377,7 +5377,7 @@ int liblnk_file_get_utf8_working_directory_size(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf8_string_size(
+	if( liblnk_data_string_get_utf8_path_string_size(
 	     internal_file->working_directory,
 	     internal_file->io_handle->ascii_codepage,
 	     utf8_string_size,
@@ -5437,7 +5437,7 @@ int liblnk_file_get_utf8_working_directory(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf8_string(
+	if( liblnk_data_string_get_utf8_path_string(
 	     internal_file->working_directory,
 	     internal_file->io_handle->ascii_codepage,
 	     utf8_string,
@@ -5497,7 +5497,7 @@ int liblnk_file_get_utf16_working_directory_size(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf16_string_size(
+	if( liblnk_data_string_get_utf16_path_string_size(
 	     internal_file->working_directory,
 	     internal_file->io_handle->ascii_codepage,
 	     utf16_string_size,
@@ -5557,7 +5557,7 @@ int liblnk_file_get_utf16_working_directory(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf16_string(
+	if( liblnk_data_string_get_utf16_path_string(
 	     internal_file->working_directory,
 	     internal_file->io_handle->ascii_codepage,
 	     utf16_string,
@@ -5853,7 +5853,7 @@ int liblnk_file_get_utf8_icon_location_size(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf8_string_size(
+	if( liblnk_data_string_get_utf8_path_string_size(
 	     internal_file->icon_location,
 	     internal_file->io_handle->ascii_codepage,
 	     utf8_string_size,
@@ -5913,7 +5913,7 @@ int liblnk_file_get_utf8_icon_location(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf8_string(
+	if( liblnk_data_string_get_utf8_path_string(
 	     internal_file->icon_location,
 	     internal_file->io_handle->ascii_codepage,
 	     utf8_string,
@@ -5973,7 +5973,7 @@ int liblnk_file_get_utf16_icon_location_size(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf16_string_size(
+	if( liblnk_data_string_get_utf16_path_string_size(
 	     internal_file->icon_location,
 	     internal_file->io_handle->ascii_codepage,
 	     utf16_string_size,
@@ -6033,7 +6033,7 @@ int liblnk_file_get_utf16_icon_location(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf16_string(
+	if( liblnk_data_string_get_utf16_path_string(
 	     internal_file->icon_location,
 	     internal_file->io_handle->ascii_codepage,
 	     utf16_string,
@@ -6082,7 +6082,7 @@ int liblnk_file_get_utf8_environment_variables_location_size(
 	{
 		return( 0 );
 	}
-	if( liblnk_strings_data_block_get_utf8_string_size(
+	if( liblnk_strings_data_block_get_utf8_path_string_size(
 	     internal_file->environment_variables_location_data_block,
 	     utf8_string_size,
 	     error ) != 1 )
@@ -6130,7 +6130,7 @@ int liblnk_file_get_utf8_environment_variables_location(
 	{
 		return( 0 );
 	}
-	if( liblnk_strings_data_block_get_utf8_string(
+	if( liblnk_strings_data_block_get_utf8_path_string(
 	     internal_file->environment_variables_location_data_block,
 	     utf8_string,
 	     utf8_string_size,
@@ -6178,7 +6178,7 @@ int liblnk_file_get_utf16_environment_variables_location_size(
 	{
 		return( 0 );
 	}
-	if( liblnk_strings_data_block_get_utf16_string_size(
+	if( liblnk_strings_data_block_get_utf16_path_string_size(
 	     internal_file->environment_variables_location_data_block,
 	     utf16_string_size,
 	     error ) != 1 )
@@ -6226,7 +6226,7 @@ int liblnk_file_get_utf16_environment_variables_location(
 	{
 		return( 0 );
 	}
-	if( liblnk_strings_data_block_get_utf16_string(
+	if( liblnk_strings_data_block_get_utf16_path_string(
 	     internal_file->environment_variables_location_data_block,
 	     utf16_string,
 	     utf16_string_size,

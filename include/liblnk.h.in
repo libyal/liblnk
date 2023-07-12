@@ -1054,7 +1054,6 @@ int liblnk_data_block_copy_data(
  * ------------------------------------------------------------------------- */
 
 /* Retrieves the size of the UTF-8 string
- * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful or -1 on error
  */
@@ -1065,7 +1064,6 @@ int liblnk_strings_data_block_get_utf8_string_size(
      liblnk_error_t **error );
 
 /* Retrieves the UTF-8 string
- * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful or -1 on error
  */
@@ -1077,7 +1075,6 @@ int liblnk_strings_data_block_get_utf8_string(
      liblnk_error_t **error );
 
 /* Retrieves the size of the UTF-16 string
- * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful or -1 on error
  */
@@ -1088,12 +1085,57 @@ int liblnk_strings_data_block_get_utf16_string_size(
      liblnk_error_t **error );
 
 /* Retrieves the UTF-16 string
- * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful or -1 on error
  */
 LIBLNK_EXTERN \
 int liblnk_strings_data_block_get_utf16_string(
+     liblnk_data_block_t *data_block,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the size of the UTF-8 path string
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
+ * The size includes the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf8_path_string_size(
+     liblnk_data_block_t *data_block,
+     size_t *utf8_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the UTF-8 path string
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
+ * The size should include the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf8_path_string(
+     liblnk_data_block_t *data_block,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the size of the UTF-16 path string
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
+ * The size includes the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf16_path_string_size(
+     liblnk_data_block_t *data_block,
+     size_t *utf16_string_size,
+     liblnk_error_t **error );
+
+/* Retrieves the UTF-16 path string
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
+ * The size should include the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf16_path_string(
      liblnk_data_block_t *data_block,
      uint16_t *utf16_string,
      size_t utf16_string_size,

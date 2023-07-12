@@ -63,6 +63,32 @@ int liblnk_strings_data_block_get_utf16_string(
      size_t utf16_string_size,
      libcerror_error_t **error );
 
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf8_path_string_size(
+     liblnk_data_block_t *data_block,
+     size_t *utf8_string_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf8_path_string(
+     liblnk_data_block_t *data_block,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf16_path_string_size(
+     liblnk_data_block_t *data_block,
+     size_t *utf16_string_size,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_strings_data_block_get_utf16_path_string(
+     liblnk_data_block_t *data_block,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     libcerror_error_t **error );
+
 #if defined( __cplusplus )
 }
 #endif

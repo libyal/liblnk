@@ -1,5 +1,5 @@
 /*
- * Python object wrapper of liblnk_data_block_t with strings
+ * String functions
  *
  * Copyright (C) 2009-2023, Joachim Metz <joachim.metz@gmail.com>
  *
@@ -19,34 +19,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#if !defined( _PYLNK_STRINGS_DATA_BLOCK_H )
-#define _PYLNK_STRINGS_DATA_BLOCK_H
+#if !defined( _PYLNK_STRING_H )
+#define _PYLNK_STRING_H
 
 #include <common.h>
 #include <types.h>
 
-#include "pylnk_data_block.h"
-#include "pylnk_liblnk.h"
+#include "pylnk_libcerror.h"
 #include "pylnk_python.h"
 
 #if defined( __cplusplus )
 extern "C" {
 #endif
 
-extern PyMethodDef pylnk_strings_data_block_object_methods[];
-extern PyTypeObject pylnk_strings_data_block_type_object;
+#if PY_MAJOR_VERSION >= 3 && PY_MINOR_VERSION >= 3
 
-PyObject *pylnk_strings_data_block_get_string(
-           pylnk_data_block_t *pylnk_data_block,
-           PyObject *arguments );
+PyObject *pylnk_string_new_from_utf8_rfc2279(
+           const uint8_t *utf8_string,
+           size_t utf8_string_size );
 
-PyObject *pylnk_strings_data_block_get_path_string(
-           pylnk_data_block_t *pylnk_data_block,
-           PyObject *arguments );
+int pylnk_string_copy_to_utf8_rfc2279(
+     PyObject *string_object,
+     uint8_t **utf8_string,
+     size_t *utf8_string_size,
+     libcerror_error_t **error );
+
+#endif /* PY_MAJOR_VERSION >= 3 && PY_MINOR_VERSION >= 3 */
 
 #if defined( __cplusplus )
 }
 #endif
 
-#endif /* !defined( _PYLNK_STRINGS_DATA_BLOCK_H ) */
+#endif /* !defined( _PYLNK_STRING_H ) */
 

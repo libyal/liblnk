@@ -48,10 +48,6 @@ struct liblnk_data_string
 	/* The data size
 	 */
 	size_t data_size;
-
-	/* The encoding flags
-	 */
-	uint32_t encoding_flags;
 };
 
 int liblnk_data_string_initialize(
@@ -98,6 +94,32 @@ int liblnk_data_string_get_utf16_string_size(
      libcerror_error_t **error );
 
 int liblnk_data_string_get_utf16_string(
+     liblnk_data_string_t *data_string,
+     int ascii_codepage,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     libcerror_error_t **error );
+
+int liblnk_data_string_get_utf8_path_string_size(
+     liblnk_data_string_t *data_string,
+     int ascii_codepage,
+     size_t *utf8_string_size,
+     libcerror_error_t **error );
+
+int liblnk_data_string_get_utf8_path_string(
+     liblnk_data_string_t *data_string,
+     int ascii_codepage,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     libcerror_error_t **error );
+
+int liblnk_data_string_get_utf16_path_string_size(
+     liblnk_data_string_t *data_string,
+     int ascii_codepage,
+     size_t *utf16_string_size,
+     libcerror_error_t **error );
+
+int liblnk_data_string_get_utf16_path_string(
      liblnk_data_string_t *data_string,
      int ascii_codepage,
      uint16_t *utf16_string,

@@ -47,7 +47,10 @@ int liblnk_strings_data_block_read(
 	static char *function                             = "liblnk_data_block_strings_read";
 	size_t string_size                                = 0;
 	size_t unicode_string_size                        = 0;
+
+#if defined( HAVE_DEBUG_OUTPUT )
 	uint32_t encoding_flags                           = 0;
+#endif
 
 	if( data_block == NULL )
 	{
@@ -166,11 +169,6 @@ int liblnk_strings_data_block_read(
 	}
 #endif /* defined( HAVE_DEBUG_OUTPUT ) */
 
-	if( ( internal_data_block->signature == LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION )
-	 || ( internal_data_block->signature == LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION ) )
-	{
-		encoding_flags = LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE;
-	}
 	unicode_string_data = ( (lnk_data_block_strings_t *) internal_data_block->data )->unicode_string;
 
 	for( unicode_string_size = 0;
@@ -203,6 +201,11 @@ int liblnk_strings_data_block_read(
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
 	{
+		if( ( internal_data_block->signature == LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION )
+		 || ( internal_data_block->signature == LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION ) )
+		{
+			encoding_flags = LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE;
+		}
 		libcnotify_printf(
 		 "%s: Unicode string data:\n",
 		 function );
@@ -265,8 +268,7 @@ int liblnk_strings_data_block_read(
 
 			goto on_error;
 		}
-		data_string->is_unicode     = 1;
-		data_string->encoding_flags = encoding_flags;
+		data_string->is_unicode = 1;
 	}
 	else if( string_size > 0 )
 	{
@@ -334,7 +336,6 @@ on_error:
 }
 
 /* Retrieves the size of the UTF-8 string
- * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful or -1 on error
  */
@@ -413,7 +414,6 @@ int liblnk_strings_data_block_get_utf8_string_size(
 }
 
 /* Retrieves the UTF-8 string
- * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful or -1 on error
  */
@@ -494,7 +494,6 @@ int liblnk_strings_data_block_get_utf8_string(
 }
 
 /* Retrieves the size of the UTF-16 string
- * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful or -1 on error
  */
@@ -573,7 +572,6 @@ int liblnk_strings_data_block_get_utf16_string_size(
 }
 
 /* Retrieves the UTF-16 string
- * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful or -1 on error
  */
@@ -635,6 +633,322 @@ int liblnk_strings_data_block_get_utf16_string(
 		return( -1 );
 	}
 	if( liblnk_data_string_get_utf16_string(
+	     (liblnk_data_string_t *) internal_data_block->value,
+	     internal_data_block->ascii_codepage,
+	     utf16_string,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-16 string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-8 path string
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
+ * The size includes the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_strings_data_block_get_utf8_path_string_size(
+     liblnk_data_block_t *data_block,
+     size_t *utf8_string_size,
+     libcerror_error_t **error )
+{
+	liblnk_internal_data_block_t *internal_data_block = NULL;
+	static char *function                             = "liblnk_strings_data_block_get_utf8_path_string_size";
+
+	if( data_block == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data block.",
+		 function );
+
+		return( -1 );
+	}
+	internal_data_block = (liblnk_internal_data_block_t *) data_block;
+
+	if( internal_data_block->value == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid data block - missing value.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_data_block->data_size < 4 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid data block - data size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_data_block->signature != LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION )
+	 && ( internal_data_block->signature != LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: invalid data block - unsupported signature.",
+		 function );
+
+		return( -1 );
+	}
+	if( liblnk_data_string_get_utf8_path_string_size(
+	     (liblnk_data_string_t *) internal_data_block->value,
+	     internal_data_block->ascii_codepage,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-8 string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-8 path string
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
+ * The size should include the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_strings_data_block_get_utf8_path_string(
+     liblnk_data_block_t *data_block,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     libcerror_error_t **error )
+{
+	liblnk_internal_data_block_t *internal_data_block = NULL;
+	static char *function                             = "liblnk_strings_data_block_get_utf8_path_string";
+
+	if( data_block == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data block.",
+		 function );
+
+		return( -1 );
+	}
+	internal_data_block = (liblnk_internal_data_block_t *) data_block;
+
+	if( internal_data_block->value == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid data block - missing value.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_data_block->data_size < 4 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid data block - data size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_data_block->signature != LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION )
+	 && ( internal_data_block->signature != LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: invalid data block - unsupported signature.",
+		 function );
+
+		return( -1 );
+	}
+	if( liblnk_data_string_get_utf8_path_string(
+	     (liblnk_data_string_t *) internal_data_block->value,
+	     internal_data_block->ascii_codepage,
+	     utf8_string,
+	     utf8_string_size,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-8 string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-16 path string
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
+ * The size includes the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_strings_data_block_get_utf16_path_string_size(
+     liblnk_data_block_t *data_block,
+     size_t *utf16_string_size,
+     libcerror_error_t **error )
+{
+	liblnk_internal_data_block_t *internal_data_block = NULL;
+	static char *function                             = "liblnk_strings_data_block_get_utf16_path_string_size";
+
+	if( data_block == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data block.",
+		 function );
+
+		return( -1 );
+	}
+	internal_data_block = (liblnk_internal_data_block_t *) data_block;
+
+	if( internal_data_block->value == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid data block - missing value.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_data_block->data_size < 4 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid data block - data size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_data_block->signature != LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION )
+	 && ( internal_data_block->signature != LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: invalid data block - unsupported signature.",
+		 function );
+
+		return( -1 );
+	}
+	if( liblnk_data_string_get_utf16_path_string_size(
+	     (liblnk_data_string_t *) internal_data_block->value,
+	     internal_data_block->ascii_codepage,
+	     utf16_string_size,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-16 string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-16 path string
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
+ * The size should include the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_strings_data_block_get_utf16_path_string(
+     liblnk_data_block_t *data_block,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     libcerror_error_t **error )
+{
+	liblnk_internal_data_block_t *internal_data_block = NULL;
+	static char *function                             = "liblnk_strings_data_block_get_utf16_path_string";
+
+	if( data_block == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data block.",
+		 function );
+
+		return( -1 );
+	}
+	internal_data_block = (liblnk_internal_data_block_t *) data_block;
+
+	if( internal_data_block->value == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid data block - missing value.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_data_block->data_size < 4 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid data block - data size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( internal_data_block->signature != LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION )
+	 && ( internal_data_block->signature != LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+		 "%s: invalid data block - unsupported signature.",
+		 function );
+
+		return( -1 );
+	}
+	if( liblnk_data_string_get_utf16_path_string(
 	     (liblnk_data_string_t *) internal_data_block->value,
 	     internal_data_block->ascii_codepage,
 	     utf16_string,

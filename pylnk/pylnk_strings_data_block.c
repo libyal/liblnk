@@ -33,6 +33,7 @@
 #include "pylnk_libcerror.h"
 #include "pylnk_liblnk.h"
 #include "pylnk_python.h"
+#include "pylnk_string.h"
 #include "pylnk_unused.h"
 
 PyMethodDef pylnk_strings_data_block_object_methods[] = {
@@ -44,6 +45,13 @@ PyMethodDef pylnk_strings_data_block_object_methods[] = {
 	  "\n"
 	  "Retrieves the string." },
 
+	{ "get_path_string",
+	  (PyCFunction) pylnk_strings_data_block_get_path_string,
+	  METH_NOARGS,
+	  "get_path_string() -> Unicode string or None\n"
+	  "\n"
+	  "Retrieves the path string." },
+
 	/* Sentinel */
 	{ NULL, NULL, 0, NULL }
 };
@@ -54,6 +62,12 @@ PyGetSetDef pylnk_strings_data_block_object_get_set_definitions[] = {
 	  (getter) pylnk_strings_data_block_get_string,
 	  (setter) 0,
 	  "The string.",
+	  NULL },
+
+	{ "path_string",
+	  (getter) pylnk_strings_data_block_get_path_string,
+	  (setter) 0,
+	  "The path string.",
 	  NULL },
 
 	/* Sentinel */
@@ -164,7 +178,6 @@ PyObject *pylnk_strings_data_block_get_string(
 {
 	PyObject *string_object  = NULL;
 	libcerror_error_t *error = NULL;
-	const char *errors       = NULL;
 	static char *function    = "pylnk_strings_data_block_get_string";
 	char *utf8_string        = NULL;
 	size_t utf8_string_size  = 0;
@@ -252,8 +265,135 @@ PyObject *pylnk_strings_data_block_get_string(
 	string_object = PyUnicode_DecodeUTF8(
 	                 utf8_string,
 	                 (Py_ssize_t) utf8_string_size - 1,
-	                 errors );
+	                 NULL );
 
+	if( string_object == NULL )
+	{
+		PyErr_Format(
+		 PyExc_IOError,
+		 "%s: unable to convert UTF-8 string into Unicode object.",
+		 function );
+
+		goto on_error;
+	}
+	PyMem_Free(
+	 utf8_string );
+
+	return( string_object );
+
+on_error:
+	if( utf8_string != NULL )
+	{
+		PyMem_Free(
+		 utf8_string );
+	}
+	return( NULL );
+}
+
+/* Retrieves the path string
+ * Returns a Python object if successful or NULL on error
+ */
+PyObject *pylnk_strings_data_block_get_path_string(
+           pylnk_data_block_t *pylnk_data_block,
+           PyObject *arguments PYLNK_ATTRIBUTE_UNUSED )
+{
+	PyObject *string_object  = NULL;
+	libcerror_error_t *error = NULL;
+	static char *function    = "pylnk_strings_data_block_get_path_string";
+	char *utf8_string        = NULL;
+	size_t utf8_string_size  = 0;
+	int result               = 0;
+
+	PYLNK_UNREFERENCED_PARAMETER( arguments )
+
+	if( pylnk_data_block == NULL )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid data_block.",
+		 function );
+
+		return( NULL );
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_strings_data_block_get_utf8_path_string_size(
+	          pylnk_data_block->data_block,
+	          &utf8_string_size,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result == -1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to determine size of UTF-8 string.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		goto on_error;
+	}
+	else if( ( result == 0 )
+	      || ( utf8_string_size == 0 ) )
+	{
+		Py_IncRef(
+		 Py_None );
+
+		return( Py_None );
+	}
+	utf8_string = (char *) PyMem_Malloc(
+	                        sizeof( char ) * utf8_string_size );
+
+	if( utf8_string == NULL )
+	{
+		PyErr_Format(
+		 PyExc_MemoryError,
+		 "%s: unable to create UTF-8 string.",
+		 function );
+
+		goto on_error;
+	}
+	Py_BEGIN_ALLOW_THREADS
+
+	result = liblnk_strings_data_block_get_utf8_path_string(
+	          pylnk_data_block->data_block,
+	          (uint8_t *) utf8_string,
+	          utf8_string_size,
+	          &error );
+
+	Py_END_ALLOW_THREADS
+
+	if( result != 1 )
+	{
+		pylnk_error_raise(
+		 error,
+		 PyExc_IOError,
+		 "%s: unable to retrieve UTF-8 string.",
+		 function );
+
+		libcerror_error_free(
+		 &error );
+
+		goto on_error;
+	}
+#if PY_MAJOR_VERSION >= 3 && PY_MINOR_VERSION >= 3
+	string_object = pylnk_string_new_from_utf8_rfc2279(
+			 (uint8_t *) utf8_string,
+			 utf8_string_size );
+#else
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
+	 */
+	string_object = PyUnicode_DecodeUTF8(
+	                 utf8_string,
+	                 (Py_ssize_t) utf8_string_size - 1,
+	                 NULL );
+#endif
 	if( string_object == NULL )
 	{
 		PyErr_Format(

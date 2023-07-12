@@ -226,6 +226,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\pylnk\pylnk_string.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\pylnk\pylnk_strings_data_block.c"
 				>
 			</File>
@@ -312,7 +316,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\pylnk\pylnk_libuna.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\pylnk\pylnk_python.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\pylnk\pylnk_string.h"
 				>
 			</File>
 			<File

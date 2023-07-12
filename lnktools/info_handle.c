@@ -702,17 +702,17 @@ on_error:
 	return( -1 );
 }
 
-/* Prints a file entry name
+/* Prints a path string
  * Returns 1 if successful or -1 on error
  */
-int info_handle_name_value_fprint(
+int info_handle_path_string_value_fprint(
      info_handle_t *info_handle,
      const system_character_t *value_string,
      size_t value_string_length,
      libcerror_error_t **error )
 {
 	system_character_t *escaped_value_string = NULL;
-	static char *function                    = "info_handle_name_value_fprint";
+	static char *function                    = "info_handle_path_string_value_fprint";
 	size_t escaped_value_string_size         = 0;
 
 	if( info_handle == NULL )
@@ -1232,7 +1232,7 @@ int info_handle_link_information_fprint(
 		else if( ( result != 0 )
 		      && ( value_string_size > 0 ) )
 		{
-			if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
+			if( value_string_size > ( (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE / sizeof( system_character_t ) ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -1316,7 +1316,7 @@ int info_handle_link_information_fprint(
 		else if( ( result != 0 )
 		      && ( value_string_size > 0 ) )
 		{
-			if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
+			if( value_string_size > ( (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE / sizeof( system_character_t ) ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -1369,7 +1369,7 @@ int info_handle_link_information_fprint(
 			 info_handle->notify_stream,
 			 "\tLocal path\t\t\t: " );
 
-			if( info_handle_name_value_fprint(
+			if( info_handle_path_string_value_fprint(
 			     info_handle,
 			     value_string,
 			     value_string_size - 1,
@@ -1418,7 +1418,7 @@ int info_handle_link_information_fprint(
 		else if( ( result != 0 )
 		      && ( value_string_size > 0 ) )
 		{
-			if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
+			if( value_string_size > ( (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE / sizeof( system_character_t ) ) )
 			{
 				libcerror_error_set(
 				 error,
@@ -1471,7 +1471,7 @@ int info_handle_link_information_fprint(
 			 info_handle->notify_stream,
 			 "\tNetwork path\t\t\t: " );
 
-			if( info_handle_name_value_fprint(
+			if( info_handle_path_string_value_fprint(
 			     info_handle,
 			     value_string,
 			     value_string_size - 1,
@@ -1555,7 +1555,7 @@ int info_handle_description_fprint(
 	else if( ( result != 0 )
 	      && ( value_string_size > 0 ) )
 	{
-		if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
+		if( value_string_size > ( (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE / sizeof( system_character_t ) ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1673,7 +1673,7 @@ int info_handle_relative_path_fprint(
 	else if( ( result != 0 )
 	      && ( value_string_size > 0 ) )
 	{
-		if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
+		if( value_string_size > ( (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE / sizeof( system_character_t ) ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1726,7 +1726,7 @@ int info_handle_relative_path_fprint(
 		 info_handle->notify_stream,
 		 "\tRelative path\t\t\t: " );
 
-		if( info_handle_name_value_fprint(
+		if( info_handle_path_string_value_fprint(
 		     info_handle,
 		     value_string,
 		     value_string_size - 1,
@@ -1809,7 +1809,7 @@ int info_handle_working_directory_fprint(
 	else if( ( result != 0 )
 	      && ( value_string_size > 0 ) )
 	{
-		if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
+		if( value_string_size > ( (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE / sizeof( system_character_t ) ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -1862,7 +1862,7 @@ int info_handle_working_directory_fprint(
 		 info_handle->notify_stream,
 		 "\tWorking directory\t\t: " );
 
-		if( info_handle_name_value_fprint(
+		if( info_handle_path_string_value_fprint(
 		     info_handle,
 		     value_string,
 		     value_string_size - 1,
@@ -1945,7 +1945,7 @@ int info_handle_command_line_arguments_fprint(
 	else if( ( result != 0 )
 	      && ( value_string_size > 0 ) )
 	{
-		if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
+		if( value_string_size > ( (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE / sizeof( system_character_t ) ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -2063,7 +2063,7 @@ int info_handle_icon_location_fprint(
 	else if( ( result != 0 )
 	      && ( value_string_size > 0 ) )
 	{
-		if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
+		if( value_string_size > ( (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE / sizeof( system_character_t ) ) )
 		{
 			libcerror_error_set(
 			 error,
@@ -2116,7 +2116,7 @@ int info_handle_icon_location_fprint(
 		 info_handle->notify_stream,
 		 "\tIcon location\t\t\t: " );
 
-		if( info_handle_name_value_fprint(
+		if( info_handle_path_string_value_fprint(
 		     info_handle,
 		     value_string,
 		     value_string_size - 1,
@@ -2439,9 +2439,7 @@ int info_handle_data_block_fprint(
 
 	switch( signature )
 	{
-		case LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION:
 		case LIBLNK_DATA_BLOCK_SIGNATURE_DARWIN_PROPERTIES:
-		case LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION:
 #if defined( HAVE_WIDE_SYSTEM_CHARACTER )
 			result = liblnk_strings_data_block_get_utf16_string_size(
 				  data_block,
@@ -2466,7 +2464,7 @@ int info_handle_data_block_fprint(
 			}
 			else if( value_string_size > 0 )
 			{
-				if( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE )
+				if( value_string_size > ( (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE / sizeof( system_character_t ) ) )
 				{
 					libcerror_error_set(
 					 error,
@@ -2519,6 +2517,115 @@ int info_handle_data_block_fprint(
 				 info_handle->notify_stream,
 				 "\tString\t\t\t\t: %" PRIs_SYSTEM "\n",
 				 value_string );
+
+				memory_free(
+				 value_string );
+
+				value_string = NULL;
+			}
+			fprintf(
+			 info_handle->notify_stream,
+			 "\n" );
+
+			break;
+
+		case LIBLNK_DATA_BLOCK_SIGNATURE_ENVIRONMENT_VARIABLES_LOCATION:
+		case LIBLNK_DATA_BLOCK_SIGNATURE_ICON_LOCATION:
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+			result = liblnk_strings_data_block_get_utf16_path_string_size(
+				  data_block,
+				  &value_string_size,
+				  error );
+#else
+			result = liblnk_strings_data_block_get_utf8_path_string_size(
+				  data_block,
+				  &value_string_size,
+				  error );
+#endif
+			if( result != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to retrieve strings data block string size.",
+				 function );
+
+				goto on_error;
+			}
+			else if( value_string_size > 0 )
+			{
+				if( value_string_size > ( (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE / sizeof( system_character_t ) ) )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_VALUE_EXCEEDS_MAXIMUM,
+					 "%s: invalid strings data block string size value exceeds maximum.",
+					 function );
+
+					goto on_error;
+				}
+				value_string = system_string_allocate(
+						value_string_size );
+
+				if( value_string == NULL )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_MEMORY,
+					 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+					 "%s: unable to create strings data block string.",
+					 function );
+
+					goto on_error;
+				}
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+				result = liblnk_strings_data_block_get_utf16_path_string(
+					  data_block,
+					  (uint16_t *) value_string,
+					  value_string_size,
+					  error );
+#else
+				result = liblnk_strings_data_block_get_utf8_path_string(
+					  data_block,
+					  (uint8_t *) value_string,
+					  value_string_size,
+					  error );
+#endif
+				if( result != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+					 "%s: unable to retrieve strings data block string.",
+					 function );
+
+					goto on_error;
+				}
+				fprintf(
+				 info_handle->notify_stream,
+				 "\tString\t\t\t\t: " );
+
+				if( info_handle_path_string_value_fprint(
+				     info_handle,
+				     value_string,
+				     value_string_size - 1,
+				     error ) != 1 )
+				{
+					libcerror_error_set(
+					 error,
+					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+					 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+					 "%s: unable to print strings data block string.",
+					 function );
+
+					goto on_error;
+				}
+				fprintf(
+				 info_handle->notify_stream,
+				 "\n" );
 
 				memory_free(
 				 value_string );
@@ -2634,7 +2741,7 @@ int info_handle_distributed_link_tracking_data_block_fprint(
 		goto on_error;
 	}
 	if( ( value_string_size == 0 )
-	 || ( value_string_size > MEMORY_MAXIMUM_ALLOCATION_SIZE ) )
+	 || ( value_string_size > ( (size_t) MEMORY_MAXIMUM_ALLOCATION_SIZE / sizeof( system_character_t ) ) ) )
 	{
 		libcerror_error_set(
 		 error,

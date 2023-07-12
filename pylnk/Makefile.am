@@ -35,7 +35,9 @@ pylnk_la_SOURCES = \
 	pylnk_libclocale.h \
 	pylnk_libfguid.h \
 	pylnk_liblnk.h \
+	pylnk_libuna.h \
 	pylnk_python.h \
+	pylnk_string.c pylnk_string.h \
 	pylnk_strings_data_block.c pylnk_strings_data_block.h \
 	pylnk_unused.h
 

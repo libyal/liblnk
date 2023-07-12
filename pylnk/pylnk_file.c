@@ -41,6 +41,7 @@
 #include "pylnk_libclocale.h"
 #include "pylnk_liblnk.h"
 #include "pylnk_python.h"
+#include "pylnk_string.h"
 #include "pylnk_unused.h"
 
 #if !defined( LIBLNK_HAVE_BFIO )
@@ -844,8 +845,14 @@ PyObject *pylnk_file_open(
 		PyErr_Clear();
 
 #if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+#if PY_MAJOR_VERSION >= 3 && PY_MINOR_VERSION >= 3
+		filename_wide = (wchar_t *) PyUnicode_AsWideCharString(
+		                             string_object,
+		                             NULL );
+#else
 		filename_wide = (wchar_t *) PyUnicode_AsUnicode(
 		                             string_object );
+#endif
 		Py_BEGIN_ALLOW_THREADS
 
 		result = liblnk_file_open_wide(
@@ -855,6 +862,11 @@ PyObject *pylnk_file_open(
 		          &error );
 
 		Py_END_ALLOW_THREADS
+
+#if PY_MAJOR_VERSION >= 3 && PY_MINOR_VERSION >= 3
+		PyMem_Free(
+		 filename_wide );
+#endif
 #else
 		utf8_string_object = PyUnicode_AsUTF8String(
 		                      string_object );
@@ -2350,7 +2362,6 @@ PyObject *pylnk_file_get_volume_label(
 {
 	PyObject *string_object  = NULL;
 	libcerror_error_t *error = NULL;
-	const char *errors       = NULL;
 	static char *function    = "pylnk_file_get_volume_label";
 	char *utf8_string        = NULL;
 	size_t utf8_string_size  = 0;
@@ -2438,7 +2449,7 @@ PyObject *pylnk_file_get_volume_label(
 	string_object = PyUnicode_DecodeUTF8(
 	                 utf8_string,
 	                 (Py_ssize_t) utf8_string_size - 1,
-	                 errors );
+	                 NULL );
 
 	if( string_object == NULL )
 	{
@@ -2472,7 +2483,6 @@ PyObject *pylnk_file_get_local_path(
 {
 	PyObject *string_object  = NULL;
 	libcerror_error_t *error = NULL;
-	const char *errors       = NULL;
 	static char *function    = "pylnk_file_get_local_path";
 	char *utf8_string        = NULL;
 	size_t utf8_string_size  = 0;
@@ -2554,14 +2564,20 @@ PyObject *pylnk_file_get_local_path(
 
 		goto on_error;
 	}
-	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
-	 * the end of string character is part of the string
+#if PY_MAJOR_VERSION >= 3 && PY_MINOR_VERSION >= 3
+	string_object = pylnk_string_new_from_utf8_rfc2279(
+			 (uint8_t *) utf8_string,
+			 utf8_string_size );
+#else
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 utf8_string,
 	                 (Py_ssize_t) utf8_string_size - 1,
-	                 errors );
-
+	                 NULL );
+#endif
 	if( string_object == NULL )
 	{
 		PyErr_Format(
@@ -2594,7 +2610,6 @@ PyObject *pylnk_file_get_network_path(
 {
 	PyObject *string_object  = NULL;
 	libcerror_error_t *error = NULL;
-	const char *errors       = NULL;
 	static char *function    = "pylnk_file_get_network_path";
 	char *utf8_string        = NULL;
 	size_t utf8_string_size  = 0;
@@ -2676,14 +2691,20 @@ PyObject *pylnk_file_get_network_path(
 
 		goto on_error;
 	}
-	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
-	 * the end of string character is part of the string
+#if PY_MAJOR_VERSION >= 3 && PY_MINOR_VERSION >= 3
+	string_object = pylnk_string_new_from_utf8_rfc2279(
+			 (uint8_t *) utf8_string,
+			 utf8_string_size );
+#else
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 utf8_string,
 	                 (Py_ssize_t) utf8_string_size - 1,
-	                 errors );
-
+	                 NULL );
+#endif
 	if( string_object == NULL )
 	{
 		PyErr_Format(
@@ -2716,7 +2737,6 @@ PyObject *pylnk_file_get_description(
 {
 	PyObject *string_object  = NULL;
 	libcerror_error_t *error = NULL;
-	const char *errors       = NULL;
 	static char *function    = "pylnk_file_get_description";
 	char *utf8_string        = NULL;
 	size_t utf8_string_size  = 0;
@@ -2804,7 +2824,7 @@ PyObject *pylnk_file_get_description(
 	string_object = PyUnicode_DecodeUTF8(
 	                 utf8_string,
 	                 (Py_ssize_t) utf8_string_size - 1,
-	                 errors );
+	                 NULL );
 
 	if( string_object == NULL )
 	{
@@ -2838,7 +2858,6 @@ PyObject *pylnk_file_get_relative_path(
 {
 	PyObject *string_object  = NULL;
 	libcerror_error_t *error = NULL;
-	const char *errors       = NULL;
 	static char *function    = "pylnk_file_get_relative_path";
 	char *utf8_string        = NULL;
 	size_t utf8_string_size  = 0;
@@ -2920,14 +2939,20 @@ PyObject *pylnk_file_get_relative_path(
 
 		goto on_error;
 	}
-	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
-	 * the end of string character is part of the string
+#if PY_MAJOR_VERSION >= 3 && PY_MINOR_VERSION >= 3
+	string_object = pylnk_string_new_from_utf8_rfc2279(
+			 (uint8_t *) utf8_string,
+			 utf8_string_size );
+#else
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 utf8_string,
 	                 (Py_ssize_t) utf8_string_size - 1,
-	                 errors );
-
+	                 NULL );
+#endif
 	if( string_object == NULL )
 	{
 		PyErr_Format(
@@ -2960,7 +2985,6 @@ PyObject *pylnk_file_get_working_directory(
 {
 	PyObject *string_object  = NULL;
 	libcerror_error_t *error = NULL;
-	const char *errors       = NULL;
 	static char *function    = "pylnk_file_get_working_directory";
 	char *utf8_string        = NULL;
 	size_t utf8_string_size  = 0;
@@ -3042,14 +3066,20 @@ PyObject *pylnk_file_get_working_directory(
 
 		goto on_error;
 	}
-	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
-	 * the end of string character is part of the string
+#if PY_MAJOR_VERSION >= 3 && PY_MINOR_VERSION >= 3
+	string_object = pylnk_string_new_from_utf8_rfc2279(
+			 (uint8_t *) utf8_string,
+			 utf8_string_size );
+#else
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 utf8_string,
 	                 (Py_ssize_t) utf8_string_size - 1,
-	                 errors );
-
+	                 NULL );
+#endif
 	if( string_object == NULL )
 	{
 		PyErr_Format(
@@ -3082,7 +3112,6 @@ PyObject *pylnk_file_get_command_line_arguments(
 {
 	PyObject *string_object  = NULL;
 	libcerror_error_t *error = NULL;
-	const char *errors       = NULL;
 	static char *function    = "pylnk_file_get_command_line_arguments";
 	char *utf8_string        = NULL;
 	size_t utf8_string_size  = 0;
@@ -3170,7 +3199,7 @@ PyObject *pylnk_file_get_command_line_arguments(
 	string_object = PyUnicode_DecodeUTF8(
 	                 utf8_string,
 	                 (Py_ssize_t) utf8_string_size - 1,
-	                 errors );
+	                 NULL );
 
 	if( string_object == NULL )
 	{
@@ -3204,7 +3233,6 @@ PyObject *pylnk_file_get_icon_location(
 {
 	PyObject *string_object  = NULL;
 	libcerror_error_t *error = NULL;
-	const char *errors       = NULL;
 	static char *function    = "pylnk_file_get_icon_location";
 	char *utf8_string        = NULL;
 	size_t utf8_string_size  = 0;
@@ -3286,14 +3314,20 @@ PyObject *pylnk_file_get_icon_location(
 
 		goto on_error;
 	}
-	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
-	 * the end of string character is part of the string
+#if PY_MAJOR_VERSION >= 3 && PY_MINOR_VERSION >= 3
+	string_object = pylnk_string_new_from_utf8_rfc2279(
+			 (uint8_t *) utf8_string,
+			 utf8_string_size );
+#else
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 utf8_string,
 	                 (Py_ssize_t) utf8_string_size - 1,
-	                 errors );
-
+	                 NULL );
+#endif
 	if( string_object == NULL )
 	{
 		PyErr_Format(
@@ -3326,7 +3360,6 @@ PyObject *pylnk_file_get_environment_variables_location(
 {
 	PyObject *string_object  = NULL;
 	libcerror_error_t *error = NULL;
-	const char *errors       = NULL;
 	static char *function    = "pylnk_file_get_environment_variables_location";
 	char *utf8_string        = NULL;
 	size_t utf8_string_size  = 0;
@@ -3408,14 +3441,20 @@ PyObject *pylnk_file_get_environment_variables_location(
 
 		goto on_error;
 	}
-	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
-	 * the end of string character is part of the string
+#if PY_MAJOR_VERSION >= 3 && PY_MINOR_VERSION >= 3
+	string_object = pylnk_string_new_from_utf8_rfc2279(
+			 (uint8_t *) utf8_string,
+			 utf8_string_size );
+#else
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 utf8_string,
 	                 (Py_ssize_t) utf8_string_size - 1,
-	                 errors );
-
+	                 NULL );
+#endif
 	if( string_object == NULL )
 	{
 		PyErr_Format(
@@ -3572,7 +3611,6 @@ PyObject *pylnk_file_get_machine_identifier(
 {
 	PyObject *string_object  = NULL;
 	libcerror_error_t *error = NULL;
-	const char *errors       = NULL;
 	static char *function    = "pylnk_file_get_machine_identifier";
 	char *utf8_string        = NULL;
 	size_t utf8_string_size  = 0;
@@ -3660,7 +3698,7 @@ PyObject *pylnk_file_get_machine_identifier(
 	string_object = PyUnicode_DecodeUTF8(
 	                 utf8_string,
 	                 (Py_ssize_t) utf8_string_size - 1,
-	                 errors );
+	                 NULL );
 
 	if( string_object == NULL )
 	{
