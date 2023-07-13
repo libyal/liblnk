@@ -212,6 +212,11 @@ The data flags consist of the following values:
 [NOTE]
 LNK files in Windows XP and earlier do not use the ForceNoLinkTrack flag.
 
+[NOTE]
+The working directory, command line arguments and custom icon location data
+strings are not strict UTF-16 since it allows for unpaired surrogates, such
+as "U+d800" and "U+dc00".
+
 == Link target identifier
 
 The link target identifier contains a (shell) item identifier list. The data

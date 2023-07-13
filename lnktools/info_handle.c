@@ -1996,8 +1996,26 @@ int info_handle_command_line_arguments_fprint(
 		}
 		fprintf(
 		 info_handle->notify_stream,
-		 "\tCommand line arguments\t\t: %" PRIs_SYSTEM "\n",
-		 value_string );
+		 "\tCommand line arguments\t\t: " );
+
+		if( info_handle_path_string_value_fprint(
+		     info_handle,
+		     value_string,
+		     value_string_size - 1,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_PRINT_FAILED,
+			 "%s: unable to print command line arguments string.",
+			 function );
+
+			goto on_error;
+		}
+		fprintf(
+		 info_handle->notify_stream,
+		 "\n" );
 
 		memory_free(
 		 value_string );

@@ -3193,14 +3193,20 @@ PyObject *pylnk_file_get_command_line_arguments(
 
 		goto on_error;
 	}
-	/* Pass the string length to PyUnicode_DecodeUTF8 otherwise it makes
-	 * the end of string character is part of the string
+#if PY_MAJOR_VERSION >= 3 && PY_MINOR_VERSION >= 3
+	string_object = pylnk_string_new_from_utf8_rfc2279(
+			 (uint8_t *) utf8_string,
+			 utf8_string_size );
+#else
+	/* Pass the string length to PyUnicode_DecodeUTF8
+	 * otherwise it makes the end of string character is part
+	 * of the string
 	 */
 	string_object = PyUnicode_DecodeUTF8(
 	                 utf8_string,
 	                 (Py_ssize_t) utf8_string_size - 1,
 	                 NULL );
-
+#endif
 	if( string_object == NULL )
 	{
 		PyErr_Format(

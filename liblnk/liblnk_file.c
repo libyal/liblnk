@@ -1420,7 +1420,7 @@ int liblnk_internal_file_open_read(
 		     internal_file->io_handle,
 		     file_io_handle,
 		     file_offset,
-		     0,
+		     LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -5577,6 +5577,7 @@ int liblnk_file_get_utf16_working_directory(
 }
 
 /* Retrieves the size of the UTF-8 encoded command line arguments
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5616,7 +5617,7 @@ int liblnk_file_get_utf8_command_line_arguments_size(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf8_string_size(
+	if( liblnk_data_string_get_utf8_path_string_size(
 	     internal_file->command_line_arguments,
 	     internal_file->io_handle->ascii_codepage,
 	     utf8_string_size,
@@ -5635,6 +5636,7 @@ int liblnk_file_get_utf8_command_line_arguments_size(
 }
 
 /* Retrieves the UTF-8 encoded command line arguments
+ * This function uses UTF-8 RFC 2279 (or 6-byte UTF-8) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5675,7 +5677,7 @@ int liblnk_file_get_utf8_command_line_arguments(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf8_string(
+	if( liblnk_data_string_get_utf8_path_string(
 	     internal_file->command_line_arguments,
 	     internal_file->io_handle->ascii_codepage,
 	     utf8_string,
@@ -5695,6 +5697,7 @@ int liblnk_file_get_utf8_command_line_arguments(
 }
 
 /* Retrieves the size of the UTF-16 encoded command line arguments
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size includes the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5734,7 +5737,7 @@ int liblnk_file_get_utf16_command_line_arguments_size(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf16_string_size(
+	if( liblnk_data_string_get_utf16_path_string_size(
 	     internal_file->command_line_arguments,
 	     internal_file->io_handle->ascii_codepage,
 	     utf16_string_size,
@@ -5753,6 +5756,7 @@ int liblnk_file_get_utf16_command_line_arguments_size(
 }
 
 /* Retrieves the UTF-16 encoded command line arguments
+ * This function uses UCS-2 (with surrogates) to support characters outside Unicode
  * The size should include the end of string character
  * Returns 1 if successful, 0 if value is not available or -1 on error
  */
@@ -5793,7 +5797,7 @@ int liblnk_file_get_utf16_command_line_arguments(
 	{
 		return( 0 );
 	}
-	if( liblnk_data_string_get_utf16_string(
+	if( liblnk_data_string_get_utf16_path_string(
 	     internal_file->command_line_arguments,
 	     internal_file->io_handle->ascii_codepage,
 	     utf16_string,

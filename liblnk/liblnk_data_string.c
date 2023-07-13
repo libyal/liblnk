@@ -657,7 +657,7 @@ int liblnk_data_string_get_utf8_string_size(
 		result = libuna_utf8_string_size_from_utf16_stream(
 			  data_string->data,
 			  data_string->data_size,
-			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
+			  LIBUNA_ENDIAN_LITTLE,
 			  utf8_string_size,
 			  error );
 	}
@@ -749,7 +749,7 @@ int liblnk_data_string_get_utf8_string(
 			  utf8_string_size,
 			  data_string->data,
 			  data_string->data_size,
-			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
+			  LIBUNA_ENDIAN_LITTLE,
 			  error );
 	}
 	else
@@ -827,7 +827,7 @@ int liblnk_data_string_get_utf16_string_size(
 		result = libuna_utf16_string_size_from_utf16_stream(
 			  data_string->data,
 			  data_string->data_size,
-			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
+			  LIBUNA_ENDIAN_LITTLE,
 			  utf16_string_size,
 			  error );
 	}
@@ -919,7 +919,7 @@ int liblnk_data_string_get_utf16_string(
 			  utf16_string_size,
 			  data_string->data,
 			  data_string->data_size,
-			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
+			  LIBUNA_ENDIAN_LITTLE,
 			  error );
 	}
 	else
