@@ -1,4 +1,4 @@
-.Dd July 12, 2023
+.Dd July 16, 2023
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -188,16 +188,16 @@ Data block functions
 .Fn liblnk_data_block_get_data_size "liblnk_data_block_t *data_block" "size_t *data_size" "liblnk_error_t **error"
 .Ft int
 .Fn liblnk_data_block_copy_data "liblnk_data_block_t *data_block" "uint8_t *data" "size_t data_size" "liblnk_error_t **error"
-.Ft int
-.Fn liblnk_data_block_free "liblnk_data_block_t **data_block" "liblnk_error_t **error"
-.Ft int
-.Fn liblnk_data_block_get_signature "liblnk_data_block_t *data_block" "uint32_t *signature" "liblnk_error_t **error"
-.Ft int
-.Fn liblnk_data_block_get_data_size "liblnk_data_block_t *data_block" "size_t *data_size" "liblnk_error_t **error"
-.Ft int
-.Fn liblnk_data_block_copy_data "liblnk_data_block_t *data_block" "uint8_t *data" "size_t data_size" "liblnk_error_t **error"
 .Pp
 Strings data block functions
+.Ft int
+.Fn liblnk_strings_data_block_get_utf8_string_size "liblnk_data_block_t *data_block" "size_t *utf8_string_size" "liblnk_error_t **error"
+.Ft int
+.Fn liblnk_strings_data_block_get_utf8_string "liblnk_data_block_t *data_block" "uint8_t *utf8_string" "size_t utf8_string_size" "liblnk_error_t **error"
+.Ft int
+.Fn liblnk_strings_data_block_get_utf16_string_size "liblnk_data_block_t *data_block" "size_t *utf16_string_size" "liblnk_error_t **error"
+.Ft int
+.Fn liblnk_strings_data_block_get_utf16_string "liblnk_data_block_t *data_block" "uint16_t *utf16_string" "size_t utf16_string_size" "liblnk_error_t **error"
 .Ft int
 .Fn liblnk_strings_data_block_get_utf8_path_string_size "liblnk_data_block_t *data_block" "size_t *utf8_string_size" "liblnk_error_t **error"
 .Ft int
