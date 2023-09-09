@@ -203,6 +203,7 @@ AC_CONFIG_FILES([dpkg/changelog])
 AC_CONFIG_FILES([liblnk/liblnk.rc])
 AC_CONFIG_FILES([liblnk.pc])
 AC_CONFIG_FILES([liblnk.spec])
+AC_CONFIG_FILES([setup.cfg])
 dnl Generate a source configuration file
 AC_CONFIG_HEADERS([common/config.h])
 
