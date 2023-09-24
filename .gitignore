@@ -1,6 +1,6 @@
 # Files to ignore by git
 #
-# Version: 20230909
+# Version: 20230923
 
 # Generic auto-generated build files
 *~
@@ -126,6 +126,7 @@ stamp-h[1-9]
 /liblnk/liblnk.rc
 /liblnk/liblnk_definitions.h
 /pylnk-python[23]/*.[ch]
+/setup.cfg
 /lnktools/*.exe
 /lnktools/lnkinfo
 /tests/*.exe
