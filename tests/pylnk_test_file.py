@@ -541,6 +541,23 @@ class FileTypeTests(unittest.TestCase):
 
     lnk_file.close()
 
+  def test_get_data_block(self):
+    """Tests the get_data_block function."""
+    test_source = unittest.source
+    if not test_source:
+      raise unittest.SkipTest("missing source")
+
+    lnk_file = pylnk.file()
+
+    lnk_file.open(test_source)
+
+    number_of_data_blocks = lnk_file.get_number_of_data_blocks()
+    if number_of_data_blocks:
+      data_block = lnk_file.get_data_block(0)
+      self.assertIsNotNone(data_block)
+
+    lnk_file.close()
+
 
 if __name__ == "__main__":
   argument_parser = argparse.ArgumentParser()
