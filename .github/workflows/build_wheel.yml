@@ -1,9 +1,9 @@
-# Build from source using tox.
-name: build_tox
+# Build wheel from source using tox.
+name: build_wheel
 on: [push, pull_request]
 permissions: read-all
 jobs:
-  build_tox:
+  build_wheel:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
