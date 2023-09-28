@@ -726,41 +726,43 @@ int info_handle_path_string_value_fprint(
 
 		return( -1 );
 	}
-	if( path_string_copy_from_file_entry_path(
-	     &escaped_value_string,
-	     &escaped_value_string_size,
-	     value_string,
-	     value_string_length,
-	     error ) != 1 )
+	if( value_string_length > 0 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-		 "%s: unable to copy path from file entry path.",
-		 function );
+		if( path_string_copy_from_file_entry_path(
+		     &escaped_value_string,
+		     &escaped_value_string_size,
+		     value_string,
+		     value_string_length,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+			 "%s: unable to copy path from file entry path.",
+			 function );
 
-		goto on_error;
+			goto on_error;
+		}
+		if( escaped_value_string == NULL )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+			 "%s: missing escaped value string.",
+			 function );
+
+			goto on_error;
+		}
+		fprintf(
+		 info_handle->notify_stream,
+		 "%" PRIs_SYSTEM "",
+		 escaped_value_string );
+
+		memory_free(
+		 escaped_value_string );
 	}
-	if( escaped_value_string == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: missing escaped value string.",
-		 function );
-
-		goto on_error;
-	}
-	fprintf(
-	 info_handle->notify_stream,
-	 "%" PRIs_SYSTEM "",
-	 escaped_value_string );
-
-	memory_free(
-	 escaped_value_string );
-
 	return( 1 );
 
 on_error:

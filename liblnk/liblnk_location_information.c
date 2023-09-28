@@ -332,7 +332,8 @@ int liblnk_location_information_read_data(
 		 function,
 		 common_path_offset );
 	}
-#endif
+#endif /* defined( HAVE_DEBUG_OUTPUT ) */
+
 	if( ( location_information_header_size != 28 )
 	 && ( location_information_header_size != 32 )
 	 && ( location_information_header_size != 36 ) )

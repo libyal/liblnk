@@ -3474,36 +3474,40 @@ int liblnk_file_get_utf8_local_path_size(
 	{
 		utf8_local_path_size += 1;
 	}
-	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+	if( internal_file->location_information->common_path != NULL )
 	{
-		result = libuna_utf8_string_size_from_utf16_stream(
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
-			  &utf8_common_path_size,
-			  error );
-	}
-	else
-	{
-		result = libuna_utf8_string_size_from_byte_stream(
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  internal_file->io_handle->ascii_codepage,
-			  &utf8_common_path_size,
-			  error );
-	}
-	if( result != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve UTF-8 common path string size.",
-		 function );
+		if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+		{
+			result = libuna_utf8_string_size_from_utf16_stream(
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
+				  &utf8_common_path_size,
+				  error );
+		}
+		else
+		{
+			result = libuna_utf8_string_size_from_byte_stream(
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  internal_file->io_handle->ascii_codepage,
+				  &utf8_common_path_size,
+				  error );
+		}
+		if( result != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve UTF-8 common path string size.",
+			 function );
 
-		return( -1 );
+			return( -1 );
+		}
+		utf8_local_path_size -= 1;
 	}
-	*utf8_string_size = utf8_local_path_size + utf8_common_path_size - 1;
+	*utf8_string_size = utf8_local_path_size + utf8_common_path_size;
 
 	return( 1 );
 }
@@ -3678,38 +3682,41 @@ int liblnk_file_get_utf8_local_path(
 		}
 		utf8_string[ string_index++ ] = (uint8_t) '\\';
 	}
-	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+	if( internal_file->location_information->common_path != NULL )
 	{
-		result = libuna_utf8_string_with_index_copy_from_utf16_stream(
-			  utf8_string,
-			  utf8_string_size,
-			  &string_index,
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
-			  error );
-	}
-	else
-	{
-		result = libuna_utf8_string_with_index_copy_from_byte_stream(
-			  utf8_string,
-			  utf8_string_size,
-			  &string_index,
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  internal_file->io_handle->ascii_codepage,
-			  error );
-	}
-	if( result != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set UTF-8 common path string.",
-		 function );
+		if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+		{
+			result = libuna_utf8_string_with_index_copy_from_utf16_stream(
+				  utf8_string,
+				  utf8_string_size,
+				  &string_index,
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
+				  error );
+		}
+		else
+		{
+			result = libuna_utf8_string_with_index_copy_from_byte_stream(
+				  utf8_string,
+				  utf8_string_size,
+				  &string_index,
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  internal_file->io_handle->ascii_codepage,
+				  error );
+		}
+		if( result != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+			 "%s: unable to set UTF-8 common path string.",
+			 function );
 
-		return( -1 );
+			return( -1 );
+		}
 	}
 	return( 1 );
 }
@@ -3856,36 +3863,40 @@ int liblnk_file_get_utf16_local_path_size(
 	{
 		utf16_local_path_size += 1;
 	}
-	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+	if( internal_file->location_information->common_path != NULL )
 	{
-		result = libuna_utf16_string_size_from_utf16_stream(
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
-			  &utf16_common_path_size,
-			  error );
-	}
-	else
-	{
-		result = libuna_utf16_string_size_from_byte_stream(
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  internal_file->io_handle->ascii_codepage,
-			  &utf16_common_path_size,
-			  error );
-	}
-	if( result != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve UTF-16 common path string size.",
-		 function );
+		if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+		{
+			result = libuna_utf16_string_size_from_utf16_stream(
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
+				  &utf16_common_path_size,
+				  error );
+		}
+		else
+		{
+			result = libuna_utf16_string_size_from_byte_stream(
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  internal_file->io_handle->ascii_codepage,
+				  &utf16_common_path_size,
+				  error );
+		}
+		if( result != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve UTF-16 common path string size.",
+			 function );
 
-		return( -1 );
+			return( -1 );
+		}
+		utf16_local_path_size -= 1;
 	}
-	*utf16_string_size = utf16_local_path_size + utf16_common_path_size - 1;
+	*utf16_string_size = utf16_local_path_size + utf16_common_path_size;
 
 	return( 1 );
 }
@@ -4060,38 +4071,41 @@ int liblnk_file_get_utf16_local_path(
 		}
 		utf16_string[ string_index++ ] = (uint16_t) '\\';
 	}
-	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+	if( internal_file->location_information->common_path != NULL )
 	{
-		result = libuna_utf16_string_with_index_copy_from_utf16_stream(
-			  utf16_string,
-			  utf16_string_size,
-			  &string_index,
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
-			  error );
-	}
-	else
-	{
-		result = libuna_utf16_string_with_index_copy_from_byte_stream(
-			  utf16_string,
-			  utf16_string_size,
-			  &string_index,
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  internal_file->io_handle->ascii_codepage,
-			  error );
-	}
-	if( result != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set UTF-16 common path string.",
-		 function );
+		if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+		{
+			result = libuna_utf16_string_with_index_copy_from_utf16_stream(
+				  utf16_string,
+				  utf16_string_size,
+				  &string_index,
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
+				  error );
+		}
+		else
+		{
+			result = libuna_utf16_string_with_index_copy_from_byte_stream(
+				  utf16_string,
+				  utf16_string_size,
+				  &string_index,
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  internal_file->io_handle->ascii_codepage,
+				  error );
+		}
+		if( result != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+			 "%s: unable to set UTF-16 common path string.",
+			 function );
 
-		return( -1 );
+			return( -1 );
+		}
 	}
 	return( 1 );
 }
@@ -4238,36 +4252,40 @@ int liblnk_file_get_utf8_network_path_size(
 	{
 		utf8_network_share_name_size += 1;
 	}
-	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+	if( internal_file->location_information->common_path != NULL )
 	{
-		result = libuna_utf8_string_size_from_utf16_stream(
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
-			  &utf8_common_path_size,
-			  error );
-	}
-	else
-	{
-		result = libuna_utf8_string_size_from_byte_stream(
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  internal_file->io_handle->ascii_codepage,
-			  &utf8_common_path_size,
-			  error );
-	}
-	if( result != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve UTF-8 common path string size.",
-		 function );
+		if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+		{
+			result = libuna_utf8_string_size_from_utf16_stream(
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
+				  &utf8_common_path_size,
+				  error );
+		}
+		else
+		{
+			result = libuna_utf8_string_size_from_byte_stream(
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  internal_file->io_handle->ascii_codepage,
+				  &utf8_common_path_size,
+				  error );
+		}
+		if( result != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve UTF-8 common path string size.",
+			 function );
 
-		return( -1 );
+			return( -1 );
+		}
+		utf8_network_share_name_size -= 1;
 	}
-	*utf8_string_size = utf8_network_share_name_size + utf8_common_path_size - 1;
+	*utf8_string_size = utf8_network_share_name_size + utf8_common_path_size;
 
 	return( 1 );
 }
@@ -4442,38 +4460,41 @@ int liblnk_file_get_utf8_network_path(
 		}
 		utf8_string[ string_index++ ] = (uint8_t) '\\';
 	}
-	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+	if( internal_file->location_information->common_path != NULL )
 	{
-		result = libuna_utf8_string_with_index_copy_from_utf16_stream(
-			  utf8_string,
-			  utf8_string_size,
-		          &string_index,
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
-			  error );
-	}
-	else
-	{
-		result = libuna_utf8_string_with_index_copy_from_byte_stream(
-			  utf8_string,
-			  utf8_string_size,
-		          &string_index,
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  internal_file->io_handle->ascii_codepage,
-			  error );
-	}
-	if( result != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set UTF-8 common path string.",
-		 function );
+		if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+		{
+			result = libuna_utf8_string_with_index_copy_from_utf16_stream(
+				  utf8_string,
+				  utf8_string_size,
+			          &string_index,
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
+				  error );
+		}
+		else
+		{
+			result = libuna_utf8_string_with_index_copy_from_byte_stream(
+				  utf8_string,
+				  utf8_string_size,
+			          &string_index,
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  internal_file->io_handle->ascii_codepage,
+				  error );
+		}
+		if( result != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+			 "%s: unable to set UTF-8 common path string.",
+			 function );
 
-		return( -1 );
+			return( -1 );
+		}
 	}
 	return( 1 );
 }
@@ -4620,36 +4641,40 @@ int liblnk_file_get_utf16_network_path_size(
 	{
 		utf16_network_share_name_size += 1;
 	}
-	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+	if( internal_file->location_information->common_path != NULL )
 	{
-		result = libuna_utf16_string_size_from_utf16_stream(
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
-			  &utf16_common_path_size,
-			  error );
-	}
-	else
-	{
-		result = libuna_utf16_string_size_from_byte_stream(
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  internal_file->io_handle->ascii_codepage,
-			  &utf16_common_path_size,
-			  error );
-	}
-	if( result != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve UTF-16 common path string size.",
-		 function );
+		if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+		{
+			result = libuna_utf16_string_size_from_utf16_stream(
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
+				  &utf16_common_path_size,
+				  error );
+		}
+		else
+		{
+			result = libuna_utf16_string_size_from_byte_stream(
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  internal_file->io_handle->ascii_codepage,
+				  &utf16_common_path_size,
+				  error );
+		}
+		if( result != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve UTF-16 common path string size.",
+			 function );
 
-		return( -1 );
+			return( -1 );
+		}
+		utf16_network_share_name_size -= 1;
 	}
-	*utf16_string_size = utf16_network_share_name_size + utf16_common_path_size - 1;
+	*utf16_string_size = utf16_network_share_name_size + utf16_common_path_size;
 
 	return( 1 );
 }
@@ -4824,38 +4849,41 @@ int liblnk_file_get_utf16_network_path(
 		}
 		utf16_string[ string_index++ ] = (uint16_t) '\\';
 	}
-	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+	if( internal_file->location_information->common_path != NULL )
 	{
-		result = libuna_utf16_string_with_index_copy_from_utf16_stream(
-			  utf16_string,
-			  utf16_string_size,
-			  &string_index,
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
-			  error );
-	}
-	else
-	{
-		result = libuna_utf16_string_with_index_copy_from_byte_stream(
-			  utf16_string,
-			  utf16_string_size,
-			  &string_index,
-			  internal_file->location_information->common_path,
-			  internal_file->location_information->common_path_size,
-			  internal_file->io_handle->ascii_codepage,
-			  error );
-	}
-	if( result != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set UTF-16 common path string.",
-		 function );
+		if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_COMMON_PATH_IS_UNICODE ) != 0 )
+		{
+			result = libuna_utf16_string_with_index_copy_from_utf16_stream(
+				  utf16_string,
+				  utf16_string_size,
+				  &string_index,
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  LIBUNA_ENDIAN_LITTLE | LIBUNA_UTF16_STREAM_ALLOW_UNPAIRED_SURROGATE,
+				  error );
+		}
+		else
+		{
+			result = libuna_utf16_string_with_index_copy_from_byte_stream(
+				  utf16_string,
+				  utf16_string_size,
+				  &string_index,
+				  internal_file->location_information->common_path,
+				  internal_file->location_information->common_path_size,
+				  internal_file->io_handle->ascii_codepage,
+				  error );
+		}
+		if( result != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+			 "%s: unable to set UTF-16 common path string.",
+			 function );
 
-		return( -1 );
+			return( -1 );
+		}
 	}
 	return( 1 );
 }

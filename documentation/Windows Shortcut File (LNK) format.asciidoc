@@ -73,6 +73,7 @@ in the section entitled "GNU Free Documentation License".
 | 0.0.25 | J.B. Metz | July 2021 | Textual changes.
 | 0.0.26 | J.B. Metz | January 2023 | Additional information about corruption scenarios.
 | 0.0.27 | J.B. Metz | July 2023 | Additional information regarding encoding of filenames.
+| 0.0.28 | J.B. Metz | September 2023 | Additional information regarding edge cases.
 |===
 
 :numbered:
@@ -253,11 +254,12 @@ The offset is relative to the start of the location information
 | 20 | 4 | | Offset to the network share information +
 The offset is relative to the start of the location information
 | 24 | 4 | | Offset to the common path +
-The offset is relative to the start of the location information
+The offset is relative to the start of the location information or 0 if not available
 4+| _If location information header size > 28_
 | ... | ... | | Offset to the Unicode local path
 4+| _If location information header size > 32_
-| ... | ... | | Offset to the Unicode common path
+| ... | ... | | Offset to the Unicode common path +
+The offset is relative to the start of the location information or 0 if not available
 4+| _Location information data_
 | ... | ... | | The volume information
 | ... | ... | | The local path string +
@@ -516,10 +518,15 @@ Unused bytes can contain remnant data
 |===
 
 [NOTE]
+A environment variables location data block with string sizes of 0 have been
+observed to be considered valid by Windows.
+
+[NOTE]
 The Unicode environment variables location string is not strict UTF-16 since
 it allows for unpaired surrogates, such as "U+d800" and "U+dc00".
 
-The environment variables location contains the path to the environment variables information.
+The environment variables location contains the path to the environment
+variables information.
 
 === The console properties data block
 
