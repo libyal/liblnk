@@ -27,11 +27,11 @@
 *.trs
 *.whl
 /*.egg-info/
+__pycache__
 .deps
 .dirstamp
 .libs
 .tox
-__pycache__
 INSTALL
 Makefile
 Makefile.bcc
