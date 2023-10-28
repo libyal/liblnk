@@ -138,6 +138,21 @@ int liblnk_file_initialize(
 
 		goto on_error;
 	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_initialize(
+	     &( internal_file->read_write_lock ),
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 "%s: unable to initialize read/write lock.",
+		 function );
+
+		goto on_error;
+	}
+#endif
 	*file = (liblnk_file_t *) internal_file;
 
 	return( 1 );
@@ -201,6 +216,21 @@ int liblnk_file_free(
 		}
 		*file = NULL;
 
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+		if( libcthreads_read_write_lock_free(
+		     &( internal_file->read_write_lock ),
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to free read/write lock.",
+			 function );
+
+			result = -1;
+		}
+#endif
 		if( libcdata_array_free(
 		     &( internal_file->data_blocks_array ),
 		     (int(*)(intptr_t **, libcerror_error_t **)) &liblnk_internal_data_block_free,
@@ -1496,6 +1526,8 @@ int liblnk_internal_file_open_read(
 		}
 		file_offset += read_count;
 	}
+	internal_file->data_size = (size64_t) file_offset;
+
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
 	{
@@ -1633,6 +1665,8 @@ on_error:
 		 &( internal_file->file_information ),
 		 NULL );
 	}
+	internal_file->data_size = (size64_t) file_offset;
+
 	return( -1 );
 }
 
@@ -2369,8 +2403,108 @@ int liblnk_file_get_data_flags(
 
 		return( -1 );
 	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	*data_flags = internal_file->file_information->data_flags;
 
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
+	return( 1 );
+}
+
+/* Retrieves the size of the data
+ * Returns 1 if successful or -1 on error
+ */
+int liblnk_file_get_data_size(
+     liblnk_file_t *file,
+     size64_t *data_size,
+     libcerror_error_t **error )
+{
+	liblnk_internal_file_t *internal_file = NULL;
+	static char *function                 = "liblnk_file_get_data_size";
+
+	if( file == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid file.",
+		 function );
+
+		return( -1 );
+	}
+	internal_file = (liblnk_internal_file_t *) file;
+
+	if( data_size == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid data size.",
+		 function );
+
+		return( -1 );
+	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
+	*data_size = internal_file->data_size;
+
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	return( 1 );
 }
 
@@ -2383,6 +2517,7 @@ int liblnk_file_link_refers_to_file(
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_link_refers_to_file";
+	int result                            = 0;
 
 	if( file == NULL )
 	{
@@ -2408,11 +2543,41 @@ int liblnk_file_link_refers_to_file(
 
 		return( -1 );
 	}
-	if( ( internal_file->file_information->data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) == 0 )
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
 	{
-		return( 0 );
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
+		 function );
+
+		return( -1 );
 	}
-	return( 1 );
+#endif
+	if( ( internal_file->file_information->data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) != 0 )
+	{
+		result = 1;
+	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
+	return( result );
 }
 
 /* Retrieves the 64-bit filetime value containing the linked file's creation date and time
@@ -2462,8 +2627,38 @@ int liblnk_file_get_file_creation_time(
 
 		return( -1 );
 	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	*filetime = internal_file->file_information->creation_time;
 
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	return( 1 );
 }
 
@@ -2514,8 +2709,38 @@ int liblnk_file_get_file_modification_time(
 
 		return( -1 );
 	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	*filetime = internal_file->file_information->modification_time;
 
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	return( 1 );
 }
 
@@ -2566,8 +2791,38 @@ int liblnk_file_get_file_access_time(
 
 		return( -1 );
 	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	*filetime = internal_file->file_information->access_time;
 
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	return( 1 );
 }
 
@@ -2618,8 +2873,38 @@ int liblnk_file_get_file_size(
 
 		return( -1 );
 	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	*file_size = internal_file->file_information->file_size;
 
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	return( 1 );
 }
 
@@ -2669,8 +2954,38 @@ int liblnk_file_get_icon_index(
 
 		return( -1 );
 	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	*icon_index = internal_file->file_information->icon_index;
 
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	return( 1 );
 }
 
@@ -2720,8 +3035,38 @@ int liblnk_file_get_show_window_value(
 
 		return( -1 );
 	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	*show_window_value = internal_file->file_information->show_window;
 
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	return( 1 );
 }
 
@@ -2771,8 +3116,38 @@ int liblnk_file_get_hot_key_value(
 
 		return( -1 );
 	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	*hot_key_value = internal_file->file_information->hot_key;
 
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	return( 1 );
 }
 
@@ -2823,8 +3198,38 @@ int liblnk_file_get_file_attribute_flags(
 
 		return( -1 );
 	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	*file_attribute_flags = internal_file->file_information->file_attribute_flags;
 
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
 	return( 1 );
 }
 
@@ -2839,6 +3244,7 @@ int liblnk_file_get_drive_type(
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_drive_type";
+	int result                            = 0;
 
 	if( file == NULL )
 	{
@@ -2875,13 +3281,43 @@ int liblnk_file_get_drive_type(
 
 		return( -1 );
 	}
-	if( internal_file->location_information == NULL )
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
 	{
-		return( 0 );
-	}
-	*drive_type = internal_file->location_information->drive_type;
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
+		 function );
 
-	return( 1 );
+		return( -1 );
+	}
+#endif
+	if( internal_file->location_information != NULL )
+	{
+		*drive_type = internal_file->location_information->drive_type;
+
+		result = 1;
+	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
+	return( result );
 }
 
 /* Retrieves the drive serial number
@@ -2895,6 +3331,7 @@ int liblnk_file_get_drive_serial_number(
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_drive_serial_number";
+	int result                            = 0;
 
 	if( file == NULL )
 	{
@@ -2931,13 +3368,43 @@ int liblnk_file_get_drive_serial_number(
 
 		return( -1 );
 	}
-	if( internal_file->location_information == NULL )
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
 	{
-		return( 0 );
-	}
-	*drive_serial_number = internal_file->location_information->drive_serial_number;
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
+		 function );
 
-	return( 1 );
+		return( -1 );
+	}
+#endif
+	if( internal_file->location_information != NULL )
+	{
+		*drive_serial_number = internal_file->location_information->drive_serial_number;
+
+		result = 1;
+	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
+	return( result );
 }
 
 /* TODO add raw string functions */
@@ -2980,55 +3447,57 @@ int liblnk_file_get_utf8_volume_label_size(
 
 		return( -1 );
 	}
-	if( utf8_string_size == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid UTF-8 string size.",
-		 function );
-
-		return( -1 );
-	}
-	if( internal_file->location_information == NULL )
-	{
-		return( 0 );
-	}
-	if( ( internal_file->location_information->flags & LIBLNK_LOCATION_FLAG_HAS_VOLUME_INFORMATION ) == 0 )
-	{
-		return( 0 );
-	}
-	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
-	{
-		result = libuna_utf8_string_size_from_utf16_stream(
-			  internal_file->location_information->volume_label,
-			  internal_file->location_information->volume_label_size,
-			  LIBUNA_ENDIAN_LITTLE,
-			  utf8_string_size,
-			  error );
-	}
-	else
-	{
-		result = libuna_utf8_string_size_from_byte_stream(
-			  internal_file->location_information->volume_label,
-			  internal_file->location_information->volume_label_size,
-			  internal_file->io_handle->ascii_codepage,
-			  utf8_string_size,
-			  error );
-	}
-	if( result != 1 )
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve UTF-8 volume label string size.",
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
 		 function );
 
 		return( -1 );
 	}
-	return( 1 );
+#endif
+	if( internal_file->location_information != NULL )
+	{
+		result = liblnk_location_information_get_utf8_volume_label_size(
+			  internal_file->location_information,
+			  utf8_string_size,
+			  internal_file->io_handle->ascii_codepage,
+			  error );
+
+		if( result == -1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve UTF-8 volume label string size.",
+			 function );
+
+			result = -1;
+		}
+	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
+	return( result );
 }
 
 /* Retrieves the UTF-8 encoded volume label
@@ -3044,7 +3513,6 @@ int liblnk_file_get_utf8_volume_label(
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf8_volume_label";
-	size_t string_index                   = 0;
 	int result                            = 0;
 
 	if( file == NULL )
@@ -3071,70 +3539,58 @@ int liblnk_file_get_utf8_volume_label(
 
 		return( -1 );
 	}
-	if( utf8_string == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid UTF-8 string.",
-		 function );
-
-		return( -1 );
-	}
-	if( utf8_string_size > (size_t) SSIZE_MAX )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
-		 "%s: invalid UTF-8 string size value exceeds maximum.",
-		 function );
-
-		return( -1 );
-	}
-	if( internal_file->location_information == NULL )
-	{
-		return( 0 );
-	}
-	if( ( internal_file->location_information->flags & LIBLNK_LOCATION_FLAG_HAS_VOLUME_INFORMATION ) == 0 )
-	{
-		return( 0 );
-	}
-	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
-	{
-		result = libuna_utf8_string_with_index_copy_from_utf16_stream(
-			  utf8_string,
-			  utf8_string_size,
-			  &string_index,
-			  internal_file->location_information->volume_label,
-			  internal_file->location_information->volume_label_size,
-			  LIBUNA_ENDIAN_LITTLE,
-			  error );
-	}
-	else
-	{
-		result = libuna_utf8_string_with_index_copy_from_byte_stream(
-			  utf8_string,
-			  utf8_string_size,
-			  &string_index,
-			  internal_file->location_information->volume_label,
-			  internal_file->location_information->volume_label_size,
-			  internal_file->io_handle->ascii_codepage,
-			  error );
-	}
-	if( result != 1 )
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set UTF-8 volume label string.",
+		 "%s: unable to grab read/write lock for reading.",
 		 function );
 
 		return( -1 );
 	}
-	return( 1 );
+#endif
+	if( internal_file->location_information != NULL )
+	{
+		result = liblnk_location_information_get_utf8_volume_label(
+			  internal_file->location_information,
+			  utf8_string,
+			  utf8_string_size,
+			  internal_file->io_handle->ascii_codepage,
+			  error );
+
+		if( result == -1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve UTF-8 volume label string.",
+			 function );
+
+			result = -1;
+		}
+	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
+	return( result );
 }
 
 /* Retrieves the size of the UTF-16 encoded volume label
@@ -3175,55 +3631,57 @@ int liblnk_file_get_utf16_volume_label_size(
 
 		return( -1 );
 	}
-	if( utf16_string_size == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid UTF-16 string size.",
-		 function );
-
-		return( -1 );
-	}
-	if( internal_file->location_information == NULL )
-	{
-		return( 0 );
-	}
-	if( ( internal_file->location_information->flags & LIBLNK_LOCATION_FLAG_HAS_VOLUME_INFORMATION ) == 0 )
-	{
-		return( 0 );
-	}
-	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
-	{
-		result = libuna_utf16_string_size_from_utf16_stream(
-			  internal_file->location_information->volume_label,
-			  internal_file->location_information->volume_label_size,
-			  LIBUNA_ENDIAN_LITTLE,
-			  utf16_string_size,
-			  error );
-	}
-	else
-	{
-		result = libuna_utf16_string_size_from_byte_stream(
-			  internal_file->location_information->volume_label,
-			  internal_file->location_information->volume_label_size,
-			  internal_file->io_handle->ascii_codepage,
-			  utf16_string_size,
-			  error );
-	}
-	if( result != 1 )
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve UTF-16 volume label string size.",
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to grab read/write lock for reading.",
 		 function );
 
 		return( -1 );
 	}
-	return( 1 );
+#endif
+	if( internal_file->location_information != NULL )
+	{
+		result = liblnk_location_information_get_utf16_volume_label_size(
+			  internal_file->location_information,
+			  utf16_string_size,
+			  internal_file->io_handle->ascii_codepage,
+			  error );
+
+		if( result == -1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve UTF-16 volume label string size.",
+			 function );
+
+			result = -1;
+		}
+	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
+	return( result );
 }
 
 /* Retrieves the UTF-16 encoded volume label
@@ -3239,7 +3697,6 @@ int liblnk_file_get_utf16_volume_label(
 {
 	liblnk_internal_file_t *internal_file = NULL;
 	static char *function                 = "liblnk_file_get_utf16_volume_label";
-	size_t string_index                   = 0;
 	int result                            = 0;
 
 	if( file == NULL )
@@ -3266,70 +3723,58 @@ int liblnk_file_get_utf16_volume_label(
 
 		return( -1 );
 	}
-	if( utf16_string == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid UTF-16 string.",
-		 function );
-
-		return( -1 );
-	}
-	if( utf16_string_size > (size_t) SSIZE_MAX )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
-		 "%s: invalid UTF-16 string size value exceeds maximum.",
-		 function );
-
-		return( -1 );
-	}
-	if( internal_file->location_information == NULL )
-	{
-		return( 0 );
-	}
-	if( ( internal_file->location_information->flags & LIBLNK_LOCATION_FLAG_HAS_VOLUME_INFORMATION ) == 0 )
-	{
-		return( 0 );
-	}
-	if( ( internal_file->location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
-	{
-		result = libuna_utf16_string_with_index_copy_from_utf16_stream(
-			  utf16_string,
-			  utf16_string_size,
-			  &string_index,
-			  internal_file->location_information->volume_label,
-			  internal_file->location_information->volume_label_size,
-			  LIBUNA_ENDIAN_LITTLE,
-			  error );
-	}
-	else
-	{
-		result = libuna_utf16_string_with_index_copy_from_byte_stream(
-			  utf16_string,
-			  utf16_string_size,
-			  &string_index,
-			  internal_file->location_information->volume_label,
-			  internal_file->location_information->volume_label_size,
-			  internal_file->io_handle->ascii_codepage,
-			  error );
-	}
-	if( result != 1 )
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_grab_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set UTF-16 volume label string.",
+		 "%s: unable to grab read/write lock for reading.",
 		 function );
 
 		return( -1 );
 	}
-	return( 1 );
+#endif
+	if( internal_file->location_information != NULL )
+	{
+		result = liblnk_location_information_get_utf16_volume_label(
+			  internal_file->location_information,
+			  utf16_string,
+			  utf16_string_size,
+			  internal_file->io_handle->ascii_codepage,
+			  error );
+
+		if( result == -1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve UTF-16 volume label string.",
+			 function );
+
+			result = -1;
+		}
+	}
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	if( libcthreads_read_write_lock_release_for_read(
+	     internal_file->read_write_lock,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to release read/write lock for reading.",
+		 function );
+
+		return( -1 );
+	}
+#endif
+	return( result );
 }
 
 /* Retrieves the size of the UTF-8 encoded local path

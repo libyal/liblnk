@@ -1,4 +1,4 @@
-.Dd July 16, 2023
+.Dd October 28, 2023
 .Dt liblnk 3
 .Os liblnk
 .Sh NAME
@@ -78,6 +78,8 @@ Available when compiled with libbfio support:
 Link information functions
 .Ft int
 .Fn liblnk_file_get_data_flags "liblnk_file_t *file" "uint32_t *data_flags" "liblnk_error_t **error"
+.Ft int
+.Fn liblnk_file_get_data_size "liblnk_file_t *file" "size64_t *data_size" "liblnk_error_t **error"
 .Ft int
 .Fn liblnk_file_link_refers_to_file "liblnk_file_t *file" "liblnk_error_t **error"
 .Ft int

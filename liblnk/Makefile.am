@@ -41,6 +41,7 @@ liblnk_la_SOURCES = \
 	liblnk_libcerror.h \
 	liblnk_libclocale.h \
 	liblnk_libcnotify.h \
+	liblnk_libcthreads.h \
 	liblnk_libfdatetime.h \
 	liblnk_libfguid.h \
 	liblnk_libfwps.h \
@@ -89,11 +90,13 @@ MAINTAINERCLEANFILES = \
 	Makefile.in
 
 distclean: clean
-	/bin/rm -f liblnk_definitions.h
-	/bin/rm -f liblnk.rc
-	/bin/rm -f Makefile
+	-rm -f liblnk_definitions.h
+	-rm -f liblnk.rc
+	-rm -f Makefile
 
-splint:
+sources-local: $(BUILT_SOURCES)
+
+splint-local:
 	@echo "Running splint on liblnk ..."
 	-splint -preproc -redef $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(liblnk_la_SOURCES)
 

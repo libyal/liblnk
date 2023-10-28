@@ -1,4 +1,6 @@
 TODO
+* add thread safety
+
 * lnkinfo: : should be before \t
 * check behavior of liblnk_file_link_refers_to_file() seems to block certain time values from being printed.
 * what about trailing data in xp lnk files ?

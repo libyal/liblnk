@@ -120,6 +120,32 @@ ssize_t liblnk_location_information_read(
          off64_t location_information_offset,
          libcerror_error_t **error );
 
+int liblnk_location_information_get_utf8_volume_label_size(
+     liblnk_location_information_t *location_information,
+     size_t *utf8_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error );
+
+int liblnk_location_information_get_utf8_volume_label(
+     liblnk_location_information_t *location_information,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error );
+
+int liblnk_location_information_get_utf16_volume_label_size(
+     liblnk_location_information_t *location_information,
+     size_t *utf16_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error );
+
+int liblnk_location_information_get_utf16_volume_label(
+     liblnk_location_information_t *location_information,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error );
+
 #if defined( __cplusplus )
 }
 #endif

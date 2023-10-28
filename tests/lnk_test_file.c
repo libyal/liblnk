@@ -1528,6 +1528,79 @@ on_error:
 	return( 0 );
 }
 
+/* Tests the liblnk_file_get_data_size function
+ * Returns 1 if successful or 0 if not
+ */
+int lnk_test_file_get_data_size(
+     liblnk_file_t *file )
+{
+	libcerror_error_t *error = NULL;
+	size64_t data_size       = 0;
+	int result               = 0;
+
+	/* Test regular cases
+	 */
+	result = liblnk_file_get_data_size(
+	          file,
+	          &data_size,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 1 );
+
+	LNK_TEST_ASSERT_IS_NULL(
+	 "error",
+	 error );
+
+	/* Test error cases
+	 */
+	result = liblnk_file_get_data_size(
+	          NULL,
+	          &data_size,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	result = liblnk_file_get_data_size(
+	          file,
+	          NULL,
+	          &error );
+
+	LNK_TEST_ASSERT_EQUAL_INT(
+	 "result",
+	 result,
+	 -1 );
+
+	LNK_TEST_ASSERT_IS_NOT_NULL(
+	 "error",
+	 error );
+
+	libcerror_error_free(
+	 &error );
+
+	return( 1 );
+
+on_error:
+	if( error != NULL )
+	{
+		libcerror_error_free(
+		 &error );
+	}
+	return( 0 );
+}
+
 /* Tests the liblnk_file_link_refers_to_file function
  * Returns 1 if successful or 0 if not
  */
@@ -6801,6 +6874,11 @@ int main(
 		LNK_TEST_RUN_WITH_ARGS(
 		 "liblnk_file_get_data_flags",
 		 lnk_test_file_get_data_flags,
+		 file );
+
+		LNK_TEST_RUN_WITH_ARGS(
+		 "liblnk_file_get_data_size",
+		 lnk_test_file_get_data_size,
 		 file );
 
 		LNK_TEST_RUN_WITH_ARGS(

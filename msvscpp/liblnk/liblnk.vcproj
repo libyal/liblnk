@@ -316,6 +316,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\liblnk\liblnk_libcthreads.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\liblnk\liblnk_libfdatetime.h"
 				>
 			</File>

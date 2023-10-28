@@ -19,9 +19,9 @@ MAINTAINERCLEANFILES = \
 	Makefile.in
 
 distclean: clean
-	/bin/rm -f liblnk.h
-	/bin/rm -f liblnk/definitions.h
-	/bin/rm -f liblnk/features.h
-	/bin/rm -f liblnk/types.h
-	/bin/rm -f Makefile
+	-rm -f liblnk.h
+	-rm -f liblnk/definitions.h
+	-rm -f liblnk/features.h
+	-rm -f liblnk/types.h
+	-rm -f Makefile
 

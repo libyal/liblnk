@@ -1959,3 +1959,327 @@ on_error:
 	return( -1 );
 }
 
+/* Retrieves the size of the UTF-8 encoded volume label
+ * The size includes the end of string character
+ * The volume label is only set if the link refers to a file on a local volume
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_location_information_get_utf8_volume_label_size(
+     liblnk_location_information_t *location_information,
+     size_t *utf8_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_location_information_get_utf8_volume_label_size";
+	int result            = 0;
+
+	if( location_information == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid location information.",
+		 function );
+
+		return( -1 );
+	}
+	if( utf8_string_size == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid UTF-8 string size.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( location_information->flags & LIBLNK_LOCATION_FLAG_HAS_VOLUME_INFORMATION ) == 0 )
+	{
+		return( 0 );
+	}
+	if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
+	{
+		result = libuna_utf8_string_size_from_utf16_stream(
+			  location_information->volume_label,
+			  location_information->volume_label_size,
+			  LIBUNA_ENDIAN_LITTLE,
+			  utf8_string_size,
+			  error );
+	}
+	else
+	{
+		result = libuna_utf8_string_size_from_byte_stream(
+			  location_information->volume_label,
+			  location_information->volume_label_size,
+			  ascii_codepage,
+			  utf8_string_size,
+			  error );
+	}
+	if( result != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-8 volume label string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-8 encoded volume label
+ * The size should include the end of string character
+ * The volume label is only set if the link refers to a file on a local volume
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_location_information_get_utf8_volume_label(
+     liblnk_location_information_t *location_information,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_location_information_get_utf8_volume_label";
+	size_t string_index   = 0;
+	int result            = 0;
+
+	if( location_information == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid location information.",
+		 function );
+
+		return( -1 );
+	}
+	if( utf8_string == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid UTF-8 string.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( utf8_string_size == 0 )
+	 || ( utf8_string_size > (size_t) SSIZE_MAX ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid UTF-8 string size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( location_information->flags & LIBLNK_LOCATION_FLAG_HAS_VOLUME_INFORMATION ) == 0 )
+	{
+		return( 0 );
+	}
+	if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
+	{
+		result = libuna_utf8_string_with_index_copy_from_utf16_stream(
+			  utf8_string,
+			  utf8_string_size,
+			  &string_index,
+			  location_information->volume_label,
+			  location_information->volume_label_size,
+			  LIBUNA_ENDIAN_LITTLE,
+			  error );
+	}
+	else
+	{
+		result = libuna_utf8_string_with_index_copy_from_byte_stream(
+			  utf8_string,
+			  utf8_string_size,
+			  &string_index,
+			  location_information->volume_label,
+			  location_information->volume_label_size,
+			  ascii_codepage,
+			  error );
+	}
+	if( result != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-8 volume label string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the size of the UTF-16 encoded volume label
+ * The size includes the end of string character
+ * The volume label is only set if the link refers to a file on a local volume
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_location_information_get_utf16_volume_label_size(
+     liblnk_location_information_t *location_information,
+     size_t *utf16_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_location_information_get_utf16_volume_label_size";
+	int result            = 0;
+
+	if( location_information == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid location information.",
+		 function );
+
+		return( -1 );
+	}
+	if( utf16_string_size == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid UTF-16 string size.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( location_information->flags & LIBLNK_LOCATION_FLAG_HAS_VOLUME_INFORMATION ) == 0 )
+	{
+		return( 0 );
+	}
+	if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
+	{
+		result = libuna_utf16_string_size_from_utf16_stream(
+			  location_information->volume_label,
+			  location_information->volume_label_size,
+			  LIBUNA_ENDIAN_LITTLE,
+			  utf16_string_size,
+			  error );
+	}
+	else
+	{
+		result = libuna_utf16_string_size_from_byte_stream(
+			  location_information->volume_label,
+			  location_information->volume_label_size,
+			  ascii_codepage,
+			  utf16_string_size,
+			  error );
+	}
+	if( result != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve UTF-16 volume label string size.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+
+/* Retrieves the UTF-16 encoded volume label
+ * The size should include the end of string character
+ * The volume label is only set if the link refers to a file on a local volume
+ * Returns 1 if successful, 0 if value is not available or -1 on error
+ */
+int liblnk_location_information_get_utf16_volume_label(
+     liblnk_location_information_t *location_information,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     int ascii_codepage,
+     libcerror_error_t **error )
+{
+	static char *function = "liblnk_location_information_get_utf16_volume_label";
+	size_t string_index   = 0;
+	int result            = 0;
+
+	if( location_information == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid location information.",
+		 function );
+
+		return( -1 );
+	}
+	if( utf16_string == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid UTF-16 string.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( utf16_string_size == 0 )
+	 || ( utf16_string_size > (size_t) SSIZE_MAX ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid UTF-16 string size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( location_information->flags & LIBLNK_LOCATION_FLAG_HAS_VOLUME_INFORMATION ) == 0 )
+	{
+		return( 0 );
+	}
+	if( ( location_information->string_flags & LIBLNK_LOCATION_INFORMATION_STRING_FLAG_VOLUME_LABEL_IS_UNICODE ) != 0 )
+	{
+		result = libuna_utf16_string_with_index_copy_from_utf16_stream(
+			  utf16_string,
+			  utf16_string_size,
+			  &string_index,
+			  location_information->volume_label,
+			  location_information->volume_label_size,
+			  LIBUNA_ENDIAN_LITTLE,
+			  error );
+	}
+	else
+	{
+		result = libuna_utf16_string_with_index_copy_from_byte_stream(
+			  utf16_string,
+			  utf16_string_size,
+			  &string_index,
+			  location_information->volume_label,
+			  location_information->volume_label_size,
+			  ascii_codepage,
+			  error );
+	}
+	if( result != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set UTF-16 volume label string.",
+		 function );
+
+		return( -1 );
+	}
+	return( 1 );
+}
+

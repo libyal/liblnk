@@ -34,6 +34,7 @@
 #include "liblnk_libbfio.h"
 #include "liblnk_libcdata.h"
 #include "liblnk_libcerror.h"
+#include "liblnk_libcthreads.h"
 #include "liblnk_link_target_identifier.h"
 #include "liblnk_location_information.h"
 #include "liblnk_special_folder_location.h"
@@ -47,6 +48,10 @@ typedef struct liblnk_internal_file liblnk_internal_file_t;
 
 struct liblnk_internal_file
 {
+	/* The data size
+	 */
+	size64_t data_size;
+
 	/* The IO handle
 	 */
 	liblnk_io_handle_t *io_handle;
@@ -115,6 +120,12 @@ struct liblnk_internal_file
 	/* The (extra) data blocks array
 	 */
 	libcdata_array_t *data_blocks_array;
+
+#if defined( HAVE_LIBLNK_MULTI_THREAD_SUPPORT )
+	/* The read/write lock
+	 */
+	libcthreads_read_write_lock_t *read_write_lock;
+#endif
 };
 
 LIBLNK_EXTERN \
@@ -198,6 +209,12 @@ LIBLNK_EXTERN \
 int liblnk_file_get_data_flags(
      liblnk_file_t *file,
      uint32_t *data_flags,
+     libcerror_error_t **error );
+
+LIBLNK_EXTERN \
+int liblnk_file_get_data_size(
+     liblnk_file_t *file,
+     size64_t *data_size,
      libcerror_error_t **error );
 
 LIBLNK_EXTERN \
