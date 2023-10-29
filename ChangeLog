@@ -1,5 +1,5 @@
 TODO
-* add thread safety
+* add thread safety, continue with liblnk_file_has_distributed_link_tracking_data
 
 * lnkinfo: : should be before \t
 * check behavior of liblnk_file_link_refers_to_file() seems to block certain time values from being printed.
