@@ -40,7 +40,7 @@ void (*lnktools_signal_signal_handler)( lnktools_signal_t ) = NULL;
 /* Signal handler for Ctrl+C or Ctrl+Break signals
  */
 BOOL WINAPI lnktools_signal_handler(
-             unsigned long signal )
+             lnktools_signal_t signal )
 {
 	static char *function = "lnktools_signal_handler";
 
@@ -112,7 +112,7 @@ int lnktools_signal_attach(
 	lnktools_signal_signal_handler = signal_handler;
 
 	if( SetConsoleCtrlHandler(
-	     lnktools_signal_handler,
+	     (PHANDLER_ROUTINE) lnktools_signal_handler,
 	     TRUE ) == 0 )
 	{
 		libcerror_error_set(
@@ -179,7 +179,7 @@ int lnktools_signal_detach(
 	static char *function = "lnktools_signal_detach";
 
 	if( SetConsoleCtrlHandler(
-	     lnktools_signal_handler,
+	     (PHANDLER_ROUTINE) lnktools_signal_handler,
 	     FALSE ) == 0 )
 	{
 		libcerror_error_set(

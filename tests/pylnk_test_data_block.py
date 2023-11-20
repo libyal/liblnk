@@ -32,7 +32,7 @@ class DatablockTypeTests(unittest.TestCase):
 
   def test_get_signature(self):
     """Tests the get_signature function and signature property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -54,7 +54,7 @@ class DatablockTypeTests(unittest.TestCase):
 
   def test_get_data(self):
     """Tests the get_data function and data property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 

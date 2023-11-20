@@ -38,7 +38,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_open(self):
     """Tests the open function."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -59,7 +59,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_open_file_object(self):
     """Tests the open_file_object function."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -85,7 +85,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_close(self):
     """Tests the close function."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -96,7 +96,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_open_close(self):
     """Tests the open and close functions."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       return
 
@@ -150,7 +150,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_ascii_codepage(self):
     """Tests the get_ascii_codepage function and ascii_codepage property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -167,7 +167,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_data_flags(self):
     """Tests the get_data_flags function and data_flags property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -184,7 +184,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_file_creation_time(self):
     """Tests the get_file_creation_time function and file_creation_time property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -201,7 +201,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_file_modification_time(self):
     """Tests the get_file_modification_time function and file_modification_time property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -218,7 +218,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_file_access_time(self):
     """Tests the get_file_access_time function and file_access_time property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -235,7 +235,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_file_size(self):
     """Tests the get_file_size function and file_size property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -252,7 +252,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_icon_index(self):
     """Tests the get_icon_index function and icon_index property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -269,7 +269,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_show_window_value(self):
     """Tests the get_show_window_value function and show_window_value property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -286,7 +286,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_hot_key_value(self):
     """Tests the get_hot_key_value function and hot_key_value property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -303,7 +303,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_file_attribute_flags(self):
     """Tests the get_file_attribute_flags function and file_attribute_flags property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -320,7 +320,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_drive_type(self):
     """Tests the get_drive_type function and drive_type property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -336,7 +336,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_drive_serial_number(self):
     """Tests the get_drive_serial_number function and drive_serial_number property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -352,7 +352,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_volume_label(self):
     """Tests the get_volume_label function and volume_label property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -368,7 +368,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_local_path(self):
     """Tests the get_local_path function and local_path property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -384,7 +384,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_network_path(self):
     """Tests the get_network_path function and network_path property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -400,7 +400,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_description(self):
     """Tests the get_description function and description property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -416,7 +416,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_relative_path(self):
     """Tests the get_relative_path function and relative_path property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -432,7 +432,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_working_directory(self):
     """Tests the get_working_directory function and working_directory property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -448,7 +448,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_command_line_arguments(self):
     """Tests the get_command_line_arguments function and command_line_arguments property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -464,7 +464,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_icon_location(self):
     """Tests the get_icon_location function and icon_location property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -480,7 +480,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_environment_variables_location(self):
     """Tests the get_environment_variables_location function and environment_variables_location property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -496,7 +496,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_link_target_identifier_data(self):
     """Tests the get_link_target_identifier_data function and link_target_identifier_data property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -510,7 +510,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_machine_identifier(self):
     """Tests the get_machine_identifier function and machine_identifier property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -526,7 +526,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_number_of_data_blocks(self):
     """Tests the get_number_of_data_blocks function and number_of_data_blocks property."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 
@@ -543,7 +543,7 @@ class FileTypeTests(unittest.TestCase):
 
   def test_get_data_block(self):
     """Tests the get_data_block function."""
-    test_source = unittest.source
+    test_source = getattr(unittest, "source", None)
     if not test_source:
       raise unittest.SkipTest("missing source")
 

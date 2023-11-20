@@ -21,8 +21,6 @@ SUBDIRS = \
 	liblnk \
 	lnktools \
 	pylnk \
-	pylnk-python2 \
-	pylnk-python3 \
 	po \
 	manuals \
 	tests \
