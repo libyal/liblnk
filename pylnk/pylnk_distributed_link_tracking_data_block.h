@@ -1,7 +1,7 @@
 /*
  * Python object wrapper of liblnk_data_block_t with distributed link tracker properties
  *
- * Copyright (C) 2009-2023, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (C) 2009-2024, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *

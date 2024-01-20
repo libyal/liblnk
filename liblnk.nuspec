@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>liblnk</id>
-    <version>20231120</version>
+    <version>20240120</version>
     <authors>Joachim Metz</authors>
     <owners>joachimmetz</owners>
     <license type="expression">LGPL-3.0-or-later</license>
@@ -10,8 +10,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>liblnk</title>
     <description>Library to access the Windows Shortcut File (LNK) format</description>
-    <releaseNotes>Release of liblnk 20231120</releaseNotes>
-    <copyright>Copyright (C) 2009-2023</copyright>
+    <releaseNotes>Release of liblnk 20240120</releaseNotes>
+    <copyright>Copyright (C) 2009-2024</copyright>
     <tags>native</tags>
   </metadata>
   <files>
