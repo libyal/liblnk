@@ -271,7 +271,7 @@ PyMethodDef pylnk_file_object_methods[] = {
 	{ "get_link_target_identifier_data",
 	  (PyCFunction) pylnk_file_get_link_target_identifier_data,
 	  METH_NOARGS,
-	  "get_link_target_identifier_data() -> Binary string or None\n"
+	  "get_link_target_identifier_data() -> Bytes or None\n"
 	  "\n"
 	  "Retrieves the link target identifier data." },
 

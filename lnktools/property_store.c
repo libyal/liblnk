@@ -462,13 +462,88 @@ int property_store_record_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t{%s}/%d (%s)\n",
+		 "\t{%" PRIs_SYSTEM "}/%d (%s)\n",
 		 property_set_identifier_string,
 		 entry_type,
 		 description );
 	}
-/* TODO get name if no entry_type */
+	else
+	{
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+		result = libfwps_record_get_utf16_entry_name_size(
+			  property_record,
+			  &value_string_size,
+			  error );
+#else
+		result = libfwps_record_get_utf8_entry_name_size(
+			  property_record,
+			  &value_string_size,
+			  error );
+#endif
+		if( result == -1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve entry name string size.",
+			 function );
 
+			goto on_error;
+		}
+		if( ( result != 0 )
+		 && ( value_string_size > 0 ) )
+		{
+			value_string = system_string_allocate(
+					value_string_size );
+
+			if( value_string == NULL )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+				 "%s: unable to create entry name string.",
+				 function );
+
+				goto on_error;
+			}
+#if defined( HAVE_WIDE_SYSTEM_CHARACTER )
+			result = libfwps_record_get_utf16_entry_name(
+				  property_record,
+				  (uint16_t *) value_string,
+				  value_string_size,
+				  error );
+#else
+			result = libfwps_record_get_utf8_entry_name(
+				  property_record,
+				  (uint8_t *) value_string,
+				  value_string_size,
+				  error );
+#endif
+			if( result == -1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+				 "%s: unable to retrieve entry name string.",
+				 function );
+
+				goto on_error;
+			}
+			fprintf(
+			 notify_stream,
+			 "\t{%" PRIs_SYSTEM "}/%" PRIs_SYSTEM "\n",
+			 property_set_identifier_string,
+			 value_string );
+
+			memory_free(
+			 value_string );
+
+			value_string = NULL;
+		}
+	}
 	if( libfwps_record_get_value_type(
 	     property_record,
 	     &value_type,

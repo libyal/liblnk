@@ -47,7 +47,7 @@ PyMethodDef pylnk_data_block_object_methods[] = {
 	{ "get_data",
 	  (PyCFunction) pylnk_data_block_get_data,
 	  METH_NOARGS,
-	  "get_data() -> Binary string\n"
+	  "get_data() -> Bytes\n"
 	  "\n"
 	  "Retrieves the data." },
 
@@ -380,7 +380,7 @@ void pylnk_data_block_free(
 	 (PyObject*) pylnk_data_block );
 }
 
-/* Retrieves the 
+/* Retrieves the signature
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_data_block_get_signature(
@@ -418,7 +418,7 @@ PyObject *pylnk_data_block_get_signature(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve .",
+		 "%s: unable to retrieve signature.",
 		 function );
 
 		libcerror_error_free(
@@ -432,7 +432,7 @@ PyObject *pylnk_data_block_get_signature(
 	return( integer_object );
 }
 
-/* Retrieves the 
+/* Retrieves the data
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pylnk_data_block_get_data(
@@ -471,7 +471,7 @@ PyObject *pylnk_data_block_get_data(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to retrieve  size.",
+		 "%s: unable to retrieve data size.",
 		 function );
 
 		libcerror_error_free(
@@ -514,7 +514,7 @@ PyObject *pylnk_data_block_get_data(
 		pylnk_error_raise(
 		 error,
 		 PyExc_IOError,
-		 "%s: unable to copy .",
+		 "%s: unable to copy data.",
 		 function );
 
 		libcerror_error_free(
