@@ -159,6 +159,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_category.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_control_panel_category_values.c"
 				>
 			</File>
@@ -171,7 +175,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfwsi\libfwsi_control_panel_values.c"
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_item.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_item_values.c"
 				>
 			</File>
 			<File
@@ -179,7 +187,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfwsi\libfwsi_delegate_values.c"
+				RelativePath="..\..\libfwsi\libfwsi_delegate_folder_values.c"
 				>
 			</File>
 			<File
@@ -228,6 +236,14 @@
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0025_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0026_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0029_values.c"
 				>
 			</File>
 			<File
@@ -303,15 +319,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfwsi\libfwsi_unknown_0x74_values.c"
-				>
-			</File>
-			<File
 				RelativePath="..\..\libfwsi\libfwsi_uri_sub_values.c"
 				>
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_uri_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_users_property_view.c"
 				>
 			</File>
 			<File
@@ -345,6 +361,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_category.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_control_panel_category_values.h"
 				>
 			</File>
@@ -357,7 +377,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfwsi\libfwsi_control_panel_values.h"
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_item.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_item_values.h"
 				>
 			</File>
 			<File
@@ -369,7 +393,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfwsi\libfwsi_delegate_values.h"
+				RelativePath="..\..\libfwsi\libfwsi_delegate_folder_values.h"
 				>
 			</File>
 			<File
@@ -418,6 +442,14 @@
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0025_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0026_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0029_values.h"
 				>
 			</File>
 			<File
@@ -533,10 +565,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfwsi\libfwsi_unknown_0x74_values.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\libfwsi\libfwsi_unused.h"
 				>
 			</File>
@@ -546,6 +574,10 @@
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_uri_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_users_property_view.h"
 				>
 			</File>
 			<File

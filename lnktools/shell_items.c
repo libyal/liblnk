@@ -340,7 +340,7 @@ int shell_items_file_entry_extension_fprint(
 			  value_string_size,
 			  error );
 #endif
-		if( result == -1 )
+		if( result != 1 )
 		{
 			libcerror_error_set(
 			 error,
@@ -431,7 +431,7 @@ int shell_items_file_entry_extension_fprint(
 			  value_string_size,
 			  error );
 #endif
-		if( result == -1 )
+		if( result != 1 )
 		{
 			libcerror_error_set(
 			 error,
@@ -761,12 +761,6 @@ int shell_items_item_fprint(
 			 "Control panel CPL file" );
 			break;
 
-		case LIBFWSI_ITEM_TYPE_DELEGATE:
-			fprintf(
-			 notify_stream,
-			 "Delegate" );
-			break;
-
 		case LIBFWSI_ITEM_TYPE_FILE_ENTRY:
 			fprintf(
 			 notify_stream,
@@ -819,12 +813,6 @@ int shell_items_item_fprint(
 			fprintf(
 			 notify_stream,
 			 "Volume" );
-			break;
-
-		case LIBFWSI_ITEM_TYPE_UNKNOWN_0x74:
-			fprintf(
-			 notify_stream,
-			 "Unknown 0x74" );
 			break;
 
 		case LIBFWSI_ITEM_TYPE_UNKNOWN:
@@ -1206,7 +1194,7 @@ int shell_items_volume_fprint(
 		  &value_string_size,
 		  error );
 #endif
-	if( result != 1 )
+	if( result == -1 )
 	{
 		libcerror_error_set(
 		 error,
@@ -1217,7 +1205,8 @@ int shell_items_volume_fprint(
 
 		goto on_error;
 	}
-	if( value_string_size > 0 )
+	if( ( result != 0 )
+	 && ( value_string_size > 0 ) )
 	{
 		value_string = system_string_allocate(
 		                value_string_size );
@@ -1246,7 +1235,7 @@ int shell_items_volume_fprint(
 			  value_string_size,
 			  error );
 #endif
-		if( result == -1 )
+		if( result != 1 )
 		{
 			libcerror_error_set(
 			 error,
@@ -1346,7 +1335,7 @@ int shell_items_file_entry_fprint(
 			  value_string_size,
 			  error );
 #endif
-		if( result == -1 )
+		if( result != 1 )
 		{
 			libcerror_error_set(
 			 error,
@@ -1581,7 +1570,7 @@ int shell_items_network_location_fprint(
 			  value_string_size,
 			  error );
 #endif
-		if( result == -1 )
+		if( result != 1 )
 		{
 			libcerror_error_set(
 			 error,
