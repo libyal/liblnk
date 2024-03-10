@@ -462,7 +462,7 @@ int property_store_record_fprint(
 		}
 		fprintf(
 		 notify_stream,
-		 "\t{%" PRIs_SYSTEM "}/%d (%s)\n",
+		 "\tProperty: {%" PRIs_SYSTEM "}/%d (%s)\n",
 		 property_set_identifier_string,
 		 entry_type,
 		 description );
@@ -534,7 +534,7 @@ int property_store_record_fprint(
 			}
 			fprintf(
 			 notify_stream,
-			 "\t{%" PRIs_SYSTEM "}/%" PRIs_SYSTEM "\n",
+			 "\tProperty: {%" PRIs_SYSTEM "}/%" PRIs_SYSTEM "\n",
 			 property_set_identifier_string,
 			 value_string );
 
