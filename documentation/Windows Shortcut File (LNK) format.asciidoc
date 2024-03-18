@@ -74,6 +74,7 @@ in the section entitled "GNU Free Documentation License".
 | 0.0.26 | J.B. Metz | January 2023 | Additional information about corruption scenarios.
 | 0.0.27 | J.B. Metz | July 2023 | Additional information regarding encoding of filenames.
 | 0.0.28 | J.B. Metz | September 2023 | Additional information regarding edge cases.
+| 0.0.29 |           | February 2024 | Additional network provider types.
 |===
 
 :numbered:
@@ -395,11 +396,36 @@ The network share flags consist of the following values:
 
 ==== Network provider types
 
-The network provider types consist of one of the following values:
+The network provider types consist of one of the following values (see wnnc.h):
 
 [cols="1,1,5",options="header"]
 |===
 | Value | Identifier | Description
+| 0x00010000 | WNNC_NET_MSNET |
+| 0x00020000 | WNNC_NET_SMB |
+| 0x00030000 | WNNC_NET_NETWARE |
+| 0x00040000 | WNNC_NET_VINES |
+| 0x00050000 | WNNC_NET_10NET |
+| 0x00060000 | WNNC_NET_LOCUS |
+| 0x00070000 | WNNC_NET_SUN_PC_NFS |
+| 0x00080000 | WNNC_NET_LANSTEP |
+| 0x00090000 | WNNC_NET_9TILES |
+| 0x000A0000 | WNNC_NET_LANTASTIC |
+| 0x000B0000 | WNNC_NET_AS400 |
+| 0x000C0000 | WNNC_NET_FTP_NFS |
+| 0x000D0000 | WNNC_NET_PATHWORKS |
+| 0x000E0000 | WNNC_NET_LIFENET |
+| 0x000F0000 | WNNC_NET_POWERLAN |
+| 0x00100000 | WNNC_NET_BWNFS |
+| 0x00110000 | WNNC_NET_COGENT |
+| 0x00120000 | WNNC_NET_FARALLON |
+| 0x00130000 | WNNC_NET_APPLETALK |
+| 0x00140000 | WNNC_NET_INTERGRAPH |
+| 0x00150000 | WNNC_NET_SYMFONET |
+| 0x00160000 | WNNC_NET_CLEARCASE |
+| 0x00170000 | WNNC_NET_FRONTIER |
+| 0x00180000 | WNNC_NET_BMC |
+| 0x00190000 | WNNC_NET_DCE |
 | 0x001a0000 | WNNC_NET_AVID |
 | 0x001b0000 | WNNC_NET_DOCUSPACE |
 | 0x001c0000 | WNNC_NET_MANGOSOFT |
