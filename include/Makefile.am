@@ -15,13 +15,11 @@ EXTRA_DIST = \
 	liblnk/features.h.in \
 	liblnk/types.h.in
 
-MAINTAINERCLEANFILES = \
+DISTCLEANFILES = \
+	liblnk.h \
+	liblnk/definitions.h \
+	liblnk/features.h \
+	liblnk/types.h \
+	Makefile \
 	Makefile.in
-
-distclean: clean
-	-rm -f liblnk.h
-	-rm -f liblnk/definitions.h
-	-rm -f liblnk/features.h
-	-rm -f liblnk/types.h
-	-rm -f Makefile
 

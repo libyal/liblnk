@@ -1,6 +1,6 @@
 dnl Checks for libfwps required headers and functions
 dnl
-dnl Version: 20240224
+dnl Version: 20240413
 
 dnl Function to detect if libfwps is available
 dnl ac_libfwps_dummy is used to prevent AC_CHECK_LIB adding unnecessary -l<library> arguments
@@ -10,8 +10,10 @@ AC_DEFUN([AX_LIBFWPS_CHECK_LIB],
     [ac_cv_libfwps=no],
     [ac_cv_libfwps=check
     dnl Check if the directory provided as parameter exists
+    dnl For both --with-libfwps which returns "yes" and --with-libfwps= which returns ""
+    dnl treat them as auto-detection.
     AS_IF(
-      [test "x$ac_cv_with_libfwps" != x && test "x$ac_cv_with_libfwps" != xauto-detect],
+      [test "x$ac_cv_with_libfwps" != x && test "x$ac_cv_with_libfwps" != xauto-detect && test "x$ac_cv_with_libfwps" != xyes],
       [AS_IF(
         [test -d "$ac_cv_with_libfwps"],
         [CFLAGS="$CFLAGS -I${ac_cv_with_libfwps}/include"
@@ -250,7 +252,7 @@ AC_DEFUN([AX_LIBFWPS_CHECK_LIB],
         ac_cv_libfwps_LIBADD="-lfwps"])
       ])
     AS_IF(
-      [test "x$ac_cv_with_libfwps" != x && test "x$ac_cv_with_libfwps" != xauto-detect && test "x$ac_cv_libfwps" != xyes],
+      [test "x$ac_cv_libfwps" != xyes && test "x$ac_cv_with_libfwps" != x && test "x$ac_cv_with_libfwps" != xauto-detect && test "x$ac_cv_with_libfwps" != xyes],
       [AC_MSG_FAILURE(
         [unable to find supported libfwps in directory: $ac_cv_with_libfwps],
         [1])
@@ -296,7 +298,7 @@ dnl Function to detect if libfwps dependencies are available
 AC_DEFUN([AX_LIBFWPS_CHECK_LOCAL],
   [dnl No additional checks.
 
-  ac_cv_libfwps_CPPFLAGS="-I../libfwps";
+  ac_cv_libfwps_CPPFLAGS="-I../libfwps -I\$(top_srcdir)/libfwps";
   ac_cv_libfwps_LIBADD="../libfwps/libfwps.la";
 
   ac_cv_libfwps=local

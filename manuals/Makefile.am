@@ -6,9 +6,7 @@ EXTRA_DIST = \
 	lnkinfo.1 \
 	liblnk.3
 
-MAINTAINERCLEANFILES = \
+DISTCLEANFILES = \
+	Makefile \
 	Makefile.in
-
-distclean: clean
-	-rm -f Makefile
 

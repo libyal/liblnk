@@ -149,6 +149,7 @@ stamp-h[1-9]
 /tests/lnk_test_tools_output
 /tests/lnk_test_tools_path_string
 /tests/lnk_test_tools_signal
+/tests/notify_stream.log
 /tests/tmp*
 
 # Local library dependencies specific files
