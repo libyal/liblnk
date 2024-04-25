@@ -151,7 +151,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_acronis_tib_file_values.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_cdburn_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_compressed_folder.c"
 				>
 			</File>
 			<File
@@ -171,11 +179,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfwsi\libfwsi_control_panel_identifier.c"
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_item.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfwsi\libfwsi_control_panel_item.c"
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_item_identifier.c"
 				>
 			</File>
 			<File
@@ -240,6 +248,10 @@
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0026_values.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0027_values.c"
 				>
 			</File>
 			<File
@@ -342,6 +354,10 @@
 				RelativePath="..\..\libfwsi\libfwsi_volume_values.c"
 				>
 			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_web_site_values.c"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -349,11 +365,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\..\libfwsi\libfwsi_acronis_tib_file_values.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\libfwsi\libfwsi_cdburn_values.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_codepage.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_compressed_folder.h"
 				>
 			</File>
 			<File
@@ -373,11 +397,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfwsi\libfwsi_control_panel_identifier.h"
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_item.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfwsi\libfwsi_control_panel_item.h"
+				RelativePath="..\..\libfwsi\libfwsi_control_panel_item_identifier.h"
 				>
 			</File>
 			<File
@@ -446,6 +470,10 @@
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0026_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_extension_block_0xbeef0027_values.h"
 				>
 			</File>
 			<File
@@ -590,6 +618,10 @@
 			</File>
 			<File
 				RelativePath="..\..\libfwsi\libfwsi_volume_values.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libfwsi\libfwsi_web_site_values.h"
 				>
 			</File>
 		</Filter>
