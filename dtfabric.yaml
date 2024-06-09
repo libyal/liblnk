@@ -259,7 +259,7 @@ members:
   data_type: uint32
   value: 0xa000000b
 - name: folder_identifier
-  data_type: uuid
+  type: uuid
 - name: first_child_segment_offset
   data_type: uint32
 ---
