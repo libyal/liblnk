@@ -89,7 +89,7 @@ environment:
     PYTHON_PATH: "C:\\Python311"
   - TARGET: macos-x64-clang
     BUILD_ENVIRONMENT: xcode
-    APPVEYOR_BUILD_WORKER_IMAGE: macos-monterey
+    APPVEYOR_BUILD_WORKER_IMAGE: macos-sonoma
     HOMEBREW_NO_INSTALL_CLEANUP: 1
     CC: clang
     CFLAGS: "-I/usr/local/include"
@@ -97,7 +97,7 @@ environment:
     CONFIGURE_OPTIONS: ""
   - TARGET: macos-x64-gcc
     BUILD_ENVIRONMENT: xcode
-    APPVEYOR_BUILD_WORKER_IMAGE: macos-monterey
+    APPVEYOR_BUILD_WORKER_IMAGE: macos-sonoma
     HOMEBREW_NO_INSTALL_CLEANUP: 1
     CC: gcc
     CFLAGS: "-I/usr/local/include"
@@ -105,7 +105,7 @@ environment:
     CONFIGURE_OPTIONS: ""
   - TARGET: macos-x64-gcc-python
     BUILD_ENVIRONMENT: xcode
-    APPVEYOR_BUILD_WORKER_IMAGE: macos-monterey
+    APPVEYOR_BUILD_WORKER_IMAGE: macos-sonoma
     PYTHON: "/usr/local/opt/python@3.11/bin/python3"
     PYTHON_CONFIG: "/usr/local/opt/python@3.11/bin/python3-config"
     HOMEBREW_NO_INSTALL_CLEANUP: 1
@@ -115,7 +115,7 @@ environment:
     CONFIGURE_OPTIONS: "--enable-python"
   - TARGET: macos-pkgbuild
     BUILD_ENVIRONMENT: xcode
-    APPVEYOR_BUILD_WORKER_IMAGE: macos-monterey
+    APPVEYOR_BUILD_WORKER_IMAGE: macos-sonoma
     PYTHON: "/usr/local/opt/python@3.11/bin/python3"
     PYTHON_CONFIG: "/usr/local/opt/python@3.11/bin/python3-config"
     HOMEBREW_NO_INSTALL_CLEANUP: 1
@@ -183,36 +183,48 @@ environment:
     PYTHON: "C:\\Python312-x64\\python.exe"
     PYTHON_VERSION: 3.12
     TOXENV: py312
-  - TARGET: macos-tox-py38
+  - TARGET: windows-tox-py313-32bit
     BUILD_ENVIRONMENT: python-tox
-    APPVEYOR_BUILD_WORKER_IMAGE: macos-monterey
-    HOMEBREW_NO_INSTALL_CLEANUP: 1
-    PYTHON_VERSION: 3.8
-    TOXENV: py38
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    PYTHON: "C:\\Python313\\python.exe"
+    PYTHON_VERSION: 3.13
+    TOXENV: py313
+  - TARGET: windows-tox-py313-64bit
+    BUILD_ENVIRONMENT: python-tox
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    PYTHON: "C:\\Python313-x64\\python.exe"
+    PYTHON_VERSION: 3.13
+    TOXENV: py313
   - TARGET: macos-tox-py39
     BUILD_ENVIRONMENT: python-tox
-    APPVEYOR_BUILD_WORKER_IMAGE: macos-monterey
+    APPVEYOR_BUILD_WORKER_IMAGE: macos-sonoma
     HOMEBREW_NO_INSTALL_CLEANUP: 1
     PYTHON_VERSION: 3.9
     TOXENV: py39
   - TARGET: macos-tox-py310
     BUILD_ENVIRONMENT: python-tox
-    APPVEYOR_BUILD_WORKER_IMAGE: macos-monterey
+    APPVEYOR_BUILD_WORKER_IMAGE: macos-sonoma
     HOMEBREW_NO_INSTALL_CLEANUP: 1
     PYTHON_VERSION: 3.10
     TOXENV: py310
   - TARGET: macos-tox-py311
     BUILD_ENVIRONMENT: python-tox
-    APPVEYOR_BUILD_WORKER_IMAGE: macos-monterey
+    APPVEYOR_BUILD_WORKER_IMAGE: macos-sonoma
     HOMEBREW_NO_INSTALL_CLEANUP: 1
     PYTHON_VERSION: 3.11
     TOXENV: py311
   - TARGET: macos-tox-py312
     BUILD_ENVIRONMENT: python-tox
-    APPVEYOR_BUILD_WORKER_IMAGE: macos-monterey
+    APPVEYOR_BUILD_WORKER_IMAGE: macos-sonoma
     HOMEBREW_NO_INSTALL_CLEANUP: 1
     PYTHON_VERSION: 3.12
     TOXENV: py312
+  - TARGET: macos-tox-py313
+    BUILD_ENVIRONMENT: python-tox
+    APPVEYOR_BUILD_WORKER_IMAGE: macos-sonoma
+    HOMEBREW_NO_INSTALL_CLEANUP: 1
+    PYTHON_VERSION: 3.13
+    TOXENV: py313
   - TARGET: linux-tox-py310
     BUILD_ENVIRONMENT: python-tox
     APPVEYOR_BUILD_WORKER_IMAGE: ubuntu2204
