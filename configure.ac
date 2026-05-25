@@ -2,7 +2,7 @@ AC_PREREQ([2.71])
 
 AC_INIT(
   [liblnk],
-  [20260507],
+  [20260525],
   [joachim.metz@gmail.com])
 
 AC_CONFIG_SRCDIR(
@@ -201,7 +201,7 @@ AC_CONFIG_FILES([dpkg/changelog])
 AC_CONFIG_FILES([liblnk/liblnk.rc])
 AC_CONFIG_FILES([liblnk.pc])
 AC_CONFIG_FILES([liblnk.spec])
-AC_CONFIG_FILES([setup.cfg])
+AC_CONFIG_FILES([pyproject.toml])
 dnl Generate a source configuration file
 AC_CONFIG_HEADERS([common/config.h])
 

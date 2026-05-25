@@ -31,14 +31,17 @@
  */
 #if defined( LIBLNK_DLL_EXPORT )
 #define LIBLNK_EXTERN __declspec(dllexport)
+#define LIBLNK_EXTERN_VARIABLE extern __declspec(dllexport)
 
 #elif defined( LIBLNK_DLL_IMPORT )
-#define LIBLNK_EXTERN extern __declspec(dllimport)
+#define LIBLNK_EXTERN __declspec(dllimport)
+#define LIBLNK_EXTERN_VARIABLE extern __declspec(dllimport)
 
 #else
 #define LIBLNK_EXTERN extern
+#define LIBLNK_EXTERN_VARIABLE extern
 
-#endif
+#endif /* defined( LIBLNK_DLL_EXPORT ) */
 
 #endif /* !defined( _LIBLNK_EXTERN_H ) */
 
