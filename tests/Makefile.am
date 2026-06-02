@@ -21,6 +21,10 @@ AM_CPPFLAGS = \
 	@PTHREAD_CPPFLAGS@ \
 	@LIBLNK_DLL_IMPORT@
 
+AM_TESTS_ENVIRONMENT = \
+	export PYTHON="@PYTHON@"; \
+	export TESTS_USE_WINAPI="@TESTS_USE_WINAPI@";
+
 if HAVE_PYTHON_TESTS
 TESTS_PYLNK = \
 	test_python_module.sh
@@ -289,9 +293,11 @@ lnk_test_tools_info_handle_SOURCES = \
 lnk_test_tools_info_handle_LDADD = \
 	@LIBFWSI_LIBADD@ \
 	@LIBFWPS_LIBADD@ \
+	@LIBFOLE_LIBADD@ \
 	@LIBFGUID_LIBADD@ \
 	@LIBFDATETIME_LIBADD@ \
 	@LIBUNA_LIBADD@ \
+	@LIBCNOTIFY_LIBADD@ \
 	@LIBCLOCALE_LIBADD@ \
 	@LIBCDATA_LIBADD@ \
 	../liblnk/liblnk.la \
@@ -306,7 +312,8 @@ lnk_test_tools_output_SOURCES = \
 
 lnk_test_tools_output_LDADD = \
 	../liblnk/liblnk.la \
-	@LIBCERROR_LIBADD@
+	@LIBCERROR_LIBADD@ \
+	@LIBINTL@
 
 lnk_test_tools_path_string_SOURCES = \
 	../lnktools/path_string.c ../lnktools/path_string.h \

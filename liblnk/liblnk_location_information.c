@@ -1854,7 +1854,7 @@ ssize_t liblnk_location_information_read(
 	byte_stream_copy_to_uint32_little_endian(
 	 location_information_size_data,
 	 location_information_size );
-	
+
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libcnotify_verbose != 0 )
 	{
