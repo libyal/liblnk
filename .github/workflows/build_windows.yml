@@ -73,7 +73,7 @@ jobs:
       env:
         CHERE_INVOKING: 1
       run: |
-        tests/runtests.sh
+        tests/runtests.sh CHECK_WITH_STDERR=1
   build_msys2_mingw:
     runs-on: windows-latest
     strategy:
@@ -106,4 +106,4 @@ jobs:
     - name: Run tests
       shell: msys2 {0}
       run: |
-        tests/runtests.sh
+        tests/runtests.sh CHECK_WITH_STDERR=1

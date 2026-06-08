@@ -45,7 +45,7 @@ jobs:
         make > /dev/null
     - name: Run tests
       run: |
-        tests/runtests.sh
+        tests/runtests.sh CHECK_WITH_STDERR=1
   build_python:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -74,7 +74,7 @@ jobs:
         make > /dev/null
     - name: Run tests
       run: |
-        tests/runtests.sh
+        tests/runtests.sh CHECK_WITH_STDERR=1
   build_pkgbuild:
     runs-on: ${{ matrix.os }}
     strategy:

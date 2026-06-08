@@ -1,7 +1,7 @@
 #!/bin/sh
 # Script that synchronizes the local library dependencies
 #
-# Version: 20260601
+# Version: 20260602
 
 EXIT_SUCCESS=0;
 EXIT_FAILURE=1;
