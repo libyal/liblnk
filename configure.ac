@@ -2,8 +2,8 @@ AC_PREREQ([2.71])
 
 AC_INIT(
   [liblnk],
-  [20260608],
-  [joachim.metz@gmail.com])
+  [20260612],
+  [https://github.com/libyal/liblnk/issues])
 
 AC_CONFIG_SRCDIR(
   [include/liblnk.h.in])
@@ -12,6 +12,8 @@ AM_INIT_AUTOMAKE([gnu 1.6 tar-ustar])
 AM_EXTRA_RECURSIVE_TARGETS([sources splint])
 
 AC_CONFIG_MACRO_DIR([m4])
+
+AC_CONFIG_TESTDIR([tests])
 
 dnl Check for host type
 AC_CANONICAL_HOST
@@ -211,6 +213,8 @@ AC_CONFIG_FILES([liblnk/liblnk.rc])
 AC_CONFIG_FILES([liblnk.pc])
 AC_CONFIG_FILES([liblnk.spec])
 AC_CONFIG_FILES([pyproject.toml])
+dnl Generate test configuration files
+AC_CONFIG_FILES([tests/atlocal])
 dnl Generate a source configuration file
 AC_CONFIG_HEADERS([common/config.h])
 
