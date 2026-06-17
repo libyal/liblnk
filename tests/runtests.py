@@ -2,7 +2,7 @@
 #
 # Script to run Python test scripts.
 #
-# Version: 20231024
+# Version: 20260505
 
 import glob
 import os
@@ -11,7 +11,7 @@ import unittest
 
 
 test_profile = ".pylnk"
-input_glob = "*.lnk"
+input_glob = "*.[Ll][Nn][Kk]"
 option_sets = []
 
 
