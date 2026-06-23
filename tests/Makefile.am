@@ -386,12 +386,14 @@ test_manpages: \
 test_python_module: \
 	package.m4 \
 	test_inputs_pylnk.at \
+	test_macros.at \
 	test_python_module.at
 
 test_tools: \
 	package.m4 \
 	test_inputs_lnkinfo.at \
-	test_macros.at test_tools.at
+	test_macros.at \
+	test_tools.at
 
 EXTRA_DIST = \
 	$(check_AUTOTESTS:=.at) \
