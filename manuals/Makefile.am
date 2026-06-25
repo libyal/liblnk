@@ -3,8 +3,7 @@ man_MANS = \
 	liblnk.3
 
 EXTRA_DIST = \
-	lnkinfo.1 \
-	liblnk.3
+	$(man_MANS)
 
 DISTCLEANFILES = \
 	Makefile \
