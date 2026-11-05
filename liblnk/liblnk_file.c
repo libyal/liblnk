@@ -2558,7 +2558,8 @@ int liblnk_file_link_refers_to_file(
 		return( -1 );
 	}
 #endif
-	if( ( internal_file->file_information->data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) != 0 )
+	if( (internal_file->file_information != NULL )
+	 && ( internal_file->file_information->data_flags & LIBLNK_DATA_FLAG_HAS_LOCATION_INFORMATION ) != 0 )
 	{
 		result = 1;
 	}

@@ -1,6 +1,6 @@
 # Files to ignore by git
 #
-# Version: 20260604
+# Version: 20261031
 
 # Generic auto-generated build files
 *~
@@ -130,6 +130,7 @@ stamp-h[1-9]
 /pyproject.toml
 /lnktools/*.exe
 /lnktools/lnkinfo
+/ossfuzz/*_fuzzer
 /tests/*.dir
 /tests/*.exe
 /tests/*.log
